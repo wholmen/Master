@@ -1,0 +1,3 @@
+A list of sources used in my Master thesis
+
+T. Daniel Crawford and Henry F. Schaefer III - An introduction to Coupled Cluster Theory 

@@ -177,6 +177,7 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /home/wilhelm/repositories/Master/Report/Figures/Pairing_model2.pdf
 INPUT /home/wilhelm/repositories/Master/Report/Figures/Pairing_model2.pdf
 INPUT /home/wilhelm/repositories/Master/Report/Figures/Pairing_model2.pdf
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmib10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmmib8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmmib6.tfm

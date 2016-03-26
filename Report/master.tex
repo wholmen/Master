@@ -277,17 +277,277 @@
 			\hat V = - \frac{1}{2}g \sum_{pq} \hat a_{p +}^{\dagger} \hat a_{p-}^{\dagger} \hat a_{q-} \hat a_{q+}
 		\end{align}
 		The value of $\xi$ determines the spacing between the energy levels, which I have set to $1$. This will not impact the insight attained solving this system. $p$ and $q$ determines the energy level. $\sigma$ is the spin, with value either $+\frac{1}{2}$ or $-\frac{1}{2}$. Both the unperturbed and perturbed Hamiltonian keeps total spin at $0$
+
+		We can normal order the Hamiltonian by Wicks general theorem. 
+		\begin{align}
+			a_p^{\dagger} a_q = \left\{ a_p^{\dagger}a_q \right\} + \delta_{pq \in i}
+		\end{align}
+		\begin{align}
+			a_p^{\dagger} a_q^{\dagger} a_s a_r = \left\{ a_p^{\dagger}a_q^{\dagger} a_s a_r \right\} +\left\{a_p^{\dagger}a_r\right\} \delta_{qs\in i} - \left\{a_p^{\dagger}a_s\right\} \delta_{qr\in i} \\
+			+\left\{a_q^{\dagger}a_s\right\} \delta_{pr\in i} \
+			- \left\{a_q^{\dagger}a_r\right\} \delta_{ps\in i} + \delta_{pr \in i} \delta_{qs \in i} - \delta_{ps \in i}\delta_{qr \in i}
+		\end{align}
+		Which gives the Normal-ordered Hamiltonian
+		\begin{align}
+			\hat H = \hat H_N + E_{ref}
+		\end{align}
+		\begin{align}
+			\hat H_N = \hat F_N + \hat W 
+		\end{align}
+		\begin{align}
+			\hat F_N =  \sum_{pq} h_{pq} \left\{ \hat a_{p \sigma}^{\dagger} \hat a_{p \sigma} \right\}
+			- \sum_{pqi} \left< pi || qi \right> \left\{ \hat a_{p +}^{\dagger} \hat a_{q -} \right\}
+		\end{align}
+		\begin{align}
+			\hat W = - \frac{1}{2} \sum_{pqrs} \left< pq || rs \right> \left\{ \hat a_{p +}^{\dagger} \hat a_{p-}^{\dagger} \hat a_{q-} \hat a_{q+} \right\}
+		\end{align}
+		\begin{align}
+ 			E_{ref} = \sum_{i} h_{ii} + \frac{1}{2} \sum_{ij} \left< ij \middle| \middle| ij \right>
+		\end{align}
+
 	\end{section}
+
+
 	\begin{section}{Configuration Interaction theory}
 		This system is a good way to benchmark various methods as we can compute the exact solution using Full Configuration Interaction. 
-		\begin{figure}
+
+		\begin{figure}[h]
 			\includegraphics[width=1.1\linewidth]{Figures/Pairing_model2.pdf}
 			\label{PairingModel_2}
 			\caption{Configuration space for given pairing model showing all possible distributions of electrons}
 		\end{figure}
 
-		
-	\end{section}
+ 	We need to diagonalize the Hamiltonian matrix looking at the linear combination of all different compinations of 
+	\begin{align}
+		\hat{ \mathcal{H} } = \left(  \begin{matrix}
+			& \left| \Phi_0 \right> & \left| \Phi_{12}^{56} \right> & \left| \Phi_{12}^{78} \right> & \left| \Phi_{34}^{56} \right> & \left| \Phi_{34}^{78} \right> & \left| \Phi_{1234}^{5678} \right> \\ 
+			\left< \Phi_0 \right| &   &   &   &   &   & \\
+			\left< \Phi_{12}^{56} \right| &   &   &   &   &   & \\
+			\left< \Phi_{12}^{78} \right| &   &   &   &   &   & \\
+			\left< \Phi_{34}^{56} \right| &   &   &   &   &   & \\
+			\left< \Phi_{34}^{78} \right| &   &   &   &   &   & \\
+			\left< \Phi_{1234}^{5678} \right| &   &   &   &   &   & 
+		\end{matrix} \right)
+	\end{align}
+
+ Excluding the 4p-4h excitations one does not diagonalize the exact matrix, but rather the approximated matrix known from Configuration Interaction. 
+
+ The diagonal elements are calculated using Wick's theorem. Looking first at the ground state calculation with the unperturbed Hamiltonian part
+ \begin{align}
+ 	\left< \Phi_0 \middle| \hat{\mathbf{H_0}} \middle| \Phi_0 \right> 
+ \end{align}
+ \begin{align}
+ 	\left< \right|  a_{2 \downarrow}  a_{2 \uparrow} a_{1 \downarrow} a_{1 \uparrow} \sum_{p \sigma} \delta (p-1) a_{p \sigma}^{\dagger} a_{p \sigma} 
+ 	a_{1 \uparrow}^{\dagger} a_{1 \downarrow}^{\dagger} a_{2 \uparrow}^{\dagger} a_{2 \downarrow}^{\dagger} \left| \right> 
+ \end{align}
+ Which we see can contract in four different ways, resulting in 
+ \begin{align}
+ 	2 \delta (1-1) + 2 \delta (2-1) = 2 \delta
+ \end{align}
+
+ And the perturbation part
+ \begin{align}
+ 	\left< \Phi_0 \middle| \hat{\mathbf{V}} \middle| \Phi_0 \right>
+ \end{align}
+ \begin{align}
+ 	\left< \right| a_{2 \downarrow}  a_{2 \uparrow} a_{1 \downarrow} a_{1 \uparrow} \left( -g / 2 \sum_{pq} a_{p \uparrow}^{\dagger} a_{q \downarrow}^{\dagger} a_{q \downarrow} a_{p \uparrow} \right) 
+ 	a_{1 \uparrow}^{\dagger} a_{1 \downarrow}^{\dagger} a_{2 \uparrow}^{\dagger} a_{2 \downarrow}^{\dagger} \left| \right> 
+ \end{align}
+ As we can see, there are two ways this can contract, each contributing with the constant factor, $-g / 2$
+ Resulting in the final Hamiltonian matrix 
+ \begin{align}
+ 	\hat{\mathcal{H}} = \left( \begin{matrix}
+ 		2 \delta - g & -g / 2 & -g / 2 & -g / 2 & -g / 2 & 0  \\
+ 		-g / 2 & 4 \delta - g & -g / 2 & -g / 2 & 0 & -g / 2  \\
+ 		-g / 2 & -g / 2 & 6 \delta - g & 0 & -g / 2 & -g / 2 \\
+ 		-g / 2 & -g / 2 & 0 & 6 \delta - g & -g / 2 & -g / 2 \\
+ 		-g / 2 & 0 & -g / 2 & -g / 2 & 8 \delta - g & -g / 2 \\
+ 		0 & -g / 2 & -g / 2 & -g / 2 & -g / 2 & 10 \delta - g 
+ 	\end{matrix} \right)
+ \end{align}
+
+ \end{section}
+
+ \begin{section}{Diagrammatic Rules}
+ 	One can visualize many-body quantum physics by using diagrams. 
+
+ 	
+ \end{section}
+
+ \begin{section}{Many-Body Perturbation Theory}
+ 	The Perturbation theory presents a non-iterative approach to approximating the ground state energy. The approach is similar to previous methods. We start by splitting the Hamiltonian into a solvable part and a perturbation. 
+ 	\begin{align}
+ 		\hat H = \hat H_0 + \hat V
+ 	\end{align}
+ 	Where we have chosen our basis such that
+ 	\begin{align}
+ 		\hat H_0 \left| \Psi_0 \right>  = W_0 \left| \Psi_0 \right>
+ 	\end{align}
+ 	We split the basis aswell
+ 	\begin{align}
+ 		\left| \Psi_0 \right> = \left| \Phi_0 \right> + \sum_i^{\infty} c_i \left| \phi_i \right>
+ 	\end{align}
+ 	Assuming intermediate normalization
+ 	\begin{align}
+ 		\left< \Phi_0 | \Psi_0 \right> = 1
+ 	\end{align}
+	We can calculate the total exact energy
+ 	\begin{align}
+ 		E = \left< \Phi_0 \right| \hat H_0 \left| \Psi_0 \right> + \left< \Phi_0 \right| \hat V \left| \Psi_0 \right>
+ 	\end{align}
+ 	Where we know that
+ 	\begin{align}
+ 		 \left< \Phi_0 \right| \hat H_0 \left| \Psi_0 \right>  = W_0
+ 	\end{align}
+ 	And we get the corrolation energy
+ 	\begin{align}
+ 		E - W_0 = \Delta E = \left< \Phi_0 \right| \hat V \left| \Psi_0 \right>
+ 	\end{align}
+ 	We will usually aim to compute this energy when doing MBPT. 
+
+ 	\begin{subsection}{General derivation of Many Body Particle Theory equations}
+ 		Looking at the equation
+ 		\begin{align}
+ 			\hat V \left| \Psi_0 \right> = \hat H \left| \Psi_0 \right> + \hat H_0 \left| \Psi_0 \right> 
+ 		\end{align}
+ 		We reorganize and add the term $\omega \left| \Psi_0 \right>$ on both sides
+ 		\begin{align}
+ 			\hat V \left| \Psi_0 \right> + \omega \left| \Psi_0 \right> - \hat H \left| \Psi_0 \right> = \omega \left| \Psi_0 \right> - \hat H_0 \left| \Psi_0 \right> 
+ 		\end{align}
+ 		Remembering that $\hat H \left| \Psi_0 \right> = E\left| \Psi_0 \right> $, we get 
+ 		\begin{align}
+ 			\left| \Psi_0 \right> = \frac{ \hat V + \omega - E }{\omega - \hat H_0} \left| \Psi_0 \right>
+ 			\label{pert_1}
+ 		\end{align}
+ 		Before continuing, we introduce the operators $\hat P$ and $\hat Q$, such that
+ 		\begin{align}
+ 			\left| \Psi_0 \right> = \hat P \left| \Psi_0 \right> + \hat Q \left| \Psi_0 \right> 
+ 			&= \left| \Phi_0 \right> \left< \Phi_0 \middle| \Psi_0 \right> + \sum_i \left| \Phi_i \right> \left< \Phi_i \middle| \Psi_0 \right> 
+ 			\label{pert_2} \\
+ 			&= \left| \Phi_0 \right> + \chi
+ 		\end{align}
+ 		Giving
+ 		\begin{align}
+ 			\left| \Phi_0 \right> = \hat P \left| \Psi_0 \right> \;\;\;\; \chi = \hat Q \left| \Psi_0 \right> 
+ 			\label{pert_3}
+ 		\end{align}
+ 		Using $\hat R(\omega) = \frac{\hat{Q}}{\left( \omega - \hat H_0 \right)}$ and multiplying both sides with $\hat Q$ from the left in equation (\ref{pert_1}) we attain
+ 		\begin{align}
+ 			\hat Q \left| \Psi_0 \right> = \hat R(\omega) \left( \hat V + \omega - E \right) \left| \Psi_0 \right>
+ 		\end{align}
+ 		Using equations (\ref{pert_2}) and (\ref{pert_3}), we get
+ 		\begin{align}
+ 			\left| \Psi_0 \right> = \left| \Phi_0 \right> + \hat R(\omega) \left( \hat V + \omega - E \right) \left| \Psi_0 \right>
+ 		\end{align}
+ 		This is an iterative scheme. We can substitute $\left| \Psi_0 \right>$ on the right hand side with the entire right hand side. This results in an infinite sum provided the series converges
+ 		\begin{align}
+ 			\left| \Psi_0 \right> = \sum_0^\infty \left\{ \hat R(\omega) (\hat V + \omega - E) \right\}^m \left| \Phi_0 \right>
+ 		\end{align}
+ 		The right hand side does include the energy, $E$, which must be computed using $ E = W_0 + \Delta E$, and
+ 		\begin{align}
+ 			\Delta E = \left< \Phi_0 \right| \hat V \left| \Psi_0 \right> 
+ 			= \sum_0^\infty \left< \Phi_0 \right| \hat V \left[ \hat R(\omega) (\hat V - E + \omega) \right]^m \left| \Phi_0 \right>  
+ 		\end{align}
+ 	\end{subsection}
+
+ 	\begin{subsection}{Equations for Reileigh-Schrodinger Perturbation Theory}
+ 		We can interpret $\omega$ different ways. I here present the Reileigh-Schrodinger Perturbation Theory which postulates that
+ 		\begin{align}
+ 			\omega = W_0 
+ 		\end{align}
+ 		Such that 
+ 		\begin{align}
+ 			\left| \Psi_0 \right> = \frac{ \hat V - \Delta E }{\omega - \hat H_0} \left| \Psi_0 \right>
+ 		\end{align}
+ 		and we get the final equations
+ 		\begin{align}
+ 			\left| \Psi_0 \right> = \sum_0^\infty \left\{ \hat R(\omega) (\hat V + - \Delta E) \right\}^m \left| \Phi_0 \right>
+ 		\end{align}
+ 		and
+ 		\begin{align}
+ 			\Delta E = \sum_0^\infty \left< \Phi_0 \right| \hat V \left[ \hat R(\omega) (\hat V - \Delta E) \right]^m \left| \Phi_0 \right>  
+ 		\end{align}
+ 		Taking a closer look at the energy-equations, we find that we can write the first orders as
+ 		\begin{align*}
+ 			E^{(1)} &= \left< \Phi_0 \right| \hat V \left| \Phi_0 \right>  = V_{00}\\
+ 			E^{(2)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat V \left| \Phi_0 \right> \\
+ 			E^{(3)} &= \left< \Phi_0 \right| \hat V \hat R_0 (\hat V - E^{(1)})  \hat R_0 \hat V \left| \Phi_0 \right> \\
+ 			E^{(4)} &= \left< \Phi_0 \right| \hat V \hat R_0 (\hat V - E^{(1)})  \hat R_0 (\hat V - E^{(1)}) \hat R_0 \hat V \left| \Phi_0 \right> 
+ 					- E^{(2)} \left< \Phi_0 \right| \hat V \hat R_0^2 \hat V \left| \Phi_0 \right>\\
+  		\end{align*}
+  		Because of the frequent appearance, we can rewrite $\hat V - E^{(1)}$ as
+  		\begin{align}
+  			\hat \Omega = \hat V - E^{(1)}
+  		\end{align}
+  		We name this new variable the wave operator
+ 	\end{subsection}
+
+ 	\begin{subsection}{Canonical Hartree-Fock}
+ 		In the pairing model, we work with the Normal-ordered Hamiltonian
+ 		\begin{align}
+ 			\hat H_N = \hat F_N^d + \hat F_N^0 + \hat W		
+ 		\end{align}
+ 		Which is part of the total Hamiltonian by
+ 		\begin{align}
+ 			\hat H = \hat H_N + E_{\text{ref}}
+ 		\end{align}
+ 		Where
+ 		\begin{align}
+ 			\hat H_N \left| \Psi \right> = \Delta E \left| \Psi \right> 
+ 		\end{align}
+ 		If we use a Canonical Hartree-Fock basis, the Fock matrix will be diagonal, meaning 
+ 		\begin{align}
+ 			\hat F_N^o = 0 \;\;\; \text{     and  } \:\;\: f_{pq} = \epsilon_p \delta_{pq}
+ 		\end{align}
+ 		A noncanonical Hartree-Fock will be block diagonal with 
+ 		\begin{align}
+ 			f_{ia} = \left< i \right| \hat f \left| a \right> = 0
+ 		\end{align}
+
+ 	\end{subsection}
+
+ 	\begin{subsection}{Hartree-Fock calculations}
+ 		When doing Hartree-Fock calculation, we do a change of basis and instead of expanding our Hamiltonian, we vary the wavefunction to minimize the energy. We name the original basis by greek letters and the new basis by latin letters. The original basis should be chosen such that we can calculate the its expectation value. 
+ 		\begin{align}
+ 			\left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = E^{\text{HF}}
+ 		\end{align}
+ 		Variational principle ensures that 
+ 		\begin{align}
+ 			E^{\text{HF}} > 0 
+ 		\end{align}
+ 		We now introduce a change of basis 
+ 		\begin{align}
+ 			\left| \psi_a \right> = \sum_{\lambda} C_{a\lambda} \left| \psi_{\lambda} \right>
+ 		\end{align}
+ 		Varying $C_{p\lambda}$, we can look for the basis providing the lowest energy. We start by rewriting $E^{HF}$ as a functional
+ 		\begin{align}
+ 			E\left[ \psi \right] = \sum_{a=1}^N \left< a \right| h \left| a \right> + \frac{1}{2} \sum_{ab}^N \left< ab \right| v \left| ab \right>
+  		\end{align}
+  		In terms of the original greek basis
+  		\begin{align}
+  			E\left[ \psi \right] = \sum_{a=1}^N \sum_{\alpha \beta} C_{a \alpha}^* C_{a \beta} \left< \alpha \right| h \left| \beta \right> + \frac{1}{2} \sum_{ab}^N \sum_{\alpha \beta \gamma \delta} C_{a \alpha}^* C_{b \beta}^* C_{a \gamma} C_{b \delta} \left< \alpha \beta \right| v \left| \gamma \delta \right>
+  		\end{align}
+  		To find the minima, we introduce a Lagrange multiplier before differentiating with respect to $C_{a  \alpha}^*$. This will give N equations, one for each state, $a$. The equations are given by
+  		\begin{align}
+  			\sum_{\beta} C_{a \beta} \left< \alpha \right| h \left| \beta \right> + \sum_b^N \sum_{\beta \gamma \delta} C_{b \beta}^* C_{b \delta} C_{a \gamma} \left< \alpha \beta \right| v \left| \gamma \delta \right> = \epsilon_a C_{a \alpha}
+  		\end{align}
+  		Defining
+  		\begin{align}
+  			h_{\alpha \gamma}^{\text{HF}} = \left< \alpha \right| h \left| \gamma \right> + \sum_{b=1}^N \sum_{\beta \delta} C_{b \beta}^* C_{b \delta} \left< \alpha \beta \right| v \left| \gamma \delta \right> 
+  		\end{align}
+  		We get the short hand iterative equations to be solved 
+  		\begin{align}
+  			\sum_{\gamma} h_{\alpha \gamma}^{\text{HF}} C_{a \gamma} = \epsilon_{a} C_{a \alpha}
+  		\end{align}
+ 	\end{subsection}
+
+ 	\begin{subsection}{RSPT to for Pairing model}
+ 		
+ 		Given that our Hartree-Fock basis is canonical, $\hat F_N^0 = 0$, and $f_{pq} = \epsilon_p \delta_{pq}$, we can
+  	\end{subsection}
+
+
+ \end{section}
 
 \end{chapter}
 

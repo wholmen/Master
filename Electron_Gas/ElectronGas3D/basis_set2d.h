@@ -1,5 +1,5 @@
-#ifndef BASIS_SET_H
-#define BASIS_SET_H
+#ifndef BASIS_SET2D_H
+#define BASIS_SET2D_H
 
 #include <armadillo>
 #include <iostream>
@@ -9,11 +9,14 @@
 using namespace std;
 using namespace arma;
 
-class basis_set
+class basis_set2D
 {
+public:
 private:
     int Nparticles;
     int Nshells;
+    int MagicNumber;
+    int nstates;
     double rs;
     double kstep;
     double L3, L2, L1;
@@ -21,11 +24,8 @@ private:
 public:
     mat states;
 
-    int nstates;
-
-
-    basis_set();
-    basis_set(int nparticles, int nshells, double RS);
+    basis_set2D();
+    basis_set2D(int nparticles, int nshells, double RS);
 
     // Declaring functions in class
     double OneBodyOperator(int p, int q);
@@ -39,10 +39,9 @@ public:
     int KDelta_sum(int a, int b, int c, int d);
     int KDelta_spin(int a, int b);
 
-
 //signals:
 
 //public slots:
 };
 
-#endif // BASIS_SET_H
+#endif // BASIS_SET2D_H

@@ -43,17 +43,60 @@ class basis_set:
 		for i in range(self.nstates):
 			self.states[i][0] *= 2*pi**2/self.L**2
 
+		self.states = array(self.states)
 
-
+	def hf_energy(self):
+		# Calculate the reference energy
+		
 
 	def one_body(self,p,q):
-
-		return 0
+		# As the list states[p,0] holds 2*pi^2 / L * (nx^2 + ny^2 + nz^2), we do not need new calculations
+		# p==q for delta_pq
+		return self.states[p,0]*(p==q)
 
 	def two_body(self,p,q,r,s):
 
+		asym = 0
 
-		return 0
+		if self.KDelta_sum(p,q,r,s) == 1:
+			asym = 4*pi/self.L3
+
+			if self.KDelta_spin(p,r)*self.KDelta_spin(q,s) == 1:
+				asym1 = (1 - self.KDelta_k(p,r)) / self.Absolute_Distance(p,r)**2
+
+			elif self.KDelta_spin(p,s)*self.KDelta_spin(q,r) == 1:
+				asym2 = (1 - self.KDelta_k(p,s)) / self.Absolute_Distance(p,s)**2
+
+		return asym*(asym1 - asym2)
+
+	def KDelta_nr(self,a,b):
+		# Kroenecker delta for integer comparison. Returns 0 if a and b are unequal
+		return 1 * (a==b)
+		
+	def KDelta_array(self,a,b):
+		# Kroenecker delta for array. Returns 0 if any term in a and b are unequal
+		d = 1.0
+		for i in range(len(a)):
+			d *= (a[i]==b[i])
+		return d
+
+	def KDelta_k(self,p,q):
+		# Kroenecker delta for two wave numbers kp and kq
+		return self.KDelta_array( self.states[p,1:4], self.states[q,1:4])
+
+	def KDelta_sum(self,p,q,r,s):
+		# Kroenecker delta for sum of p+q and r+s. 
+		return self.KDelta_array(self.states[p,1:4]+self.states[q,1:4], self.states[r,1:4]+self.states[s,1:4])
+
+	def KDelta_spin(self,p,q):
+		# Kroenecker delta for spin
+		return 1 * (self.states[p,4]==self.states[q,4])
+
+	def Absolute_Distance(self,p,q):
+		return norm( self.states[p,1:4]-self.states[q,1:4] )
+
+
+
 
 
 b = basis_set(10,1,2)

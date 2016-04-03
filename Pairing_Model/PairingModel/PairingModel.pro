@@ -5,11 +5,10 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     basis_set.cpp \
-    basis_set2d.cpp \
     naivesolvers.cpp
 
 HEADERS += \
     basis_set.h \
-    basis_set2d.h \
     naivesolvers.h
 
+LIBS += -llapack -lblas -larmadillo

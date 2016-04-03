@@ -59,28 +59,6 @@ double basis_set::ReferenceEnergy(){
 
     double Energy = 0.0;
 
-    for (int p=0; p<Nparticles; p++){
-
-        for (int q=0; q<Nparticles; q++){
-            Energy += OneBodyOperator(p,q);
-        }
-        for (int q=0; q<Nparticles; q++){
-            for (int r=0; r<Nparticles; r++){
-                for (int s=0; s<Nparticles; s++){
-                    if (p != q && r != s){
-                        Energy += 0.5*TwoBodyOperator(p,q,r,s);
-                    }
-                }
-            }
-        }
-    }
-    return Energy;
-}
-
-double basis_set::ReferenceEnergy2(){
-
-    double Energy = 0.0;
-
     if (Nparticles <= nstates){
 
         for (int p=0; p<Nparticles; p++){
@@ -97,6 +75,16 @@ double basis_set::ReferenceEnergy2(){
         cout << "Number of particles cannot exceed number of available states.";
     }
     return Energy;
+}
+
+double basis_set::epsilon(int i, int j, int a, int b){
+    // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
+    return OneBodyOperator(i,i) + OneBodyOperator(j,j) - OneBodyOperator(a,a) - OneBodyOperator(b,b);
+}
+
+double basis_set::epsilon4(int i, int j, int k, int l, int a, int b, int c, int d){
+    // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
+    return OneBodyOperator(i,i) + OneBodyOperator(j,j) + OneBodyOperator(k,k) + OneBodyOperator(l,l) - OneBodyOperator(a,a) - OneBodyOperator(b,b) - OneBodyOperator(c,c) - OneBodyOperator(d,d);
 }
 
 

@@ -14,39 +14,30 @@ class basis_set
 private:
 
     int Nshells;
-    double rs;
-    double kstep;
-    double L3, L2, L1;
+    double delta;
+    double g;
 
 public:
     mat states;
 
-    int nstates;
     int Nparticles;
+    int nstates;
 
     basis_set();
-    basis_set(int nparticles, int nshells, double RS);
+    basis_set(int nparticles, int nshells, double G, double Delta);
 
-    // Declaring functions in class
+    // Functions for various energy calculations
     double OneBodyOperator(int p, int q);
     double TwoBodyOperator(int p, int q, int r, int s);
     double epsilon(int i, int j, int a, int b);
     double epsilon4(int i, int j, int k, int l, int a, int b, int c, int d);
     double ReferenceEnergy();
 
-    double Absolute_Difference2(int a, int b);
+    // Kroenecker Delta's
+    int KD_integer(int a, int b);
+    int KD_state(int a, int b);
+    int KD_spin(int a, int b);
 
-    // Kroenecker deltas
-    int KDelta_integer(int a, int b);
-    int KDelta_array(rowvec a, rowvec b);
-    int KDelta_k(int a, int b);
-    int KDelta_sum(int a, int b, int c, int d);
-    int KDelta_spin(int a, int b);
-
-
-//signals:
-
-//public slots:
 };
 
 #endif // BASIS_SET_H

@@ -51,11 +51,15 @@ OBJECTS_DIR   = ./
 SOURCES       = ../ElectronGas3D/main.cpp \
 		../ElectronGas3D/basis_set.cpp \
 		../ElectronGas3D/basis_set2d.cpp \
-		../ElectronGas3D/naivesolvers.cpp 
+		../ElectronGas3D/naivesolvers.cpp \
+		../ElectronGas3D/ccdintermediate.cpp \
+		../ElectronGas3D/ccdblocks.cpp 
 OBJECTS       = main.o \
 		basis_set.o \
 		basis_set2d.o \
-		naivesolvers.o
+		naivesolvers.o \
+		ccdintermediate.o \
+		ccdblocks.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -107,10 +111,14 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../ElectronGas3D/ElectronGas3D.pro basis_set.h \
 		basis_set2d.h \
-		naivesolvers.h ../ElectronGas3D/main.cpp \
+		naivesolvers.h \
+		ccdintermediate.h \
+		ccdblocks.h ../ElectronGas3D/main.cpp \
 		../ElectronGas3D/basis_set.cpp \
 		../ElectronGas3D/basis_set2d.cpp \
-		../ElectronGas3D/naivesolvers.cpp
+		../ElectronGas3D/naivesolvers.cpp \
+		../ElectronGas3D/ccdintermediate.cpp \
+		../ElectronGas3D/ccdblocks.cpp
 QMAKE_TARGET  = ElectronGas3D
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = ElectronGas3D
@@ -282,7 +290,9 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../ElectronGas3D/main.cpp ../ElectronGas3D/basis_set.h
+main.o: ../ElectronGas3D/main.cpp ../ElectronGas3D/basis_set.h \
+		../ElectronGas3D/naivesolvers.h \
+		../ElectronGas3D/ccdintermediate.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../ElectronGas3D/main.cpp
 
 basis_set.o: ../ElectronGas3D/basis_set.cpp ../ElectronGas3D/basis_set.h
@@ -294,6 +304,13 @@ basis_set2d.o: ../ElectronGas3D/basis_set2d.cpp ../ElectronGas3D/basis_set2d.h
 naivesolvers.o: ../ElectronGas3D/naivesolvers.cpp ../ElectronGas3D/naivesolvers.h \
 		../ElectronGas3D/basis_set.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o naivesolvers.o ../ElectronGas3D/naivesolvers.cpp
+
+ccdintermediate.o: ../ElectronGas3D/ccdintermediate.cpp ../ElectronGas3D/ccdintermediate.h \
+		../ElectronGas3D/basis_set.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdintermediate.o ../ElectronGas3D/ccdintermediate.cpp
+
+ccdblocks.o: ../ElectronGas3D/ccdblocks.cpp ../ElectronGas3D/ccdblocks.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdblocks.o ../ElectronGas3D/ccdblocks.cpp
 
 ####### Install
 

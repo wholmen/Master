@@ -82,27 +82,33 @@ void NaiveSolvers::update_t(int degree){
 
                     double tau = 0.0;
 
+                    // Adding La
                     for (int cc=0; cc<Nparticles; cc++){
                         for (int dd=0; dd<Nparticles; dd++){
                             int c = cc + Nholes; int d = dd + Nholes;
 
-                            tau += basis.TwoBodyOperator(a,b,c,d) * t0(i + j*Nholes, cc + dd*Nparticles);
+                            tau += 0.5 * basis.TwoBodyOperator(a,b,c,d) * t0(i+j*Nholes, cc+dd*Nparticles);
                         }
                     }
 
+                    // Adding Lb
                     for (int k=0; k<Nholes; k++){
                         for (int l=0; l<Nholes; l++){
 
-                            tau += basis.TwoBodyOperator(k,l,i,j) * t0(k + l*Nholes, i + j*Nparticles);
+                            tau += 0.5 * basis.TwoBodyOperator(k,l,i,j) * t0(k+l*Nholes, aa+bb*Nparticles);
                         }
                     }
 
+                    // Adding Lc
                     for (int cc=0; cc<Nparticles; cc++){
                         for (int k=0; k<Nholes; k++){
                             int c = cc + Nholes;
-
-                            tau += basis.TwoBodyOperator(k,b,c,j)*t0(i+k*Nholes, aa+cc*Nparticles) - basis.TwoBodyOperator(k,b,c,i)*t0(j+k*Nholes, aa+cc*Nparticles)
-                                  *basis.TwoBodyOperator(k,b,c,j)*t0(i+k*Nholes, aa+cc*Nparticles) - basis.TwoBodyOperator(k,a,c,j)*t0(i+k*Nholes, bb+cc*Nparticles);
+                            // /*
+                            tau += basis.TwoBodyOperator(k,b,c,j)*t0(i+k*Nholes, aa+cc*Nparticles); // No permutation
+                            tau -= basis.TwoBodyOperator(k,b,c,i)*t0(j+k*Nholes, aa+cc*Nparticles); // Permutation of i,j
+                            tau -= basis.TwoBodyOperator(k,a,c,j)*t0(i+k*Nholes, bb+cc*Nparticles); // Permutation of a,b
+                            tau += basis.TwoBodyOperator(k,a,c,i)*t0(j+k*Nholes, bb+cc*Nparticles); // Permutation of a,b,i,j
+                            // */
                         }
                     }
 
@@ -113,20 +119,34 @@ void NaiveSolvers::update_t(int degree){
                                     for (int dd=0; dd<Nparticles; dd++){
                                         int c = cc + Nholes; int d = dd + Nholes;
 
-                                        double p1 = 0.25*basis.TwoBodyOperator(k,l,c,d) * t0(i+j*Nholes, cc+dd*Nparticles) * t0(k+l*Nholes, aa+bb*Nparticles);
-                                        double p2 =      basis.TwoBodyOperator(k,l,c,d) *(t0(i+k*Nholes, aa+cc*Nparticles) * t0(j+l*Nholes, bb+dd*Nparticles) - t0(j+k*Nholes, aa+cc*Nparticles) * t0(i+l*Nholes, bb+dd*Nparticles));
-                                        double p3 = -0.5*basis.TwoBodyOperator(k,l,c,d) *(t0(i+k*Nholes, dd+cc*Nparticles) * t0(l+j*Nholes, aa+bb*Nparticles) - t0(j+k*Nholes, dd+cc*Nparticles) * t0(l+i*Nholes, aa+bb*Nparticles));
-                                        double p4 = -0.5*basis.TwoBodyOperator(k,l,c,d) *(t0(l+k*Nholes, aa+cc*Nparticles) * t0(i+j*Nholes, dd+bb*Nparticles) - t0(l+k*Nholes, bb+cc*Nparticles) * t0(i+j*Nholes, dd+aa*Nparticles));
-                                        tau = tau + p1 + p2 + p3 + p4;
+                                        double Qa = 0; double Qb = 0; double Qc = 0; double Qd = 0;
+
+                                        Qa = 0.25*basis.TwoBodyOperator(k,l,c,d) * t0(i+j*Nholes, cc+dd*Nparticles) * t0(k+l*Nholes, aa+bb*Nparticles);
+                                        // /*
+                                        Qb += t0(i+k*Nholes, aa+cc*Nparticles) * t0(l+j*Nholes, dd+bb*Nparticles); // No permutation
+                                        Qb -= t0(j+k*Nholes, aa+cc*Nparticles) * t0(l+i*Nholes, dd+bb*Nparticles); // Permutation of i,j
+                                        Qb -= t0(i+k*Nholes, bb+cc*Nparticles) * t0(l+j*Nholes, dd+aa*Nparticles); // Permutation of a,b
+                                        Qb += t0(j+k*Nholes, bb+cc*Nparticles) * t0(l+i*Nholes, dd+aa*Nparticles); // Permutation of a,b,i,j
+                                        Qb *= 0.5 * basis.TwoBodyOperator(k,l,c,d);
+                                        // /*
+                                        Qc -= t0(i+k*Nholes, aa+bb*Nparticles) * t0(j+l*Nholes, cc+dd*Nparticles); // No permutation
+                                        Qc += t0(j+k*Nholes, aa+bb*Nparticles) * t0(i+l*Nholes, cc+dd*Nparticles); // Permutation of i,j
+                                        Qc *= 0.5 * basis.TwoBodyOperator(k,l,c,d);
+
+                                        Qd -= t0(k+l*Nholes, bb+dd*Nparticles) * t0(i+j*Nholes, aa+cc*Nparticles); // No permutation
+                                        Qd += t0(k+l*Nholes, aa+dd*Nparticles) * t0(i+j*Nholes, bb+cc*Nparticles); // Permutation of a,b
+                                        Qd *= 0.5 * basis.TwoBodyOperator(k,l,c,d);
+                                        // */
+                                        tau += Qa + Qb + Qc + Qd;
                                     }
                                 }
                             }
                         }
                     }
 
-                    tau = basis.TwoBodyOperator(a,b,i,j) + 0.5*tau;
+                    tau = basis.TwoBodyOperator(a,b,i,j) + 0.5*tau; //Weighting the iterative scheme
 
-                    t(i + j*Nholes, aa + bb*Nholes) = tau / basis.epsilon(i,j,a,b);
+                    t(i + j*Nholes, aa + bb*Nparticles) = tau / basis.epsilon(i,j,a,b);
                 }
             }
         }

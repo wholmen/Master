@@ -17,18 +17,23 @@
 \BOOKMARK [1][-]{section.4.3}{Hartree-Fock approximations}{chapter.4}% 17
 \BOOKMARK [0][-]{chapter.5}{Coupled-Cluster Theory}{}% 18
 \BOOKMARK [1][-]{section.5.1}{Size Extensivity}{chapter.5}% 19
-\BOOKMARK [0][-]{chapter.6}{The Pairing Model}{}% 20
-\BOOKMARK [1][-]{section.6.1}{The Hamiltonian}{chapter.6}% 21
-\BOOKMARK [1][-]{section.6.2}{Configuration Interaction theory}{chapter.6}% 22
-\BOOKMARK [1][-]{section.6.3}{Diagrammatic Rules}{chapter.6}% 23
-\BOOKMARK [1][-]{section.6.4}{Many-Body Perturbation Theory}{chapter.6}% 24
-\BOOKMARK [2][-]{subsection.6.4.1}{General derivation of Many Body Particle Theory equations}{section.6.4}% 25
-\BOOKMARK [2][-]{subsection.6.4.2}{Equations for Reileigh-Schrodinger Perturbation Theory}{section.6.4}% 26
-\BOOKMARK [2][-]{subsection.6.4.3}{Canonical Hartree-Fock}{section.6.4}% 27
-\BOOKMARK [2][-]{subsection.6.4.4}{Hartree-Fock calculations}{section.6.4}% 28
-\BOOKMARK [2][-]{subsection.6.4.5}{RSPT to for Pairing model}{section.6.4}% 29
-\BOOKMARK [0][-]{chapter.7}{Infinite Matter}{}% 30
-\BOOKMARK [1][-]{section.7.1}{The Infinate Electron Gas}{chapter.7}% 31
-\BOOKMARK [0][-]{chapter.8}{Implementation}{}% 32
-\BOOKMARK [0][-]{chapter.9}{Results}{}% 33
-\BOOKMARK [0][-]{chapter.10}{Appendix}{}% 34
+\BOOKMARK [1][-]{section.5.2}{The CCD Equations}{chapter.5}% 20
+\BOOKMARK [1][-]{section.5.3}{Intermediates}{chapter.5}% 21
+\BOOKMARK [0][-]{chapter.6}{The Pairing Model}{}% 22
+\BOOKMARK [1][-]{section.6.1}{The Hamiltonian}{chapter.6}% 23
+\BOOKMARK [1][-]{section.6.2}{Configuration Interaction theory}{chapter.6}% 24
+\BOOKMARK [1][-]{section.6.3}{Diagrammatic Rules}{chapter.6}% 25
+\BOOKMARK [1][-]{section.6.4}{Many-Body Perturbation Theory}{chapter.6}% 26
+\BOOKMARK [2][-]{subsection.6.4.1}{General derivation of Many Body Particle Theory equations}{section.6.4}% 27
+\BOOKMARK [2][-]{subsection.6.4.2}{Equations for Reileigh-Schrodinger Perturbation Theory}{section.6.4}% 28
+\BOOKMARK [2][-]{subsection.6.4.3}{Canonical Hartree-Fock}{section.6.4}% 29
+\BOOKMARK [2][-]{subsection.6.4.4}{Hartree-Fock calculations}{section.6.4}% 30
+\BOOKMARK [2][-]{subsection.6.4.5}{RSPT to for Pairing model}{section.6.4}% 31
+\BOOKMARK [0][-]{chapter.7}{Infinite Matter}{}% 32
+\BOOKMARK [1][-]{section.7.1}{The Infinate Electron Gas}{chapter.7}% 33
+\BOOKMARK [0][-]{chapter.8}{Implementation}{}% 34
+\BOOKMARK [1][-]{section.8.1}{Matrix Representation of Contractions}{chapter.8}% 35
+\BOOKMARK [2][-]{subsection.8.1.1}{Aligning elements}{section.8.1}% 36
+\BOOKMARK [1][-]{section.8.2}{Block Implementation}{chapter.8}% 37
+\BOOKMARK [0][-]{chapter.9}{Results}{}% 38
+\BOOKMARK [0][-]{chapter.10}{Appendix}{}% 39

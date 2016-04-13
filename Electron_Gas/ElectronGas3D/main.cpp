@@ -2,13 +2,22 @@
 #include <armadillo>
 #include <basis_set.h>
 #include <naivesolvers.h>
+#include <ccdintermediate.h>
 
 using namespace std;
 
 void TestFromMHJ();
+void TestFastSolver();
+void TestNaiveSolver();
 
 int main()
 {
+    TestFastSolver();
+    TestNaiveSolver();
+    //TestFromMHJ();
+}
+
+void TestNaiveSolver(){
     int ns = 3;
     int np = 2;
     double rs = 1.0;
@@ -17,9 +26,19 @@ int main()
     NaiveSolvers solver = NaiveSolvers(basis);
 
     cout << solver.CCD() << endl;
-    cout << solver.MBPT4() << endl;
+    //cout << solver.MBPT4() << endl;
+}
 
-    //TestFromMHJ();
+void TestFastSolver(){
+    int ns = 3;
+    int np = 2;
+    double rs = 1.0;
+
+    basis_set basis = basis_set(np, ns, rs);
+    CCDIntermediate solver = CCDIntermediate(basis);
+
+    cout << solver.CCD() << endl;
+
 }
 
 void TestFromMHJ(){

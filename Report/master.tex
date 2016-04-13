@@ -56,32 +56,32 @@
  	
  \end{section}
 
- \begin{section}{The Variational Principle}
- 	
- \end{section}
+	\begin{section}{The Variational Principle}
 
- \begin{section}{Slater Determinant}
- 	A system composed of a nuclei and electrons moving in accordance to the forces of electromagnetic attraction can be described by assigning each electron
-	a wave function 
-	\begin{align}
-		\phi_i(\mathbf{x}_i)
-	\end{align}
-	Where $\mathbf{x}_i$ is the position vector for the electron i. Describing a system of many electrons can be done writing a Slater Determinant
-	\begin{align}
-		\ket{\Phi_0} = \frac{1}{ \sqrt{N!} } \left|\begin{matrix}
-			\phi_1(\mathbf{x}_1) & \phi_2(\mathbf{x}_1) & ... & \phi_N(\mathbf{x}_1) \\
-			\phi_1(\mathbf{x}_2) & \phi_2(\mathbf{x}_2) & ... & \phi_N(\mathbf{x}_2) \\
-			... & & & \\
-			\phi_1(\mathbf{x}_N) & \phi_2(\mathbf{x}_N) & ... & \phi_N(\mathbf{x}_N) 
-		\end{matrix} \right|
-	\end{align}
-	This way of writing the many-body wave function will represent linear a combination of products of the one-body wave functions $\phi_i$'s and all the electronic coordinates
-	$\mathbf{x}_i$ distributed among them in all possible ways. Exchanging two lines will change the sign such that the Slater Determinant will respect the anti-symmetry 
-	requirement. \par
-	We can choose the one-body wave functions that is most rewarding the specified system. When calculating on electrons moving with respect to a nuclei, one can choose the wave
-	functions to be the 1s, 2s, 2p, .. orbitals. This representation will not, however, take into account the Coulombic repulsion between two electrons and will only be an 
-	approximation to the true wavefunction, $\ket{\Psi}$.
- \end{section}
+	\end{section}
+
+	\begin{section}{Slater Determinant}
+		A system composed of a nuclei and electrons moving in accordance to the forces of electromagnetic attraction can be described by assigning each electron
+		a wave function 
+		\begin{align}
+			\phi_i(\mathbf{x}_i)
+		\end{align}
+		Where $\mathbf{x}_i$ is the position vector for the electron i. Describing a system of many electrons can be done writing a Slater Determinant
+		\begin{align}
+			\ket{\Phi_0} = \frac{1}{ \sqrt{N!} } \left|\begin{matrix}
+				\phi_1(\mathbf{x}_1) & \phi_2(\mathbf{x}_1) & ... & \phi_N(\mathbf{x}_1) \\
+				\phi_1(\mathbf{x}_2) & \phi_2(\mathbf{x}_2) & ... & \phi_N(\mathbf{x}_2) \\
+				... & & & \\
+				\phi_1(\mathbf{x}_N) & \phi_2(\mathbf{x}_N) & ... & \phi_N(\mathbf{x}_N) 
+			\end{matrix} \right|
+		\end{align}
+		This way of writing the many-body wave function will represent linear a combination of products of the one-body wave functions $\phi_i$'s and all the electronic coordinates
+		$\mathbf{x}_i$ distributed among them in all possible ways. Exchanging two lines will change the sign such that the Slater Determinant will respect the anti-symmetry 
+		requirement. \par
+		We can choose the one-body wave functions that is most rewarding the specified system. When calculating on electrons moving with respect to a nuclei, one can choose the wave
+		functions to be the 1s, 2s, 2p, .. orbitals. This representation will not, however, take into account the Colombic repulsion between two electrons and will only be an 
+		approximation to the true wavefunction, $\ket{\Psi}$.
+	\end{section}
 
 \end{chapter}
 
@@ -230,6 +230,84 @@
   			E_{CC} = E_{CC}^X + E_{CC}^Y
   		\end{align}
   		This means Coupled Cluster is size extensive, contrary to the Configuration Interaction. 
+  	\end{section}
+
+  	\begin{section}{The CCD Equations}
+  		The Coupled Cluster Doubles equations can be finalized as
+  		\begin{align}
+  			E_{CCD} = E_{ref} + \Delta E_{CCD} 
+  		\end{align}
+  		With the reference energy defined as 
+  		\begin{align}
+  			E_{ref} = \sum_i \left< i \middle| \hat h_0 \middle| j\right> + \sum_{ij} \left<ij\middle|\hat v\middle|ij\right> + \frac{1}{2}Av_0
+  		\end{align}
+  		and the corrolation energy given by
+  		\begin{align}
+  			\Delta E_{CCD} = \frac{1}{4} \sum_{ijab}\left<ij\middle|\hat v\middle|ab\right> t_{ij}^{ab}
+  		\end{align}
+  		$v_0$ is a constant, nonzero for the finite electron gas. After several applications of Wick's theorem, the amplitude equations can be reduced to
+  		\begin{align}
+  			(\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b) t_{ij}^{ab} = \left<ab\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} \\
+  			+ \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab} + \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac} \\
+  			+ \frac{1}{4} \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ij}^{cd} t_{kl}^{ab} + \frac{1}{2} \hat P\left(ij\middle|ab\right) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ac} t_{lj}^{db}\\
+  			- \frac{1}{2}\hat P(ij) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ab} t_{jl}^{cd} - \frac{1}{2}\hat P(ab) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{kl}^{bd} t_{ij}^{ac}
+  			\label{CCD_equations1}
+  		\end{align}
+  		Where we have defined
+  		\begin{align}
+  			\hat P(ij) = 1 - \hat P_{ij}
+  		\end{align}
+  		Where $\hat P_{ij}$ interchanges the two particles occupying the quantum states $i$ and $j$. Furthermore, we define the operator 
+  		\begin{align}
+  			\hat P\left( ij \middle| ab \right) = (1 - \hat P_{ij}) (1 - \hat P_{ab})
+  		\end{align}
+  		We notice that some parts are linear in the amplitude, while some are quadradic. Sorting them into the linear and quadradic parts, $L$ and $Q$ respectably, I get
+  		\begin{align}
+  			L(t_{ij}^{ab}) = \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} + \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab} + \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac}
+  		\end{align}
+  		and 
+  		\begin{align}
+  			Q(t_{ij}^{ab}t_{ij}^{ab}) = \frac{1}{4} \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ij}^{cd} t_{kl}^{ab} + \frac{1}{2} \hat P\left(ij\middle|ab\right) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ac} t_{lj}^{db} \\
+  			- \frac{1}{2}\hat P(ij) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ab} t_{jl}^{cd} - \frac{1}{2}\hat P(ab) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{kl}^{bd} t_{ij}^{ac}
+  		\end{align}
+  		Labeling each term for practical reasons	
+  		\begin{align}
+  			L_a &= \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} \\
+  			L_b &= \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab} \\
+  			L_c &= \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac} \\
+  			Q_a &= \frac{1}{4} \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ij}^{cd} t_{kl}^{ab} \\
+  			Q_b &= \frac{1}{2} \hat P\left(ij\middle|ab\right) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ac} t_{lj}^{db} \\
+  			Q_c &= - \frac{1}{2}\hat P(ij) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ab} t_{jl}^{cd} \\
+  			Q_d &= - \frac{1}{2}\hat P(ab) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{kl}^{bd} t_{ij}^{ac}
+  		\end{align}
+   	\end{section}
+
+  	\begin{section}{Intermediates}
+  		As Coupled Cluster computations are consume large amounts of computational power, researchers are spending much effort trying to reduce computational cost. One way of reducing the cost is by refactoring the amplitude equations such that we can perform an intermediate computation first and use the result to compute various diagrams later. 
+
+  		Rewriting the equation, (\ref{CCD_equations1}) for CCD amplitudes (Source: Gustav Baardsen / Audun):
+  		\begin{align}
+  			(\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b) t_{ij}^{ab} = \left<ab\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} \\
+  			+ \frac{1}{2} \sum_{kl} t_{kl}^{ab} \left[ \left<kl\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd} \left<kl\middle|\hat v\middle|cd\right> t_{ij}^{cd} \right] \\
+  			+ \hat P\left(ij\middle|ab\right) \sum_{kc} t_{ik}^{ac} \left[ \left<kb\middle|\hat v\middle|cj\right> + \frac{1}{2}\sum_{ld}\left<kl\middle|\hat v\middle|cd\right>t_{lj}^{db} \right] \\
+  			- \frac{1}{2} \hat P(ij) \sum_{k} t_{ik}^{ab} \left[ \sum_{lcd} \left<kl\middle|\hat v\middle|cd\right> t_{jl}^{cd} \right] \\
+  			- \frac{1}{2} \hat P(ab) \sum_{c} t_{ij}^{ac} \left[ \sum_{kld} \left<kl\middle|\hat v\middle|cd\right> t_{kl}^{bd} \right]
+  		\end{align}
+  		We can now define, and precompute the following values
+  		\begin{align}
+  			I_1 = \left<kl\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd} \left<kl\middle|\hat v\middle|cd\right> t_{ij}^{cd} \\
+  			I_2 = \left<kb\middle|\hat v\middle|cj\right> + \frac{1}{2}\sum_{ld}\left<kl\middle|\hat v\middle|cd\right>t_{lj}^{db} \\
+  			I_3 = \sum_{lcd} \left<kl\middle|\hat v\middle|cd\right> t_{jl}^{cd} \\
+  			I_4 = \sum_{kld} \left<kl\middle|\hat v\middle|cd\right> t_{kl}^{bd}
+  		\end{align}
+  		We can now redefine the CCD equation 
+  		\begin{align}
+  			(\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b) t_{ij}^{ab} = \left<ab\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} + \frac{1}{2} \sum_{kl} t_{kl}^{ab} I_1 \\
+  			+ \hat P\left(ij\middle|ab\right) \sum_{kc} t_{ik}^{ac} I_2 - \frac{1}{2} \hat P(ij) \sum_{k} t_{ik}^{ab} I_3  - \frac{1}{2} \hat P(ab) \sum_{c} t_{ij}^{ac} I_4
+  		\end{align}
+  		Leading to a reduction of computational cost from $\mathcal{O}(h^4 p^4)$ to $\mathcal{O}(h^4 p^2)$
+
+
   	\end{section}
 
 \end{chapter}
@@ -592,6 +670,118 @@
 
 \begin{chapter}{Implementation}
 	
+	\begin{section}{Matrix Representation of Contractions}
+		Diagrams can be viewed as contractions of tensors of varying degree. An example is the matrix-matrix multiplication product
+		\begin{align}
+		 	\left( M N \right)_{\gamma}^{\alpha} = \sum_{\beta} M_{\beta}^\alpha N_\gamma^\beta 
+		 	\label{matrix matrix multiplication}
+		\end{align} 
+
+		As our goal is to rewrite the Coupled Cluster equations as matrix-matrix products. We will need to map tensors of rank $\geq 2$ onto matrices. One mapping that provides systematic and unique matrix elements can be 
+		\begin{align}
+			\left<pq\middle| \hat v\middle|rs\right> = V_{\alpha(p,q),\beta(r,s)}
+		\end{align}
+		Where 
+		\begin{align}
+			\alpha(p,q) = p + q N_p \;\,\:\; \beta(r,s) = r + s N_r
+			\label{mapping of matrix elements}
+		\end{align}
+		We need to be careful when mapping tensors this way. Consider first the calculation of the perfectly aligned $L_a$ term
+		\begin{align}
+			L_a = \sum_{cd} \left< ab \middle| \hat v\middle|cd\right> t_{ij}^{cd}
+		\end{align}
+		Mapping this equation using equation (\ref{mapping of matrix elements})
+		\begin{align}
+			\left< ab \middle| \hat v\middle|cd\right> = v_{ab}^{cd} \rightarrow V_{\beta(c,d)}^{\alpha(a,b)}
+		\end{align}
+		and
+		\begin{align}
+			t_{ij}^{cd} \rightarrow T_{\delta(i,j)}^{\beta(c,d)}
+		\end{align}
+		As we are mapping to unique elements 
+		\begin{align}
+			\beta(c,d) = \beta(c,d)
+		\end{align}
+		We can now rewrite the equation 
+		\begin{align}
+			(L_a)_ \delta^\alpha = \sum_ \beta V_ \beta^\alpha T_ \delta^\beta
+		\end{align}
+		Implying by regarding equation (\ref{matrix matrix multiplication}) that we can rewrite the product as matrix-matrix multiplication 
+		\begin{align}
+			L_a = VT
+		\end{align}
+
+		\begin{subsection}{Aligning elements}	
+			Unfortunately, not all product are perfectly aligned like $L_a$. Consider, for example, the term, $L_c$
+			\begin{align}
+				L_c = -P\left(ij\middle|ab\right) \sum_{kc} \left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac}
+			\end{align}
+			Using the same mapping scheme
+			\begin{align}
+				\left<kb\middle|\hat v\middle|cj\right> = v_{cj}^{kb} \rightarrow V_{\beta(cj)}^{\alpha(kb)}
+			\end{align}
+			and
+			\begin{align}
+				t_{ik}^{ac} \rightarrow T_{\delta(ik)}^{\gamma(ac)}
+			\end{align}
+			This matrix multiplication is misaligned, and if the number of particles is unequal to the number of holes, the matrices' size will uncompatible. 
+			\begin{align}
+				(L_c)_ \delta^\alpha \neq -P\left(ij\middle|ab\right) \sum_ \beta V_{\beta(cj)}^{\alpha(kb)} T_{\delta(ik)}^{\gamma(ac)}
+			\end{align}
+			We need to find another mapping, such that
+			\begin{align}
+				v_{cj}^{kb} \rightarrow \tilde V_{\beta(ck)}^{\alpha(bj)}
+			\end{align}
+			and 
+			\begin{align}
+				t_{ik}^{ac} \rightarrow \tilde T_{\delta(ia)}^{\gamma(ck)}
+			\end{align}
+			Now, the matrix multiplication is aligned
+			\begin{align}
+				(\tilde L_c)_ \delta^\alpha = -P\left(ij\middle|ab\right) \sum_ \beta \tilde V_{\beta(ck)}^{\alpha(bj)} \tilde T_{\delta(ia)}^{\gamma(ck)}
+			\end{align}
+			Note, however, that 
+			\begin{align}
+				L_c \neq \tilde L_c
+			\end{align}
+			We must "realigne" $\tilde L_c$ to match the correct diagram
+			\begin{align}
+				(\tilde L_c)_{\delta(i,a)}^{\alpha(b,j)} \rightarrow (L_c)_{\delta(i,k)}^{\alpha(k,b)}
+			\end{align}
+		\end{subsection}
+
+	\end{section}
+
+	\begin{section}{Block Implementation}
+		We can exploit symmetries in the homogeneous electron gas to optimize performance. Due to kroenecker delta's in the interaction, one such symmetry is the conservation of momentum
+		\begin{align}
+			\delta_{\vec k_p + \vec k_q, \vec k_r + \vec k_s} \rightarrow \vec k_p + \vec k_q = \vec k_r + \vec k_s
+		\end{align}
+		We also conserve spin 
+		\begin{align}
+			m_{s_p} + m_{s_q} = m_{s_r} + m_{s_s}
+		\end{align}
+		The amplitudes will be subject to the same restrictions, vizualised by the first order amplitude generated by perturbation theory
+		\begin{align}
+			(t_{ij}^{ab})^{t=0} = \frac{\left<ab\middle|\hat v\middle|ij\right>}{\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b}
+		\end{align}
+		Looking at the $L_a$ term
+		\begin{align}
+			L_a = \sum_{cd} \left<ab\middle|\hat v\middle|cd\right> t_{ij}^{ab}
+		\end{align}
+		We see that 
+		\begin{align}
+			\vec k_a + \vec k_b = \vec k_c + \vec k_d = \vec k_i + \vec k_j
+		\end{align}
+		And the same for spin
+		\begin{align}
+			m_{s_a} + m_{s_b} = m_{s_c} + m_{s_d} = m_{s_i} + m_{s_j} 
+		\end{align}
+		When summing over all variations of contractions, only the quantum numbers preserving the symmetry requirements are nonzero. When storing the interactions in a matrix, most of it will have zero-elements. The blocking method will store the nonzero parts in blocks inside the matrix. By keeping track of the blocks, we can reduce the full matrix-matrix multiplication to a series of multiplications of the blocks. 
+
+
+
+	\end{section}
 \end{chapter}
 
 

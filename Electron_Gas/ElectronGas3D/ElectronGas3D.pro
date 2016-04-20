@@ -17,3 +17,4 @@ HEADERS += \
     ccdintermediate.h \
     ccdblocks.h
 
+LIBS += -llapack -lblas -larmadillo

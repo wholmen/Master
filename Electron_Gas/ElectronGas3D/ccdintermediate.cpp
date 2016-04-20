@@ -47,7 +47,7 @@ double CCDIntermediate::dE_CCD(){
                 for (int bb=0; bb<Nparticles; bb++){
                     int a = aa + Nholes; int b = bb + Nholes;
 
-                    E += basis.TwoBodyOperator(i,j,a,b) * t(i + j*Nholes, aa + bb*Nparticles);
+                    E += basis.TwoBodyOperator(i,j,a,b) * t(i+j*Nholes, aa+bb*Nparticles);
                 }
             }
         }
@@ -65,7 +65,7 @@ void CCDIntermediate::update_t0(){
                 for (int bb=0; bb<Nparticles; bb++){
                     int a = aa + Nholes; int b = bb + Nholes;
 
-                    t0(i + j*Nholes, aa + bb*Nparticles) = basis.TwoBodyOperator(a,b,i,j) / basis.epsilon(i,j,a,b);
+                    t0(i+j*Nholes, aa+bb*Nparticles) = basis.TwoBodyOperator(a,b,i,j) / basis.epsilon(i,j,a,b);
                 }
             }
         }
@@ -74,12 +74,8 @@ void CCDIntermediate::update_t0(){
 }
 
 void CCDIntermediate::update_t(){
-    t0 = t;
 
-    UpdateI1();
-    UpdateI2();
-    UpdateI3();
-    UpdateI4();
+    t0 = t; UpdateI1(); // UpdateI2(); UpdateI3(); UpdateI4();
 
     for (int i=0; i<Nholes; i++){
         for (int j=0; j<Nholes; j++){
@@ -109,7 +105,7 @@ void CCDIntermediate::update_t(){
                         }
                     }
                     tau += 0.5*term;
-
+/*
                     term = 0;
                     for (int k=0; k<Nholes; k++){
                         for (int cc=0; cc<Nparticles; cc++){
@@ -120,21 +116,21 @@ void CCDIntermediate::update_t(){
                             term += I2(i+k*Nholes, aa+cc*Nparticles) * t0(j+k*Nholes, bb+cc*Nparticles); // Permutation a,b,i,j
                         }
                     }
-                    tau += term;
+                    //tau += term;
 
                     term = 0;
                     for (int k=0; k<Nholes; k++){
                         term -= I3(j,k) * t0(i+k*Nholes, aa+bb*Nparticles); // No permutation
                         term += I3(i,k) * t0(j+k*Nholes, aa+bb*Nparticles); // Permutation i,j
                     }
-                    tau += 0.5*term;
+                    //tau += 0.5*term;
 
                     term = 0;
                     for (int cc=0; cc<Nparticles; cc++){
                         term -= I4(bb,cc) * t0(i+j*Nholes, aa+cc*Nparticles); // No permutation
                         term += I4(aa,cc) * t0(i+j*Nholes, bb+cc*Nparticles); // Permutation a,b
                     }
-                    tau += 0.5*term;
+                    tau += 0.5*term; */
 
                     tau = basis.TwoBodyOperator(a,b,i,j) + 0.5*tau; // Weighting the iterative scheme
 

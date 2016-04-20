@@ -3,23 +3,37 @@
 #include <basis_set.h>
 #include <naivesolvers.h>
 #include <ccdintermediate.h>
+#include <ccdblocks.h>
 
 using namespace std;
 
 void TestFromMHJ();
 void TestFastSolver();
 void TestNaiveSolver();
+void TestBlockSolver();
 
 int main()
 {
     TestFastSolver();
-    TestNaiveSolver();
+    //TestNaiveSolver();
+    TestBlockSolver();
     //TestFromMHJ();
+}
+
+void TestBlockSolver(){
+    int ns = 3;
+    int np = 14;
+    double rs = 1.0;
+
+    basis_set basis = basis_set(np, ns, rs);
+    CCDBlocks solver = CCDBlocks(basis);
+
+    cout << solver.CCD() << endl;
 }
 
 void TestNaiveSolver(){
     int ns = 3;
-    int np = 2;
+    int np = 14;
     double rs = 1.0;
 
     basis_set basis = basis_set(np, ns, rs);
@@ -31,7 +45,7 @@ void TestNaiveSolver(){
 
 void TestFastSolver(){
     int ns = 3;
-    int np = 2;
+    int np = 14;
     double rs = 1.0;
 
     basis_set basis = basis_set(np, ns, rs);

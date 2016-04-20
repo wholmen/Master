@@ -779,6 +779,15 @@
 		\end{align}
 		When summing over all variations of contractions, only the quantum numbers preserving the symmetry requirements are nonzero. When storing the interactions in a matrix, most of it will have zero-elements. The blocking method will store the nonzero parts in blocks inside the matrix. By keeping track of the blocks, we can reduce the full matrix-matrix multiplication to a series of multiplications of the blocks. 
 
+		We need a unique identifier when sorting states into boxes. One can apply the same logic as in equation (\ref{mapping of matrix elements}) and set up
+		\begin{align}
+			k_{\text{unique}} = k_x + k_y \Delta k + k_z \Delta k^2 2
+		\end{align}
+		where we have defined 
+		\begin{align}
+			\Delta k = k_{\text{max}} + 1 
+		\end{align}
+		
 
 
 	\end{section}

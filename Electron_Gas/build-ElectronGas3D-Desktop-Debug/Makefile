@@ -36,7 +36,7 @@ DISTNAME      = ElectronGas3D1.0.0
 DISTDIR = /home/wilhelm/repositories/Master/Electron_Gas/ElectronGas3D/.tmp/ElectronGas3D1.0.0
 LINK          = g++
 LFLAGS        = -m64
-LIBS          = $(SUBLIBS)  
+LIBS          = $(SUBLIBS) -llapack -lblas -larmadillo 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -309,7 +309,8 @@ ccdintermediate.o: ../ElectronGas3D/ccdintermediate.cpp ../ElectronGas3D/ccdinte
 		../ElectronGas3D/basis_set.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdintermediate.o ../ElectronGas3D/ccdintermediate.cpp
 
-ccdblocks.o: ../ElectronGas3D/ccdblocks.cpp ../ElectronGas3D/ccdblocks.h
+ccdblocks.o: ../ElectronGas3D/ccdblocks.cpp ../ElectronGas3D/ccdblocks.h \
+		../ElectronGas3D/basis_set.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdblocks.o ../ElectronGas3D/ccdblocks.cpp
 
 ####### Install

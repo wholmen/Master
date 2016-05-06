@@ -27,17 +27,31 @@ public:
     mat t, t0;
 
     // Setting up matrices for diagrams
-    mat Vabcd; mat Vabij; mat Vklij; mat Vklcd; mat eps;
+    mat Vabcd; mat Vabij; mat Vklij; mat Vklcd; mat Vkbcj;
     void UpdateVabij();
     void UpdateVabcd();
     void UpdateVklij();
     void UpdateVklcd();
+    void UpdateVkbcj();
 
-    void UpdateEps();
+    // Realigning
+    mat Realign(mat A, int a1, int Na, int b1, int Nb, int c1, int Nc, int d1, int Nd);
 
     // Functions to calculate diagrams
-
-
+    mat DiagramLa();
+    mat DiagramLb();
+    mat DiagramLc();
+    mat DiagramQa();
+    mat DiagramQb();
+    mat DiagramQc();
+    mat DiagramQd();
+    
+    // Calculating diagrams with Intermediates
+    mat DiagramI1();
+    mat DiagramI2();
+    mat DiagramI3();
+    mat DiagramI4();
+    
     // Setting up intermediates
     mat I1, I2, I3, I4;
     void UpdateI1();

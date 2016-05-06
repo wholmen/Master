@@ -53,13 +53,15 @@ SOURCES       = ../ElectronGas3D/main.cpp \
 		../ElectronGas3D/basis_set2d.cpp \
 		../ElectronGas3D/naivesolvers.cpp \
 		../ElectronGas3D/ccdintermediate.cpp \
-		../ElectronGas3D/ccdblocks.cpp 
+		../ElectronGas3D/ccdblocks.cpp \
+		../ElectronGas3D/ccdblocks2.cpp 
 OBJECTS       = main.o \
 		basis_set.o \
 		basis_set2d.o \
 		naivesolvers.o \
 		ccdintermediate.o \
-		ccdblocks.o
+		ccdblocks.o \
+		ccdblocks2.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -113,12 +115,14 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		basis_set2d.h \
 		naivesolvers.h \
 		ccdintermediate.h \
-		ccdblocks.h ../ElectronGas3D/main.cpp \
+		ccdblocks.h \
+		ccdblocks2.h ../ElectronGas3D/main.cpp \
 		../ElectronGas3D/basis_set.cpp \
 		../ElectronGas3D/basis_set2d.cpp \
 		../ElectronGas3D/naivesolvers.cpp \
 		../ElectronGas3D/ccdintermediate.cpp \
-		../ElectronGas3D/ccdblocks.cpp
+		../ElectronGas3D/ccdblocks.cpp \
+		../ElectronGas3D/ccdblocks2.cpp
 QMAKE_TARGET  = ElectronGas3D
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = ElectronGas3D
@@ -292,7 +296,8 @@ compiler_clean:
 
 main.o: ../ElectronGas3D/main.cpp ../ElectronGas3D/basis_set.h \
 		../ElectronGas3D/naivesolvers.h \
-		../ElectronGas3D/ccdintermediate.h
+		../ElectronGas3D/ccdintermediate.h \
+		../ElectronGas3D/ccdblocks.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../ElectronGas3D/main.cpp
 
 basis_set.o: ../ElectronGas3D/basis_set.cpp ../ElectronGas3D/basis_set.h
@@ -312,6 +317,9 @@ ccdintermediate.o: ../ElectronGas3D/ccdintermediate.cpp ../ElectronGas3D/ccdinte
 ccdblocks.o: ../ElectronGas3D/ccdblocks.cpp ../ElectronGas3D/ccdblocks.h \
 		../ElectronGas3D/basis_set.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdblocks.o ../ElectronGas3D/ccdblocks.cpp
+
+ccdblocks2.o: ../ElectronGas3D/ccdblocks2.cpp ../ElectronGas3D/ccdblocks2.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdblocks2.o ../ElectronGas3D/ccdblocks2.cpp
 
 ####### Install
 

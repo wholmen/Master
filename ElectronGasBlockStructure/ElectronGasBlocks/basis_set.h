@@ -11,7 +11,7 @@ using namespace arma;
 
 class basis_set
 {
-private: 
+private:
     double rs;
     double kstep;
     double L3, L2, L1;

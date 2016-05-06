@@ -13,13 +13,14 @@ class basis_set
 {
 private:
 
-    int Nshells;
+
     double delta;
     double g;
 
 public:
     mat states;
 
+    int Nshells;
     int Nparticles;
     int nstates;
 

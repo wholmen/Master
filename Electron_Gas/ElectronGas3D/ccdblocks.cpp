@@ -5,7 +5,7 @@ CCDBlocks::CCDBlocks(){}
 CCDBlocks::CCDBlocks(basis_set BASIS){
     basis = BASIS;
     Nholes = basis.Nparticles;
-    Nstates = basis.nstates;
+    Nstates = basis.nstates; 
     Nparticles = Nstates - Nholes;
 
     t0 = zeros<mat>(Nparticles*Nparticles, Nholes*Nholes);
@@ -15,6 +15,7 @@ CCDBlocks::CCDBlocks(basis_set BASIS){
     UpdateVklij();
     UpdateVabij();
     UpdateVklcd();
+    UpdateVkbcj();
 
     I1 = zeros<mat>(Nholes*Nholes, Nholes*Nholes);
     I2 = zeros<mat>(Nholes*Nholes, Nparticles*Nparticles);
@@ -71,99 +72,20 @@ double CCDBlocks::CorrolationEnergy(){
 
 void CCDBlocks::update_t(){
     t0 = t;
-    mat La, Lb, Qa;
 
-    // First calculate La term
-    La = Vabcd*t0 / 2.0;
+    bool Intermediates = true;
 
 
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // Doing a mapping to align diagram Lb
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    mat Vtilde = zeros<mat>(Nholes*Nholes, Nholes*Nholes);
-    for (int k=0; k<Nholes; k++){
-        for (int l=0; l<Nholes; l++){
-            for (int i=0; i<Nholes; i++){
-                for (int j=0; j<Nholes; j++){
+    if (Intermediates){
 
-                    Vtilde(k+l*Nholes, i+j*Nholes) = Vklij(i+j*Nholes, k+l*Nholes);
-                }
-            }
-        }
+        t = Vabij + 0.5*(DiagramLa() + DiagramI1() + DiagramI2() );
     }
-    mat Ttilde = zeros<mat>(Nholes*Nholes, Nparticles*Nparticles);
+    else{
 
-    for (int aa=0; aa<Nparticles; aa++){
-        for (int bb=0; bb<Nparticles; bb++){
-            for (int k=0; k<Nholes; k++){
-                for (int l=0; l<Nholes; l++){
-
-                    Ttilde(k+l*Nholes, aa+bb*Nparticles) = t0(aa+bb*Nparticles, k+l*Nholes);
-                }
-            }
-        }
+        t = Vabij + 0.5*(DiagramLa() + DiagramLb() + DiagramQa());
     }
-    mat Lbtilde = 0.5*Vtilde*Ttilde;
-    Lb = zeros<mat>(Nparticles*Nparticles, Nholes*Nholes);
 
-    for (int aa=0; aa<Nparticles; aa++){
-        for (int bb=0; bb<Nparticles; bb++){
-            for (int i=0; i<Nholes; i++){
-                for (int j=0; j<Nholes; j++){
-                    Lb(aa+bb*Nparticles, i+j*Nholes) = Lbtilde(i+j*Nholes, aa+bb*Nparticles);
-                }
-            }
-        }
-    }
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // Re-mapping finished
-
-    // Following statement will work if mapping was unecessary.
-    // Lb = 0.5*Vklij*t0;
-    // Statement didn't work. Mapping scheme needed.
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // Testing wether a simple transpose of matrix can work
-    //Lb = 0.5* Vklij.t() * t0.t();
-    //Lb = Lb.t();
-    // Working
-    // Transposing may be more efficient, but not a general function for all diagrams
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-    // &&&&&&&&&&&&&&&&&&&&&&&&&&&&
-    // Adding the term Qa by a mapping scheme
-    // &&&&&&&&&&&&&&&&&&&&&&&&&&&
-
-    Qa = 0.25 * t0 * Vklcd * t0;
-
-
-
-
-
-
-
-
-    /*
-     *This is a start of including Qd
-     *
-    mat D3tilde = zeros<mat>(Nholes*Nparticles*Nparticles, Nholes);
-    mat t1tilde = zeros<mat>(Nholes*Nparticles*Nparticles, Nholes);
-    mat Vdtilde = zeros<mat>(Nholes, Nholes*Nparticles*Nparticles);
-    mat t2tilde = zeros<mat>(Nholes*Nparticles*Nparticles, Nholes);
-
-    for (int )
-    */
-
-
-    //t = Vabij + 0.5*(La + Lb + Qa);
-    UpdateI1();
-    mat LI1 = 0.5*t0*I1;
-
-    t = Vabij + 0.5*(La + LI1);
 
     for (int i=0; i<Nholes; i++){
         for (int j=0; j<Nholes; j++){
@@ -178,7 +100,65 @@ void CCDBlocks::update_t(){
     }
 }
 
+mat CCDBlocks::DiagramLa(){
+    // First calculate La term
+    mat La;
+    La = Vabcd*t0 / 2.0;
+    return La;
+}
 
+mat CCDBlocks::DiagramLb(){
+    // Function calculates diagram Lb
+
+    mat Vtilde = Realign(Vklij, 2,Nholes, 3,Nholes, 0,Nholes, 1,Nholes);
+
+    mat Ttilde = Realign(t0, 2,Nparticles, 3,Nparticles, 0,Nholes, 1,Nholes);
+
+    mat Lbtilde = 0.5*Vtilde*Ttilde;
+
+    mat Lb = Realign(Lbtilde, 2,Nholes, 3,Nholes, 0, Nparticles, 1, Nparticles);
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // Testing wether a simple transpose of matrix can work
+    //Lb = 0.5* Vklij.t() * t0.t();
+    //Lb = Lb.t();
+    // Working
+    // Transposing may be more efficient, but not a general function for all diagrams
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    return Lb;
+}
+
+mat CCDBlocks::DiagramQa(){
+    // &&&&&&&&&&&&&&&&&&&&&&&&&&&&
+    // Adding the term Qa by a mapping scheme
+    // &&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+    mat Qa = 0.25 * t0 * Vklcd * t0;
+    return Qa;
+}
+
+
+mat CCDBlocks::DiagramI1(){
+    UpdateI1();
+    return 0.5*t0*I1;
+}
+
+mat CCDBlocks::DiagramI2(){
+    UpdateI2();
+
+    mat Ttilde = Realign( t0, 0,Nparticles, 2,Nparticles, 1,Nholes, 3,Nholes);
+
+    mat Itilde = Realign( I2, 1,Nholes, 2,Nparticles, 0,Nparticles, 3,Nholes);
+
+    return Realign( Ttilde*Itilde, 0,Nparticles, 2,Nholes, 1,Nparticles, 3,Nholes);
+}
+
+
+
+
+
+
+// Functions to set up two body interaction matrices and intermediates
 
 void CCDBlocks::UpdateVabcd(){
     Vabcd = zeros<mat>(Nparticles*Nparticles, Nparticles*Nparticles); // Interaction matrix based on La term
@@ -244,10 +224,72 @@ void CCDBlocks::UpdateVklcd(){
     }
 }
 
-void CCDBlocks::UpdateI1(){
+void CCDBlocks::UpdateVkbcj(){
+    Vkbcj = zeros<mat>(Nholes*Nparticles, Nholes*Nparticles);
 
+    for (int k=0; k<Nholes; k++){
+        for (int bb=0; bb<Nparticles; bb++){
+            for (int cc=0; cc<Nparticles; cc++){
+                for (int j=0; j<Nholes; j++){
+                    int b = bb + Nholes; int c = cc + Nholes;
+
+                    Vkbcj(bb+k*Nparticles, cc+j*Nparticles) = basis.TwoBodyOperator(k,b,c,j);
+                }
+            }
+        }
+    }
+}
+
+void CCDBlocks::UpdateI1(){
     I1 = Vklij + 0.5 * Vklcd*t;
 }
+
+void CCDBlocks::UpdateI2(){
+    // I2 consist of 4 parts because of
+
+    mat Vtilde = Realign( Vklcd, 0,Nholes, 2,Nholes, 1,Nparticles, 3,Nparticles);
+
+    mat Ttilde = Realign( t0, 1,Nparticles, 2,Nparticles, 0,Nholes, 3,Nholes);
+
+    I2 = Vkbcj + 0.5 * Realign( Vtilde*Ttilde , 0,Nholes, 2,Nparticles, 1,Nparticles, 3,Nholes);
+}
+
+
+
+
+
+mat CCDBlocks::Realign(mat A, int a1, int Na, int b1, int Nb, int c1, int Nc, int d1, int Nd){
+    // A function set to realign a matrix A.
+    // This function will restructure the size of matrix A
+
+    // One uses the function by sending in the new placements of indices
+    // Example
+    //         a1 = 2, b1 = 1, c1 = 3, d1 = 0
+    //         A (a+b*Na, c+d*Nc)  ->  A (d+b*Nd, a+c*Na)
+
+    vec e = zeros<vec>(4);
+    vec eN = zeros<vec>(4);
+
+    eN(a1) = Na; eN(b1) = Nb; eN(c1) = Nc; eN(d1) = Nd;
+
+    mat Anew = zeros<mat>( eN(0)*eN(1), eN(2)*eN(3) );
+
+    for (int a=0; a<Na; a++){
+        for (int b=0; b<Nb; b++){
+            for (int c=0; c<Nc; c++){
+                for (int d=0; d<Nd; d++){
+
+                    e(a1)  =  a; e(b1) = b; e(c1) = c; e(d1) = d;
+                    eN(a1) = Na; eN(b1) = Nb; eN(c1) = Nc; eN(d1) = Nd;
+
+                    Anew( e(0)+e(1)*eN(0), e(2)+e(3)*eN(2) ) = A ( a+b*Na, c+d*Nc );
+                }
+            }
+        }
+    }
+    return Anew;
+}
+
 
 
 

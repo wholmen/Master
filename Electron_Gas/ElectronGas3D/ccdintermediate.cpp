@@ -75,7 +75,7 @@ void CCDIntermediate::update_t0(){
 
 void CCDIntermediate::update_t(){
 
-    t0 = t; UpdateI1(); // UpdateI2(); UpdateI3(); UpdateI4();
+    t0 = t; UpdateI1(); UpdateI2(); // UpdateI3(); UpdateI4();
 
     for (int i=0; i<Nholes; i++){
         for (int j=0; j<Nholes; j++){
@@ -105,19 +105,19 @@ void CCDIntermediate::update_t(){
                         }
                     }
                     tau += 0.5*term;
-/*
+
                     term = 0;
                     for (int k=0; k<Nholes; k++){
                         for (int cc=0; cc<Nparticles; cc++){
 
                             term += I2(j+k*Nholes, bb+cc*Nparticles) * t0(i+k*Nholes, aa+cc*Nparticles); // No permutation
-                            term -= I2(i+k*Nholes, bb+cc*Nparticles) * t0(j+k*Nholes, aa+cc*Nparticles); // Permutation i,j
-                            term -= I2(j+k*Nholes, aa+cc*Nparticles) * t0(i+k*Nholes, bb+cc*Nparticles); // Permutation a,b
-                            term += I2(i+k*Nholes, aa+cc*Nparticles) * t0(j+k*Nholes, bb+cc*Nparticles); // Permutation a,b,i,j
+                            //term -= I2(i+k*Nholes, bb+cc*Nparticles) * t0(j+k*Nholes, aa+cc*Nparticles); // Permutation i,j
+                            //term -= I2(j+k*Nholes, aa+cc*Nparticles) * t0(i+k*Nholes, bb+cc*Nparticles); // Permutation a,b
+                            //term += I2(i+k*Nholes, aa+cc*Nparticles) * t0(j+k*Nholes, bb+cc*Nparticles); // Permutation a,b,i,j
                         }
                     }
-                    //tau += term;
-
+                    tau += term;
+/*
                     term = 0;
                     for (int k=0; k<Nholes; k++){
                         term -= I3(j,k) * t0(i+k*Nholes, aa+bb*Nparticles); // No permutation

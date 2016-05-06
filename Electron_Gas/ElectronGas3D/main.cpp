@@ -4,6 +4,7 @@
 #include <naivesolvers.h>
 #include <ccdintermediate.h>
 #include <ccdblocks.h>
+#include <ccdblocks2.h>
 
 using namespace std;
 
@@ -11,13 +12,29 @@ void TestFromMHJ();
 void TestFastSolver();
 void TestNaiveSolver();
 void TestBlockSolver();
+void TestBlock2Solver();
 
 int main()
 {
-    TestFastSolver();
+    //TestFastSolver();
     //TestNaiveSolver();
-    TestBlockSolver();
+    //TestBlockSolver();
+    TestBlock2Solver();
     //TestFromMHJ();
+}
+
+void TestBlock2Solver(){
+    int ns = 2;
+    int np = 2;
+    double rs = 1.0;
+
+    basis_set basis = basis_set(np, ns, rs);
+    CCDBlocks2 solver = CCDBlocks2(basis);
+
+    cout << solver.CorrolationEnergy() << endl;
+    //cout << solver.CCD() << endl;
+    cout << solver.CorrolationEnergy2() << endl;
+
 }
 
 void TestBlockSolver(){

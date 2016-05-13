@@ -33,6 +33,7 @@ public:
 
     int Nmax, m, M; // Variables to create unique identifier for two-body configuration
 
+    double weight; // Weighting the newly calculated amplitudes
     double tolerance; // Convergence criteria for iteration process for Amplitudes
     int NIterations;  // Number of iterations used for calculating amplitudes
 
@@ -43,13 +44,24 @@ public:
     mat Particles; // Matrix for all two-particle configurations. Each row contains (state1, state2, identifier)
     mat States; // Matrix for all two-state configurations. Each row contains (state1, state2, identifier)
 
+
+    // Block list
+    void CreateBlocks();
+    Block **blocksDE; void CreateBlocksDE(); void DiagramDE(); int NidDE;
+    Block **blocksL0; void CreateBlocksL0(); void DiagramL0(); int NidL0;
+    Block **blocksLa; void CreateBlocksLa(); void DiagramLa(); int NidLa;
+    Block **blocksLb; void CreateBlocksLb(); void DiagramLb(); int NidLb;
+    Block **blocksQa; void CreateBlocksQa(); void DiagramQa(); int NidQa;
+    Block **blocksQc; void CreateBlocksQc(); void DiagramQc(); int NidQc;
+
+
     // Declaring functions for program flow
 
-    double CCD(); // This is the main function in solver. Calling this function will fully compute the corrolation energy using CCD
+    double CCD(bool naive); // This is the main function in solver. Calling this function will fully compute the corrolation energy using CCD
     double CorrolationEnergy(); // Function used to calculate energy for every iteration in the amplitudes
-    double CorrolationEnergy2();
 
     void UpdateAmplitudes(); // Function that updates the amplitudes
+    void UpdateAmplitudes_Naive();
 
     void TwoBodyConfigurations(); // A function call that set up the matrices Holes, Particles and States with sizes (NHOLES,3) (NPARTICLES,3) (NSTATES,3). Each row contains (state1, state2, identifier)
 
@@ -58,7 +70,7 @@ public:
 
     double AbsoluteDifference(double a, double b); // Returns sqrt( (a-b)^2 )
     double Identifier(int Nx, int Ny, int Nz, int Sz); // Returns the unique identifier for two-state configuration. Returns 2*(Nx + m)*M^3 + 2*(Ny + m)*M^2 + 2*(Nz + m)*M + 2*(Sz + 1);
-    int Index(int p, int q, int r, int s); // Returns the index p + q*Np + r*Np*Nq + s*Np*Nq*Nr
+    int Index(int p, int q, int r, int s, int Np, int Nq, int Nr); // Returns the index p + q*Np + r*Np*Nq + s*Np*Nq*Nr
 };
 
 #endif // SOLVER_H

@@ -27,10 +27,17 @@ public:
 
     mat V; // Interaction matrix
     mat T; // Amplitude matrix
+    mat T2; // Amplitude matrix nr two for second order diagrams
 
     void AddStates(rowvec I, rowvec A);
-    void SetUpMatrices(mat &t0);
-    int Index(int p, int q, int r, int s);
+    int Index(int p, int q, int r, int s, int Np, int Nq, int Nr);
+
+    // Set up matrices for diagram calculations
+    void SetUpMatrices_Energy(mat &t);
+    void SetUpMatrices_L0();
+    void SetUpMatrices_La(mat &t0);
+    void SetUpMatrices_Lb(mat &t0);
+    void SetUpMatrices_Qa(mat &t0);
 };
 
 #endif // BLOCK_H

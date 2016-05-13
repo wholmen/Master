@@ -16,18 +16,23 @@ int main()
 }
 
 void TestSolver1(){
-    int ns = 2;
-    int np = 2;
+    int ns = 3;
+    int np = 14;
     double rs = 1.0;
 
     basis_set basis = basis_set(np, ns, rs);
 
     Solver solve = Solver(basis);
 
+    cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using block structure to update amplitudes." << endl;
+    cout << endl << "CCD Energy:" << solve.CCD(false) << endl;
 
-    cout << solve.CCD();
+    Solver solve2 = Solver(basis);
 
+    cout << endl << endl << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using naive implementation to update amplitudes." << endl;
+    cout << endl << "CCD Energy:" << solve2.CCD(true) << endl;
 
+    /*
     Block block = Block(basis, np, 12);
 
     rowvec I0, I1, I2, I3, I4;
@@ -42,5 +47,5 @@ void TestSolver1(){
     block.AddStates(I1,I1);
     block.AddStates(I2,I2);
     block.AddStates(I3,I3);
-    block.AddStates(I4,I4);
+    block.AddStates(I4,I4); */
 }

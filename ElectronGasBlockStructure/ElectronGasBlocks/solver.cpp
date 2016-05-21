@@ -88,15 +88,15 @@ double Solver::CCD(bool naive){
 double Solver::CorrolationEnergy(){
 
     // Set up matrices for all blocks
-    for (int i=0; i<NidDE; i++){
-        blocksDE[i] ->SetUpMatrices_Energy(t);
+    for (int i=0; i<Npphh; i++){
+        blockspphh[i] ->SetUpMatrices_Energy(t);
     }
 
     // Do the matrix-matrix multiplications for all blocks
     double E = 0;
-    for (int i=0; i<NidDE; i++){
+    for (int i=0; i<Npphh; i++){
 
-        mat Energy = blocksDE[i]->V * blocksDE[i]->T;
+        mat Energy = blockspphh[i]->V * blockspphh[i]->T;
 
         vec eigval = eig_sym(Energy);
         E += sum(eigval);
@@ -111,272 +111,30 @@ void Solver::UpdateAmplitudes(){
     t = zeros(Nparticles2*Nholes2);
 
     DiagramL0();
-    DiagramLa();
-    DiagramLb();
-    DiagramQa();
-    DiagramQc();
+
+    //DiagramLa();
+    //DiagramLb();
+    DiagramLc();
+    //DiagramQa();
+    //DiagramQb();
+    //DiagramQc();
+    //DiagramQd();
 }
 
 
 
 void Solver::CreateBlocks(){
-    CreateBlocksDE();
-    CreateBlocksL0();
-    CreateBlocksLa();
-    CreateBlocksLb();
-    CreateBlocksQa();
-    CreateBlocksQc();
+
+    CreateBlocksPPHH();
+    CreateBlocksPHPH();
+    CreateBlocksHPHP();
 }
 
-void Solver::CreateBlocksDE(){
 
-    vec identifiers = zeros<vec>(0); NidDE = 0;
-    for (int I=0; I<NHOLES; I++){
-        for (int A=0; A<NPARTICLES; A++){
 
-            if ( Holes(I,2) == Particles(A,2) ) { // They have matching identifier and belong to the same block.
+void Solver::CreateBlocksPPHH(){
 
-                bool IDExist = any( identifiers == Holes(I,2) ); // Checking wether the identifier has already been counted
-
-                if ( ! IDExist ){ // We have found a new identifier. Storing it in the list of identifiers
-
-                    identifiers.insert_rows(NidDE, 1);
-                    identifiers(NidDE) = Holes(I,2);
-                    NidDE ++;
-                }
-            }
-        }
-    }
-    blocksDE = new Block*[NidDE];
-
-    // Set up blocks
-    for (int n=0; n<NidDE; n++){
-        blocksDE[n] = new Block(basis,Nholes,Nparticles);
-    }
-
-    // Add states to blocks
-    for (int I=0; I<NHOLES; I++){
-        for (int A=0; A<NPARTICLES; A++){
-
-            if ( Holes(I,2) == Particles(A,2) ) {
-
-                uvec indices = find( identifiers == Holes(I,2) );
-                int indice = indices(0);
-
-                blocksDE[indice] ->AddStates( Holes.row(I), Particles.row(A) );
-            }
-        }
-    }
-}
-
-void Solver::CreateBlocksL0(){
-
-    // Counting and storing all unique identifiers that exist for both Holes and Particles
-    vec identifiers = zeros<vec>(0); NidL0 = 0;
-    for (int I=0; I<NHOLES; I++){
-        for (int A=0; A<NPARTICLES; A++){
-
-            if ( Holes(I,2) == Particles(A,2) ) { // They have matching identifier and belong to the same block.
-
-                bool IDExist = any( identifiers == Holes(I,2) ); // Checking wether the identifier has already been counted
-
-                if ( ! IDExist ){ // We have found a new identifier. Storing it in the list of identifiers
-
-                    identifiers.insert_rows(NidL0, 1);
-                    identifiers(NidL0) = Holes(I,2);
-                    NidL0 ++;
-                }
-            }
-        }
-    }
-    blocksL0 = new Block*[NidL0];
-
-    // Initiate all the blocks needed
-    for (int i=0; i<NidL0; i++){
-        blocksL0[i] = new Block(basis, Nholes, Nparticles);
-    }
-    // Add all two-state configurations to the corresponding blocksL0
-    for (int I=0; I<NHOLES; I++){
-        for (int A=0; A<NPARTICLES; A++){
-
-            if ( Holes(I,2) == Particles(A,2) ) {
-
-                uvec indices = find( identifiers == Holes(I,2) );
-                int indice = indices(0);
-
-                blocksL0[indice] ->AddStates( Holes.row(I), Particles.row(A) );
-            }
-        }
-    }
-}
-
-void Solver::CreateBlocksLa(){
-
-    vec identifiers = zeros<vec>(0); NidLa = 0;
-    for (int A=0; A<NPARTICLES; A++){
-        for (int C=0; C<NPARTICLES; C++){
-            for (int I=0; I<NHOLES; I++){
-
-                if ( Particles(A,2) == Particles(C,2) && Particles(A,2) == Holes(I,2) ){ // Matching identifiers. Must be set up as block
-
-                    bool IDExist = any( identifiers == Holes(I,2) ); // Checking wether the identifier has already been counted
-
-                    if ( ! IDExist ){ // We have found a new identifier. Storing it in the list of identifiers
-
-                        identifiers.insert_rows(NidLa, 1);
-                        identifiers(NidLa) = Holes(I,2);
-                        NidLa ++;
-                    }
-                }
-            }
-        }
-    }
-    blocksLa = new Block*[NidLa];
-
-    // Initiate all the blocksLa needed
-    for (int i=0; i<NidLa; i++){
-        blocksLa[i] = new Block(basis, Nholes, Nparticles);
-    }
-    // Adding states to the blocks
-    for (int A=0; A<NPARTICLES; A++){
-        for (int I=0; I<NHOLES; I++){
-            for (int C=0; C<NPARTICLES; C++){
-
-                if ( Particles(A,2) == Particles(C,2) && Particles(A,2) == Holes(I,2) ){
-
-                    uvec indices = find( identifiers == Particles(A,2) );
-                    int indice = indices(0);
-
-                    blocksLa[indice]->AddStates( Holes.row(I), Particles.row(A) );
-                }
-            }
-        }
-    }
-}
-
-void Solver::CreateBlocksLb(){
-
-    vec identifiers = zeros<vec>(0); NidLb = 0;
-    for (int A=0; A<NPARTICLES; A++){
-        for (int I=0; I<NHOLES; I++){
-            for (int K=0; K<NHOLES; K++){
-
-                if ( Holes(I,2) == Particles(A,2) && Holes(I,2) == Holes(K,2) ){ // They belong to the same block
-
-                    bool IDExist = any( identifiers == Holes(I,2) ); // Has this identifier already been stored?
-
-                    if ( ! IDExist ){ // Identifier is not yet stored. Must be added
-                        identifiers.insert_rows(NidLb, 1);
-                        identifiers(NidLb) = Holes(I,2); // Saving the identifier for this block
-                        NidLb ++;
-                    }
-                }
-            }
-        }
-    }
-    blocksLb = new Block*[NidLb]; // List of all the blocks for diagram Lb
-
-    // Initiate the blocks
-    for (int i=0; i<NidLb; i++){
-        blocksLb[i] = new Block(basis,Nholes,Nparticles);
-    }
-    // Adding states to the blocks
-    for (int I=0; I<NHOLES; I++){
-        for (int K=0; K<NHOLES; K++){
-            for (int A=0; A<NPARTICLES; A++){
-
-                if ( Holes(I,2) == Particles(A,2) && Holes(I,2) == Holes(K,2) ){ // They belong to the same block
-
-                    uvec indices = find( identifiers == Holes(I,2) );
-                    int indice = indices(0);
-
-                    blocksLb[indice]->AddStates( Holes.row(I), Particles.row(A) );
-                }
-            }
-        }
-    }
-}
-
-void Solver::CreateBlocksQa(){
-    /*
-    vec identifiers = zeros<vec>(0); NidQa = 0;
-    for (int A=0; A<NPARTICLES; A++){
-        for (int C=0; C<NPARTICLES; C++){
-            for (int I=0; I<NHOLES; I++){
-                for (int K=0; K<NHOLES; K++){
-
-                    if ( Holes(I,2) == Particles(A,2) && Holes(I,2) == Particles(C,2) && Holes(I,2) == Holes(K,2) ){ // I,A,C,K belong to the same block
-
-                        bool IDExist = any( identifiers == Holes(I,2) ); // Is this block already stored?
-
-                        if ( ! IDExist ){
-                            identifiers.insert_rows(NidQa, 1);
-                            identifiers(NidQa) = Holes(I,2);
-                            NidQa ++;
-                        }
-                    }
-                }
-            }
-        }
-    }*/
-    vec identifiers = zeros<vec>(0); NidQa = 0;
-    for (int I=0; I<NHOLES; I++){
-        for (int A=0; A<NPARTICLES; A++){
-
-            if ( Holes(I,2) == Particles(A,2) ) { // They have matching identifier and belong to the same block.
-
-                bool IDExist = any( identifiers == Holes(I,2) ); // Checking wether the identifier has already been counted
-
-                if ( ! IDExist ){ // We have found a new identifier. Storing it in the list of identifiers
-
-                    identifiers.insert_rows(NidQa, 1);
-                    identifiers(NidQa) = Holes(I,2);
-                    NidQa ++;
-                }
-            }
-        }
-    }
-    blocksQa = new Block*[NidQa];
-
-    // Initiate the blocks
-    for (int n=0; n<NidQa; n++){
-        blocksQa[n] = new Block(basis,Nholes,Nparticles);
-    }
-    /*
-    // Add states to blocks
-    for (int A=0; A<NPARTICLES; A++){
-        for (int C=0; C<NPARTICLES; C++){
-            for (int I=0; I<NHOLES; I++){
-                for (int K=0; K<NHOLES; K++){
-
-                    if ( Holes(I,2) == Particles(A,2) && Holes(I,2) == Particles(C,2) && Holes(I,2) == Holes(K,2)){
-
-                        uvec indices = find( identifiers == Holes(I,2) );
-                        int indice = indices(0);
-
-                        blocksQa[indice]->AddStates( Holes.row(I), Particles.row(A) );
-                    }
-                }
-            }
-        }
-    }*/
-    for (int I=0; I<NHOLES; I++){
-        for (int A=0; A<NPARTICLES; A++){
-
-            if ( Holes(I,2) == Particles(A,2) ) {
-
-                uvec indices = find( identifiers == Holes(I,2) );
-                int indice = indices(0);
-
-                blocksQa[indice]->AddStates( Holes.row(I), Particles.row(A) );
-            }
-        }
-    }
-}
-
-void Solver::CreateBlocksQc(){
-
-    vec identifiers = zeros<vec>(0); NidQc = 0;
+    vec identifiers = zeros<vec>(0); Npphh = 0;
     for (int I=0; I<NHOLES; I++){
         for (int A=0; A<NPARTICLES; A++){
 
@@ -385,17 +143,17 @@ void Solver::CreateBlocksQc(){
                 bool IDExist = any( identifiers == Holes(I,2) );
 
                 if ( ! IDExist){
-                    identifiers.insert_rows(NidQc,1);
-                    identifiers(NidQc) = Holes(I,2);
-                    NidQc ++;
+                    identifiers.insert_rows(Npphh,1);
+                    identifiers(Npphh) = Holes(I,2);
+                    Npphh ++;
                 }
             }
         }
     }
-    blocksQc = new Block*[NidQc];
+    blockspphh = new Block*[Npphh];
 
-    for (int n=0; n<NidQc; n++){
-        blocksQc[n] = new Block(basis, Nholes, Nparticles);
+    for (int n=0; n<Npphh; n++){
+        blockspphh[n] = new Block(basis, Nholes, Nparticles);
     }
 
     for (int I=0; I<NHOLES; I++){
@@ -406,33 +164,115 @@ void Solver::CreateBlocksQc(){
                 uvec indices = find( identifiers == Holes(I,2) );
                 int indice = indices(0);
 
-                blocksQc[indice]->AddStates( Holes.row(I), Particles.row(I) );
+                blockspphh[indice]->AddStates( Holes.row(I), Particles.row(A) );
+            }
+        }
+    }
+    for (int n=0; n<Npphh; n++){
+        blockspphh[n]->FinishBlock();
+    }
+}
+
+void Solver::CreateBlocksPHPH(){
+
+    vec identifiers = zeros<vec>(0); Nphph = 0;
+    for (int x1 = 0; x1<NX; x1++){
+        for (int x2 = 0; x2<NX; x2++){
+
+            if ( Xph(x1,2) == Xph(x2,2) ){ // Identifiers match. They belong to the same block
+
+                bool IDExist = any( identifiers == Xph(x1,2)); // true: Block already added to identifers
+
+                if ( ! IDExist ){ // Block not yet added
+                    // Adding block to identifiers
+                    identifiers.insert_rows(Nphph,1);
+                    identifiers(Nphph) = Xph(x1,2);
+                    Nphph ++;
+                }
+            }
+        }
+    }
+    blocksphph = new Block*[Nphph];
+
+    for (int n=0; n<Nphph; n++){
+        blocksphph[n] = new Block(basis, Nholes, Nparticles);
+    }
+
+    for (int x1=0; x1<NX; x1++){
+        for (int x2=0; x2<NX; x2++){
+
+            if (Xph(x1,2) == Xph(x2,2)) { // Identifiers match. Add states to block
+
+                uvec indices = find( identifiers == Xph(x1,2) );
+                int indice = indices(0);
+
+                blocksphph[indice]->AddCrossStates( Xph.row(x1), Xph.row(x2) );
             }
         }
     }
 }
 
+void Solver::CreateBlocksHPHP(){
+
+    vec identifiers = zeros<vec>(0); Nhphp = 0;
+    for (int x1=0; x1<NX; x1++){
+        for (int x2=0; x2<NX; x2++){
+
+            if ( Xhp(x1,2) == Xhp(x2,2) ){
+
+                bool IDExist = any( identifiers == Xhp(x1,2) );
+
+                if ( ! IDExist){
+
+                    identifiers.insert_rows(Nhphp,1);
+                    identifiers(Nhphp) = Xhp(x1,2);
+                    Nhphp ++;
+                }
+            }
+        }
+    }
+    blockshphp = new Block*[Nhphp];
+
+    for (int n=0; n<Nhphp; n++){
+        blockshphp[n] = new Block(basis, Nholes, Nparticles);
+    }
+    for (int x1=0; x1<NX; x1++){
+        for (int x2=0; x2<NX; x2++){
+
+            if (Xhp(x1,2) == Xhp(x2,2)){
+
+                uvec indices = find ( identifiers == Xhp(x1,2));
+                int indice = indices(0);
+
+                blockshphp[indice]->AddCrossStates( Xhp.row(x1), Xhp.row(x2));
+            }
+        }
+    }
+
+}
+
+
 
 void Solver::DiagramL0(){
 
 
-    // Set up matrices for all blocksL0
-    for (int i=0; i<NidL0; i++){
-        blocksL0[i] ->SetUpMatrices_L0();
+    // Set up matrices for all blockspphh
+    for (int i=0; i<Npphh; i++){
+        blockspphh[i] ->SetUpMatrices_L0();
     }
     // For L0 diagram, not computation is needed. Only aligning V elements to t.
 
     //Align elements to t.
-    for (int n=0; n<NidL0; n++){
+    for (int n=0; n<Npphh; n++){
 
-        for (double I=0; I < blocksL0[n]->Holes.n_rows ; I++){
-            for (double A=0; A < blocksL0[n]->Particles.n_rows; A++){
+        for (double I=0; I < blockspphh[n]->Holes.n_rows ; I++){
+            for (double A=0; A < blockspphh[n]->Particles.n_rows; A++){
 
-                int i = blocksL0[n]->Holes(I,0); int j = blocksL0[n]->Holes(I,1);
-                int a = blocksL0[n]->Particles(A,0); int b = blocksL0[n]->Particles(A,1);
+                int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
+                int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
                 int aa = a - Nholes; int bb = b - Nholes;
 
-                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += blocksL0[n]->V(A,I) / basis.epsilon(i,j,a,b);
+                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += blockspphh[n]->V(A,I) / basis.epsilon(i,j,a,b);
             }
         }
     }
@@ -442,18 +282,18 @@ void Solver::DiagramLa(){
 
     // Tested. Working.
 
-    for (int i=0; i<NidLa; i++){
-        blocksLa[i]->SetUpMatrices_La(t0);
+    for (int i=0; i<Npphh; i++){
+        blockspphh[i]->SetUpMatrices_La(t0);
     }
 
-    for (int n=0; n<NidLa; n++){
-        mat La = blocksLa[n]->V * blocksLa[n]->T;
+    for (int n=0; n<Npphh; n++){
+        mat La = blockspphh[n]->V * blockspphh[n]->T;
 
-        for (double I=0; I<blocksLa[n]->Holes.n_rows; I++){
-            for (double A=0; A<blocksLa[n]->Particles.n_rows; A++){
+        for (double I=0; I<blockspphh[n]->Holes.n_rows; I++){
+            for (double A=0; A<blockspphh[n]->Particles.n_rows; A++){
 
-                int i = blocksLa[n]->Holes(I,0); int j = blocksLa[n]->Holes(I,1);
-                int a = blocksLa[n]->Particles(A,0); int b = blocksLa[n]->Particles(A,1);
+                int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
+                int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
                 int aa = a - Nholes; int bb = b - Nholes;
 
                 t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.5 * La(A,I) / basis.epsilon(i,j,a,b);
@@ -464,21 +304,23 @@ void Solver::DiagramLa(){
 
 void Solver::DiagramLb(){
 
-    for (int i=0; i<NidLb; i++){
-        blocksLb[i]->SetUpMatrices_Lb(t0);
+    for (int i=0; i<Npphh; i++){
+        blockspphh[i]->SetUpMatrices_Lb(t0);
     }
     // Do calculation and insert the values into t.
-    for (int n=0; n<NidLb; n++){
+    for (int n=0; n<Npphh; n++){
 
-        mat LbT = blocksLb[n]->V.t() * blocksLb[n]->T.t(); // Calculating the product of the transposed matrices V.t and T.t
-        mat Lb = LbT.t(); // Transposing back to get the diagram Lb
+        //mat LbT = blockspphh[n]->V.t() * blockspphh[n]->T.t(); // Calculating the product of the transposed matrices V.t and T.t
+        //mat Lb = LbT.t(); // Transposing back to get the diagram Lb
+
+        mat Lb = blockspphh[n]->T * blockspphh[n]->V; // Seems like this is the same calculation. Should be faster
 
         // Assigning the values calculated to the right position in t
-        for (double I=0; I<blocksLb[n]->Holes.n_rows; I++){
-            for (double A=0; A<blocksLb[n]->Particles.n_rows; A++){
+        for (double I=0; I<blockspphh[n]->Holes.n_rows; I++){
+            for (double A=0; A<blockspphh[n]->Particles.n_rows; A++){
 
-                int i = blocksLb[n]->Holes(I,0); int j = blocksLb[n]->Holes(I,1);
-                int a = blocksLb[n]->Particles(A,0); int b = blocksLb[n]->Particles(A,1);
+                int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
+                int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
                 int aa = a - Nholes; int bb = b - Nholes;
 
                 t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.5 * Lb(A,I) / basis.epsilon(i,j,a,b);
@@ -487,21 +329,35 @@ void Solver::DiagramLb(){
     }
 }
 
+void Solver::DiagramLc(){
+
+    for (int n=0; n<Nhphp; n++){
+        blockshphp[n]->SetUpMatrices_Lc(t0);
+    }
+    for (int n=0; n<Nhphp; n++){
+
+        mat Lc = blockshphp[n]->V * blockshphp[n]->T;
+        //Lc.print();
+
+    }
+
+}
+
 void Solver::DiagramQa(){
 
-    for (int n=0; n<NidQa; n++){
-        blocksQa[n]->SetUpMatrices_Qa(t0);
+    for (int n=0; n<Npphh; n++){
+        blockspphh[n]->SetUpMatrices_Qa(t0);
     }
     // Perform calculations and insert values into t
-    for (int n=0; n<NidQa; n++){
+    for (int n=0; n<Npphh; n++){
 
-        mat Qa = blocksQa[n]->T * blocksQa[n]->V * blocksQa[n]->T2;
+        mat Qa = blockspphh[n]->T * blockspphh[n]->V * blockspphh[n]->T2;
 
-        for (double I=0; I<blocksQa[n]->Holes.n_rows; I++){
-            for (double A=0; A<blocksQa[n]->Particles.n_rows; A++){
+        for (double I=0; I<blockspphh[n]->Holes.n_rows; I++){
+            for (double A=0; A<blockspphh[n]->Particles.n_rows; A++){
 
-                int i = blocksQa[n]->Holes(I,0); int j = blocksQa[n]->Holes(I,1);
-                int a = blocksQa[n]->Particles(A,0); int b = blocksQa[n]->Particles(A,1);
+                int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
+                int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
                 int aa = a - Nholes; int bb = b - Nholes;
 
                 t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.25 * Qa(A,I) / basis.epsilon(i,j,a,b);
@@ -510,8 +366,85 @@ void Solver::DiagramQa(){
     }
 }
 
+void Solver::DiagramQb(){
+    for (int n=0; n<Nphph; n++){
+        blocksphph[n]->SetUpMatrices_Qb(t0);
+    }
+    for (int n=0; n<Nphph; n++){
+
+        mat Qd = blocksphph[n]->T * blocksphph[n]->V * blocksphph[n]->T2;
+
+        for (double x1=0; x1<blocksphph[n]->X1.n_rows; x1++){
+            for (double x2=0; x2<blocksphph[n]->X1.n_rows; x2++){
+
+                int i = blocksphph[n]->X1(x1,1); int j = blocksphph[n]->X1(x2,1);
+                int a = blocksphph[n]->X1(x1,0); int b = blocksphph[n]->X1(x2,0); int aa = a-Nholes; int bb = b-Nholes;
+
+                t( Index(aa,i,bb,j,Nparticles,Nholes,Nparticles)) += weight * 0.5 * Qd(x1,x2) / basis.epsilon(i,j,a,b);
+            }
+        }
+
+
+        /*
+        for (double I=0; I<blockspphh[n]->Holes.n_rows; I++){
+            for (double A=0; A<blockspphh[n]->Particles.n_rows; A++){
+
+                int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
+                int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
+                int aa = a - Nholes; int bb = b - Nholes;
+
+                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.5 * Qd(A,I) / basis.epsilon(i,j,a,b);
+            }
+        }*/
+    }
+}
+
 void Solver::DiagramQc(){
 
+    for (int n=0; n<Npphh; n++){
+        blockspphh[n]->SetUpMatrices_Qc(t0);
+    }
+
+    for (int n=0; n<Npphh; n++){
+
+        mat Qc = blockspphh[n]->T * blockspphh[n]->V * blockspphh[n]->T2;
+
+        // Assigning values to t
+        for (double I=0; I<blockspphh[n]->Holes.n_rows; I++){
+            for (double A=0; A<blockspphh[n]->Particles.n_rows; A++){
+
+                int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
+                int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
+                int aa = a-Nholes; int bb = b-Nholes;
+
+                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) -= weight * 0.5 * Qc(A,I) / basis.epsilon(i,j,a,b);
+            }
+        }
+    }
+}
+
+void Solver::DiagramQd(){
+
+    for (int n=0; n<Npphh; n++){
+        blockspphh[n]->SetUpMatrices_Qd(t0);
+    }
+
+    for (int n=0; n<Npphh; n++){
+
+        mat Qd = blockspphh[n]->T * blockspphh[n]->V * blockspphh[n]->T2;
+
+        // Assigning values to t
+        for (double I=0; I<blockspphh[n]->Holes.n_rows; I++){
+            for (double A=0; A<blockspphh[n]->Particles.n_rows; A++){
+
+                int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
+                int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
+                int aa = a-Nholes; int bb = b-Nholes;
+
+                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) -= weight * 0.5 * Qd(A,I) / basis.epsilon(i,j,a,b);
+            }
+        }
+    }
 }
 
 void Solver::UpdateAmplitudes_Naive(){
@@ -540,21 +473,21 @@ void Solver::UpdateAmplitudes_Naive(){
 
                             tau += 0.5 * basis.TwoBodyOperator(k,l,i,j) * t0( Index(aa,bb,k,l, Nparticles,Nparticles,Nholes) );
                         }
-                    } */
-/*
+                    }
+                    */
                     // Adding Lc
                     for (int cc=0; cc<Nparticles; cc++){
                         for (int k=0; k<Nholes; k++){
                             int c = cc + Nholes;
 
-                            tau += basis.TwoBodyOperator(k,b,c,j)*t0(i+k*Nholes, aa+cc*Nparticles); // No permutation
-                            tau -= basis.TwoBodyOperator(k,b,c,i)*t0(j+k*Nholes, aa+cc*Nparticles); // Permutation of i,j
-                            tau -= basis.TwoBodyOperator(k,a,c,j)*t0(i+k*Nholes, bb+cc*Nparticles); // Permutation of a,b
-                            tau += basis.TwoBodyOperator(k,a,c,i)*t0(j+k*Nholes, bb+cc*Nparticles); // Permutation of a,b,i,j
-
+                            tau += basis.TwoBodyOperator(k,b,c,j) * t0( Index(aa,cc,i,k,Nparticles,Nparticles,Nholes)); // No permutation
+                            tau -= basis.TwoBodyOperator(k,b,c,i) * t0( Index(aa,cc,j,k,Nparticles,Nparticles,Nholes)); // Permutation of i,j
+                            tau -= basis.TwoBodyOperator(k,a,c,j) * t0( Index(bb,cc,i,k,Nparticles,Nparticles,Nholes)); // Permutation of a,b
+                            tau += basis.TwoBodyOperator(k,a,c,i) * t0( Index(bb,cc,j,k,Nparticles,Nparticles,Nholes)); // Permutation of a,b,i,j
                         }
                     }
-*/
+
+/*
                     for (int k=0; k<Nholes; k++){
                         for (int l=0; l<Nholes; l++){
                             for (int cc=0; cc<Nparticles; cc++){
@@ -562,28 +495,32 @@ void Solver::UpdateAmplitudes_Naive(){
                                     int c = cc + Nholes; int d = dd + Nholes;
 
                                     //double Qa = 0; double Qb = 0; double Qc = 0; double Qd = 0;
-                                    double Qc = 0;
-                                    //Qa = 0.25*basis.TwoBodyOperator(k,l,c,d) * t0( Index(cc,dd,i,j,Nparticles,Nparticles,Nholes) ) * t0( Index(aa,bb,k,l,Nparticles,Nparticles,Nholes));
-                                    /*
-                                    Qb += t0(i+k*Nholes, aa+cc*Nparticles) * t0(l+j*Nholes, dd+bb*Nparticles); // No permutation
-                                    Qb -= t0(j+k*Nholes, aa+cc*Nparticles) * t0(l+i*Nholes, dd+bb*Nparticles); // Permutation of i,j
-                                    Qb -= t0(i+k*Nholes, bb+cc*Nparticles) * t0(l+j*Nholes, dd+aa*Nparticles); // Permutation of a,b
-                                    Qb += t0(j+k*Nholes, bb+cc*Nparticles) * t0(l+i*Nholes, dd+aa*Nparticles); // Permutation of a,b,i,j
+
+                                    Qa = 0.25*basis.TwoBodyOperator(k,l,c,d) * t0( Index(cc,dd,i,j,Nparticles,Nparticles,Nholes) ) * t0( Index(aa,bb,k,l,Nparticles,Nparticles,Nholes));
+                                    tau += Qa;
+                                    double Qb = 0;
+                                    Qb += t0( Index(aa,cc,i,k,Nparticles,Nparticles,Nholes)) * t0( Index(dd,bb,l,j,Nparticles,Nparticles,Nholes)); // No permutation
+                                    Qb -= t0( Index(aa,cc,j,k,Nparticles,Nparticles,Nholes)) * t0( Index(dd,bb,l,i,Nparticles,Nparticles,Nholes)); // Permutation of i,j
+                                    Qb -= t0( Index(bb,cc,i,k,Nparticles,Nparticles,Nholes)) * t0( Index(dd,aa,l,j,Nparticles,Nparticles,Nholes)); // Permutation of a,b
+                                    Qb += t0( Index(bb,cc,j,k,Nparticles,Nparticles,Nholes)) * t0( Index(dd,aa,l,i,Nparticles,Nparticles,Nholes)); // Permutation of a,b,i,j
                                     Qb *= 0.5 * basis.TwoBodyOperator(k,l,c,d);
-                                    */
+                                    tau += Qb;
+
                                     Qc -= t0( Index(aa,bb,i,k,Nparticles,Nparticles,Nholes) ) * t0( Index(cc,dd,j,l,Nparticles,Nparticles,Nholes)); // No permutation
-                                    //Qc += t0(j+k*Nholes, aa+bb*Nparticles) * t0(i+l*Nholes, cc+dd*Nparticles); // Permutation of i,j
+                                    Qc += t0( Index(aa,bb,j,k,Nparticles,Nparticles,Nholes) ) * t0( Index(cc,dd,i,l,Nparticles,Nparticles,Nholes)); // Permutation of i,j
                                     Qc *= 0.5 * basis.TwoBodyOperator(k,l,c,d);
-                                    /*
-                                    Qd -= t0(k+l*Nholes, bb+dd*Nparticles) * t0(i+j*Nholes, aa+cc*Nparticles); // No permutation
-                                    Qd += t0(k+l*Nholes, aa+dd*Nparticles) * t0(i+j*Nholes, bb+cc*Nparticles); // Permutation of a,b
+                                    tau += Qc;
+
+                                    Qd -= t0( Index(bb,dd,k,l,Nparticles,Nparticles,Nholes) ) * t0( Index(aa,cc,i,j,Nparticles,Nparticles,Nholes)); // No permutation
+                                    Qd += t0( Index(aa,dd,k,l,Nparticles,Nparticles,Nholes) ) * t0( Index(bb,cc,i,j,Nparticles,Nparticles,Nholes)); // Permutation of a,b
                                     Qd *= 0.5 * basis.TwoBodyOperator(k,l,c,d);
-                                    */
-                                    tau += Qc; //Qa + Qb + Qc + Qd;
+                                    tau += Qd;
+
+                                    //tau += Qa + Qb + Qc + Qd;
                                 }
                             }
                         }
-                    }
+                    } */
 
                     tau = basis.TwoBodyOperator(a,b,i,j) + weight*tau; //Weighting the iterative scheme
 
@@ -624,6 +561,9 @@ void Solver::TwoBodyConfigurations(){
 
             if (i != j){ // Pauli principle demands that the particles must be unequal
 
+                // Setting up direct channels for holes
+
+                // Two-hole momentum and spin
                 int Nx = basis.states(i,1) + basis.states(j,1); // Combining x-momentum
                 int Ny = basis.states(i,2) + basis.states(j,2); // Combining y-momentum
                 int Nz = basis.states(i,3) + basis.states(j,3); // Combining z-momentum
@@ -632,6 +572,7 @@ void Solver::TwoBodyConfigurations(){
                 // Adding a new two-hole-state configuration to matrix. (i, j, Identifier)
                 Holes.insert_rows(n,1);
                 Holes(n,0) = i; Holes(n,1) = j; Holes(n,2) = Identifier(Nx,Ny,Nz,Sz);
+
                 n++;
             }
         }
@@ -655,24 +596,31 @@ void Solver::TwoBodyConfigurations(){
             }
         }
     }
+
+    Xhp = zeros<mat>(0,3);
+    Xph = zeros<mat>(0,3);
+
     n=0;
-    for (int p=0; p<Nstates; p++){
-        for (int q=0; q<Nstates; q++){
+    for (int i=0; i<Nholes; i++){
+        for (int aa=0; aa<Nparticles; aa++){
+            int a = aa + Nholes;
 
-            if (p != q) { // Pauli exclusion satisfied
+            // Two-state
+            int Nxc = basis.states(i,1) - basis.states(a,1);
+            int Nyc = basis.states(i,2) - basis.states(a,2);
+            int Nzc = basis.states(i,3) - basis.states(a,3);
+            int Szc = basis.states(i,4) - basis.states(a,4);
 
-                int Nx = basis.states(p,1) + basis.states(q,1);
-                int Ny = basis.states(p,2) + basis.states(q,2);
-                int Nz = basis.states(p,3) + basis.states(q,3);
-                int Sz = basis.states(p,4) + basis.states(p,4);
+            Xhp.insert_rows(n,1);
+            Xph.insert_rows(n,1);
 
-                States.insert_rows(n,1);
+            Xhp(n,0) = i; Xhp(n,1) = a; Xhp(n,2) = Identifier(Nxc,Nyc,Nzc,Szc);
+            Xph(n,0) = a; Xph(n,1) = i; Xph(n,2) = Identifier(-Nxc,-Nyc,-Nzc,-Szc);
 
-                States(n,0) = p; States(n,1) = q; States(n,2) = Identifier(Nx,Ny,Nz,Sz);
-                n++;
-            }
+            n++;
         }
     }
+    NX = Xhp.n_rows;
 }
 
 double Solver::Identifier(int Nx, int Ny, int Nz, int Sz){

@@ -30,6 +30,7 @@ public:
     int NPARTICLES; // Number of two-particle cofigurations
     int NHOLES; // Number of two-hole configurations
     int NSTATES; // Number of two-state configurations
+    int NX; // Number of cross states
 
     int Nmax, m, M; // Variables to create unique identifier for two-body configuration
 
@@ -43,17 +44,25 @@ public:
     mat Holes; // Matrix for all two-hole configurations. Each row contains (state1, state2, identifier)
     mat Particles; // Matrix for all two-particle configurations. Each row contains (state1, state2, identifier)
     mat States; // Matrix for all two-state configurations. Each row contains (state1, state2, identifier)
+    mat Xph, Xhp;
 
+    // Diagrams
+    void DiagramL0();
+
+    void DiagramLa();
+    void DiagramLb();
+    void DiagramLc();
+
+    void DiagramQa();
+    void DiagramQb();
+    void DiagramQc();
+    void DiagramQd();
 
     // Block list
     void CreateBlocks();
-    Block **blocksDE; void CreateBlocksDE(); void DiagramDE(); int NidDE;
-    Block **blocksL0; void CreateBlocksL0(); void DiagramL0(); int NidL0;
-    Block **blocksLa; void CreateBlocksLa(); void DiagramLa(); int NidLa;
-    Block **blocksLb; void CreateBlocksLb(); void DiagramLb(); int NidLb;
-    Block **blocksQa; void CreateBlocksQa(); void DiagramQa(); int NidQa;
-    Block **blocksQc; void CreateBlocksQc(); void DiagramQc(); int NidQc;
-
+    Block **blockspphh; void CreateBlocksPPHH(); int Npphh;
+    Block **blocksphph; void CreateBlocksPHPH(); int Nphph;
+    Block **blockshphp; void CreateBlocksHPHP(); int Nhphp;
 
     // Declaring functions for program flow
 

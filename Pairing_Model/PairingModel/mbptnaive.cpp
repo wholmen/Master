@@ -1,141 +1,22 @@
-#include "naivesolvers.h"
+#include "mbptnaive.h"
 
-NaiveSolvers::NaiveSolvers()
+MBPTNaive::MBPTNaive()
 {
 
 }
 
-NaiveSolvers::NaiveSolvers(basis_set BASIS){
+MBPTNaive::MBPTNaive(basis_set BASIS){
     basis = BASIS;
-    Nholes = basis.Nparticles;
+
+    // Calculating important variables
+    Nholes = basis.Nparticles; Nholes2 = Nholes*Nholes; Nholes3 = Nholes2*Nholes;
     Nstates = basis.nstates;
-    Nparticles = Nstates - Nholes;
-}
-
-
-double NaiveSolvers::CCD(){
-    double Ecc_old = 0.0; double Ecc_new = 0.0;
-    int n = 0;
-
-    update_t0();
-    Ecc_old = dE_CCD();
-
-    update_t(2);
-    Ecc_new = dE_CCD();
-
-
-    while ( n < 10 && sqrt( pow(Ecc_new - Ecc_old,2) ) > 0.00001){
-
-        Ecc_old = Ecc_new;
-        update_t(2);
-        Ecc_new = dE_CCD();
-        n ++;
-    }
-    cout << "Coupled Cluster method used " << n << " iterations." << endl;
-    return Ecc_new;
-}
-
-
-double NaiveSolvers::dE_CCD(){
-    double E = 0.0;
-
-    for (int i=0; i<Nholes; i++){
-        for (int j=0; j<Nholes; j++){
-            for (int aa=0; aa<Nparticles; aa++){
-                for (int bb=0; bb<Nparticles; bb++){
-                    int a = aa + Nholes; int b = bb + Nholes;
-
-                    E += basis.TwoBodyOperator(i,j,a,b) * t(i + j*Nholes, aa + bb*Nparticles);
-                }
-            }
-        }
-    }
-    return E * 0.25;
-}
-
-void NaiveSolvers::update_t0(){
-    // Setting up the first amplitudes based on a guess based on mbpt
-    t0 = zeros<mat>(Nholes*Nholes, Nparticles*Nparticles);
-
-    for (int i=0; i<Nholes; i++){
-        for (int j=0; j<Nholes; j++){
-            for (int aa=0; aa<Nparticles; aa++){
-                for (int bb=0; bb<Nparticles; bb++){
-                    int a = aa + Nholes; int b = bb + Nholes;
-
-                    t0(i + j*Nholes, aa + bb*Nparticles) = basis.TwoBodyOperator(a,b,i,j) / basis.epsilon(i,j,a,b);
-                }
-            }
-        }
-    }
-    t = t0;
-}
-
-
-void NaiveSolvers::update_t(int degree){
-    t0 = t;
-
-    for (int i=0; i<Nholes; i++){
-        for (int j=0; j<Nholes; j++){
-            for (int aa=0; aa<Nparticles; aa++){
-                for (int bb=0; bb<Nparticles; bb++){
-                    int a = aa + Nholes; int b = bb + Nholes;
-
-                    double tau = 0.0;
-
-                    for (int cc=0; cc<Nparticles; cc++){
-                        for (int dd=0; dd<Nparticles; dd++){
-                            int c = cc + Nholes; int d = dd + Nholes;
-
-                            tau += basis.TwoBodyOperator(a,b,c,d) * t0(i + j*Nholes, cc + dd*Nparticles);
-                        }
-                    }
-
-                    for (int k=0; k<Nholes; k++){
-                        for (int l=0; l<Nholes; l++){
-
-                            tau += basis.TwoBodyOperator(k,l,i,j) * t0(k + l*Nholes, i + j*Nparticles);
-                        }
-                    }
-
-                    for (int cc=0; cc<Nparticles; cc++){
-                        for (int k=0; k<Nholes; k++){
-                            int c = cc + Nholes;
-
-                            tau += basis.TwoBodyOperator(k,b,c,j)*t0(i+k*Nholes, aa+cc*Nparticles) - basis.TwoBodyOperator(k,b,c,i)*t0(j+k*Nholes, aa+cc*Nparticles)
-                                  *basis.TwoBodyOperator(k,b,c,j)*t0(i+k*Nholes, aa+cc*Nparticles) - basis.TwoBodyOperator(k,a,c,j)*t0(i+k*Nholes, bb+cc*Nparticles);
-                        }
-                    }
-                    if (degree == 2){
-                        for (int k=0; k<Nholes; k++){
-                            for (int l=0; l<Nholes; l++){
-                                for (int cc=0; cc<Nparticles; cc++){
-                                    for (int dd=0; dd<Nparticles; dd++){
-                                        int c = cc + Nholes; int d = dd + Nholes;
-
-                                        double p1 = 0.25*basis.TwoBodyOperator(k,l,c,d) * t0(i+j*Nholes, cc+dd*Nparticles) * t0(k+l*Nholes, aa+bb*Nparticles);
-                                        double p2 =      basis.TwoBodyOperator(k,l,c,d) *(t0(i+k*Nholes, aa+cc*Nparticles) * t0(j+l*Nholes, bb+dd*Nparticles) - t0(j+k*Nholes, aa+cc*Nparticles) * t0(i+l*Nholes, bb+dd*Nparticles));
-                                        double p3 = -0.5*basis.TwoBodyOperator(k,l,c,d) *(t0(i+k*Nholes, dd+cc*Nparticles) * t0(l+j*Nholes, aa+bb*Nparticles) - t0(j+k*Nholes, dd+cc*Nparticles) * t0(l+i*Nholes, aa+bb*Nparticles));
-                                        double p4 = -0.5*basis.TwoBodyOperator(k,l,c,d) *(t0(l+k*Nholes, aa+cc*Nparticles) * t0(i+j*Nholes, dd+bb*Nparticles) - t0(l+k*Nholes, bb+cc*Nparticles) * t0(i+j*Nholes, dd+aa*Nparticles));
-                                        tau = tau + p1 + p2 + p3 + p4;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    tau = basis.TwoBodyOperator(a,b,i,j) + 0.5*tau;
-
-                    t(i + j*Nholes, aa + bb*Nholes) = tau / basis.epsilon(i,j,a,b);
-                }
-            }
-        }
-    }
+    Nparticles = Nstates - Nholes; Nparticles2 = Nparticles*Nparticles; Nparticles3 = Nparticles2*Nparticles;
 
 }
 
 
-double NaiveSolvers::MBPT2_MHJ(){
+double MBPTNaive::MBPT2_MHJ(){
 
     mat vhhpp = zeros<mat>(Nholes*Nholes, Nparticles*Nparticles);
     mat vpphh = zeros<mat>(Nparticles*Nparticles, Nholes*Nholes);
@@ -159,7 +40,7 @@ double NaiveSolvers::MBPT2_MHJ(){
 }
 
 
-double NaiveSolvers::MBPT2(){
+double MBPTNaive::MBPT2(){
 
     double D1 = 0.0;
 
@@ -178,7 +59,7 @@ double NaiveSolvers::MBPT2(){
     return D1;
 }
 
-double NaiveSolvers::MBPT3(){
+double MBPTNaive::MBPT3(){
 
     double D1 = MBPT2();
 
@@ -211,7 +92,7 @@ double NaiveSolvers::MBPT3(){
     return D1 + D4 + D5;
 }
 
-double NaiveSolvers::MBPT4(){
+double MBPTNaive::MBPT4(){
 
     double mbpt3 = MBPT3();
     double D5, D6, D14, D15, D34, D35, D36, D37, D38, D39, D40;
@@ -271,23 +152,3 @@ double NaiveSolvers::MBPT4(){
 
     return mbpt3 + D5 + D6 + D14 + D15 + D34 + D35 + D36 + D37 + D38 + D39 + D40;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

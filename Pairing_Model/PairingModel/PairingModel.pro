@@ -5,12 +5,18 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     basis_set.cpp \
-    naivesolvers.cpp \
-    ccdblocks2.cpp
+    ccdnaive.cpp \
+    ccdintermediates.cpp \
+    ccdblocks.cpp \
+    mbptnaive.cpp \
+    fci.cpp
 
 HEADERS += \
     basis_set.h \
-    naivesolvers.h \
-    ccdblocks2.h
+    ccdnaive.h \
+    ccdintermediates.h \
+    ccdblocks.h \
+    mbptnaive.h \
+    fci.h
 
 LIBS += -llapack -lblas -larmadillo

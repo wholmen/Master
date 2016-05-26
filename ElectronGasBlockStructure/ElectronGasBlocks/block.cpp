@@ -206,8 +206,8 @@ void Block::SetUpMatrices_Qb(mat &t0){
         }
     }
 
-    cout << endl << "T: " << endl;
-    T.print();
+    //cout << endl << "T: " << endl;
+    //T.print();
 
     //cout << endl << "V: " << endl;
     //V.print();
@@ -301,6 +301,69 @@ void Block::SetUpMatrices_Qb(mat &t0){
 
 void Block::SetUpMatrices_Qc(mat &t0){
 
+
+
+    T = zeros<mat>(Np*Np*Nh, Nh);
+    V = zeros<mat>(Nh, Np*Np*Nh);
+    T2= zeros<mat>(Np*Np*Nh, Nh);
+
+    for (int I=0; I<Nh; I++){
+        for (int J=0; J<Nh; J++){
+            for (int A=0; A<Np; A++){
+                for (int B=0; B<Np; B++){
+
+                    int i = Holes(I,0); int j = Holes(J,0);
+                    int a = Particles(A,0); int b = Particles(B,0);
+                    int aa = a-Nholes; int bb = b-Nholes;
+
+                    T (A + B*Np + I*Np*Np, J) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                    V (I, A + B*Np + J*Np*Np) = basis.TwoBodyOperator(i,j,a,b);
+                    T2(A + B*Np + J*Np*Np, I) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                }
+            }
+        }
+    }
+
+    mat K = zeros<mat>(Nh*Np,1);
+    mat Ktb1 = zeros<mat>(Nh*Np,3);
+
+    //int n=0;
+    for (int I=0; I<Nh; I++){
+        for (int A=0; A<Np; A++){
+
+            int n = A + I*Np;
+            //cout << "n: " << n << " K: " << Holes(I,0) << " Ktb1: " << Particles(A,0) << Particles(A,1) << Holes(I,1) << endl;
+
+            K(n,0) = Holes(I,0);
+            Ktb1(n,0) = Particles(A,0);
+            Ktb1(n,1) = Particles(A,1);
+            Ktb1(n,2) = Holes(I,1);
+        }
+    }
+
+
+
+
+
+
+    /*
+    for (int i=0; i<Nh; i++){
+        for (int j=0; j<Nh; j++){
+            for (int aa=0; aa<Np; aa++){
+                for (int bb=0; bb<Np; bb++){
+                    int a = aa+Nholes; int b = bb+Nholes;
+
+                    T(aa+bb*Np+i*Np*Np, j) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                    V(i,j+aa*Nh+bb*Np*Nh) = basis.TwoBodyOperator(i,j,a,b);
+                    T2(aa+bb*Np+i*Np*Np,j) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+
+                }
+            }
+        }
+    }*/
+
+
+    /*
     mat K = zeros<mat>(Nh*Np,1);
     mat Ktb1 = zeros<mat>(Nh*Np,3);
 
@@ -332,7 +395,7 @@ void Block::SetUpMatrices_Qc(mat &t0){
             V(I,A) = basis.TwoBodyOperator( K(n,0), Ktb1(n,2), Ktb1(n,0), Ktb1(n,1) );
             T2(A,I) = t0( Index( Ktb1(n,0)-Nholes, Ktb1(n,1)-Nholes, Ktb1(n,2), K(n,0), Nparticles,Nparticles,Nholes ));
         }
-    }
+    }*/
 }
 
 void Block::SetUpMatrices_Qd(mat &t0){

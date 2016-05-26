@@ -51,11 +51,13 @@ OBJECTS_DIR   = ./
 SOURCES       = ../ElectronGasBlocks/main.cpp \
 		../ElectronGasBlocks/basis_set.cpp \
 		../ElectronGasBlocks/solver.cpp \
-		../ElectronGasBlocks/block.cpp 
+		../ElectronGasBlocks/block.cpp \
+		../ElectronGasBlocks/ccdintermediates.cpp 
 OBJECTS       = main.o \
 		basis_set.o \
 		solver.o \
-		block.o
+		block.o \
+		ccdintermediates.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -109,10 +111,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../ElectronGasBlocks/ElectronGasBlocks.pro basis_set.h \
 		solver.h \
-		block.h ../ElectronGasBlocks/main.cpp \
+		block.h \
+		ccdintermediates.h ../ElectronGasBlocks/main.cpp \
 		../ElectronGasBlocks/basis_set.cpp \
 		../ElectronGasBlocks/solver.cpp \
-		../ElectronGasBlocks/block.cpp
+		../ElectronGasBlocks/block.cpp \
+		../ElectronGasBlocks/ccdintermediates.cpp
 QMAKE_TARGET  = ElectronGasBlocks
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = ElectronGasBlocks
@@ -304,6 +308,10 @@ solver.o: ../ElectronGasBlocks/solver.cpp ../ElectronGasBlocks/solver.h \
 block.o: ../ElectronGasBlocks/block.cpp ../ElectronGasBlocks/block.h \
 		../ElectronGasBlocks/basis_set.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o block.o ../ElectronGasBlocks/block.cpp
+
+ccdintermediates.o: ../ElectronGasBlocks/ccdintermediates.cpp ../ElectronGasBlocks/ccdintermediates.h \
+		../ElectronGasBlocks/basis_set.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdintermediates.o ../ElectronGasBlocks/ccdintermediates.cpp
 
 ####### Install
 

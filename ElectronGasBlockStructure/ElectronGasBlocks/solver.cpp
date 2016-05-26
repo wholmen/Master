@@ -112,13 +112,26 @@ void Solver::UpdateAmplitudes(){
 
     DiagramL0();
 
-    //DiagramLa();
-    //DiagramLb();
+    DiagramLa();
+    DiagramLb();
     DiagramLc();
-    //DiagramQa();
-    //DiagramQb();
-    //DiagramQc();
-    //DiagramQd();
+
+    DiagramQa();
+    DiagramQb();
+    DiagramQc();
+    DiagramQd();
+
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    int a = aa + Nholes; int b = bb + Nholes;
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) /= basis.epsilon(i,j,a,b);
+                }
+            }
+        }
+    }
 }
 
 
@@ -272,7 +285,7 @@ void Solver::DiagramL0(){
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
                 int aa = a - Nholes; int bb = b - Nholes;
 
-                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += blockspphh[n]->V(A,I) / basis.epsilon(i,j,a,b);
+                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += blockspphh[n]->V(A,I);
             }
         }
     }
@@ -296,7 +309,7 @@ void Solver::DiagramLa(){
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
                 int aa = a - Nholes; int bb = b - Nholes;
 
-                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.5 * La(A,I) / basis.epsilon(i,j,a,b);
+                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.5 * La(A,I);
             }
         }
     }
@@ -310,10 +323,7 @@ void Solver::DiagramLb(){
     // Do calculation and insert the values into t.
     for (int n=0; n<Npphh; n++){
 
-        //mat LbT = blockspphh[n]->V.t() * blockspphh[n]->T.t(); // Calculating the product of the transposed matrices V.t and T.t
-        //mat Lb = LbT.t(); // Transposing back to get the diagram Lb
-
-        mat Lb = blockspphh[n]->T * blockspphh[n]->V; // Seems like this is the same calculation. Should be faster
+        mat Lb = blockspphh[n]->T * blockspphh[n]->V;
 
         // Assigning the values calculated to the right position in t
         for (double I=0; I<blockspphh[n]->Holes.n_rows; I++){
@@ -323,7 +333,7 @@ void Solver::DiagramLb(){
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
                 int aa = a - Nholes; int bb = b - Nholes;
 
-                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.5 * Lb(A,I) / basis.epsilon(i,j,a,b);
+                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.5 * Lb(A,I);
             }
         }
     }
@@ -331,6 +341,38 @@ void Solver::DiagramLb(){
 
 void Solver::DiagramLc(){
 
+    // Non-block method
+    mat T = zeros<mat>(Nparticles*Nholes, Nparticles*Nholes);
+    mat V = zeros<mat>(Nparticles*Nholes, Nparticles*Nholes);
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    int a = aa + Nholes; int b = bb + Nholes;
+
+                    T (bb+j*Nparticles, aa+i*Nparticles) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                    V (aa+i*Nparticles, bb+j*Nparticles) = basis.TwoBodyOperator(j,a,b,i);
+                }
+            }
+        }
+    }
+    mat Lct = V*T;
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) += weight * Lct( bb+j*Nparticles, aa+i*Nparticles );
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) -= weight * Lct( bb+i*Nparticles, aa+j*Nparticles ); //P(ij)
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) -= weight * Lct( aa+j*Nparticles, bb+i*Nparticles ); //P(ab)
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) += weight * Lct( aa+i*Nparticles, bb+j*Nparticles ); //P(ij)P(ab)
+                }
+            }
+        }
+    }
+
+    // Blocking approach
     for (int n=0; n<Nhphp; n++){
         blockshphp[n]->SetUpMatrices_Lc(t0);
     }
@@ -360,13 +402,48 @@ void Solver::DiagramQa(){
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
                 int aa = a - Nholes; int bb = b - Nholes;
 
-                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.25 * Qa(A,I) / basis.epsilon(i,j,a,b);
+                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.25 * Qa(A,I);
             }
         }
     }
 }
 
 void Solver::DiagramQb(){
+
+    // Non-block approach. Testet and working
+    mat T1 = zeros<mat>(Nparticles*Nholes, Nparticles*Nholes);
+    mat V  = zeros<mat>(Nparticles*Nholes, Nparticles*Nholes);
+    mat T2 = zeros<mat>(Nparticles*Nholes, Nparticles*Nholes);
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    int a = aa + Nholes; int b = bb + Nholes;
+
+                    T1(aa+i*Nparticles, bb+j*Nparticles) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                    V (bb+j*Nparticles, aa+i*Nparticles) = basis.TwoBodyOperator(j,i,b,a);
+                    T2(aa+i*Nparticles, bb+j*Nparticles) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                }
+            }
+        }
+    }
+    mat Qbt = T1*V*T2;
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) += weight * 0.5 * Qbt( aa+i*Nparticles, bb+j*Nparticles );
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) -= weight * 0.5 * Qbt( aa+j*Nparticles, bb+i*Nparticles ); //P(ij)
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) -= weight * 0.5 * Qbt( bb+i*Nparticles, aa+j*Nparticles ); //P(ab)
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) += weight * 0.5 * Qbt( bb+j*Nparticles, aa+i*Nparticles ); //P(ij)P(ab)
+                }
+            }
+        }
+    }
+
+    // Blocking approach
     for (int n=0; n<Nphph; n++){
         blocksphph[n]->SetUpMatrices_Qb(t0);
     }
@@ -380,7 +457,7 @@ void Solver::DiagramQb(){
                 int i = blocksphph[n]->X1(x1,1); int j = blocksphph[n]->X1(x2,1);
                 int a = blocksphph[n]->X1(x1,0); int b = blocksphph[n]->X1(x2,0); int aa = a-Nholes; int bb = b-Nholes;
 
-                t( Index(aa,i,bb,j,Nparticles,Nholes,Nparticles)) += weight * 0.5 * Qd(x1,x2) / basis.epsilon(i,j,a,b);
+                //t( Index(aa,i,bb,j,Nparticles,Nholes,Nparticles)) += weight * 0.5 * Qd(x1,x2) / basis.epsilon(i,j,a,b);
             }
         }
 
@@ -401,23 +478,64 @@ void Solver::DiagramQb(){
 
 void Solver::DiagramQc(){
 
+    // Non-blocking approach. Tested and working
+    mat T1 = zeros<mat>(Nparticles*Nparticles*Nholes, Nholes);
+    mat V  = zeros<mat>(Nholes, Nparticles*Nparticles*Nholes);
+    mat T2 = zeros<mat>(Nparticles*Nparticles*Nholes, Nholes);
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    int a = aa + Nholes; int b = bb + Nholes;
+
+                    T1(aa + bb*Nparticles + i*Nparticles2, j) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                    V (i, aa + bb*Nparticles + j*Nparticles2) = basis.TwoBodyOperator(i,j,a,b);
+                    T2(aa + bb*Nparticles + j*Nparticles2, i) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                }
+            }
+        }
+    }
+    mat Qct = T1*V*T2;
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) -= weight * 0.5 * Qct( aa+bb*Nparticles+i*Nparticles2, j );
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) += weight * 0.5 * Qct( aa+bb*Nparticles+j*Nparticles2, i );
+                }
+            }
+        }
+    }
+
+
+    // Blocking approach. Working.
     for (int n=0; n<Npphh; n++){
         blockspphh[n]->SetUpMatrices_Qc(t0);
     }
 
     for (int n=0; n<Npphh; n++){
 
-        mat Qc = blockspphh[n]->T * blockspphh[n]->V * blockspphh[n]->T2;
+        mat Qc_tilde = blockspphh[n]->T * blockspphh[n]->V * blockspphh[n]->T2;
 
-        // Assigning values to t
-        for (double I=0; I<blockspphh[n]->Holes.n_rows; I++){
-            for (double A=0; A<blockspphh[n]->Particles.n_rows; A++){
+        int Nh = blockspphh[n]->Nh; int Np = blockspphh[n]->Np;
 
-                int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
-                int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
-                int aa = a-Nholes; int bb = b-Nholes;
+        for (int I=0; I<blockspphh[n]->Nh; I++){
+            for (int J=0; J<blockspphh[n]->Nh; J++){
+                for (int A=0; A<blockspphh[n]->Np; A++){
+                    for (int B=0; B<blockspphh[n]->Np; B++){
 
-                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) -= weight * 0.5 * Qc(A,I) / basis.epsilon(i,j,a,b);
+                        int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(J,0);
+                        int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(B,0);
+                        int aa = a-Nholes; int bb = b-Nholes;
+
+                        if ( t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) == 0){
+                            //t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) -= weight * 0.5 * Qc_tilde(A + B*Np + I*Np*Np, J);
+                            //t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) += weight * 0.5 * Qc_tilde(A + B*Np + J*Np*Np, I);
+                        }
+                    }
+                }
             }
         }
     }
@@ -425,6 +543,38 @@ void Solver::DiagramQc(){
 
 void Solver::DiagramQd(){
 
+    // Non-blocking approach.
+    mat T1 = zeros<mat>(Nparticles, Nholes2*Nparticles);
+    mat T2 = zeros<mat>(Nparticles, Nholes2*Nparticles);
+    mat  V = zeros<mat>(Nholes2*Nparticles, Nparticles);
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    int a = aa + Nholes; int b = bb + Nholes;
+
+                    T1(aa, i+j*Nholes+bb*Nholes2) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                    T2(bb, i+j*Nholes+aa*Nholes2) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                    V (i+j*Nholes+bb*Nholes2, aa) = basis.TwoBodyOperator(i,j,a,b);
+                }
+            }
+        }
+    }
+    mat Qdt = T1*V*T2;
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) -= weight * 0.5 * Qdt( bb, i+j*Nholes+aa*Nholes2);
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) += weight * 0.5 * Qdt( aa, i+j*Nholes+bb*Nholes2);
+                }
+            }
+        }
+    }
+
+    // Blocking approach
     for (int n=0; n<Npphh; n++){
         blockspphh[n]->SetUpMatrices_Qd(t0);
     }
@@ -441,11 +591,13 @@ void Solver::DiagramQd(){
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
                 int aa = a-Nholes; int bb = b-Nholes;
 
-                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) -= weight * 0.5 * Qd(A,I) / basis.epsilon(i,j,a,b);
+                //t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) -= weight * 0.5 * Qd(A,I);
             }
         }
     }
 }
+
+
 
 void Solver::UpdateAmplitudes_Naive(){
     t0 = t;
@@ -457,7 +609,7 @@ void Solver::UpdateAmplitudes_Naive(){
                     int a = aa + Nholes; int b = bb + Nholes;
 
                     double tau = 0.0;
-                    /*
+
                     // Adding La
                     for (int cc=0; cc<Nparticles; cc++){
                         for (int dd=0; dd<Nparticles; dd++){
@@ -474,7 +626,7 @@ void Solver::UpdateAmplitudes_Naive(){
                             tau += 0.5 * basis.TwoBodyOperator(k,l,i,j) * t0( Index(aa,bb,k,l, Nparticles,Nparticles,Nholes) );
                         }
                     }
-                    */
+
                     // Adding Lc
                     for (int cc=0; cc<Nparticles; cc++){
                         for (int k=0; k<Nholes; k++){
@@ -487,40 +639,39 @@ void Solver::UpdateAmplitudes_Naive(){
                         }
                     }
 
-/*
+
                     for (int k=0; k<Nholes; k++){
                         for (int l=0; l<Nholes; l++){
                             for (int cc=0; cc<Nparticles; cc++){
                                 for (int dd=0; dd<Nparticles; dd++){
                                     int c = cc + Nholes; int d = dd + Nholes;
 
-                                    //double Qa = 0; double Qb = 0; double Qc = 0; double Qd = 0;
+                                    double Qa = 0; double Qb = 0; double Qc = 0; double Qd = 0;
 
                                     Qa = 0.25*basis.TwoBodyOperator(k,l,c,d) * t0( Index(cc,dd,i,j,Nparticles,Nparticles,Nholes) ) * t0( Index(aa,bb,k,l,Nparticles,Nparticles,Nholes));
-                                    tau += Qa;
-                                    double Qb = 0;
+
                                     Qb += t0( Index(aa,cc,i,k,Nparticles,Nparticles,Nholes)) * t0( Index(dd,bb,l,j,Nparticles,Nparticles,Nholes)); // No permutation
                                     Qb -= t0( Index(aa,cc,j,k,Nparticles,Nparticles,Nholes)) * t0( Index(dd,bb,l,i,Nparticles,Nparticles,Nholes)); // Permutation of i,j
                                     Qb -= t0( Index(bb,cc,i,k,Nparticles,Nparticles,Nholes)) * t0( Index(dd,aa,l,j,Nparticles,Nparticles,Nholes)); // Permutation of a,b
                                     Qb += t0( Index(bb,cc,j,k,Nparticles,Nparticles,Nholes)) * t0( Index(dd,aa,l,i,Nparticles,Nparticles,Nholes)); // Permutation of a,b,i,j
                                     Qb *= 0.5 * basis.TwoBodyOperator(k,l,c,d);
-                                    tau += Qb;
+
 
                                     Qc -= t0( Index(aa,bb,i,k,Nparticles,Nparticles,Nholes) ) * t0( Index(cc,dd,j,l,Nparticles,Nparticles,Nholes)); // No permutation
                                     Qc += t0( Index(aa,bb,j,k,Nparticles,Nparticles,Nholes) ) * t0( Index(cc,dd,i,l,Nparticles,Nparticles,Nholes)); // Permutation of i,j
                                     Qc *= 0.5 * basis.TwoBodyOperator(k,l,c,d);
-                                    tau += Qc;
+
 
                                     Qd -= t0( Index(bb,dd,k,l,Nparticles,Nparticles,Nholes) ) * t0( Index(aa,cc,i,j,Nparticles,Nparticles,Nholes)); // No permutation
                                     Qd += t0( Index(aa,dd,k,l,Nparticles,Nparticles,Nholes) ) * t0( Index(bb,cc,i,j,Nparticles,Nparticles,Nholes)); // Permutation of a,b
                                     Qd *= 0.5 * basis.TwoBodyOperator(k,l,c,d);
-                                    tau += Qd;
 
-                                    //tau += Qa + Qb + Qc + Qd;
+
+                                    tau += Qa + Qb + Qc + Qd;
                                 }
                             }
                         }
-                    } */
+                    }
 
                     tau = basis.TwoBodyOperator(a,b,i,j) + weight*tau; //Weighting the iterative scheme
 

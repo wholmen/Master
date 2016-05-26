@@ -31,9 +31,9 @@ void TestBlock2Solver(){
     basis_set basis = basis_set(np, ns, rs);
     CCDBlocks2 solver = CCDBlocks2(basis);
 
-    cout << solver.CorrolationEnergy() << endl;
-    //cout << solver.CCD() << endl;
-    cout << solver.CorrolationEnergy2() << endl;
+    //cout << solver.CorrolationEnergy_NAIVE() << endl;
+    cout << solver.CCD() << endl;
+    //cout << solver.CorrolationEnergy2() << endl;
 
 }
 

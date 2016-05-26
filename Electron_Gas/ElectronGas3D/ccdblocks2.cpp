@@ -71,13 +71,14 @@ double CCDBlocks2::CCD(){
     update_t();
 
     double Eold = 0.0;
-    double Enew = CorrolationEnergy();
+
+    double Enew = CorrolationEnergy_NAIVE();
 
     while ( n < 10 && Abs(Enew,Eold) > error){
 
         update_t();
         Eold = Enew;
-        Enew = CorrolationEnergy();
+        Enew = CorrolationEnergy_NAIVE();
 
         n ++;
     }
@@ -191,6 +192,7 @@ double CCDBlocks2::CorrolationEnergy_NAIVE(){
     }
     mat Energy = v*T; // Calculating the energy as a matrix-matrix multiplication
 
+
     vec eigval = eig_sym(Energy);
 
     E = eigval.min();
@@ -224,6 +226,19 @@ int CCDBlocks2::t_index( int a, int b, int i, int j){
 
 
 void CCDBlocks2::update_t(){
-    t0 = t;
+    t0 = t; // We need to save the previous amplitudes in t0. They will be used to compute the new amplitudes stored in t
+
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+                    int a = aa + Nholes; int b = bb + Nholes;
+
+                    t0( t_index(aa,bb,i,j) ) = basis.TwoBodyOperator(a,b,i,j) / basis.epsilon(i,j,a,b);
+                }
+            }
+        }
+    }
+    t = t0;
 
 }

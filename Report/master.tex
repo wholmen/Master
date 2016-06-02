@@ -655,14 +655,68 @@
 		 \begin{align}
 		 	\hat H = \hat T + \hat V
 		 \end{align}
-		 Where we have the kinetic energy, $hat T$ as
+		 Where we have the kinetic energy, $\hat T$ as
 		 \begin{align}
 		 	\hat T = \sum_p \frac{\hbar ^2 k^2}{2m} a_{k \sigma}^{\dagger} a_{k \sigma}
 		 \end{align}
 
 	\end{section}
 	\begin{section}{Infinite Nuclear Matter}
-		Central to my thesis, is the study of infinite nuclear matter. I look at baryonic matter similar to the dense baryonic matter found in neutron stars. 
+		Central to my thesis, is the study of infinite nuclear matter. I look at baryonic matter similar to the dense baryonic matter found in neutron stars. I limit the study to temperatures far below Fermi level. The matter is mostly made up of an equilibrium of baryons and leptons. In neutron star matter, we assume the equilibrium consist of protons, neutrons, electrons and muons with densities larger than $0.1 \text{fm}^-3$. The equilibrium conditions are specified by weak interactions
+		\begin{align}
+		 	b_1 \rightarrow b_2 + l + \bar \nu_l \:\:\:\:\:\: b_2 + l \rightarrow b_1 + \nu_l
+		\end{align} 
+		Where $b$ represent either neutron or proton and $l$ is either an electron or muon. $\nu_l$ is the corresponding neutrino. 
+
+		Nuclear matter is a hypothetical system filling all of space at a uniform density. Symmetric nuclear matter (SNM) consist of equal numbers of protons of neutrons, while pure nuclear matter (PNM) consist only of neutrons. For finite-nucleus systems, the most difficult part is calculating the single particle wave function. For nuclear matter we can use plane wave basis and similar to electron gas, the difficult part is calculating the energy and the effective interaction between particles \cite{Day1967}. In my calculations, I have looked at pure nuclear matter. 
+
+
+	\end{section}
+	\begin{section}{Nuclear Interaction}
+		Nuclear matter is composed of baryons, which interacts through the strong force. 
+		
+		\begin{subsection}{The Minnesota Potential}
+			The Minnesota Potential is given as
+			\begin{align}
+				v(r) = &\left(v_R + (1 + P_{12}^\sigma) v_T/2 + (1 - P_{12}^\sigma) v_S/2 \right) \\
+					   \cdot &\left( \alpha + (2- \alpha)P_{12}^r \right)/2 + (1+m_{t,1})(1+m_{t,2})\frac{e^2}{4r}
+			\end{align}
+			where $r$ is given as $\left| \mathbf{r_1} - \mathbf{r_2} \right|$ and $m_t$ is the isospin projection of particle 1 or 2. $m_t = \pm 1$. 
+			$P_{12}^\sigma $ and $P_{12}^r$ are exchange operators for spin and position, respectively \cite{Baardsen}. Furthermore, we have used
+			\begin{align} 
+				v_R = v_{0R}e^{-k_R r^2}, \:\:\: v_T = -v_{0T} e^{-k_Tr^2}, \:\:\: v_S = -v_{0S}e^{-k_sr^2}
+			\end{align}
+			Where the constants $v_{0R}$, $v_{0T}$, $v_{0S}$, $k_R$, $k_T$ and $k_S$ are given by \cite{Thompson1977}
+			\begin{enumerate}
+				\item $v_{0R} = 200$MeV,  $k_R = 0.1487 \text{fm}^{-2}$
+				\item $v_{0T} = 178$MeV,  $k_T = 0.649 \text{fm}^{-2}$
+				\item $v_{0S} = 91.85$MeV, $k_S = 0.465 \text{fm}^{-2}$
+			\end{enumerate}
+			Written by second quantisation, we want to calculate the two-body interaction
+			\begin{align}
+			 	\left<k_p k_q \middle| v \middle| k_r k_s \right> = \frac{V_0}{L^3} \left(\frac{\pi}{\alpha}\right)^{3/2} e^{-q^2 / 4 \alpha} \delta_{\vec k_p + \vec k_q, \vec k_r + \vec k_s}
+			\end{align}
+			Where $q$ is the relative momentum transfer
+			\begin{align}
+				\mathbf{q} = \mathbf{p} - \mathbf{p'} 
+			\end{align}
+			\begin{align}
+				\mathbf{p} = \frac{1}{2} (\mathbf{k}_p - \mathbf{k}_q) \:\:\:\:\: \mathbf{p'} = \frac{1}{2}(\mathbf{k}_r- \mathbf{k}_s) 
+			\end{align}
+			We can now set up the two-body Matrix-elements for the Minnesota Potential
+			\begin{align}
+				\left<\mathbf{k}_p \mathbf{k}_q \middle| v \middle| \mathbf{k}_r \mathbf{k}_s \right> = 
+				&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{2} \left( V_R + \frac{1}{2} V_T + \frac{1}{2} V_S \right) \left| \mathbf{k}_r \mathbf{k}_s \right>  \\
+				+&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{4} (V_T - V_S) P_{12}^\sigma \left| \mathbf{k}_r \mathbf{k}_s \right> \\
+				-&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{2} \left( V_R + \frac{1}{2} V_T + \frac{1}{2} V_S \right) P_{12}^\sigma P_{12}^\tau \left| \mathbf{k}_r \mathbf{k}_s \right> \\
+				-&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{4}(V_T - V_S) P_{12}^\tau  \left| \mathbf{k}_r \mathbf{k}_s \right>&
+			\end{align}
+			Matrix elements for the spin and isospin exchange operators are 
+			\begin{align}
+				\left< \sigma_p \sigma_q \right| P_{12}^\sigma \left| \sigma_r \sigma_s \right> = \delta_{\sigma_p,\sigma_s} \delta_{\sigma_q,\sigma_r}
+			\end{align}
+			One can see that these matrix elements come at a far greater computational cost than for electron-electron interaction in the electron gas. Therefore it is necessary to compute and store all elements instead of computing them "on the fly". Source: Lecture 1-2 infinite matter. 
+		\end{subsection}
 		
 	\end{section}
 \end{chapter}
@@ -809,6 +863,24 @@
 	
 \end{chapter}
 
+\medskip
 
+\begin{chapter}{Bibliography}
+	\begin{thebibliography}{9}
+		\bibitem{Baardsen}
+		Gustav Baardsen
+		\textit{Coupled-cluster theory for infinite matter} 2014
+
+		\bibitem{Day1967} 
+		B. D. Day
+		\textit{Rev. Mod. Phys.,}
+		39:719, 1967.
+
+		\bibitem{Thompson1977}
+		D. R. Thompson, M. Lemere and Y.C. Tang.
+		\textit{Nucl. Phys. A,} 286:53 1977.
+
+	\end{thebibliography}
+\end{chapter}
 
 \end{document}

@@ -29,6 +29,7 @@ public:
     // Declaring functions in class
     double OneBodyOperator(int p, int q);
     double TwoBodyOperator(int p, int q, int r, int s);
+    double ei(int q);
     double epsilon(int i, int j, int a, int b);
     double epsilon4(int i, int j, int k, int l, int a, int b, int c, int d);
     double ReferenceEnergy();

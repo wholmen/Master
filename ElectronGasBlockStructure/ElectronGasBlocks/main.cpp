@@ -17,7 +17,7 @@ int main()
 }
 
 void TestSolver1(){
-    int ns = 3;
+    int ns = 6;
     int np = 14;
     double rs = 1.0;
 
@@ -26,12 +26,17 @@ void TestSolver1(){
     Solver solve = Solver(basis);
 
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using block structure to update amplitudes." << endl;
-    cout << endl << "CCD Energy:" << solve.CCD(false) << endl;
-
+    cout << "Nstates: " << basis.nstates << " Nholes: " << basis.Nparticles << endl;
+    cout << endl << "CCD Energy:" << solve.CCD(false)  / np << endl;
+    /*
     CCDIntermediates solve3 = CCDIntermediates(basis);
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using intermediates to update amplitudes." << endl;
     cout << endl << "CCD Energy:" << solve3.CCD(10) << endl;
 
+    Solver solve4 = Solver(basis);
+    cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using naive approach to update amplitudes." << endl;
+    cout << endl << "CCD Energy:" << solve4.CCD(true) << endl;
+    */
     /*
     Solver solve2 = Solver(basis);
 

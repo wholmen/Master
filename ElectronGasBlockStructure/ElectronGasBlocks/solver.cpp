@@ -37,12 +37,12 @@ double Solver::CCD(bool naive){
     if (naive){
         double E0 = CorrolationEnergy();
 
-        cout << "Energy using blocking: " << E0 << endl;
+        cout << "Energy using blocking: " << E0 / Nholes << endl;
 
         UpdateAmplitudes_Naive();
         double E1 = CorrolationEnergy();
 
-        cout << "Energy using blocking: " << E1 << endl;
+        cout << "Energy using blocking: " << E1 / Nholes << endl;
 
         NIterations = 0; tolerance = 1e-6;
         while ( AbsoluteDifference(E1,E0) > tolerance && NIterations < 10){
@@ -52,7 +52,7 @@ double Solver::CCD(bool naive){
             E1 = CorrolationEnergy();
             NIterations ++;
 
-            cout << "Energy using blocking: " << E1 << endl;
+            cout << "Energy using blocking: " << E1 / Nholes << endl;
         }
         return E1;
     }
@@ -60,13 +60,13 @@ double Solver::CCD(bool naive){
         // Set up the first calculation for all amplitudes equal to zero
         double E0 = CorrolationEnergy(); // Can be hardcoded to 0 to save computation cost
 
-        cout << "Energy using blocking: " << E0 << endl;
+        cout << "Energy using blocking: " << E0 / Nholes << endl;
 
         // Generate first set of new amplitudes and do second calculation
         UpdateAmplitudes();
         double E1 = CorrolationEnergy();
 
-        cout << "Energy using blocking: " << E1 << endl;
+        cout << "Energy using blocking: " << E1 / Nholes << endl;
 
         // Start the iteration process
         NIterations = 0; tolerance = 1e-6;
@@ -77,7 +77,7 @@ double Solver::CCD(bool naive){
             E1 = CorrolationEnergy();
             NIterations ++;
 
-            cout << "Energy using blocking: " << E1 << endl;
+            cout << "Energy using blocking: " << E1 / Nholes << endl;
 
         }
         return E1;

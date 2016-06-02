@@ -23,12 +23,12 @@ void CompareMBPT2_CCD1order();
 
 int main()
 {
-    CompareMBPT2_CCD1order();
-    CompareIterationsIntermediates();
-    CompareResultsIntermediates();
-    CompareMethods();
-    //TestCCDNaive();
-    //TestMBPTNaive();
+    //CompareMBPT2_CCD1order();
+    //CompareIterationsIntermediates();
+    //CompareResultsIntermediates();
+    //CompareMethods();
+    TestCCDNaive();
+    TestMBPTNaive();
     //TestCCDIntermediates();
     //TestFCI();
 }
@@ -158,16 +158,18 @@ void CompareMethods(){
 
 void TestMBPTNaive(){
 
-    double g = 0.712;
+    double g = -0.5;
     basis_set basis = basis_set(4,4,g,1);
 
+    double dEexact = -g*g / 4.0 *(1/(4+g) + 1/(6+g) + 1/(2+g) + 1/(4+g));
+
     MBPTNaive solve = MBPTNaive(basis);
-    cout << "MBPT2: " << solve.MBPT2() << endl;
+    cout << "MBPT2: " << solve.MBPT2() << " MHJ MBPT2: " << solve.MBPT2_MHJ() << "Exact: " << dEexact << endl;
 }
 
 void TestCCDNaive(){
 
-    double g = 0.712;
+    double g = -0.5;
     basis_set basis = basis_set(4,4,g,1);
 
     CCDNaive solve = CCDNaive(basis);

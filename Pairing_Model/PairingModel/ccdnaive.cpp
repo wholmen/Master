@@ -154,7 +154,7 @@ void CCDNaive::UpdateAmplitudes(){
                     }
                     tau = basis.TwoBodyOperator(a,b,i,j) + weight*tau; //Weighting the iterative scheme
 
-                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) = tau / basis.epsilon(i,j,a,b);
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) = tau / basis.epsilonijab(i,j,a,b);
                 }
             }
         }

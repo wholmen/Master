@@ -59,21 +59,39 @@ double basis_set::TwoBodyOperator(int p, int q, int r, int s){
         if ( KD_spin(p,q) == 0 ){
             if (KD_spin(r,s) == 0){
 
-                if ( KD_spin(p,r) == 1){
+                if ( KD_spin(p,r) == 1 && KD_spin(q,s) == 1 ){
                     tbo = -g/2.0;
                 }
-                if ( KD_spin(p,r) == 0){
+                if ( KD_spin(p,s) == 1 && KD_spin(q,r) == 1 ){
                     tbo = g/2.0;
                 }
             }
         }
     }
+    //return tbo;
+    tbo = 0;
+    if ( states(p,0) == states(q,0) && states(r,0) == states(s,0) ){
+
+        if ( states(p,1) != states(q,1) && states(r,1) != states(s,1) ){
+
+            if (states(p,1) == states(r,1) && states(q,1) == states(s,1)) tbo =-g/2.0;
+            if (states(p,1) == states(s,1) && states(q,1) == states(r,1)) tbo = g/2.0;
+        }
+    }
     return tbo;
 }
 
-double basis_set::epsilon(int i, int j, int a, int b){
+double basis_set::epsilon(int q){
+    double interaction = 0;
+    for (int i=0; i<Nparticles; i++){
+        interaction += TwoBodyOperator(q,i,q,i);
+    }
+    return OneBodyOperator(q,q) + interaction;
+}
+
+double basis_set::epsilonijab(int i, int j, int a, int b){
     // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
-    return OneBodyOperator(i,i) + OneBodyOperator(j,j) - OneBodyOperator(a,a) - OneBodyOperator(b,b);
+    return epsilon(i) + epsilon(j) - epsilon(a) - epsilon(b);
 }
 
 double basis_set::epsilon4(int i, int j, int k, int l, int a, int b, int c, int d){

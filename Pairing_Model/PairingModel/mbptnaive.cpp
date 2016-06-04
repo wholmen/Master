@@ -9,8 +9,8 @@ MBPTNaive::MBPTNaive(basis_set BASIS){
     basis = BASIS;
 
     // Calculating important variables
-    Nholes = basis.Nparticles; Nholes2 = Nholes*Nholes; Nholes3 = Nholes2*Nholes;
-    Nstates = basis.nstates;
+    Nholes = basis.Nholes; Nholes2 = Nholes*Nholes; Nholes3 = Nholes2*Nholes;
+    Nstates = basis.Nstates;
     Nparticles = Nstates - Nholes; Nparticles2 = Nparticles*Nparticles; Nparticles3 = Nparticles2*Nparticles;
 
 }
@@ -30,7 +30,7 @@ double MBPTNaive::MBPT2_MHJ(){
                     int aa = a - Nholes; int bb = b - Nholes;
 
                     vhhpp(i + j*Nholes, aa + bb*Nparticles) = basis.TwoBodyOperator(i,j,a,b);
-                    vpphh(aa + bb*Nparticles, i + j*Nholes) = basis.TwoBodyOperator(a,b,i,j) / basis.epsilonijab(i,j,a,b);
+                    vpphh(aa + bb*Nparticles, i + j*Nholes) = basis.TwoBodyOperator(a,b,i,j) / basis.epsilon(i,j,a,b);
                 }
             }
         }
@@ -50,7 +50,7 @@ double MBPTNaive::MBPT2(){
             for (int a=Nholes; a<Nstates; a++){
                 for (int b=Nholes; b<Nstates; b++){
 
-                    D1 += basis.TwoBodyOperator(i,j,a,b)*basis.TwoBodyOperator(a,b,i,j) / basis.epsilonijab(i,j,a,b);
+                    D1 += basis.TwoBodyOperator(i,j,a,b)*basis.TwoBodyOperator(a,b,i,j) / basis.epsilon(i,j,a,b);
                 }
             }
         }
@@ -74,13 +74,13 @@ double MBPTNaive::MBPT3(){
                     for (int c=Nholes; c<Nstates; c++){
                         for (int d=Nholes; d<Nstates; d++){
 
-                            D4 += basis.TwoBodyOperator(c,d,i,j)*basis.TwoBodyOperator(a,b,c,d)*basis.TwoBodyOperator(i,j,a,b) / basis.epsilonijab(i,j,c,d) / basis.epsilonijab(i,j,a,b);
+                            D4 += basis.TwoBodyOperator(c,d,i,j)*basis.TwoBodyOperator(a,b,c,d)*basis.TwoBodyOperator(i,j,a,b) / basis.epsilon(i,j,c,d) / basis.epsilon(i,j,a,b);
                         }
                     }
                     for (int k=0; k<Nholes; k++){
                         for (int l=0; l<Nholes; l++){
 
-                            D5 += basis.TwoBodyOperator(a,b,k,l)*basis.TwoBodyOperator(k,l,i,j)*basis.TwoBodyOperator(i,j,a,b) / basis.epsilonijab(k,l,a,b) / basis.epsilonijab(i,j,a,b);
+                            D5 += basis.TwoBodyOperator(a,b,k,l)*basis.TwoBodyOperator(k,l,i,j)*basis.TwoBodyOperator(i,j,a,b) / basis.epsilon(k,l,a,b) / basis.epsilon(i,j,a,b);
                         }
                     }
                 }
@@ -97,7 +97,7 @@ double MBPTNaive::MBPT4(){
     double mbpt3 = MBPT3();
     double D5, D6, D14, D15, D34, D35, D36, D37, D38, D39, D40;
     D5 = D6 = D14 = D15 = D34 = D35 = D36 = D37 = D38 = D39 = D40 = 0.0;
-    /*
+
     for (int i=0; i<Nholes; i++){
         for (int j=0; j<Nholes; j++){
 
@@ -150,6 +150,6 @@ double MBPTNaive::MBPT4(){
     D5 /= 16.0; D6 /= 16.0; D14 /= 16.0; D15 /= 16.0;
     D34 /= -4.0; D35 /= -4.0; D36 /= 16.0; D37 /= 16.0; D38 /= 1.0; D39 /= -4.0; D40 /= -4.0;
 
-    return mbpt3 + D5 + D6 + D14 + D15 + D34 + D35 + D36 + D37 + D38 + D39 + D40; */
+    return mbpt3 + D5 + D6 + D14 + D15 + D34 + D35 + D36 + D37 + D38 + D39 + D40;
 }
 

@@ -10,13 +10,13 @@ CCDIntermediates::CCDIntermediates(basis_set BASIS){
     basis = BASIS;
 
     // Calculating important variables
-    Nholes = basis.Nparticles; Nholes2 = Nholes*Nholes; Nholes3 = Nholes2*Nholes;
-    Nstates = basis.nstates;
+    Nholes = basis.Nholes; Nholes2 = Nholes*Nholes; Nholes3 = Nholes2*Nholes;
+    Nstates = basis.Nstates;
     Nparticles = Nstates - Nholes; Nparticles2 = Nparticles*Nparticles; Nparticles3 = Nparticles2*Nparticles;
 
 
     // Weight when adding diagrams to new amplitudes
-    weight = 0.5;
+    weight = 1.0;
 
     // Setting up matrices
     t0 = zeros<vec>(Nparticles2*Nholes2);
@@ -155,7 +155,7 @@ void CCDIntermediates::UpdateAmplitudes(){
 
                     tau = basis.TwoBodyOperator(a,b,i,j) + weight*tau; // Weighting the iterative scheme
 
-                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) = tau / basis.epsilonijab(i,j,a,b);
+                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) = tau / basis.epsilon(i,j,a,b);
                 }
             }
         }

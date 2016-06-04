@@ -83,9 +83,17 @@ double basis_set::ReferenceEnergy(){
     return Energy / Nholes;
 }
 
+double basis_set::ei(int q){
+    double interaction = 0;
+    for (int i=0; i<Nholes; i++){
+        interaction += TwoBodyOperator(q,i,q,i);
+    }
+    return OneBodyOperator(q,q) + interaction;
+}
+
 double basis_set::epsilon(int i, int j, int a, int b){
     // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
-    return OneBodyOperator(i,i) + OneBodyOperator(j,j) - OneBodyOperator(a,a) - OneBodyOperator(b,b);
+    return ei(i) + ei(j) - ei(a) - ei(b);
 }
 
 double basis_set::OneBodyOperator(int p, int q){

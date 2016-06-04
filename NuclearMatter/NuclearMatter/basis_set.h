@@ -28,6 +28,7 @@ public:
     // Functions for energy calculations
     double OneBodyOperator(int p, int q);
     double TwoBodyOperator(int p, int q, int r, int s); // Minnesota potential as nuclear interaction
+    double ei(int q);
     double epsilon(int i, int j, int a, int b); // Returns e_i + e_j - e_a - e_b
     double ReferenceEnergy();
 

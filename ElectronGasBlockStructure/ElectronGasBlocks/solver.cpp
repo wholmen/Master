@@ -6,8 +6,8 @@ Solver::Solver(basis_set BASIS)
 
     // Calculating important variables
 
-    Nholes = basis.Nparticles; Nholes2 = Nholes*Nholes; Nholes3 = Nholes2*Nholes;
-    Nstates = basis.nstates;
+    Nholes = basis.Nholes; Nholes2 = Nholes*Nholes; Nholes3 = Nholes2*Nholes;
+    Nstates = basis.Nstates;
     Nparticles = Nstates - Nholes; Nparticles2 = Nparticles*Nparticles; Nparticles3 = Nparticles2*Nparticles;
 
     int Nmax = basis.Nshells;
@@ -15,7 +15,7 @@ Solver::Solver(basis_set BASIS)
     M = 2*m + 1;
 
     // Weight when adding diagrams to new amplitudes
-    weight = 0.5;
+    weight = 1.0;
 
     // Setting up two-state configurations
 
@@ -715,10 +715,10 @@ void Solver::TwoBodyConfigurations(){
                 // Setting up direct channels for holes
 
                 // Two-hole momentum and spin
-                int Nx = basis.states(i,1) + basis.states(j,1); // Combining x-momentum
-                int Ny = basis.states(i,2) + basis.states(j,2); // Combining y-momentum
-                int Nz = basis.states(i,3) + basis.states(j,3); // Combining z-momentum
-                int Sz = basis.states(i,4) + basis.states(j,4); // Combining spin
+                int Nx = basis.States(i,1) + basis.States(j,1); // Combining x-momentum
+                int Ny = basis.States(i,2) + basis.States(j,2); // Combining y-momentum
+                int Nz = basis.States(i,3) + basis.States(j,3); // Combining z-momentum
+                int Sz = basis.States(i,4) + basis.States(j,4); // Combining spin
 
                 // Adding a new two-hole-state configuration to matrix. (i, j, Identifier)
                 Holes.insert_rows(n,1);
@@ -735,10 +735,10 @@ void Solver::TwoBodyConfigurations(){
 
             if (aa != bb){
 
-                int Nx = basis.states(a,1) + basis.states(b,1);
-                int Ny = basis.states(a,2) + basis.states(b,2);
-                int Nz = basis.states(a,3) + basis.states(b,3);
-                int Sz = basis.states(a,4) + basis.states(b,4);
+                int Nx = basis.States(a,1) + basis.States(b,1);
+                int Ny = basis.States(a,2) + basis.States(b,2);
+                int Nz = basis.States(a,3) + basis.States(b,3);
+                int Sz = basis.States(a,4) + basis.States(b,4);
 
                 Particles.insert_rows(n,1);
 
@@ -757,10 +757,10 @@ void Solver::TwoBodyConfigurations(){
             int a = aa + Nholes;
 
             // Two-state
-            int Nxc = basis.states(i,1) - basis.states(a,1);
-            int Nyc = basis.states(i,2) - basis.states(a,2);
-            int Nzc = basis.states(i,3) - basis.states(a,3);
-            int Szc = basis.states(i,4) - basis.states(a,4);
+            int Nxc = basis.States(i,1) - basis.States(a,1);
+            int Nyc = basis.States(i,2) - basis.States(a,2);
+            int Nzc = basis.States(i,3) - basis.States(a,3);
+            int Szc = basis.States(i,4) - basis.States(a,4);
 
             Xhp.insert_rows(n,1);
             Xph.insert_rows(n,1);

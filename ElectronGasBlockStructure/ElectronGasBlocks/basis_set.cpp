@@ -2,12 +2,14 @@
 
 basis_set::basis_set() {}
 
-basis_set::basis_set(int nparticles, int nshells, double RS){
-    Nparticles = nparticles; Nshells = nshells; rs = RS;
+basis_set::basis_set(int Nshells_input, int NshellsFilled_input, double rs_input){
 
-    states = zeros<mat>(0,5);
 
-    nstates = 0;
+    Nshells = Nshells_input; NshellsFilled = NshellsFilled_input; rs = rs_input;
+
+    States = zeros<mat>(0,5);
+
+    Nstates = 0; Nholes = 0;
 
     for (int shell=0; shell<Nshells; shell++){
         // shell is the value x^2 + y^2 + z^2 must match
@@ -26,15 +28,16 @@ basis_set::basis_set(int nparticles, int nshells, double RS){
                         // Adding spin
                         for (int ms = -1; ms <= 1; ms+=2){
 
-                            states.insert_rows(nstates,1);
+                            States.insert_rows(Nstates,1);
 
-                            states(nstates,0) = e;
-                            states(nstates,1) = nx;
-                            states(nstates,2) = ny;
-                            states(nstates,3) = nz;
-                            states(nstates,4) = ms;
+                            States(Nstates,0) = e;
+                            States(Nstates,1) = nx;
+                            States(Nstates,2) = ny;
+                            States(Nstates,3) = nz;
+                            States(Nstates,4) = ms;
 
-                            nstates++;
+                            Nstates++;
+                            if (shell < NshellsFilled) Nholes ++;
                         }
                     }
                 }
@@ -43,15 +46,15 @@ basis_set::basis_set(int nparticles, int nshells, double RS){
     }
 
     // Various calculations of variables needed
-    L3 = (4*pi*rs*rs*rs*Nparticles) / 3.0;
+    L3 = (4*pi*rs*rs*rs*Nholes) / 3.0;
     L2 = pow(L3, 2.0/3 );
     L1 = pow(L3, 1.0/3 );
 
     kstep = 2*pi / L1;
 
     // Calculating the actual one-body energy for given e=nx^2+ny^2+nz^2
-    for (int i=0; i<nstates; i++){
-        states(i,0) = states(i,0) * 2*pi*pi / L2;
+    for (int i=0; i<Nstates; i++){
+        States(i,0) = States(i,0) * 2*pi*pi / L2;
     }
 }
 
@@ -59,12 +62,12 @@ double basis_set::ReferenceEnergy(){
 
     double Energy = 0.0;
 
-    if (Nparticles <= nstates){
+    if (Nholes <= Nstates){
 
-        for (int p=0; p<Nparticles; p++){
+        for (int p=0; p<Nholes; p++){
             Energy += OneBodyOperator(p,p);
 
-            for (int q=0; q<Nparticles; q++){
+            for (int q=0; q<Nholes; q++){
                 if (p != q) {
                     Energy += 0.5*TwoBodyOperator(p,q,p,q);
                 }
@@ -79,7 +82,7 @@ double basis_set::ReferenceEnergy(){
 
 double basis_set::ei(int q){
     double interaction = 0;
-    for (int i=0; i<Nparticles; i++){
+    for (int i=0; i<Nholes; i++){
         interaction += TwoBodyOperator(q,i,q,i);
     }
     return OneBodyOperator(q,q) + interaction;
@@ -90,15 +93,10 @@ double basis_set::epsilon(int i, int j, int a, int b){
     return ei(i) + ei(j) - ei(a) - ei(b);
 }
 
-double basis_set::epsilon4(int i, int j, int k, int l, int a, int b, int c, int d){
-    // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
-    return OneBodyOperator(i,i) + OneBodyOperator(j,j) + OneBodyOperator(k,k) + OneBodyOperator(l,l) - OneBodyOperator(a,a) - OneBodyOperator(b,b) - OneBodyOperator(c,c) - OneBodyOperator(d,d);
-}
-
 
 double basis_set::OneBodyOperator(int p, int q){
     // Need to return the one-body energy value for p if p == q
-    return ( p == q ) ? states(p,0) : 0;
+    return ( p == q ) ? States(p,0) : 0;
 }
 
 double basis_set::TwoBodyOperator(int p, int q, int r, int s){
@@ -142,24 +140,24 @@ int basis_set::KDelta_array(rowvec a, rowvec b){
 
 int basis_set::KDelta_k(int a, int b){
     // Kroenecker delta for wave numbers ka and kb
-    return KDelta_array( states.row(a), states.row(b));
+    return KDelta_array( States.row(a), States.row(b));
 }
 
 int basis_set::KDelta_spin(int a, int b){
     // Kroenecker delta for spin integer ms_a and ms_b
-    return KDelta_integer( states(a,4), states(b,4));
+    return KDelta_integer( States(a,4), States(b,4));
 }
 
 int basis_set::KDelta_sum(int a, int b, int c, int d){
     // Kroenecker delta comparing a+b and c+d
-    return KDelta_array( states.row(a)+states.row(b) , states.row(c)+states.row(d));
+    return KDelta_array( States.row(a)+States.row(b) , States.row(c)+States.row(d));
 }
 
 double basis_set::Absolute_Difference2(int a, int b){
     // Returning difference squared between a and b
     double diff = 0.0;
     for (int i=1; i<=3; i++){
-        diff += (states(a,i) - states(b,i)) * (states(a,i) - states(b,i));
+        diff += (States(a,i) - States(b,i)) * (States(a,i) - States(b,i));
     }
     return diff;
 }

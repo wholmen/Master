@@ -17,21 +17,21 @@ private:
     double L3, L2, L1;
 
 public:
-    mat states; // State n has quantum numbers (e, nx, ny, nz, ms) at row n.
+    mat States; // State n has quantum numbers (e, nx, ny, nz, ms) at row n.
 
-    int nstates;
-    int Nparticles;
+    int Nstates;
+    int Nholes;
     int Nshells;
+    int NshellsFilled;
 
     basis_set();
-    basis_set(int nparticles, int nshells, double RS);
+    basis_set(int Nshells_input, int NshellsFilled_input, double rs_input);
 
     // Declaring functions in class
     double OneBodyOperator(int p, int q);
     double TwoBodyOperator(int p, int q, int r, int s);
     double ei(int q);
     double epsilon(int i, int j, int a, int b);
-    double epsilon4(int i, int j, int k, int l, int a, int b, int c, int d);
     double ReferenceEnergy();
 
     double Absolute_Difference2(int a, int b);

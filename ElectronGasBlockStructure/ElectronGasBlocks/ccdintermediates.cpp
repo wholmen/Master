@@ -6,8 +6,8 @@ CCDIntermediates::CCDIntermediates(basis_set BASIS){
     basis = BASIS;
 
     // Calculating important variables
-    Nholes = basis.Nparticles; Nholes2 = Nholes*Nholes; Nholes3 = Nholes2*Nholes;
-    Nstates = basis.nstates;
+    Nholes = basis.Nholes; Nholes2 = Nholes*Nholes; Nholes3 = Nholes2*Nholes;
+    Nstates = basis.Nstates;
     Nparticles = Nstates - Nholes; Nparticles2 = Nparticles*Nparticles; Nparticles3 = Nparticles2*Nparticles;
 
 

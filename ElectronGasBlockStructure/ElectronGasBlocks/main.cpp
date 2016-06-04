@@ -17,17 +17,17 @@ int main()
 }
 
 void TestSolver1(){
-    int ns = 6;
-    int np = 14;
+    int Nshells = 6;
+    int NfilledShells = 2;
     double rs = 1.0;
 
-    basis_set basis = basis_set(np, ns, rs);
+    basis_set basis = basis_set(Nshells, NfilledShells, rs);
 
     Solver solve = Solver(basis);
 
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using block structure to update amplitudes." << endl;
-    cout << "Nstates: " << basis.nstates << " Nholes: " << basis.Nparticles << endl;
-    cout << endl << "CCD Energy:" << solve.CCD(false)  / np << endl;
+    cout << "Nstates: " << basis.Nstates << " Nholes: " << basis.Nholes << endl;
+    cout << endl << "CCD Energy:" << solve.CCD(false)  / basis.Nholes << endl;
     /*
     CCDIntermediates solve3 = CCDIntermediates(basis);
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using intermediates to update amplitudes." << endl;

@@ -1,8 +1,8 @@
-#include "basis_set.h"
+#include "electronbasis.h"
 
-basis_set::basis_set() {}
+ElectronBasis::ElectronBasis() {}
 
-basis_set::basis_set(int Nshells_input, int NshellsFilled_input, double rs_input){
+ElectronBasis::ElectronBasis(int Nshells_input, int NshellsFilled_input, double rs_input){
 
 
     Nshells = Nshells_input; NshellsFilled = NshellsFilled_input; rs = rs_input;
@@ -58,7 +58,7 @@ basis_set::basis_set(int Nshells_input, int NshellsFilled_input, double rs_input
     }
 }
 
-double basis_set::ReferenceEnergy(){
+double ElectronBasis::ReferenceEnergy(){
 
     double Energy = 0.0;
 
@@ -80,7 +80,7 @@ double basis_set::ReferenceEnergy(){
     return Energy;
 }
 
-double basis_set::ei(int q){
+double ElectronBasis::ei(int q){
     double interaction = 0;
     for (int i=0; i<Nholes; i++){
         interaction += TwoBodyOperator(q,i,q,i);
@@ -88,18 +88,18 @@ double basis_set::ei(int q){
     return OneBodyOperator(q,q) + interaction;
 }
 
-double basis_set::epsilon(int i, int j, int a, int b){
+double ElectronBasis::epsilon(int i, int j, int a, int b){
     // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
     return ei(i) + ei(j) - ei(a) - ei(b);
 }
 
 
-double basis_set::OneBodyOperator(int p, int q){
+double ElectronBasis::OneBodyOperator(int p, int q){
     // Need to return the one-body energy value for p if p == q
     return ( p == q ) ? States(p,0) : 0;
 }
 
-double basis_set::TwoBodyOperator(int p, int q, int r, int s){
+double ElectronBasis::TwoBodyOperator(int p, int q, int r, int s){
     // Two body interaction for electron gas
 
     double asym, asym1, asym2;
@@ -124,12 +124,12 @@ double basis_set::TwoBodyOperator(int p, int q, int r, int s){
     return asym * (asym1 - asym2);
 }
 
-int basis_set::KDelta_integer(int a, int b){
+int ElectronBasis::KDelta_integer(int a, int b){
     // Returns 1 if a and b are equal
     return ( a == b ) ? 1:0;
 }
 
-int basis_set::KDelta_array(rowvec a, rowvec b){
+int ElectronBasis::KDelta_array(rowvec a, rowvec b){
     // Returns 1 if all elements are equal, else return 0
     int value = 1;
     for (int i=1; i<=3; i++){
@@ -138,22 +138,22 @@ int basis_set::KDelta_array(rowvec a, rowvec b){
     return value;
 }
 
-int basis_set::KDelta_k(int a, int b){
+int ElectronBasis::KDelta_k(int a, int b){
     // Kroenecker delta for wave numbers ka and kb
     return KDelta_array( States.row(a), States.row(b));
 }
 
-int basis_set::KDelta_spin(int a, int b){
+int ElectronBasis::KDelta_spin(int a, int b){
     // Kroenecker delta for spin integer ms_a and ms_b
     return KDelta_integer( States(a,4), States(b,4));
 }
 
-int basis_set::KDelta_sum(int a, int b, int c, int d){
+int ElectronBasis::KDelta_sum(int a, int b, int c, int d){
     // Kroenecker delta comparing a+b and c+d
     return KDelta_array( States.row(a)+States.row(b) , States.row(c)+States.row(d));
 }
 
-double basis_set::Absolute_Difference2(int a, int b){
+double ElectronBasis::Absolute_Difference2(int a, int b){
     // Returning difference squared between a and b
     double diff = 0.0;
     for (int i=1; i<=3; i++){

@@ -1,5 +1,5 @@
-#ifndef BASIS_SET_H
-#define BASIS_SET_H
+#ifndef ELECTRONBASIS_H
+#define ELECTRONBASIS_H
 
 #include <armadillo>
 #include <iostream>
@@ -9,13 +9,8 @@
 using namespace std;
 using namespace arma;
 
-class basis_set
+class ElectronBasis
 {
-private:
-    double rs;
-    double kstep;
-    double L3, L2, L1;
-
 public:
     mat States; // State n has quantum numbers (e, nx, ny, nz, ms) at row n.
 
@@ -24,8 +19,12 @@ public:
     int Nshells;
     int NshellsFilled;
 
-    basis_set();
-    basis_set(int Nshells_input, int NshellsFilled_input, double rs_input);
+    double rs;
+    double kstep;
+    double L3, L2, L1;
+
+    ElectronBasis();
+    ElectronBasis(int Nshells_input, int NshellsFilled_input, double rs_input);
 
     // Declaring functions in class
     double OneBodyOperator(int p, int q);
@@ -43,10 +42,6 @@ public:
     int KDelta_sum(int a, int b, int c, int d);
     int KDelta_spin(int a, int b);
 
-
-//signals:
-
-//public slots:
 };
 
-#endif // BASIS_SET_H
+#endif // ELECTRONBASIS_H

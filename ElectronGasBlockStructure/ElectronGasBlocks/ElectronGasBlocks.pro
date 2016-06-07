@@ -4,16 +4,22 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    basis_set.cpp \
     solver.cpp \
     block.cpp \
-    ccdintermediates.cpp
+    electronbasis.cpp \
+    ../../Solvers/Solvers/mbptnaive.cpp \
+    ../../Solvers/Solvers/ccdnaive.cpp \
+    ../../Solvers/Solvers/ccdintermediates.cpp \
+    ../../Pairing_Model/PairingModel/pairingbasis.cpp
 
 HEADERS += \
-    basis_set.h \
     solver.h \
     block.h \
-    ccdintermediates.h
+    electronbasis.h \
+    ../../Solvers/Solvers/mbptnaive.h \
+    ../../Solvers/Solvers/ccdnaive.h \
+    ../../Solvers/Solvers/ccdintermediates.h \
+    ../../Pairing_Model/PairingModel/pairingbasis.h
 
 
 LIBS += -llapack -lblas -larmadillo

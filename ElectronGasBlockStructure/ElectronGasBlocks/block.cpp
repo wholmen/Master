@@ -1,26 +1,20 @@
 #include "block.h"
 
-Block::Block()
-{
+Block::Block(){}
 
-}
-
-Block::Block(basis_set BASIS, int NHOLES, int NPARTICLES){
+Block::Block(ElectronBasis BASIS, int NHOLES, int NPARTICLES){
     // Block has been initialized
     basis = BASIS;
     Nholes = NHOLES;
     Nparticles = NPARTICLES;
 
-    Holes = zeros<mat>(0,2); // Rows will be added when needed.
-    Particles = zeros<mat>(0,2);
-    X1 = zeros<mat>(0,2);
-    X2 = zeros<mat>(0,2);
-
+    Holes = zeros<mat>(0,3); // Rows will be added when needed.
+    Particles = zeros<mat>(0,3);
+    Xph = zeros<mat>(0,3);
+    Xhp = zeros<mat>(0,3);
 }
 
-
 void Block::AddStates(rowvec I, rowvec A){
-
     // The following if-test is not a beauty.
     // Explained in short terms: It checks wether I have added the samme combination of i,j before. i.e. is the two-hole state already added?
     // I will only need one of each two-hole state
@@ -29,37 +23,31 @@ void Block::AddStates(rowvec I, rowvec A){
         int n = Holes.n_rows;
         Holes.insert_rows(n,1);
 
-        Holes(n,0) = I(0); Holes(n,1) = I(1);
-
+        Holes(n,0) = I(0); Holes(n,1) = I(1); Holes(n,2) = I(2);
     }
     if ( ! (any( Particles.col(0) == A(0) ) && any( Particles.col(1) == A(1)))  ) { // We have not already stored this exact two-hole state
 
         int n = Particles.n_rows;
         Particles.insert_rows(n,1);
 
-        Particles(n,0) = A(0); Particles(n,1) = A(1);
-
+        Particles(n,0) = A(0); Particles(n,1) = A(1); Particles(n,2) = A(2);
     }
-    // Function has been tested. It is working as intended.
 }
 
-void Block::AddCrossStates(rowvec x1, rowvec x2){
+void Block::AddPHHPStates(rowvec x1, rowvec x2){
+    if ( ! (any( Xph.col(0) == x1(0)) && any( Xph.col(1) == x1(1)) )){
 
-    // Function made to add all cross channels
+        int n = Xph.n_rows;
+        Xph.insert_rows(n,1);
 
-    if ( ! ( any( X1.col(0) == x1(0)) && any( X1.col(1) == x1(1)) )){
-        // Adding state
-        int n = X1.n_rows;
-        X1.insert_rows(n,1);
-
-        X1(n,0) = x1(0); X1(n,1) = x1(1);
+        Xph(n,0) = x1(0); Xph(n,1) = x1(1); Xph(n,2) = x1(2);
     }
-    if ( ! ( any( X2.col(0) == x2(0)) && any( X2.col(1) == x2(1)) )){
-        // Adding state
-        int n = X2.n_rows;
-        X2.insert_rows(n,1);
+    if ( ! (any( Xhp.col(0) == x2(0)) && any( Xhp.col(1) == x2(1)) )){
 
-        X2(n,0) = x2(0); X2(n,1) = x2(1);
+        int n = Xhp.n_rows;
+        Xhp.insert_rows(n,1);
+
+        Xhp(n,0) = x2(0); Xhp(n,1) = x2(1); Xhp(n,2) = x2(2);
     }
 }
 
@@ -67,6 +55,7 @@ void Block::FinishBlock(){
     // Number of two-state configurations
     Nh = Holes.n_rows;
     Np = Particles.n_rows;
+    Nph = Xph.n_rows;
 }
 
 
@@ -145,21 +134,24 @@ void Block::SetUpMatrices_Lb(mat &t0){
 
 void Block::SetUpMatrices_Lc(mat &t0){
 
-    int Nx = X1.n_rows;
+    V = zeros<mat>(Nph,Nph);
+    T = zeros<mat>(Nph,Nph);
 
+    for (int x1=0; x1<Nph; x1++){
+        for (int x2=0; x2<Nph; x2++){
 
-    T = zeros<mat>(Nx,Nx);
-    V = zeros<mat>(Nx,Nx);
+            int a=Xph(x1,0); int i=Xph(x1,1);
+            int b=Xph(x2,0); int j=Xph(x2,1);
 
-    for (int x1=0; x1<Nx; x1++){
-        for (int x2=0; x2<Nx; x2++){
+            V(x2,x1) = basis.TwoBodyOperator(j,a,b,i);
+        }
+        for (int x2=0; x2<Nph; x2++){
 
-            int a = X1(x1,1); int b = X1(x2,1); int aa = a-Nholes; int bb = b-Nholes;
-            int i = X1(x1,0); int j = X1(x2,0);
+            int i=Xph(x1,1); int j=Xhp(x2,0);
+            int a=Xph(x1,0); int b=Xhp(x2,1);
+            int aa=a-Nholes; int bb=b-Nholes;
 
-            T(x1,x2) = t0( Index(i,aa,j,bb,Nholes,Nparticles,Nholes) );
-            V(x2,x1) = basis.TwoBodyOperator(i,a,j,b);
-
+            T(x1,x2) = t0( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
         }
     }
 }
@@ -168,7 +160,6 @@ void Block::SetUpMatrices_Qa(mat &t0){
 
     T = zeros(Np,Nh);
     V = zeros(Nh,Np);
-    T2 = zeros(Np,Nh);
 
     for (int I=0; I<Nh; I++){
         for (int A=0; A<Np; A++){
@@ -178,125 +169,27 @@ void Block::SetUpMatrices_Qa(mat &t0){
             int aa = a - Nholes; int bb = b - Nholes;
 
             T(A,I) = t0( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) );
-
             V(I,A) = basis.TwoBodyOperator(i,j,a,b);
-
-            T2(A,I) = t0( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) );
         }
     }
 }
 
 void Block::SetUpMatrices_Qb(mat &t0){
 
-    int Nx = X1.n_rows;
+    T = zeros<mat>(Nph,Nph);
+    V = zeros<mat>(Nph,Nph);
 
-    T = zeros<mat>(Nx,Nx);
-    V = zeros<mat>(Nx,Nx);
-    T2 = zeros<mat>(Nx,Nx);
+    for (int x1=0; x1<Nph; x1++){
+        for (int x2=0; x2<Nph; x2++){
 
-    for (int x1=0; x1<Nx; x1++){
-        for (int x2=0; x2<Nx; x2++){
+            int i=Xph(x1,1); int j=Xhp(x2,0);
+            int a=Xph(x1,0); int b=Xhp(x2,1);
+            int aa=a-Nholes; int bb=b-Nholes;
 
-            int a = X1(x1,0); int b = X1(x2,0); int aa = a-Nholes; int bb = b-Nholes;
-            int i = X1(x1,1); int j = X1(x2,1);
-
-            T(x1,x2) = t0( Index(aa,i,bb,j,Nparticles,Nholes,Nparticles) );
-            V(x2,x1) = basis.TwoBodyOperator(a,i,b,j);
-            T2(x1,x2) = t0( Index(aa,i,bb,j,Nparticles,Nholes,Nparticles));
+            T(x1,x2) = t0( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+            V(x2,x1) = basis.TwoBodyOperator(j,i,b,a);
         }
     }
-
-    //cout << endl << "T: " << endl;
-    //T.print();
-
-    //cout << endl << "V: " << endl;
-    //V.print();
-
-
-    /*
-
-    mat X1 = zeros<mat>(Np*Nh,2);
-    mat X2 = zeros<mat>(Np*Nh,2);
-
-    mat X = zeros<mat>(0,2); mat Xc = zeros<mat>(0,2);
-    int n=0;
-    for (int ii=0; ii<Nh; ii++){
-        for (int aa=0; aa<Np; aa++){
-
-            int i = Holes(ii,0); int a = Particles(aa,0);
-
-            X.insert_rows(n,1); Xc.insert_rows(n,1);
-            X(n,0) = i; X(n,1) = a;
-            Xc(n,0) = i; Xc(n,1) = i;
-            n++;
-        }
-    }
-    // Cross channels set up
-    int Nx = X.n_rows;
-    cout << Nx << endl;
-    T = zeros<mat>(Nx,Nx);
-    V = zeros<mat>(Nx,Nx);
-    T2 = zeros<mat>(Nx,Nx);
-
-    for (int x1=0; x1<Nx; x1++){
-        for (int x2=0; x2<Nx; x2++){
-
-            int i=X(x1,0); int a=X(x1,1); int aa = a-Nholes;
-            int j=X(x2,0); int b=X(x2,1); int bb = b-Nholes;
-
-            T(x1,x2) = t0(Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
-        }
-    }
-    //T.print();
-
-    for (int I=0; I<Nh; I++){
-        for (int A=0; A<Np; A++){
-
-            int n = A + I*Np;
-
-            X1(n,0) = Particles(A,0);
-            X1(n,1) = Holes(I,0);
-            X2(n,0) = Particles(A,1);
-            X2(n,1) = Holes(I,1);
-        }
-    }
-
-    T = zeros<mat>(Np,Nh);
-    V = zeros<mat>(Nh,Np);
-    T2 = zeros<mat>(Np,Nh);
-
-    for (int n=0; n<Np*Nh; n++){
-
-        int I = floor(n/Np);
-        int A = n % Np;
-
-        int a = X1(n,0); int i = X1(n,1); int b = X2(n,0); int j = X2(n,1);
-        int aa = a-Nholes; int bb = b-Nholes;
-
-        T(A,I) = t0( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
-        V(I,A) = basis.TwoBodyOperator(i,j,a,b);
-        T2(A,I) = t0( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
-    }
-
-    //T2.print();
-
-
-
-    for (int I=0; I<Nh; I++){
-        for (int A=0; A<Np; A++){
-
-            int i = Holes(I,0); int j = Holes(I,1);
-            int a = Particles(A,0); int b = Particles(A,1);
-            int aa = a - Nholes; int bb = b - Nholes;
-
-            T(A,I) = t0( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) );
-
-            V(I,A) = basis.TwoBodyOperator(i,j,a,b);
-
-            T2(A,I) = t0( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) );
-        }
-    }
-    //T2.print(); */
 }
 
 void Block::SetUpMatrices_Qc(mat &t0){

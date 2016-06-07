@@ -3,7 +3,7 @@
 
 #include <armadillo>
 #include <iostream>
-#include <basis_set.h>
+#include <electronbasis.h>
 #include <math.h>
 #include <block.h>
 
@@ -16,9 +16,9 @@ using namespace arma;
 class Solver
 {
 public:
-    Solver(basis_set BASIS); // Function to initiate class. Sets up two-body configurations and important variables
+    Solver(ElectronBasis BASIS); // Function to initiate class. Sets up two-body configurations and important variables
 
-    basis_set basis; // Variable to hold information on the basis set
+    ElectronBasis basis; // Variable to hold information on the basis set
 
 
     // Declaring important variables
@@ -63,14 +63,14 @@ public:
     Block **blockspphh; void CreateBlocksPPHH(); int Npphh;
     Block **blocksphph; void CreateBlocksPHPH(); int Nphph;
     Block **blockshphp; void CreateBlocksHPHP(); int Nhphp;
+    Block **blocksphhp; void CreateBlocksPHHP(); int Nphhp;
 
     // Declaring functions for program flow
 
-    double CCD(bool naive); // This is the main function in solver. Calling this function will fully compute the corrolation energy using CCD
+    double CCD(int MaxIterations); // This is the main function in solver. Calling this function will fully compute the corrolation energy using CCD
     double CorrolationEnergy(); // Function used to calculate energy for every iteration in the amplitudes
 
     void UpdateAmplitudes(); // Function that updates the amplitudes
-    void UpdateAmplitudes_Naive();
 
     void TwoBodyConfigurations(); // A function call that set up the matrices Holes, Particles and States with sizes (NHOLES,3) (NPARTICLES,3) (NSTATES,3). Each row contains (state1, state2, identifier)
 

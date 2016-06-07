@@ -5,7 +5,7 @@ MBPTNaive::MBPTNaive()
 
 }
 
-MBPTNaive::MBPTNaive(basis_set BASIS){
+MBPTNaive::MBPTNaive(PairingBasis BASIS){
     basis = BASIS;
 
     // Calculating important variables
@@ -152,4 +152,3 @@ double MBPTNaive::MBPT4(){
 
     return mbpt3 + D5 + D6 + D14 + D15 + D34 + D35 + D36 + D37 + D38 + D39 + D40;
 }
-

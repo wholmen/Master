@@ -3,7 +3,8 @@
 
 #include <armadillo>
 #include <iostream>
-#include <basis_set.h>
+#include <../../Pairing_Model/PairingModel/pairingbasis.h>
+#include <../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h>
 #include <math.h>
 
 #define pi 3.1415
@@ -15,10 +16,12 @@ class CCDIntermediates
 {
 public:
     CCDIntermediates();
-    CCDIntermediates(basis_set BASIS); // Function to initiate class. Sets up two-body configurations and important variables
+    CCDIntermediates(PairingBasis BASIS); // Function to initiate class. Sets up two-body configurations and important variables
+    CCDIntermediates(ElectronBasis BASIS);
 
-    basis_set basis; // Variable to hold information on the basis set
-
+    PairingBasis pabasis;
+    ElectronBasis elbasis;
+    int BasisNumber; // A number used to determine wether pabasis or elbasis shall be used inside functions
 
     // Declaring important variables
 
@@ -42,6 +45,8 @@ public:
     double CorrelationEnergy(); // Function used to calculate energy for every iteration in the amplitudes
     void UpdateAmplitudes(); // Function that updates the amplitudes
     vec CCD_ReturnAllIterations();
+    double v(int p, int q, int r, int s); // Interaction
+    double epsilon(int i, int j, int a, int b);
 
     // Intermediates
     mat I1, I2, I3, I4;

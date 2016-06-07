@@ -22,7 +22,6 @@ Solver::Solver(ElectronBasis BASIS)
     TwoBodyConfigurations();
     NPARTICLES = Particles.n_rows;
     NHOLES = Holes.n_rows;
-    NSTATES = States.n_rows;
 
     CreateBlocks();
 
@@ -416,7 +415,7 @@ void Solver::DiagramQb(){
 }
 
 void Solver::DiagramQc(){
-
+    /*
     // Non-blocking approach. Tested and working
     mat T1 = zeros<mat>(Nparticles*Nparticles*Nholes, Nholes);
     mat V  = zeros<mat>(Nholes, Nparticles*Nparticles*Nholes);
@@ -446,10 +445,66 @@ void Solver::DiagramQc(){
                 }
             }
         }
-    }
+    }*/
 
     // Block Approach
 
+    vec identifiers = zeros<vec>(0); Nkhpp = 0;
+    for (int k1=0; k1<NK; k1++){
+        for (int k2=0; k2<NK3; k2++){
+
+            if (Kh(k1,1) == Khpp(k2,3) ) { // Block found
+
+                bool IDExist = any( identifiers == Kh(k1,1) );
+
+                if ( ! IDExist){
+                    identifiers.insert_rows(Nkhpp,1);
+                    identifiers(Nkhpp) = Kh(k1,1);
+                    Nkhpp ++;
+                }
+            }
+        }
+    }
+    blockskhpp = new Block*[Nkhpp];
+
+    for (int n=0; n<Nkhpp; n++) blockskhpp[n] = new Block(basis,Nholes,Nparticles);
+
+    for (int k1=0; k1<NK; k1++){
+        for (int k2=0; k2<NK3; k2++){
+
+            if (Kh(k1,1) == Khpp(k2,3) ) { // Block found
+
+                uvec indices = find( identifiers == Kh(k1,1));
+                int indice = indices(0);
+
+                blockskhpp[indice]->AddTripleStates( Kh.row(k1), Khpp.row(k2) );
+            }
+        }
+    }
+    for (int n=0; n<Nkhpp; n++) blockskhpp[n]->FinishBlock();
+
+    for (int n=0; n<Nkhpp; n++) blockskhpp[n]->SetUpMatrices_Qc(t0);
+
+    for (int n=0; n<Nkhpp; n++){
+
+        mat Qc = blockskhpp[n]->T * blockskhpp[n]->V * blockskhpp[n]->T;
+
+        int Nkh = blockskhpp[n]->Nkh; int Nkhpp = blockskhpp[n]->Nkhpp;
+
+        for (int k1=0; k1<Nkh; k1++){
+            for (int k2=0; k2<Nkhpp; k2++){
+
+                int i=blockskhpp[n]->Kh(k1,0);   int j=blockskhpp[n]->Khpp(k2,0);
+                int a=blockskhpp[n]->Khpp(k2,1); int b=blockskhpp[n]->Khpp(k2,2);
+                int aa=a-Nholes;  int bb=b-Nholes;
+
+                t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) -= weight * 0.5 * Qc( k2,k1 );
+                t( Index(aa,bb,j,i,Nparticles,Nparticles,Nholes)) += weight * 0.5 * Qc( k2,k1 );
+
+            }
+        }
+
+    }
 }
 
 void Solver::DiagramQd(){
@@ -573,7 +628,42 @@ void Solver::TwoBodyConfigurations(){
     }
     NX = Xhp.n_rows;
 
+    Kh = zeros<mat>(0,2);
+    Khpp = zeros<mat>(0,4);
 
+    n=0;
+    for (int i=0; i<Nholes; i++){
+
+        int Nx = basis.States(i,1); // Combining x-momentum
+        int Ny = basis.States(i,2); // Combining y-momentum
+        int Nz = basis.States(i,3); // Combining z-momentum
+        int Sz = basis.States(i,4); // Combining spin
+
+        // Adding a new two-hole-state configuration to matrix. (i, j, Identifier)
+        Kh.insert_rows(n,1);
+        Kh(n,0) = i; Kh(n,1) = Identifier(Nx,Ny,Nz,Sz);
+
+        n++;
+    }
+    n=0;
+    for (int i=0; i<Nholes; i++){
+        for (int aa=0; aa<Nparticles; aa++){
+            for (int bb=0; bb<Nparticles; bb++){
+
+                int a=aa+Nholes; int b=bb+Nholes;
+                if (aa != bb){
+                    int Nx = basis.States(a,1) + basis.States(b,1) - basis.States(i,1);
+                    int Ny = basis.States(a,2) + basis.States(b,2) - basis.States(i,2);
+                    int Nz = basis.States(a,3) + basis.States(b,3) - basis.States(i,3);
+                    int Sz = basis.States(a,4) + basis.States(b,4) - basis.States(i,4);
+
+                    Khpp.insert_rows(n,1);
+                    Khpp(n,0) = i; Khpp(n,1) = a; Khpp(n,2) = b; Khpp(n,3) = Identifier(Nx,Ny,Nz,Sz);
+                }
+            }
+        }
+    }
+    NK3 = Khpp.n_rows; NK = Kh.n_rows;
 }
 
 double Solver::Identifier(int Nx, int Ny, int Nz, int Sz){

@@ -24,10 +24,12 @@ public:
     mat Particles; // Storing the particle states
     mat Xph;
     mat Xhp;
+    mat Kh, Khpp;
 
     int Nholes, Nparticles;
     int Nx; // Number of cross states
     int Nph;
+    int Nkh; int Nkhpp;
 
     mat V; // Interaction matrix
     mat T; // Amplitude matrix
@@ -35,6 +37,8 @@ public:
 
     void AddStates(rowvec I, rowvec A);
     void AddPHHPStates(rowvec x1, rowvec x2);
+    void AddTripleStates(rowvec k1, rowvec k2);
+
     int Index(int p, int q, int r, int s, int Np, int Nq, int Nr);
 
     void FinishBlock();

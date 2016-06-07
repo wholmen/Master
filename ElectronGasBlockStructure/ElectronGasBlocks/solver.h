@@ -31,6 +31,7 @@ public:
     int NHOLES; // Number of two-hole configurations
     int NSTATES; // Number of two-state configurations
     int NX; // Number of cross states
+    int NK; int NK3;
 
     int Nmax, m, M; // Variables to create unique identifier for two-body configuration
 
@@ -43,8 +44,8 @@ public:
     vec t ; // Amplitudes for iteration n+1
     mat Holes; // Matrix for all two-hole configurations. Each row contains (state1, state2, identifier)
     mat Particles; // Matrix for all two-particle configurations. Each row contains (state1, state2, identifier)
-    mat States; // Matrix for all two-state configurations. Each row contains (state1, state2, identifier)
-    mat Xph, Xhp;
+    mat Xph, Xhp; // Cross states. p-h config or h-p config
+    mat Kh, Khpp; // Triple state channels. h and p-p-h config
 
     // Diagrams
     void DiagramL0();
@@ -61,9 +62,8 @@ public:
     // Block list
     void CreateBlocks();
     Block **blockspphh; void CreateBlocksPPHH(); int Npphh;
-    Block **blocksphph; void CreateBlocksPHPH(); int Nphph;
-    Block **blockshphp; void CreateBlocksHPHP(); int Nhphp;
     Block **blocksphhp; void CreateBlocksPHHP(); int Nphhp;
+    Block **blockskhpp; void CreateBlocksKHPP(); int Nkhpp;
 
     // Declaring functions for program flow
 

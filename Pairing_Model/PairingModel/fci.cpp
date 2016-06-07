@@ -5,7 +5,7 @@ FCI::FCI()
 
 }
 
-FCI::FCI(basis_set BASIS){
+FCI::FCI(PairingBasis BASIS){
     basis = BASIS;
     g = basis.g;
 }

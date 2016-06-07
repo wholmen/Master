@@ -1,8 +1,8 @@
-#include "basis_set.h"
+#include "pairingbasis.h"
 
-basis_set::basis_set() { }
+PairingBasis::PairingBasis() { }
 
-basis_set::basis_set(int Nshells_input, int NshellsFilled_input, double g_input, double delta_input){
+PairingBasis::PairingBasis(int Nshells_input, int NshellsFilled_input, double g_input, double delta_input){
 
     Nshells = Nshells_input;
     NshellsFilled = NshellsFilled_input;
@@ -28,7 +28,7 @@ basis_set::basis_set(int Nshells_input, int NshellsFilled_input, double g_input,
     }
 }
 
-double basis_set::ReferenceEnergy(){
+double PairingBasis::ReferenceEnergy(){
     double E0 = 0;
     if (Nholes < Nstates){
         for (int p=0; p<Nholes; p++){
@@ -45,7 +45,7 @@ double basis_set::ReferenceEnergy(){
     return E0;
 }
 
-double basis_set::OneBodyOperator(int p, int q){
+double PairingBasis::OneBodyOperator(int p, int q){
     double obo = 0.0;
     if (KD_state(p,q) == 1){
         obo = delta*( States(p,0) - 1 );
@@ -53,7 +53,7 @@ double basis_set::OneBodyOperator(int p, int q){
     return obo;
 }
 
-double basis_set::TwoBodyOperator(int p, int q, int r, int s){
+double PairingBasis::TwoBodyOperator(int p, int q, int r, int s){
     double tbo = 0.0;
 
     if ( KD_state(p,q)*KD_state(r,s) == 1 ){
@@ -84,7 +84,7 @@ double basis_set::TwoBodyOperator(int p, int q, int r, int s){
 }
 
 
-double basis_set::ei(int q){
+double PairingBasis::ei(int q){
     double interaction = 0;
     for (int i=0; i<Nholes; i++){
         interaction += TwoBodyOperator(q,i,q,i);
@@ -92,26 +92,26 @@ double basis_set::ei(int q){
     return OneBodyOperator(q,q) + interaction;
 }
 
-double basis_set::epsilon(int i, int j, int a, int b){
+double PairingBasis::epsilon(int i, int j, int a, int b){
     // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
     return ei(i) + ei(j) - ei(a) - ei(b);
 }
 
-double basis_set::epsilon4(int i, int j, int k, int l, int a, int b, int c, int d){
+double PairingBasis::epsilon4(int i, int j, int k, int l, int a, int b, int c, int d){
     return ei(i) + ei(j) + ei(k) + ei(l) - ei(a) - ei(b) - ei(c) - ei(d);
 }
 
-int basis_set::KD_integer(int a, int b){
+int PairingBasis::KD_integer(int a, int b){
     // Kroenecker delta for integers a and b;
     return (a == b) ? 1 : 0;
 }
 
-int basis_set::KD_state(int a, int b){
+int PairingBasis::KD_state(int a, int b){
     // Kroenecker delta for states a and b;
     return KD_integer( States(a,0), States(b,0) );
 }
 
-int basis_set::KD_spin(int a, int b){
+int PairingBasis::KD_spin(int a, int b){
     // Kroenecker delta for spin value of state a and b
     return KD_integer( States(a,1), States(b,1) );
 }

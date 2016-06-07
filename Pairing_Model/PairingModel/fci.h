@@ -3,7 +3,7 @@
 
 #include <armadillo>
 #include <iostream>
-#include <basis_set.h>
+#include <pairingbasis.h>
 #include <math.h>
 
 #define pi 3.1415
@@ -16,9 +16,9 @@ class FCI
 {
 public:
     FCI();
-    FCI(basis_set BASIS);
+    FCI(PairingBasis BASIS);
 
-    basis_set basis;
+    PairingBasis basis;
 
     int Nparticles, Nparticles2, Nparticles3; // Number of particle states to first, second and third order
     int Nholes, Nholes2, Nholes3; // Number of hole states to first, second and third order

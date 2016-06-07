@@ -4,19 +4,19 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    basis_set.cpp \
-    ccdnaive.cpp \
-    ccdintermediates.cpp \
-    ccdblocks.cpp \
-    mbptnaive.cpp \
-    fci.cpp
+    fci.cpp \
+    pairingbasis.cpp \
+    ../../Solvers/Solvers/ccdintermediates.cpp \
+    ../../Solvers/Solvers/ccdnaive.cpp \
+    ../../Solvers/Solvers/mbptnaive.cpp \
+    ../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.cpp
 
 HEADERS += \
-    basis_set.h \
-    ccdnaive.h \
-    ccdintermediates.h \
-    ccdblocks.h \
-    mbptnaive.h \
-    fci.h
+    fci.h \
+    pairingbasis.h \
+    ../../Solvers/Solvers/ccdintermediates.h \
+    ../../Solvers/Solvers/ccdnaive.h \
+    ../../Solvers/Solvers/mbptnaive.h \
+    ../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h
 
 LIBS += -llapack -lblas -larmadillo

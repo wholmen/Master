@@ -1,6 +1,6 @@
 A comparison of results computed with 1. order CCD equations and MBPT 2. order. These should be equal by construct. Benchmark for CCD Naive.
 The system consist of 4 shells, and 4 hole states. 
-I have used 201values of g, equally spaced, ranging from -1 to 1
+I have used 201 values of g, equally spaced, ranging from -1 to 1
 Below are the reference energy and calculated correlation energies in following order
 g, Reference energy, Naive CCD 1. order, MBPT 2. order, MBPT 2. order exact
 -1 3 -0.466667 -0.466667 -0.466667

@@ -1,5 +1,5 @@
-#ifndef BASIS_SET_H
-#define BASIS_SET_H
+#ifndef PAIRINGBASIS_H
+#define PAIRINGBASIS_H
 
 #include <armadillo>
 #include <iostream>
@@ -9,7 +9,7 @@
 using namespace std;
 using namespace arma;
 
-class basis_set
+class PairingBasis
 {
 private:
 
@@ -24,8 +24,8 @@ public:
     double delta;
     double g;
 
-    basis_set();
-    basis_set(int Nshells_input, int NshellsFilled_input, double g_input, double delta_input);
+    PairingBasis();
+    PairingBasis(int Nshells_input, int NshellsFilled_input, double g_input, double delta_input);
 
     // Functions for various energy calculations
     double OneBodyOperator(int p, int q);
@@ -42,4 +42,4 @@ public:
 
 };
 
-#endif // BASIS_SET_H
+#endif // PAIRINGBASIS_H

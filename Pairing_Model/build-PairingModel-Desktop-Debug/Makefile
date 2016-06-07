@@ -49,19 +49,19 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../PairingModel/main.cpp \
-		../PairingModel/basis_set.cpp \
-		../PairingModel/ccdnaive.cpp \
-		../PairingModel/ccdintermediates.cpp \
-		../PairingModel/ccdblocks.cpp \
-		../PairingModel/mbptnaive.cpp \
-		../PairingModel/fci.cpp 
+		../PairingModel/fci.cpp \
+		../PairingModel/pairingbasis.cpp \
+		../../Solvers/Solvers/ccdintermediates.cpp \
+		../../Solvers/Solvers/ccdnaive.cpp \
+		../../Solvers/Solvers/mbptnaive.cpp \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.cpp 
 OBJECTS       = main.o \
-		basis_set.o \
-		ccdnaive.o \
+		fci.o \
+		pairingbasis.o \
 		ccdintermediates.o \
-		ccdblocks.o \
+		ccdnaive.o \
 		mbptnaive.o \
-		fci.o
+		electronbasis.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -113,18 +113,18 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../PairingModel/PairingModel.pro basis_set.h \
-		ccdnaive.h \
-		ccdintermediates.h \
-		ccdblocks.h \
-		mbptnaive.h \
-		fci.h ../PairingModel/main.cpp \
-		../PairingModel/basis_set.cpp \
-		../PairingModel/ccdnaive.cpp \
-		../PairingModel/ccdintermediates.cpp \
-		../PairingModel/ccdblocks.cpp \
-		../PairingModel/mbptnaive.cpp \
-		../PairingModel/fci.cpp
+		../PairingModel/PairingModel.pro fci.h \
+		pairingbasis.h \
+		../../Solvers/Solvers/ccdintermediates.h \
+		../../Solvers/Solvers/ccdnaive.h \
+		../../Solvers/Solvers/mbptnaive.h \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h ../PairingModel/main.cpp \
+		../PairingModel/fci.cpp \
+		../PairingModel/pairingbasis.cpp \
+		../../Solvers/Solvers/ccdintermediates.cpp \
+		../../Solvers/Solvers/ccdnaive.cpp \
+		../../Solvers/Solvers/mbptnaive.cpp \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.cpp
 QMAKE_TARGET  = PairingModel
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = PairingModel
@@ -300,34 +300,37 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../PairingModel/main.cpp ../PairingModel/basis_set.h \
-		../PairingModel/ccdnaive.h \
-		../PairingModel/ccdintermediates.h \
-		../PairingModel/ccdblocks.h \
-		../PairingModel/mbptnaive.h
+main.o: ../PairingModel/main.cpp ../PairingModel/pairingbasis.h \
+		../PairingModel/fci.h \
+		../../Solvers/Solvers/ccdnaive.h \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h \
+		../../Solvers/Solvers/ccdintermediates.h \
+		../../Solvers/Solvers/mbptnaive.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../PairingModel/main.cpp
 
-basis_set.o: ../PairingModel/basis_set.cpp ../PairingModel/basis_set.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o basis_set.o ../PairingModel/basis_set.cpp
-
-ccdnaive.o: ../PairingModel/ccdnaive.cpp ../PairingModel/ccdnaive.h \
-		../PairingModel/basis_set.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdnaive.o ../PairingModel/ccdnaive.cpp
-
-ccdintermediates.o: ../PairingModel/ccdintermediates.cpp ../PairingModel/ccdintermediates.h \
-		../PairingModel/basis_set.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdintermediates.o ../PairingModel/ccdintermediates.cpp
-
-ccdblocks.o: ../PairingModel/ccdblocks.cpp ../PairingModel/ccdblocks.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdblocks.o ../PairingModel/ccdblocks.cpp
-
-mbptnaive.o: ../PairingModel/mbptnaive.cpp ../PairingModel/mbptnaive.h \
-		../PairingModel/basis_set.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mbptnaive.o ../PairingModel/mbptnaive.cpp
-
 fci.o: ../PairingModel/fci.cpp ../PairingModel/fci.h \
-		../PairingModel/basis_set.h
+		../PairingModel/pairingbasis.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fci.o ../PairingModel/fci.cpp
+
+pairingbasis.o: ../PairingModel/pairingbasis.cpp ../PairingModel/pairingbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pairingbasis.o ../PairingModel/pairingbasis.cpp
+
+ccdintermediates.o: ../../Solvers/Solvers/ccdintermediates.cpp ../../Solvers/Solvers/ccdintermediates.h \
+		../PairingModel/pairingbasis.h \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdintermediates.o ../../Solvers/Solvers/ccdintermediates.cpp
+
+ccdnaive.o: ../../Solvers/Solvers/ccdnaive.cpp ../../Solvers/Solvers/ccdnaive.h \
+		../PairingModel/pairingbasis.h \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdnaive.o ../../Solvers/Solvers/ccdnaive.cpp
+
+mbptnaive.o: ../../Solvers/Solvers/mbptnaive.cpp ../../Solvers/Solvers/mbptnaive.h \
+		../PairingModel/pairingbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mbptnaive.o ../../Solvers/Solvers/mbptnaive.cpp
+
+electronbasis.o: ../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.cpp ../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o electronbasis.o ../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.cpp
 
 ####### Install
 

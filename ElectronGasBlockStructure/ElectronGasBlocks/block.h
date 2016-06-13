@@ -22,38 +22,45 @@ public:
     ElectronBasis basis; // Using the basis set to compute the interaction when setting up V
     mat Holes; // Storing the Hole states
     mat Particles; // Storing the particle states
-    mat Xph;
-    mat Xhp;
-    mat Kh, Khpp;
+    mat Xph; // Cross-states
+    mat Xhp; // Cross-states
+    mat K1, K3; // single- and corresponding triple-state.
 
-    int Nholes, Nparticles;
-    int Nx; // Number of cross states
-    int Nph;
-    int Nkh; int Nkhpp;
+    int Nholes, Nparticles; // Number of holes/particles in basis
+    int Nh; int Np; // Number of two-particle configurations belonging to this particular block
+    int Nph; // Number of cross states
+    int Nk1; int Nk3; // Number of single- and triple-states.
 
     mat V; // Interaction matrix
     mat T; // Amplitude matrix
     mat T2; // Amplitude matrix nr two for second order diagrams
 
     void AddStates(rowvec I, rowvec A);
-    void AddPHHPStates(rowvec x1, rowvec x2);
+    void AddCrossStates(rowvec x1, rowvec x2);
     void AddTripleStates(rowvec k1, rowvec k2);
 
-    int Index(int p, int q, int r, int s, int Np, int Nq, int Nr);
+    int Index(int p, int q, int r, int s);
 
     void FinishBlock();
-    int Nh; int Np;
 
     // Set up matrices for diagram calculations
     void SetUpMatrices_Energy(mat &t);
     void SetUpMatrices_L0();
     void SetUpMatrices_La(mat &t0);
+
+    // For calculations without intermediates
     void SetUpMatrices_Lb(mat &t0);
     void SetUpMatrices_Lc(mat &t0);
     void SetUpMatrices_Qa(mat &t0);
-    void SetUpMatrices_Qb(mat &t0); mat Qb;
+    void SetUpMatrices_Qb(mat &t0);
     void SetUpMatrices_Qc(mat &t0);
     void SetUpMatrices_Qd(mat &t0);
+
+    // For calculations with intermediates
+    void SetUpMatrices_I1(mat &t0); mat I1;
+    void SetUpMatrices_I2(mat &t0); mat I2;
+    void SetUpMatrices_I3(mat &t0); mat I3;
+    void SetUpMatrices_I4(mat &t0); mat I4;
 };
 
 #endif // BLOCK_H

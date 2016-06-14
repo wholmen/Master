@@ -5,6 +5,7 @@
 #include <iostream>
 #include <../../Pairing_Model/PairingModel/pairingbasis.h>
 #include <../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h>
+#include <../../NuclearMatter/NuclearMatter/nuclearbasis.h>
 #include <math.h>
 
 #define pi 3.1415
@@ -18,9 +19,11 @@ public:
     CCDIntermediates();
     CCDIntermediates(PairingBasis BASIS); // Function to initiate class. Sets up two-body configurations and important variables
     CCDIntermediates(ElectronBasis BASIS);
+    CCDIntermediates(NuclearBasis BASIS);
 
     PairingBasis pabasis;
     ElectronBasis elbasis;
+    NuclearBasis ncbasis;
     int BasisNumber; // A number used to determine wether pabasis or elbasis shall be used inside functions
 
     // Declaring important variables
@@ -58,7 +61,7 @@ public:
     // Various assisting functions
 
     double AbsoluteDifference(double a, double b); // Returns sqrt( (a-b)^2 )
-    int Index(int p, int q, int r, int s, int Np, int Nq, int Nr); // Returns the index p + q*Np + r*Np*Nq + s*Np*Nq*Nr
+    int Index(int p, int q, int r, int s); // Returns the index p + q*Np + r*Np*Nq + s*Np*Nq*Nr
 };
 
 

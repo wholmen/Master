@@ -46,6 +46,28 @@ CCDIntermediates::CCDIntermediates(ElectronBasis BASIS){
     I4 = zeros<mat>(Nparticles, Nparticles);
 }
 
+CCDIntermediates::CCDIntermediates(NuclearBasis BASIS){
+    ncbasis = BASIS; BasisNumber = 3;
+
+    // Calculating important variables
+    Nholes = ncbasis.Nholes; Nholes2 = Nholes*Nholes; Nholes3 = Nholes2*Nholes;
+    Nstates = ncbasis.Nstates;
+    Nparticles = Nstates - Nholes; Nparticles2 = Nparticles*Nparticles; Nparticles3 = Nparticles2*Nparticles;
+
+    // Weight when adding diagrams to new amplitudes
+    weight = 1.0;
+
+    // Setting up matrices
+    t0 = zeros<vec>(Nparticles2*Nholes2);
+    t  = zeros<vec>(Nparticles2*Nholes2);
+
+    // Setting up matrices for intermediate calculation
+    I1 = zeros<mat>(Nholes*Nholes, Nholes*Nholes);
+    I2 = zeros<mat>(Nholes*Nholes, Nparticles*Nparticles);
+    I3 = zeros<mat>(Nholes, Nholes);
+    I4 = zeros<mat>(Nparticles, Nparticles);
+}
+
 
 double CCDIntermediates::CCD(int MaxIterations){
     // Set up the first calculation for all amplitudes equal to zero
@@ -104,7 +126,7 @@ double CCDIntermediates::CorrelationEnergy(){
                 for (int bb=0; bb<Nparticles; bb++){
                     int a = aa + Nholes; int b = bb + Nholes;
 
-                    E += v(i,j,a,b) * t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes));
+                    E += v(i,j,a,b) * t( Index(aa,bb,i,j));
                 }
             }
         }
@@ -131,7 +153,7 @@ void CCDIntermediates::UpdateAmplitudes(){
                         for (int dd=0; dd<Nparticles; dd++){
 
                             int c = cc + Nholes; int d = dd + Nholes;
-                            term += v(a,b,c,d) * t0( Index(cc,dd,i,j,Nparticles,Nparticles,Nholes)); // i+j*Nholes, cc+dd*Nparticles);
+                            term += v(a,b,c,d) * t0( Index(cc,dd,i,j)); // i+j*Nholes, cc+dd*Nparticles);
                         }
                     }
                     tau += 0.5*term;
@@ -140,7 +162,7 @@ void CCDIntermediates::UpdateAmplitudes(){
                     for (int k=0; k<Nholes; k++){
                         for (int l=0; l<Nholes; l++){
 
-                            term += I1(i+j*Nholes, k+l*Nholes) * t0( Index(aa,bb,k,l,Nparticles,Nparticles,Nholes)); //k+l*Nholes, aa+bb*Nparticles);
+                            term += I1(i+j*Nholes, k+l*Nholes) * t0( Index(aa,bb,k,l)); //k+l*Nholes, aa+bb*Nparticles);
                         }
                     }
                     tau += 0.5*term;
@@ -149,31 +171,31 @@ void CCDIntermediates::UpdateAmplitudes(){
                     for (int k=0; k<Nholes; k++){
                         for (int cc=0; cc<Nparticles; cc++){
 
-                            term += I2(j+k*Nholes, bb+cc*Nparticles) * t0( Index(aa,cc,i,k,Nparticles,Nparticles,Nholes)); //)  i+k*Nholes, aa+cc*Nparticles); // No permutation
-                            term -= I2(i+k*Nholes, bb+cc*Nparticles) * t0( Index(aa,cc,j,k,Nparticles,Nparticles,Nholes)); //j+k*Nholes, aa+cc*Nparticles); // Permutation i,j
-                            term -= I2(j+k*Nholes, aa+cc*Nparticles) * t0( Index(bb,cc,i,k,Nparticles,Nparticles,Nholes)); //i+k*Nholes, bb+cc*Nparticles); // Permutation a,b
-                            term += I2(i+k*Nholes, aa+cc*Nparticles) * t0( Index(bb,cc,j,k,Nparticles,Nparticles,Nholes)); //j+k*Nholes, bb+cc*Nparticles); // Permutation a,b,i,j
+                            term += I2(j+k*Nholes, bb+cc*Nparticles) * t0( Index(aa,cc,i,k)); //)  i+k*Nholes, aa+cc*Nparticles); // No permutation
+                            term -= I2(i+k*Nholes, bb+cc*Nparticles) * t0( Index(aa,cc,j,k)); //j+k*Nholes, aa+cc*Nparticles); // Permutation i,j
+                            term -= I2(j+k*Nholes, aa+cc*Nparticles) * t0( Index(bb,cc,i,k)); //i+k*Nholes, bb+cc*Nparticles); // Permutation a,b
+                            term += I2(i+k*Nholes, aa+cc*Nparticles) * t0( Index(bb,cc,j,k)); //j+k*Nholes, bb+cc*Nparticles); // Permutation a,b,i,j
                         }
                     }
                     tau += term;
 
                     term = 0;
                     for (int k=0; k<Nholes; k++){
-                        term -= I3(j,k) * t0( Index(aa,bb,i,k,Nparticles,Nparticles,Nholes)); //i+k*Nholes, aa+bb*Nparticles); // No permutation
-                        term += I3(i,k) * t0( Index(aa,bb,j,k,Nparticles,Nparticles,Nholes)); //j+k*Nholes, aa+bb*Nparticles); // Permutation i,j
+                        term -= I3(j,k) * t0( Index(aa,bb,i,k)); //i+k*Nholes, aa+bb*Nparticles); // No permutation
+                        term += I3(i,k) * t0( Index(aa,bb,j,k)); //j+k*Nholes, aa+bb*Nparticles); // Permutation i,j
                     }
                     tau += 0.5*term;
 
                     term = 0;
                     for (int cc=0; cc<Nparticles; cc++){
-                        term -= I4(bb,cc) * t0( Index(aa,cc,i,j,Nparticles,Nparticles,Nholes)); //) i+j*Nholes, aa+cc*Nparticles); // No permutation
-                        term += I4(aa,cc) * t0( Index(bb,cc,i,j,Nparticles,Nparticles,Nholes)); //i+j*Nholes, bb+cc*Nparticles); // Permutation a,b
+                        term -= I4(bb,cc) * t0( Index(aa,cc,i,j)); //) i+j*Nholes, aa+cc*Nparticles); // No permutation
+                        term += I4(aa,cc) * t0( Index(bb,cc,i,j)); //i+j*Nholes, bb+cc*Nparticles); // Permutation a,b
                     }
                     tau += 0.5*term;
 
                     tau = v(a,b,i,j) + weight*tau; // Weighting the iterative scheme
 
-                    t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes)) = tau / epsilon(i,j,a,b);
+                    t( Index(aa,bb,i,j)) = tau / epsilon(i,j,a,b);
                 }
             }
         }
@@ -195,7 +217,7 @@ void CCDIntermediates::UpdateI1(){
                         for (int dd=0; dd<Nparticles; dd++){
 
                             int c = cc + Nholes; int d = dd + Nholes;
-                            I1(i+j*Nholes, k+l*Nholes) += v(k,l,c,d) * t( Index(cc,dd,i,j,Nparticles,Nparticles,Nholes)); //i+j*Nholes, cc+dd*Nparticles);
+                            I1(i+j*Nholes, k+l*Nholes) += v(k,l,c,d) * t( Index(cc,dd,i,j)); //i+j*Nholes, cc+dd*Nparticles);
                         }
                     }
                     I1(i+j*Nholes, k+l*Nholes) = v(k,l,i,j) + 0.5*I1(i+j*Nholes, k+l*Nholes);
@@ -221,7 +243,7 @@ void CCDIntermediates::UpdateI2(){
                         for (int dd=0; dd<Nparticles; dd++){
 
                             int d = dd + Nholes;
-                            I2(j+k*Nholes, bb+cc*Nparticles) += v(k,l,c,d) * t( Index(dd,bb,l,j,Nparticles,Nparticles,Nholes)); //l+j*Nholes, dd+bb*Nparticles);
+                            I2(j+k*Nholes, bb+cc*Nparticles) += v(k,l,c,d) * t( Index(dd,bb,l,j)); //l+j*Nholes, dd+bb*Nparticles);
                         }
                     }
                     I2(j+k*Nholes, bb+cc*Nparticles) = v(k,b,c,j) + 0.5*I2(j+k*Nholes, bb+cc*Nparticles);
@@ -246,7 +268,7 @@ void CCDIntermediates::UpdateI3(){
 
                         int c = cc + Nholes; int d = dd + Nholes;
 
-                        I3(j,k) += v(k,l,c,d) * t( Index(cc,dd,j,l,Nparticles,Nparticles,Nholes)); //j+l*Nholes, cc+dd*Nparticles);
+                        I3(j,k) += v(k,l,c,d) * t( Index(cc,dd,j,l)); //j+l*Nholes, cc+dd*Nparticles);
                     }
                 }
             }
@@ -270,7 +292,7 @@ void CCDIntermediates::UpdateI4(){
 
                         int c = cc+Nholes; double d = dd+Nholes;
 
-                        I4(bb,cc) += v(k,l,c,d) * t( Index(bb,dd,k,l,Nparticles,Nparticles,Nholes)); //k+l*Nholes, bb+dd*Nparticles);
+                        I4(bb,cc) += v(k,l,c,d) * t( Index(bb,dd,k,l)); //k+l*Nholes, bb+dd*Nparticles);
                     }
                 }
             }
@@ -282,6 +304,7 @@ double CCDIntermediates::epsilon(int i, int j, int a, int b){
 
     if (BasisNumber == 1) return pabasis.epsilon(i,j,a,b);
     else if (BasisNumber == 2) return elbasis.epsilon(i,j,a,b);
+    else if (BasisNumber == 3) return ncbasis.epsilon(i,j,a,b);
     else {cout << "basis is not defined properly in ccd naive. Epsilon not computed properly" << endl; return 0;}
 }
 
@@ -289,6 +312,7 @@ double CCDIntermediates::v(int p, int q, int r, int s){
 
     if (BasisNumber == 1) return pabasis.TwoBodyOperator(p,q,r,s);
     else if (BasisNumber == 2) return elbasis.TwoBodyOperator(p,q,r,s);
+    else if (BasisNumber == 3) return ncbasis.TwoBodyOperator(p,q,r,s);
     else {cout << "basis is not defined properly in ccd naive. TwoBodyOperator not computed properly" << endl; return 0;}
 }
 
@@ -296,9 +320,9 @@ double CCDIntermediates::AbsoluteDifference(double a, double b){
     return sqrt( pow(a-b,2) );
 }
 
-int CCDIntermediates::Index(int p, int q, int r, int s, int Np, int Nq, int Nr){
+int CCDIntermediates::Index(int p, int q, int r, int s){
     // p, q, r, s are the indice and not the state number. i.e. by formalism in this program: aa, bb and not a, b
     // Np, Nq, Nr are the number of indices for each state
 
-    return p + q*Np + r*Np*Nq + s*Np*Nq*Nr;
+    return p + q*Nparticles + r*Nparticles2 + s*Nparticles2*Nholes;
 }

@@ -55,7 +55,8 @@ SOURCES       = ../ElectronGasBlocks/main.cpp \
 		../../Solvers/Solvers/mbptnaive.cpp \
 		../../Solvers/Solvers/ccdnaive.cpp \
 		../../Solvers/Solvers/ccdintermediates.cpp \
-		../../Pairing_Model/PairingModel/pairingbasis.cpp 
+		../../Pairing_Model/PairingModel/pairingbasis.cpp \
+		../../NuclearMatter/NuclearMatter/nuclearbasis.cpp 
 OBJECTS       = main.o \
 		solver.o \
 		block.o \
@@ -63,7 +64,8 @@ OBJECTS       = main.o \
 		mbptnaive.o \
 		ccdnaive.o \
 		ccdintermediates.o \
-		pairingbasis.o
+		pairingbasis.o \
+		nuclearbasis.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -121,14 +123,16 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../../Solvers/Solvers/mbptnaive.h \
 		../../Solvers/Solvers/ccdnaive.h \
 		../../Solvers/Solvers/ccdintermediates.h \
-		../../Pairing_Model/PairingModel/pairingbasis.h ../ElectronGasBlocks/main.cpp \
+		../../Pairing_Model/PairingModel/pairingbasis.h \
+		../../NuclearMatter/NuclearMatter/nuclearbasis.h ../ElectronGasBlocks/main.cpp \
 		../ElectronGasBlocks/solver.cpp \
 		../ElectronGasBlocks/block.cpp \
 		../ElectronGasBlocks/electronbasis.cpp \
 		../../Solvers/Solvers/mbptnaive.cpp \
 		../../Solvers/Solvers/ccdnaive.cpp \
 		../../Solvers/Solvers/ccdintermediates.cpp \
-		../../Pairing_Model/PairingModel/pairingbasis.cpp
+		../../Pairing_Model/PairingModel/pairingbasis.cpp \
+		../../NuclearMatter/NuclearMatter/nuclearbasis.cpp
 QMAKE_TARGET  = ElectronGasBlocks
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = ElectronGasBlocks
@@ -309,6 +313,7 @@ main.o: ../ElectronGasBlocks/main.cpp ../ElectronGasBlocks/solver.h \
 		../ElectronGasBlocks/block.h \
 		../../Solvers/Solvers/ccdintermediates.h \
 		../../Pairing_Model/PairingModel/pairingbasis.h \
+		../../NuclearMatter/NuclearMatter/nuclearbasis.h \
 		../../Solvers/Solvers/ccdnaive.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../ElectronGasBlocks/main.cpp
 
@@ -335,11 +340,15 @@ ccdnaive.o: ../../Solvers/Solvers/ccdnaive.cpp ../../Solvers/Solvers/ccdnaive.h 
 
 ccdintermediates.o: ../../Solvers/Solvers/ccdintermediates.cpp ../../Solvers/Solvers/ccdintermediates.h \
 		../../Pairing_Model/PairingModel/pairingbasis.h \
-		../ElectronGasBlocks/electronbasis.h
+		../ElectronGasBlocks/electronbasis.h \
+		../../NuclearMatter/NuclearMatter/nuclearbasis.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdintermediates.o ../../Solvers/Solvers/ccdintermediates.cpp
 
 pairingbasis.o: ../../Pairing_Model/PairingModel/pairingbasis.cpp ../../Pairing_Model/PairingModel/pairingbasis.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pairingbasis.o ../../Pairing_Model/PairingModel/pairingbasis.cpp
+
+nuclearbasis.o: ../../NuclearMatter/NuclearMatter/nuclearbasis.cpp ../../NuclearMatter/NuclearMatter/nuclearbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o nuclearbasis.o ../../NuclearMatter/NuclearMatter/nuclearbasis.cpp
 
 ####### Install
 

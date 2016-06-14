@@ -10,7 +10,8 @@ SOURCES += main.cpp \
     ../../Solvers/Solvers/mbptnaive.cpp \
     ../../Solvers/Solvers/ccdnaive.cpp \
     ../../Solvers/Solvers/ccdintermediates.cpp \
-    ../../Pairing_Model/PairingModel/pairingbasis.cpp
+    ../../Pairing_Model/PairingModel/pairingbasis.cpp \
+    ../../NuclearMatter/NuclearMatter/nuclearbasis.cpp
 
 HEADERS += \
     solver.h \
@@ -19,7 +20,8 @@ HEADERS += \
     ../../Solvers/Solvers/mbptnaive.h \
     ../../Solvers/Solvers/ccdnaive.h \
     ../../Solvers/Solvers/ccdintermediates.h \
-    ../../Pairing_Model/PairingModel/pairingbasis.h
+    ../../Pairing_Model/PairingModel/pairingbasis.h \
+    ../../NuclearMatter/NuclearMatter/nuclearbasis.h
 
 
 LIBS += -llapack -lblas -larmadillo

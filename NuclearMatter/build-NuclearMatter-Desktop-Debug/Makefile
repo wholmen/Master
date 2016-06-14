@@ -36,7 +36,7 @@ DISTNAME      = NuclearMatter1.0.0
 DISTDIR = /home/wilhelm/repositories/Master/NuclearMatter/build-NuclearMatter-Desktop-Debug/.tmp/NuclearMatter1.0.0
 LINK          = g++
 LFLAGS        = -m64
-LIBS          = $(SUBLIBS)  
+LIBS          = $(SUBLIBS) -llapack -lblas -larmadillo 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -49,13 +49,21 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../NuclearMatter/main.cpp \
-		../NuclearMatter/basis_set.cpp \
-		../NuclearMatter/ccdintermediates.cpp \
-		../NuclearMatter/ccdblocks.cpp 
+		../../Solvers/Solvers/ccdintermediates.cpp \
+		../../Solvers/Solvers/ccdnaive.cpp \
+		../NuclearMatter/block.cpp \
+		../NuclearMatter/nuclearbasis.cpp \
+		../../Pairing_Model/PairingModel/pairingbasis.cpp \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.cpp \
+		../NuclearMatter/solver.cpp 
 OBJECTS       = main.o \
-		basis_set.o \
 		ccdintermediates.o \
-		ccdblocks.o
+		ccdnaive.o \
+		block.o \
+		nuclearbasis.o \
+		pairingbasis.o \
+		electronbasis.o \
+		solver.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -107,12 +115,20 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../NuclearMatter/NuclearMatter.pro basis_set.h \
-		ccdintermediates.h \
-		ccdblocks.h ../NuclearMatter/main.cpp \
-		../NuclearMatter/basis_set.cpp \
-		../NuclearMatter/ccdintermediates.cpp \
-		../NuclearMatter/ccdblocks.cpp
+		../NuclearMatter/NuclearMatter.pro ../../Solvers/Solvers/ccdintermediates.h \
+		../../Solvers/Solvers/ccdnaive.h \
+		block.h \
+		nuclearbasis.h \
+		../../Pairing_Model/PairingModel/pairingbasis.h \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h \
+		solver.h ../NuclearMatter/main.cpp \
+		../../Solvers/Solvers/ccdintermediates.cpp \
+		../../Solvers/Solvers/ccdnaive.cpp \
+		../NuclearMatter/block.cpp \
+		../NuclearMatter/nuclearbasis.cpp \
+		../../Pairing_Model/PairingModel/pairingbasis.cpp \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.cpp \
+		../NuclearMatter/solver.cpp
 QMAKE_TARGET  = NuclearMatter
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = NuclearMatter
@@ -288,18 +304,42 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../NuclearMatter/main.cpp ../NuclearMatter/basis_set.h
+main.o: ../NuclearMatter/main.cpp ../NuclearMatter/nuclearbasis.h \
+		../NuclearMatter/solver.h \
+		../NuclearMatter/block.h \
+		../../Solvers/Solvers/ccdintermediates.h \
+		../../Pairing_Model/PairingModel/pairingbasis.h \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../NuclearMatter/main.cpp
 
-basis_set.o: ../NuclearMatter/basis_set.cpp ../NuclearMatter/basis_set.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o basis_set.o ../NuclearMatter/basis_set.cpp
+ccdintermediates.o: ../../Solvers/Solvers/ccdintermediates.cpp ../../Solvers/Solvers/ccdintermediates.h \
+		../../Pairing_Model/PairingModel/pairingbasis.h \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h \
+		../NuclearMatter/nuclearbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdintermediates.o ../../Solvers/Solvers/ccdintermediates.cpp
 
-ccdintermediates.o: ../NuclearMatter/ccdintermediates.cpp ../NuclearMatter/ccdintermediates.h \
-		../NuclearMatter/basis_set.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdintermediates.o ../NuclearMatter/ccdintermediates.cpp
+ccdnaive.o: ../../Solvers/Solvers/ccdnaive.cpp ../../Solvers/Solvers/ccdnaive.h \
+		../../Pairing_Model/PairingModel/pairingbasis.h \
+		../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdnaive.o ../../Solvers/Solvers/ccdnaive.cpp
 
-ccdblocks.o: ../NuclearMatter/ccdblocks.cpp ../NuclearMatter/ccdblocks.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ccdblocks.o ../NuclearMatter/ccdblocks.cpp
+block.o: ../NuclearMatter/block.cpp ../NuclearMatter/block.h \
+		../NuclearMatter/nuclearbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o block.o ../NuclearMatter/block.cpp
+
+nuclearbasis.o: ../NuclearMatter/nuclearbasis.cpp ../NuclearMatter/nuclearbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o nuclearbasis.o ../NuclearMatter/nuclearbasis.cpp
+
+pairingbasis.o: ../../Pairing_Model/PairingModel/pairingbasis.cpp ../../Pairing_Model/PairingModel/pairingbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pairingbasis.o ../../Pairing_Model/PairingModel/pairingbasis.cpp
+
+electronbasis.o: ../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.cpp ../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o electronbasis.o ../../ElectronGasBlockStructure/ElectronGasBlocks/electronbasis.cpp
+
+solver.o: ../NuclearMatter/solver.cpp ../NuclearMatter/solver.h \
+		../NuclearMatter/nuclearbasis.h \
+		../NuclearMatter/block.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o solver.o ../NuclearMatter/solver.cpp
 
 ####### Install
 

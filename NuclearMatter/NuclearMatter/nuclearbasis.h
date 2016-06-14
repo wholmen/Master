@@ -1,5 +1,5 @@
-#ifndef BASIS_SET_H
-#define BASIS_SET_H
+#ifndef NUCLEARBASIS_H
+#define NUCLEARBASIS_H
 
 #include <armadillo>
 #include <iostream>
@@ -9,14 +9,14 @@
 using namespace std;
 using namespace arma;
 
-class basis_set
+class NuclearBasis
 {
 public:
-    basis_set();
-    basis_set(int Nshells_input, int NFilledShells_input, double rs_input);
+    NuclearBasis();
+    NuclearBasis(int Nshells_input, int NFilledShells_input, double rs_input);
 
     mat States;
-    int Nshells; int NfilledShells; int Nholes; int Nstates;
+    int Nshells; int NfilledShells; int Nholes; int Nstates; int Nstates2; int Nstates3;
 
     double rs;
     double kstep;
@@ -28,10 +28,12 @@ public:
     // Functions for energy calculations
     double OneBodyOperator(int p, int q);
     double TwoBodyOperator(int p, int q, int r, int s); // Minnesota potential as nuclear interaction
+    double Minnesota(int p, int q, int r, int s);
     double ei(int q);
     double epsilon(int i, int j, int a, int b); // Returns e_i + e_j - e_a - e_b
     double ReferenceEnergy();
 
+    void SetUpInteraction(); vec Interaction;
 
     int KD_k(int a, int b);
     double Absolute_Difference2(int a, int b);
@@ -47,5 +49,5 @@ public:
 
 
 
-#endif // BASIS_SET_H
+#endif // NUCLEARBASIS_H
 

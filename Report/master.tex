@@ -854,6 +854,117 @@
 
 \begin{chapter}{Results}
 	
+	\begin{section}{The Pairing Model}
+		The Pairing Model serve as a valuable benchmark for implemented solvers. As I have looked at a 4p4h configuration, a full configuration interaction solver can be implemented giving the exact solution. One can also calculate the exact solution for second order perturbation theory by hand \cite{Hjorth-Jensen2016}. 
+		\begin{align}
+			\Delta E_{MBPT2} = \frac{1}{4} \sum_{abij} \frac{\left<ij\middle|\middle|ab\right>\left<ab\middle|\middle|ij\right>}{\epsilon_{ij}^{ab}} = 
+			\sum_{a<b,i<j} \frac{\left<ij\middle|\middle|ab\right>\left<ab\middle|\middle|ij\right>}{\epsilon_{ij}^{ab}}
+		\end{align}
+		Where 
+		\begin{align}
+			\epsilon_{ij}^{ab} = \epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b
+		\end{align}
+		and
+		\begin{align}
+			\epsilon_p = h_{pp} + \sum_i \left<pi\middle|\middle|pi\right>
+		\end{align}
+		This results in
+		\begin{align}
+			\Delta E_{MBPT2} = \frac{\left<01\middle|\middle|45\right>^2}{\epsilon_{01}^{45} } + \frac{\left<01\middle|\middle|67\right>^2}{\epsilon_{01}^{67} }
+							  +\frac{\left<23\middle|\middle|45\right>^2}{\epsilon_{23}^{45} } \ \frac{\left<23\middle|\middle|67\right>^2}{\epsilon_{23}^{67} }
+		\end{align}
+		\begin{align}
+			\Delta E_{MBPT2} = -\frac{g^2}{4} \left( \frac{1}{4+g} + \frac{1}{6+g} + \frac{1}{2+g} + \frac{1}{4+g} \right)
+		\end{align}
+		Where g represents the interaction strength. The table below shows my results for various g's both using the exact mbpt2 calculations and my numerically computed results. All results can be accessed on github \cite{WholmenGithub}
+
+		\begin{table}
+			\begin{center}
+				\begin{tabular}[center]{l | c | c | r}
+					g & $E_0$ & exact $ \Delta E_{MBPT2}$  & $\Delta E_{MBPT2}$ \\
+					\hline
+					-1 & 3 & -0.466667 & -0.466667 \\
+					-0.5 & 2.5 & -0.0887446 & -0.0887446 \\
+					0 & 2 & 0 & 0 \\
+					0.5 & 1.5 & -0.0623932 & -0.0623932 \\
+					1 & 1 & -0.219048 & -0.219048
+				\end{tabular}
+			\end{center}
+			\caption{A table showing corrolation energies for Pairing model with 4 particle-states and 4 hole-states.  }
+			\label{Results1}
+		\end{table}
+		As one can see, the corrolation energies computed perfectly matches which both tells us that the basis set is set up correctly and that the MBPT2 solver is set up correctly. The results presented also match the results found in \cite{Hjorth-Jensen2016}
+
+		The second order perturbation theory is valuble for benchmarking my implementation of Coupled Cluster Doubles. By initializing the first set of amplitudes, $t$, as zero, I get
+		\begin{align}
+			t_{ij}^{ab(0)} = 0  
+		\end{align}
+		\begin{align}
+			t_{ij}^{ab(1)} = \frac{1}{4} \sum_{ijab} \frac{\left<ab\middle|\middle|ij\right>}{\epsilon_{ij}^{ab}} 
+ 		\end{align}
+ 		Which is equal to second order pertubation theory. 
+ 		\begin{table}
+			\begin{center}
+				\begin{tabular}[center]{l | c | r}
+					g & $ \Delta E_{MBPT2}$  & $\Delta E_{CCD}^{(1)}$ \\
+					\hline
+					-1 & -0.466667 & -0.466667 \\
+					-0.5 & -0.0887446 & -0.0887446 \\
+					0 & 0 & 0 \\
+					0.5 & -0.0623932 & -0.0623932 \\
+					1 & -0.219048 & -0.219048
+				\end{tabular}
+			\end{center}
+			\caption{A table comparing corrolation energies for Pairing model with 4 particle-states and 4 hole-states. This table show that CCD solver used with only a single iteration produces results exactly equal to mbpt2. This was done with the naive implementation of CCD equations}
+			\label{Results2}
+		\end{table}
+
+		\begin{subsection}{Comparison of CCD solvers}
+			In this thesis I have created three different solvers for Coupled Cluster Doubles equations. 
+			\begin{enumerate}
+				\item A naive brute force implementation of the equations summing over all variables. 
+				\item A naive brute force implementation of intermediate equations summing over all variables.
+				\item Rewriting summations as matrix-matrix multiplications and exploiting various symmetry arguments one can set up a block implementation.
+			\end{enumerate}		
+			As shown in table (\ref{Results2}), the naive implementation reproduces the mbpt2 energies as expected. I have used both the naive and intermediate CCD solver to compute corrolation energies for the Pairing model and again, \cite{Hjorth-Jensen2016} provides us with a good benchmark for the CCD equations.
+
+			\begin{table}
+				\begin{center}
+					\begin{tabular}[center]{l | c | r}
+						g & $ \Delta E_{CCD}$ Naive  & $\Delta E_{CCD}$ Intermediates \\
+						\hline
+						0 & x & x \\
+						-0.5 & -0.0630564 & -0.0630562 \\
+						0 & 0 & 0 \\
+						0.5 & -0.0833621 & -0.0833623 \\
+						1 & -0.369557 & -0.369557
+					\end{tabular}
+				\end{center}
+				\caption{A table comparing corrolation energies for Pairing model with 4 particle-states and 4 hole-states. This table compare results from Naive and Intermediate implementation of CCD equations. A relaxing factor of $w = 0.3$ has been used because of divergence around $g=-1$}
+				\label{Results3}
+			\end{table}
+			As one can see, my solvers reproduce results presented in \cite{Hjorth-Jensen2016}. For values of $g$ close to $-1$, one will see a divergence for CCD equations. By introducing a relaxing factor of $w = 0.3$, this problem was solved. 
+  
+		\end{subsection}
+		\begin{subsection}{Comparison of various solvers}
+			The full configuration interaction provides us with the exact solution for the 4p4h Pairing model. It can therefore be useful to compare the performance of Perturbation theory to second, third and fourth order with Coupled Cluster Doubles and configuration interaction without the four-particle excitation. 
+			\begin{figure}H
+				\includegraphics[width=\linewidth]{../Pairing_Model/Results/Figures/Pairing4p4h_CompareDE_AllMethods.png}
+				\caption{Comparing }
+				\label{Results4}
+			\end{figure}
+
+			\begin{figure}
+				\includegraphics[width=\linewidth]{../Pairing_Model/Results/Figures/Pairing4p4h_CompareE_AllMethods.png}
+				\caption{}
+				\label{Results5}
+			\end{figure}
+
+		\end{subsection}
+
+
+	\end{section}
+
 \end{chapter}
 
 
@@ -865,22 +976,31 @@
 
 \medskip
 
-\begin{chapter}{Bibliography}
-	\begin{thebibliography}{9}
-		\bibitem{Baardsen}
-		Gustav Baardsen
-		\textit{Coupled-cluster theory for infinite matter} 2014
 
-		\bibitem{Day1967} 
-		B. D. Day
-		\textit{Rev. Mod. Phys.,}
-		39:719, 1967.
+\begin{thebibliography}{9}
 
-		\bibitem{Thompson1977}
-		D. R. Thompson, M. Lemere and Y.C. Tang.
-		\textit{Nucl. Phys. A,} 286:53 1977.
+	\bibitem{Baardsen}
+	Gustav Baardsen
+	\textit{Coupled-cluster theory for infinite matter} 2014
 
-	\end{thebibliography}
-\end{chapter}
+	\bibitem{Day1967} 
+	B. D. Day
+	\textit{Rev. Mod. Phys.,}
+	39:719, 1967.
+
+	\bibitem{Thompson1977}
+	D. R. Thompson, M. Lemere and Y.C. Tang.
+	\textit{Nucl. Phys. A,} 286:53 1977.
+
+	\bibitem{Hjorth-Jensen2016}
+	Morten Hjorth-Jensen, Maria Paola Lombardo and Ubiraja van Kolck
+	\textit{An Advanced Course in Computational Nuclear Physics} 2016
+
+	\bibitem{WholmenGithub}
+	Fredrik Wilhelm Holmen
+	\textit{https://github.com/wholmen/Master} 
+
+\end{thebibliography}
+
 
 \end{document}

@@ -80,7 +80,7 @@ double CCDIntermediates::CCD(int MaxIterations){
     cout << "Energy using intermediates. E0/N: " << E1 / Nholes << "  E0: " << E1 << endl;
 
     // Start the iteration process
-    NIterations = 0; tolerance = 1e-6;
+    NIterations = 0; tolerance = 1e-12;
     while ( AbsoluteDifference(E1,E0) > tolerance && NIterations < MaxIterations){
 
         E0 = E1;
@@ -100,7 +100,7 @@ vec CCDIntermediates::CCD_ReturnAllIterations(){
     UpdateAmplitudes();
     double E1 = CorrelationEnergy();
 
-    NIterations = 0; tolerance = 1e-6;
+    NIterations = 0; tolerance = 1e-12;
     energies.insert_rows(NIterations,1);
     energies(NIterations) = E1; NIterations++;
 
@@ -193,13 +193,18 @@ void CCDIntermediates::UpdateAmplitudes(){
                     }
                     tau += 0.5*term;
 
-                    tau = v(a,b,i,j) + weight*tau; // Weighting the iterative scheme
+                    tau += v(a,b,i,j); // Weighting the iterative scheme
 
                     t( Index(aa,bb,i,j)) = tau / epsilon(i,j,a,b);
                 }
             }
         }
     }
+    // Dividing by factor epsilon(i,j,a,b)
+    //t = t / epsilon();
+
+    // Adding weight factor
+    if (weight != 0) t = weight*t + (1-weight)*t0;
 }
 
 void CCDIntermediates::UpdateI1(){
@@ -301,10 +306,17 @@ void CCDIntermediates::UpdateI4(){
 }
 
 double CCDIntermediates::epsilon(int i, int j, int a, int b){
-
     if (BasisNumber == 1) return pabasis.epsilon(i,j,a,b);
     else if (BasisNumber == 2) return elbasis.epsilon(i,j,a,b);
     else if (BasisNumber == 3) return ncbasis.epsilon(i,j,a,b);
+    else {cout << "basis is not defined properly in ccd naive. Epsilon not computed properly" << endl; return 0;}
+}
+
+vec CCDIntermediates::epsilon(){
+
+    if (BasisNumber == 1) return pabasis.EpsilonMatrix;
+    else if (BasisNumber == 2) return elbasis.EpsilonMatrix;
+    else if (BasisNumber == 3) return ncbasis.EpsilonMatrix;
     else {cout << "basis is not defined properly in ccd naive. Epsilon not computed properly" << endl; return 0;}
 }
 

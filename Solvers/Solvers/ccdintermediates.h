@@ -50,6 +50,7 @@ public:
     vec CCD_ReturnAllIterations();
     double v(int p, int q, int r, int s); // Interaction
     double epsilon(int i, int j, int a, int b);
+    vec epsilon();
 
     // Intermediates
     mat I1, I2, I3, I4;

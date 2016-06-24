@@ -171,13 +171,15 @@ void CCDNaive::UpdateAmplitudes(){
                             }
                         }
                     }
-                    tau = v(a,b,i,j) + weight*tau; //Weighting the iterative scheme
+                    tau = v(a,b,i,j) + tau; //Weighting the iterative scheme
 
                     t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) = tau / epsilon(i,j,a,b);
                 }
             }
         }
     }
+    // Adding weight factor
+    if (weight != 0) t = weight*t + (1-weight)*t0;
 }
 
 double CCDNaive::epsilon(int i, int j, int a, int b){

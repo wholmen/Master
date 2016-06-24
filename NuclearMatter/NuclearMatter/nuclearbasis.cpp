@@ -60,6 +60,9 @@ NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double rs
         States(i,0) = States(i,0) * 2*pi*pi / L2;
     }
 
+    Nparticles = Nstates - Nholes;
+    SetUpEpsilon();
+
     Nstates2 = Nstates*Nstates; Nstates3 = Nstates2*Nstates;
     SetUpInteraction();
 }
@@ -96,6 +99,22 @@ double NuclearBasis::ei(int q){
 double NuclearBasis::epsilon(int i, int j, int a, int b){
     // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
     return ei(i) + ei(j) - ei(a) - ei(b);
+}
+
+void NuclearBasis::SetUpEpsilon(){
+    EpsilonMatrix = zeros<vec>(Nparticles*Nparticles*Nholes*Nholes);
+
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    int a = aa + Nholes; int b = bb + Nholes;
+                    EpsilonMatrix(aa + bb*Nparticles + i*Nparticles*Nparticles + j*Nparticles*Nparticles*Nholes) = epsilon(i,j,a,b);
+                }
+            }
+        }
+    }
 }
 
 double NuclearBasis::OneBodyOperator(int p, int q){

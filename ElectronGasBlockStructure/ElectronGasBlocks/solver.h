@@ -42,6 +42,7 @@ public:
     // Declaring matrices
     vec t0; // Amplitudes for iteration n
     vec t ; // Amplitudes for iteration n+1
+    vec epsilon; // Storing all epsilon factors
     mat Holes; // Matrix for all two-hole configurations. Each row contains (state1, state2, identifier)
     mat Particles; // Matrix for all two-particle configurations. Each row contains (state1, state2, identifier)
     mat Xph, Xhp; // Cross states. p-h config or h-p config
@@ -77,6 +78,7 @@ public:
 
     // Declaring functions for program flow
     double CCD(int MaxIterations); // This is the main function in solver. Calling this function will fully compute the corrolation energy using CCD
+    vec CCD_ReturnAllIterations();
     double CorrolationEnergy(); // Function used to calculate energy for every iteration in the amplitudes
 
     void UpdateAmplitudes(); // Function that updates the amplitudes

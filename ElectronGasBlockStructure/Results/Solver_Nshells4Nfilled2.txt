@@ -1,7 +1,7 @@
-A coupled cluster study of electron gas using intermediates. 
+A coupled cluster study of electron gas using blocks. 
 The system consist of 54 states and 14 holes. These values are chosen to compare results with Audun Skau Hansen's master thesis.
 The results are presented in the following order: 
-rs, weight, Reference Energy, CCDIntermediate result, Iterations
+weight, rs, Reference Energy, CCDIntermediate result, Iterations
 1 1 13.6029 -0.317854612284 33
 0.7 1 13.6028580869 -0.317854612284 22
 0.3 1 13.6028580869 -0.317854611308 50

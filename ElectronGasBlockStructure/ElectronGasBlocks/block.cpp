@@ -304,9 +304,6 @@ void Block::SetUpMatrices_I2(mat &t0){
     I2 = I2 + 0.5*V*T;
 }
 
-void Block::SetUpMatrices_I3(mat &t0){
-
-}
 
 int Block::Index(int p, int q, int r, int s){
     // p, q, r, s are the indice and not the state number. i.e. by formalism in this program: aa, bb and not a, b

@@ -203,9 +203,9 @@ void CompareMethods(){
 
         double mbpt2exact = -G(i)*G(i) / 4.0 *(1/(4+G(i)) + 1/(6+G(i)) + 1/(2+G(i)) + 1/(4+G(i)));
         FCI fci = FCI(basis);
-        CCDIntermediates ccdi = CCDIntermediates(basis);
+        CCDIntermediates ccdi = CCDIntermediates(basis); ccdi.weight = 0.3;
         MBPTNaive mbpt = MBPTNaive(basis);
-        myfile << basis.g << " " << basis.ReferenceEnergy() << " " << fci.CalculateFCI() << " " << fci.CalculateCI() << " " << mbpt.MBPT2() << " " << mbpt2exact << " " << mbpt.MBPT3() << " " << mbpt.MBPT4() << " " << ccdi.CCD(20) << endl;
+        myfile << basis.g << " " << basis.ReferenceEnergy() << " " << fci.CalculateFCI() << " " << fci.CalculateCI() << " " << mbpt.MBPT2() << " " << mbpt2exact << " " << mbpt.MBPT3() << " " << mbpt.MBPT4() << " " << ccdi.CCD(50) << endl;
     }
     myfile.close();
 }

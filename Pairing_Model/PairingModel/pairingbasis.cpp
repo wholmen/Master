@@ -26,6 +26,8 @@ PairingBasis::PairingBasis(int Nshells_input, int NshellsFilled_input, double g_
             if (p <= NshellsFilled) Nholes++;
         }
     }
+    Nparticles = Nstates - Nholes;
+    SetUpEpsilon();
 }
 
 double PairingBasis::ReferenceEnergy(){
@@ -95,6 +97,22 @@ double PairingBasis::ei(int q){
 double PairingBasis::epsilon(int i, int j, int a, int b){
     // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
     return ei(i) + ei(j) - ei(a) - ei(b);
+}
+
+void PairingBasis::SetUpEpsilon(){
+    EpsilonMatrix = zeros<vec>(Nparticles*Nparticles*Nholes*Nholes);
+
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    int a = aa + Nholes; int b = bb + Nholes;
+                    EpsilonMatrix(aa + bb*Nparticles + i*Nparticles*Nparticles + j*Nparticles*Nparticles*Nholes) = epsilon(i,j,a,b);
+                }
+            }
+        }
+    }
 }
 
 double PairingBasis::epsilon4(int i, int j, int k, int l, int a, int b, int c, int d){

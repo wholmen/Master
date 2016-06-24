@@ -20,6 +20,9 @@ public:
     int NshellsFilled;
     int Nholes;
     int Nstates;
+    int Nparticles;
+
+    vec EpsilonMatrix;
 
     double delta;
     double g;
@@ -34,6 +37,7 @@ public:
     double epsilon(int i, int j, int a, int b);
     double epsilon4(int i, int j, int k, int l, int a, int b, int c, int d);
     double ReferenceEnergy();
+    void SetUpEpsilon();
 
     // Kroenecker Delta's
     int KD_integer(int a, int b);

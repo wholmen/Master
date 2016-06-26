@@ -1,6 +1,16 @@
 \documentclass[twoside,english]{uiofysmaster}
 
-%\bibliography{references}
+\bibliography{references}
+
+
+% Adding nicer font to listings
+\usepackage{ifxetex}
+\ifxetex
+  \usepackage{fontspec}
+  \newfontfamily\listingsfontfamily[Scale=0.85]{Droid Sans Mono}
+  \renewcommand{\listingsfont}{\listingsfontfamily}
+\fi
+
 
 \author{Fredrik Wilhelm Holmen}
 \title{Master thesis Wilhelm Coupled Cluster}
@@ -304,6 +314,7 @@
   		\begin{align}
   			(\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b) t_{ij}^{ab} = \left<ab\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} + \frac{1}{2} \sum_{kl} t_{kl}^{ab} I_1 \\
   			+ \hat P\left(ij\middle|ab\right) \sum_{kc} t_{ik}^{ac} I_2 - \frac{1}{2} \hat P(ij) \sum_{k} t_{ik}^{ab} I_3  - \frac{1}{2} \hat P(ab) \sum_{c} t_{ij}^{ac} I_4
+  			\label{Intermediates}
   		\end{align}
   		Leading to a reduction of computational cost from $\mathcal{O}(h^4 p^4)$ to $\mathcal{O}(h^4 p^2)$
 
@@ -725,7 +736,38 @@
 
 
 \begin{chapter}{Implementation}
-	
+	In this thesis I have created three different solvers for Coupled Cluster Doubles equations. 
+	\begin{enumerate}
+		\item A naive brute force implementation of the equations summing over all variables. 
+		\item A naive brute force implementation of intermediate equations summing over all variables.
+		\item Rewriting summations as matrix-matrix multiplications and exploiting various symmetry arguments one can set up a block implementation.
+	\end{enumerate}	
+	There is a significant performance leap between each method, but I have included the first two solvers for both educational and benchmarking purposes. The Pairing model with 4 particles and 4 holes is a small system that one can easily solve using the naive approach. After producing expected results with the naive solver, I have compared the more complicated solvers to the naive solver for all systems. 
+
+	\begin{section}{Implementing the CCD equations}
+		The basic steps of all implemented CCD algorithms can be explained through these steps
+		\begin{enumerate}
+			\item Initialize amplitudes $t^{(0)} = 0$ and $\Delta E_{CCD}^{(0)} = 0$
+			\item Update the amplitudes and calculate $\Delta E_{CCD}^{(1)}$
+			\item If $ |\Delta E_{CCD}^{(1)} - \Delta E_{CCD}^{(0)}| \geq \epsilon $, update amplitudes and compute $\Delta E_{CCD}^{2}$
+			\item Repeat until $ |\Delta E_{CCD}^{(n+1)} - \Delta E_{CCD}^{(n)}| \leq \epsilon $
+		\end{enumerate}
+		The difference between the three solvers I have implemented is the way I update amplitudes. The naive brute force solver loops over all indices when computing. An example of diagram $L_a$ is shown below
+
+		\begin{lstlisting}
+		for i in 0, ..., Nholes:
+			for j in 0, ..., Nholes:
+				for a in Nholes, ..., Nparticles:
+					for b in Nholes, ..., Nparticles:
+						for c in Nholes, ..., Nparticles:
+							for d in Nholes, ..., Nparticles:
+								tnew(a,b,i,j) = 0.5  v(a,b,c,d)  told(c,d,i,j)
+		\end{lstlisting}
+
+		A significant cost reduction can be obtained by factorizing the diagrams as shown in equation (\ref{Intermediates}). By calculating the four intermediate diagrams, $I_1$, $I_2$, $I_3$ and $I_4$ beforehand and storing the results reduce the cost of calculation from $\mathcal{O}(h^4 p^4)$ to $\mathcal{O}(h^4 p^2)$. The second solver applies this method. 
+
+	\end{section}
+
 	\begin{section}{Matrix Representation of Contractions}
 		Diagrams can be viewed as contractions of tensors of varying degree. An example is the matrix-matrix multiplication product
 		\begin{align}
@@ -800,22 +842,58 @@
 			\begin{align}
 				L_c \neq \tilde L_c
 			\end{align}
-			We must "realigne" $\tilde L_c$ to match the correct diagram
+			We must "realign" $\tilde L_c$ to match the correct diagram
 			\begin{align}
 				(\tilde L_c)_{\delta(i,a)}^{\alpha(b,j)} \rightarrow (L_c)_{\delta(i,k)}^{\alpha(k,b)}
 			\end{align}
+
+			Another example is the $Qc$ term
+			\begin{align}
+				Q_c = -\frac{1}{2} \hat P(ij) \sum_{klcd} \left< kl \middle| v \middle| cd \right> t_{ik}^{ab} t_{jl}^{cd} 
+			\end{align}
+			We can rewrite this as a matrix-matrix multiplication with the matrix elements given by
+			\begin{align}
+				\left< kl \middle| v \middle| cd \right> = v_{cd}^{kl} & \rightarrow V^{\alpha(cd)}_{\beta(kl)} \\
+				t_{ik}^{ab} & \rightarrow (T_1)_{\gamma(ik)}^{\delta(ab)} \\
+				t_{jl}^{cd} & \rightarrow (T_2)_{\omega(jl)}^{\eta(cd)}
+			\end{align}
+			Because we sum over the coefficients $klcd$, we must make sure that they belong to the "inner" indexes. This can only be done by creating a hole, particle-particle-hole configuration. We must also change the order of multiplication
+			\begin{align}
+				V^{\alpha(cd)}_{\beta(kl)} &  \rightarrow \tilde V^{\delta(k)}_{\gamma(cdl)} \\
+				(T_1)_{\gamma(ik)}^{\delta(ab)} & \rightarrow \tilde (T_1)^{\alpha(abi)}_{\delta(k)} \\
+				(T_2)_{\omega(jl)}^{\eta(cd)} & \rightarrow \tilde (T_2)^{\gamma(cdl)}_{\beta(j)}
+			\end{align}
+			This gives us
+			\begin{align}
+				( \tilde Q_c )_{\beta(j)}^{\alpha(abi)} = -\frac{1}{2} \hat P(ij) \sum_{klcd} (\tilde T_1)^{\alpha(abi)}_{\delta(k)} \tilde V^{\delta(k)}_{\gamma(cdl)} (\tilde T_2)^{\gamma(cdl)}_{\beta(j)}
+			\end{align}
+			Which must be realigned back to the properly aligned $Q_c$ before it can be added to the amplitude equations.
+			\begin{align}
+				( \tilde Q_c )_{\beta(j)}^{\alpha(abi)} \rightarrow (Q_c)_{\beta(ij)}^{\alpha(ab)}
+			\end{align}
+			We will need a general mapping function that can be used regardless of the amount of states used. It turns out that we can use the same mapping as before, just generalized to $N$ states.
+			\begin{align}
+				\alpha(p_1,p_2,p_3,...,p_N) = p_1 + p_2N_1 + p_3N_1N_2 + ... + p_N N_1 N_2 ... N_{N-1} 
+			\end{align}
+			Where $N_n$ determines the maximum number of states for $p_n$. If for example $p_n \in i$, i.e. $p_n$ is a hole-state, $N_n = N_{holes}$.
+
+			Writing the diagrams as matrix-matrix multiplications serves as a significant reduction of computational time, due to the efficient algortithms in the BLAS-packages for matrix-matrix multiplications. However, since one has to save all the matrices, memory usage will be a problem for large basises. 
 		\end{subsection}
 
 	\end{section}
 
 	\begin{section}{Block Implementation}
-		We can exploit symmetries in the homogeneous electron gas to optimize performance. Due to kroenecker delta's in the interaction, one such symmetry is the conservation of momentum
+		One can both greatly reducing memory usage and improve computational speed by exploiting symmetries for infinite matter . Due to kroenecker delta's in the interaction, one such symmetry is the conservation of momentum
 		\begin{align}
 			\delta_{\vec k_p + \vec k_q, \vec k_r + \vec k_s} \rightarrow \vec k_p + \vec k_q = \vec k_r + \vec k_s
 		\end{align}
 		We also conserve spin 
 		\begin{align}
 			m_{s_p} + m_{s_q} = m_{s_r} + m_{s_s}
+		\end{align}
+		and for nuclear matter, we will conserve isospin aswell
+		\begin{align}
+			m_{t_p} + m_{t_q} = m_{t_r} + m_{t_s}
 		\end{align}
 		The amplitudes will be subject to the same restrictions, vizualised by the first order amplitude generated by perturbation theory
 		\begin{align}
@@ -833,18 +911,52 @@
 		\begin{align}
 			m_{s_a} + m_{s_b} = m_{s_c} + m_{s_d} = m_{s_i} + m_{s_j} 
 		\end{align}
-		When summing over all variations of contractions, only the quantum numbers preserving the symmetry requirements are nonzero. When storing the interactions in a matrix, most of it will have zero-elements. The blocking method will store the nonzero parts in blocks inside the matrix. By keeping track of the blocks, we can reduce the full matrix-matrix multiplication to a series of multiplications of the blocks. 
+		When summing over all variations of contractions, only the quantum numbers preserving the symmetry requirements are nonzero. When storing the interactions in a matrix, most of it will have zero-elements. The blocking method will store the nonzero parts in blocks inside the matrix. By keeping track of the blocks, we can reduce the full matrix-matrix multiplication to a series of multiplications of the blocks. We will hereby refer to the series of blocks as \textit{channels}.
 
-		We need a unique identifier when sorting states into boxes. One can apply the same logic as in equation (\ref{mapping of matrix elements}) and set up
-		\begin{align}
-			k_{\text{unique}} = k_x + k_y \Delta k + k_z \Delta k^2 2
-		\end{align}
-		where we have defined 
-		\begin{align}
-			\Delta k = k_{\text{max}} + 1 
-		\end{align}
+		\begin{subsection}{Two-state configurations}
+			As we can see from the $L_a$ diagram, the conservation laws apply for a combination of two states. The next step is then to set up all two-state configurations that will be needed. We start by setting up the direct two-state channels, $T$, which consist of all two-hole and two-particle configurations. A unique identifier must be set up for the combination of quantum numbers. The identifier is used to aligning the non-zero combinations of two-body states to the same channel. Without this identifier, we will have to loop over all channels for each two-body state. I have used the following function 
+			\begin{align}
+				\text{Index}(N_x,N_y,N_z,S_z,T_z) = &2(N_x + m)M^3 + 2(N_y+m)M^2 + \\ & 2(N_z+m)M + 2(S_z+1) + (T_z+1)
+			\end{align}
+			Using the same logic as in equation (\ref{mapping of matrix elements}) to get a unique identifier for every combination of $N_x,N_y,N_z,S_z$ and $T_z$. Which imply that the two-body states have the same momentum, spin and isospin projection, which satisfies our conservation laws. We need $m$ and $M$ to be sufficiently large. I have used
+			\begin{align}
+				m = 2|\sqrt{N_{\text{max}}}| \:\:\:\:\:\: M = 2m +1
+			\end{align}
+			Because of the Pauli-exclusion, two particles cannot occupy the same state, so we can further reduce the amount of two-body states by excluding equal one-body states from the channels. An algorithm for setting up the direct channels can be portraied as
+			\begin{align*}
+				&\mathbf{for } \text{ one-body state 1} \in \text{STATES}: \\
+				&\:\:\:\: \mathbf{for } \text{ one-body state 2} \in \text{STATES}: \\
+				&\:\:\:\:\:\:\:\: \mathbf{if} \text{ one-body state 1} \neq \text{ one-body state 2}: \\
+				&\:\:\:\:\:\:\:\:\:\: N_x = n_{x,1} + n_{x,2} \\
+				&\:\:\:\:\:\:\:\:\:\: N_y = n_{y,1} + n_{y,2} \\
+				&\:\:\:\:\:\:\:\:\:\: N_z = n_{z,1} + n_{z,2} \\
+ 				&\:\:\:\:\:\:\:\:\:\: S_z = m_{s,1} + m_{s,2} \\
+				&\:\:\:\:\:\:\:\:\:\: T_z = m_{t,1} + m_{t,2} \\
+				&\:\:\:\:\:\:\:\:\:\: \text{Id} = \text{Index}(N_x,N_y,N_z,S_z,T_z) \\
+				&\:\:\:\:\:\:\:\:\:\: T \leftarrow (\text{ one-body state 1}, \text{ one-body state 2}, \text{ Id})
+			\end{align*}
+
+		\end{subsection}
 		
+		\begin{subsection}{Unaligned channels}
+			Diagram $L_a$, $L_b$ and $Q_a$ have conservation requirements as shown previously for $L_a$
+			\begin{align}
+			 	\mathbf{k}_a + \mathbf{k}_b = \mathbf{k}_c + \mathbf{k}_d = \mathbf{k}_i + \mathbf{k}_j 
+			\end{align}
+			Which are implemented using the direct channels. We will however run into some trouble when computing the unaligned diagrams $L_c$, $Q_b$, $Q_c$ and $Q_d$. The $L_c$ diagram is given by 
+			\begin{align}
+				L_c = - \hat P(ij|ab) \sum_{kc} \left<kb\middle|\hat v\middle| cj \right> t_{ij}^{ac}
+			\end{align}
+			Looking at the conservation requirement for the interaction part of $L_c$, $\left<kb\middle|\hat v\middle| cj \right>$
+			\begin{align}
+				\mathbf{k}_k + \mathbf{k}_b = \mathbf{k}_c + \mathbf{k}_j
+			\end{align}
+			and 
+			\begin{align}
+				m_{s,k} + m_{s,b} = m_{s,c} + m_{s,j}  \:\:\:\:\:\:\: m_{t,k} + m_{t,b} = m_{t,c} + m_{t,j} 
+			\end{align}
 
+		\end{subsection}
 
 	\end{section}
 \end{chapter}

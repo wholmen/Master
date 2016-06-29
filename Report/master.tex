@@ -53,18 +53,21 @@
 
 
 \begin{chapter}{Quantum Mechanics}
- 
- \begin{section}{Postulates}
  	
- \end{section}
+	
 
- \begin{section}{Hermitian Operators}
- 	
- \end{section}
+	\begin{section}{Postulates}
 
- \begin{section}{Pauli's Exclusion Principle}
- 	
- \end{section}
+ 		Quantum 
+ 	\end{section}
+
+ 	\begin{section}{The Born-Oppenheimer Approximation}
+ 		The Born-Oppenheimer approximation lies at the heart of many-body quantum mechanics. 
+ 	\end{section}
+
+ 	\begin{section}{Pauli's Exclusion Principle}
+ 		Pauli exclusion principle, also called the antisymmetry principle \cite{Szabo} 
+ 	\end{section}
 
 	\begin{section}{The Variational Principle}
 
@@ -93,6 +96,10 @@
 		approximation to the true wavefunction, $\ket{\Psi}$.
 	\end{section}
 
+	\begin{section}{Matrix Elements}
+		
+	\end{section}
+
 \end{chapter}
 
 
@@ -100,43 +107,132 @@
 
 
 \begin{chapter}{Second Quantization}
- Second quantization is a new method of representing states and operators. 
- \begin{section}{Annihilation and Creation operators}
- 	We introduce a new way of writing states using the mathematical technique known as second quantization. The main goal is to treat states without paying attention
-  	to individual particle coordinates. We represent the empty space with the symbol for vacuum
-  	\begin{align}
-  		\ket{0}
-  	\end{align}
-  	To represent a state, we use a creation operator to add the state to the vacuum.
-  	\begin{align}
-  		\hat a_i^{\dagger} \ket{0} = \ket{\phi_i}
-  	\end{align}
-  	And the annihilation operator will remove the particle again. 
-  	\begin{align}
-  		\hat a_i \ket{\phi_i} = \ket{0}
-  	\end{align}
-  	Trying to add a new particle to an already filled state and removing an unoccupied state results in zero.
-  	\begin{align}
-  		\hat a_i^{\dagger} \ket{\phi_i} = 0 \;\;\;\;\; \hat a_i \ket{0} = 0
-  	\end{align}
-  	We can now write the Slater determinant as a chain of creation operators
-  	\begin{align}
-  		\hat a_1^{\dagger} \hat a_2^{\dagger}... \hat a_N^{\dagger} \ket{0}
-  	\end{align}
-  	Permutations of the operators introduces a sign-change, which is equivalent to interchanging rows in the determinant. This 
-  	\begin{align}
-  		\hat a_1^{\dagger} \hat a_2^{\dagger} \ket{0} = \ket{\phi_1 \phi_2} = -\ket{\phi_2 \phi_1} = -\hat a_2^{\dagger} \hat a_1^{\dagger} \ket{0}
-  	\end{align}
-  	So we can see that the second quantization respects the antisymmetrization condition. Thus, these operators follow the anti commutation relations
-  	\begin{align}
-  		\{ \hat a_i^{\dagger} \hat a_j \} = \delta_{ij} \;\;\;\;\; \{ \hat a^{\dagger}_i \hat a^{\dagger}_j \} = 0 \;\;\;\;\; \{ \hat a_i \hat a_j \} = 0
-  	\end{align}
-  	Where $\delta_{ij}$ is the Kronecher delta. 
- \end{section}
+ 	Second quantization is a new method of representing states and operators. 
+	\begin{section}{Annihilation and Creation operators}
+		We introduce a new way of writing states using the mathematical technique known as second quantization. The main goal is to treat states without paying attention
+		to individual particle coordinates. We represent the empty space with the symbol for vacuum
+		\begin{align}
+			\ket{0}
+		\end{align}
+		To represent a state, we use a creation operator to add the state to the vacuum.
+		\begin{align}
+			\hat a_i^{\dagger} \ket{0} = \ket{\phi_i}
+		\end{align}
+		And the annihilation operator will remove the particle again. 
+		\begin{align}
+			\hat a_i \ket{\phi_i} = \ket{0}
+		\end{align}
+		Trying to add a new particle to an already filled state and removing an unoccupied state results in zero.
+		\begin{align}
+			\hat a_i^{\dagger} \ket{\phi_i} = 0 \;\;\;\;\; \hat a_i \ket{0} = 0
+		\end{align}
+		Bra states are needed, and by looking at the adjoint of a ket state, we get
+		\begin{align}
+			\left(\left| \phi_i \right> \right)^\dagger = \left< \phi_i \right| 
+		\end{align}
+		Which results in
+		\begin{align}
+			\left( \hat a_i^\dagger \left| 0 \right> \right)^\dagger = \left< 0 \right| \hat a_i = \left< \phi_i \right|
+		\end{align}
+		We see that the creation and annihilator operatorare each other's adjoint operator. We can define the counting operator, $\hat N$, which will count how many states are occupied in a Slater determinant
+		\begin{align}
+			\hat N = \sum_p \hat a^\dagger_p \hat a_p = \sum_p \hat n_p
+		\end{align}
+	\end{section}
 
- \begin{section}{Representation of Operators}
- 	
- \end{section}
+	\begin{section}{Strings of Operators}
+		We can now construct the Slater determinant by working on vacuum with a string of creation operators
+		\begin{align}
+			\hat a_1^{\dagger} \hat a_2^{\dagger}... \hat a_N^{\dagger} \ket{0} = \left| \phi_1 \phi_2 ... \phi_N \right>
+		\end{align}
+		Permutations of the operators introduces a sign-change, which is equivalent to interchanging rows in the determinant. We need second quantization to respect the anisymmetrization condition, so a permutation of two states should introduce a change of sign
+		\begin{align}
+			\hat a_1^{\dagger} \hat a_2^{\dagger} \ket{0} = \ket{\phi_1 \phi_2} = -\ket{\phi_2 \phi_1} = -\hat a_2^{\dagger} \hat a_1^{\dagger} \ket{0}
+		\end{align}
+		We introduce the permutation operator, $\hat P$, which permutes two states in the Slater determinant 
+		\begin{align}
+			\hat P \left| \Phi \right> = (-1)^{\sigma(P)} \left| \Phi \right>
+		\end{align}
+		Where $\sigma(P)$ counts how many times the states are interchanged. Demonstrated with creation operators
+		\begin{align}
+			\hat a_1^\dagger \hat a_2^\dagger ... \hat a_i^\dagger \hat a_j^\dagger ... \hat a_n^\dagger = - \hat a_1^\dagger \hat a_2^\dagger ... \hat a_j^\dagger \hat a_i^\dagger ... \hat a_n^\dagger
+		\end{align}
+	\end{section}
+
+	\begin{section}{Anticommutator Relations}
+		When working on strings of operators, it is very convenient to introduce anticommutator relations. We define the relation as 
+		\begin{align}
+			\{ \hat A, \hat B \} = \hat A \hat B + \hat B \hat A	
+		\end{align}
+		By inserting the annihilation and creation operator, we can compute the relations and look at how they work on the vacuum state 
+		\begin{align}
+			\{ \hat a_i^\dagger \hat a_j \} \left| 0 \right>  &= \hat a_i^\dagger \hat a_j \left| 0 \right>  + \hat a_j \hat a_i^\dagger \left| 0 \right> = 0 + \delta_{ij} \left|0\right> 
+ 		\end{align}
+ 		Where we have introduced the kroenecker-delta function
+ 		\begin{align}
+ 			\delta_{ij} = \begin{cases}
+ 						1, & \text{if } i = j \\
+ 						0, & \text{ij } i \neq j
+ 						\end{cases}
+ 		\end{align}
+		The second case
+		\begin{align}
+			\{ \hat a_i \hat a_j^\dagger \} \left| 0 \right> &= \hat a_i \hat a_j^\dagger + \hat a_j^\dagger \hat a_i \left| 0 \right> = \delta_{ij} \left| 0 \right> + 0
+		\end{align}
+		And the two last cases
+ 		\begin{align}
+			\{ \hat a_i \hat a_j \} \left| 0 \right> &= \hat a_i \hat a_j \left| 0 \right> + \hat a_j \hat a_i \left| 0 \right> = \hat a_i \hat a_j \left| 0 \right> - \hat a_i \hat a_j \left| 0 \right> = 0\\
+			\{ \hat a_i^\dagger \hat a_j^\dagger \} \left| 0 \right> &= \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> + \hat a_j^\dagger \hat a_i^\dagger \left| 0 \right> = \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> - \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> = 0
+ 		\end{align}
+
+ 		Ending up with our relations
+ 		\begin{align}
+ 			&\{ \hat a_i \hat a_j \} = 0 \\
+ 			&\{ \hat a_i^\dagger \hat a_j^\dagger \} = 0 \\
+			&\{ \hat a_i^\dagger \hat a_j \} = \{ \hat a_i \hat a_j^\dagger \} = \delta_{ij}
+		\end{align}
+		The last result is very useful for rewriting strings of operators, since it allows us to rewrite a set of two operators as
+		\begin{align}
+			\hat a_i^\dagger \hat a_j = \{ \hat a_i^\dagger \hat a_j \} - \hat a_j \hat a_i^\dagger = \delta_{ij} - \hat a_j \hat a_i^\dagger 
+		\end{align}
+		Which will be at the center of Wick's theorem. 
+	\end{section}
+
+	\begin{section}{Expectation values}
+		Doing calculations in many-body quantum mechanics, we are primerely interested in expectation values. It is therefore crucial that we develop a solid scheme for calculating these values. We assume all states are orthonormal, giving
+		\begin{align}
+			\left< i | j \right> = \delta_{ij}
+		\end{align}
+		And for consistency, the vacuum state must be normalized
+		\begin{align}
+			\left< 0 | | 0 \right> = 1
+		\end{align}
+		because
+		\begin{align}
+			1 = \left< i | i \right> &= \left< 0 | \hat a_i \hat a_i^\dagger | 0 \right> \\
+									 &= \left< 0 | (\{ \hat a_i, \hat a_i^\dagger \} - \hat a_i^\dagger \hat a_i) | 0 \right> \\
+									 &= \left< 0 | 0 \right> - 0 = \left< 0 | 0 \right>
+		\end{align}
+
+
+
+	\end{section}
+
+	
+
+	\begin{section}{Representation of Operators}
+		Consider a symmetric one-body operator represented by
+		\begin{align}
+			\hat F = \sum_{\mu = 1}^N \hat f_\mu 
+		\end{align}
+		The number $\mu$ tells us on which particle $\hat F$ works on. In this case, we are looking at a symmetric operator because it works identically on all particles. Looking at a matrix element of $\hat F$ put petween two Slater determinants. 
+		\begin{align}
+			\left< a_1 a_2 ... a_N \right| \hat F \left| b_1 b_2 ... b_N \right> 
+		\end{align}
+		\begin{align}
+			\sum_\mu \left< a_1 a_2 ... a_N \right| \hat f_\mu \left| b_1 b_2 ... b_N \right> 
+		\end{align}
+	\end{section}
 
  \begin{section}{Fermi Vacuum}
  	
@@ -945,20 +1041,114 @@
 			\end{align}
 			Which are implemented using the direct channels. We will however run into some trouble when computing the unaligned diagrams $L_c$, $Q_b$, $Q_c$ and $Q_d$. The $L_c$ diagram is given by 
 			\begin{align}
-				L_c = - \hat P(ij|ab) \sum_{kc} \left<kb\middle|\hat v\middle| cj \right> t_{ij}^{ac}
+				L_c = - \hat P(ij|ab) \sum_{kc} \left<kb\middle|\hat v\middle| cj \right> t_{ik}^{ac}
 			\end{align}
-			Looking at the conservation requirement for the interaction part of $L_c$, $\left<kb\middle|\hat v\middle| cj \right>$
+			Looking at the conservation requirement for $L_c$
 			\begin{align}
-				\mathbf{k}_k + \mathbf{k}_b = \mathbf{k}_c + \mathbf{k}_j
+				\mathbf{k}_k + \mathbf{k}_b = \mathbf{k}_c + \mathbf{k}_j = \mathbf{k}_a + \mathbf{k}_c = \mathbf{k}_i + \mathbf{k}_k
 			\end{align}
 			and 
 			\begin{align}
 				m_{s,k} + m_{s,b} = m_{s,c} + m_{s,j}  \:\:\:\:\:\:\: m_{t,k} + m_{t,b} = m_{t,c} + m_{t,j} 
 			\end{align}
+			When realigning the equation, we want it to be
+			\begin{align}
+				\tilde Lc = -\hat P(ij|ab) \sum_{kc} \left<bj | \tilde v | ck \right> \left< ck \right| \tilde t \left| ai \right>
+			\end{align}
+			We reorganize the conservation requirements as well to make sure we only calculate the non-zero terms
+			\begin{align}
+				\mathbf{k}_b - \mathbf{k}_j = \mathbf{k}_c - \mathbf{k}_k = \mathbf{k}_c - \mathbf{k}_k = \mathbf{k}_i - \mathbf{k}_a
+			\end{align}
+			Spin and isospin will be subject to the same reorganizing. We see that the direct channels do not represent the right conservation requirement and we must set up the cross channels, $X$, that consist of particle-hole or hole-particle two-body configurations. An algorithm can be set up as
+			\begin{align*}
+				&\mathbf{for } \text{ one-body state 1} \in \text{STATES}:\\
+				&\:\: \mathbf{for } \text{ one-body state 2} \in \text{STATES}:\\
+				&\:\:\:\: \mathbf{if} \text{ one-body state 1} \neq \text{ one-body state 2}:\\
+				&\:\:\:\:\:\: N_x = n_{x,1} - n_{x,2} \\
+				&\:\:\:\:\:\: N_y = n_{y,1} - n_{y,2} \\
+				&\:\:\:\:\:\: N_z = n_{z,1} - n_{z,2} \\
+ 				&\:\:\:\:\:\: S_z = m_{s,1} - m_{s,2} \\
+				&\:\:\:\:\:\: T_z = m_{t,1} - m_{t,2} \\
+				&\:\:\:\:\:\: \text{Id} = \text{Index}(N_x,N_y,N_z,S_z,T_z) \\
+				&\:\:\:\:\:\: X \leftarrow (\text{ one-body state 1}, \text{ one-body state 2}, \text{ Id}) \\
+				&\:\:\:\:\:\: \text{Id}' = \text{Index}(-N_x,-N_y,-N_z,-S_z,-T_z) \\
+				&\:\:\:\:\:\: X' \leftarrow (\text{ one-body state 2}, \text{ one-body state 1}, \text{ Id'})
+			\end{align*}
+			Where $X'$ is the cross channel compliment, $X(pq) = X'(qp)$. The coss-channels are used for calculating $Q_b$ and $L_c$. 
 
+			Looking at the diagram $Q_c$
+			\begin{align}
+				Q_c = -\frac{1}{2} \hat P(ij) \sum_{klcd} \left<kl|\hat v|cd\right> t_{ik}^{ab} t_{jl}^{cd}
+			\end{align}
+			With the momentum conservation requirement
+			\begin{align}
+				\mathbf{k}_k + \mathbf{k}_l = \mathbf{k}_c \mathbf{k}_d = \mathbf{k}_i + \mathbf{k}_k = \mathbf{k}_a + \mathbf{k}_b = \mathbf{k}_j + \mathbf{k}_l = \mathbf{k}_c + \mathbf{k}_d
+			\end{align}
+			We see that we must realign the diagram as
+			\begin{align}
+				\tilde Q_c = -\frac{1}{2} \hat P(ij) \sum_{klcd} \left<abi\right|\tilde t\left|k\right> \left<k\right|\tilde v\left|cdl\right> \left<cdl\right|\tilde t\left|j\right>
+			\end{align}
+			Which set the conservation requirement as 
+			\begin{align}
+				\mathbf{k}_a + \mathbf{k}_b	- \mathbf{k}_i = \mathbf{k}_k = \mathbf{k}_k = \mathbf{k}_c + \mathbf{k}_d - \mathbf{k}_l = \mathbf{k}_c + \mathbf{k}_d - \mathbf{k}_l = \mathbf{k}_j
+			\end{align}
+			We set up three-body and corresponding one-body channels to calculate $Q_c$ and $Q_d$. An example algorithm for the $K_h$ and $K_{p,p,h}$ channels can be outlined as
+			\begin{align*}
+				&\mathbf{for } \text{ one-body state 1 } \in \text{HOLES}:\\
+				&\:\: N_x = n_{x,1}\\
+				&\:\: N_y = n_{y,1}\\
+				&\:\: N_z = n_{z,1}\\
+ 				&\:\: S_z = m_{s,1}\\
+				&\:\: T_z = m_{t,1}\\
+				&\:\: \text{Id} = \text{Index}(N_x,N_y,N_z,S_z,T_z) \\
+				&\:\: K_h \leftarrow (\text{ one-body state 1}, \text{ Id}) \\ \\ \\ 
+				&\mathbf{for } \text{ one-body state 1} \in \text{PARTICLES}: \\
+				&\:\: \mathbf{for } \text{ one-body state 2} \in \text{PARTICLES}: \\
+				&\:\:\:\: \mathbf{for } \text{ one-body state 3} \in \text{HOLES}: \\
+				&\:\:\:\:\:\: \mathbf{if} \text{ one-body state 1} \neq \text{ one-body state 2}: \\
+				&\:\:\:\:\:\:\:\: N_x = n_{x,1} + n_{x,2} - n_{x,3}\\
+				&\:\:\:\:\:\:\:\: N_y = n_{y,1} + n_{y,2} - n_{y,3}\\
+				&\:\:\:\:\:\:\:\: N_z = n_{z,1} + n_{z,2} - n_{z,3}\\
+ 				&\:\:\:\:\:\:\:\: S_z = m_{s,1} + m_{s,2} - n_{s,3}\\
+				&\:\:\:\:\:\:\:\: T_z = m_{t,1} + m_{t,2} - n_{t,3}\\
+				&\:\:\:\:\:\:\:\: \text{Id} = \text{Index}(N_x,N_y,N_z,S_z,T_z) \\
+				&\:\:\:\:\:\:\:\: K_{p,p,h} \leftarrow (\text{ one-body state 1}, \text{ one-body state 2}, \text{ one-body state 3},  \text{ Id}) \\
+			\end{align*}
+		\end{subsection}
+
+		\begin{subsection}{Permutations}
+			Some diagrams come with permutations. These are easy to handle by simply interchanging indexes when adding the diagram to $t^{(n+1)}$. 
+			\begin{align*}
+				&\mathbf{for } \text{ i} \in \text{Holes}: \\
+				&\:\:\mathbf{for } \text{ j} \in \text{Holes}: \\
+				&\:\:\:\:\mathbf{for } \text{ a} \in \text{Particles}: \\
+				&\:\:\:\:\:\:\mathbf{for } \text{ b} \in \text{Particles}: \\
+				&\:\:\:\:\:\:\:\: t^{(n+1)}(a,b,i,j) = t^{(n+1)} - \frac{1}{2}\left(Q_c(a,b,i,j) - Q_c(a,b,j,i)\right)
+			\end{align*}
 		\end{subsection}
 
 	\end{section}
+
+	\begin{section}{Setting Up Basis}
+		Before doing coupled cluster calculations, the basis must be set up. An important property of this basis, is the occupied and virtual states. For infinite nuclear matter, the following algorithm can be used to set up the states. This algorithm should reproduce the magic numbers presented. 
+		\begin{align*}
+			&\mathbf{for } \text{ shell } \in \text{ All Shells}: \\
+			&\:\:\:\mathbf{for } \: n_x, n_y, n_z \in [-\text{shell, shell} ]: \\
+			&\:\:\:\:\:\:n = n_x^2 + n_y^2 + n_z^2 \\
+			&\:\:\:\:\:\:\mathbf{if }\: n = \text{shell}: \\
+			&\:\:\:\:\:\:\:\:\:\mathbf{for } \: m_s \in \{-1,1\} \\
+			&\:\:\:\:\:\:\:\:\:\:\:\: \mathbf{for } \: m_t \in \{-1,1\} \\
+			&\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\text{States} \leftarrow (e, n_x, n_y, n_z, m_s, m_t) \\
+			&\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:N_s = N_s + 1 \\
+			&\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\mathbf{if } \text{ shell} < \text{ Fermi level}: \\
+			&\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\: N_h = N_h + 1
+		\end{align*}
+	\end{section}
+
+	\begin{section}{Parallellization}
+		An important part of optimizing the code, is by setting up a parallell code. By doing this, we can fully utilize the capacity of computers with many processing cores. I have, in this project, used the Super Computer Smaug located at Institute of Physics at the University of Oslo. 
+	\end{section}
+
 \end{chapter}
 
 
@@ -1095,6 +1285,30 @@
 	Gustav Baardsen
 	\textit{Coupled-cluster theory for infinite matter} 2014
 
+	\bibitem{ShavittAndBartlett}
+	Isaiah Shavitt and Rodney J. Bartlett
+	\textit{Many-Body Methods in Chemistry and Physics} 2009
+
+	\bibitem{Szabo}
+	Attila Szabo and Neil S. Ostlund
+	\textit{Modern Quantum Chemistry. Introduction to Advanced Electronic Structure Theory} 1982
+
+	\bibitem{Griffiths}
+	David J. Griffiths
+	\textit{Introduction to Quantum Mechanics} Second edition 2005
+
+	\bibitem{Sakurai}
+	J.J. Sakurai
+	\textit{Modern Quantum Mechanics} Revised Edition 1993
+
+	\bibitem{Hjorth-Jensen2016}
+	Morten Hjorth-Jensen, Maria Paola Lombardo and Ubiraja van Kolck
+	\textit{An Advanced Course in Computational Nuclear Physics} 2016
+
+	\bibitem{Raimes}
+	Stanley Raimes
+	\textit{Many-Electron Theory} 1972
+
 	\bibitem{Day1967} 
 	B. D. Day
 	\textit{Rev. Mod. Phys.,}
@@ -1103,10 +1317,6 @@
 	\bibitem{Thompson1977}
 	D. R. Thompson, M. Lemere and Y.C. Tang.
 	\textit{Nucl. Phys. A,} 286:53 1977.
-
-	\bibitem{Hjorth-Jensen2016}
-	Morten Hjorth-Jensen, Maria Paola Lombardo and Ubiraja van Kolck
-	\textit{An Advanced Course in Computational Nuclear Physics} 2016
 
 	\bibitem{WholmenGithub}
 	Fredrik Wilhelm Holmen

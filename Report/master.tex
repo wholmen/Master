@@ -1,7 +1,7 @@
 \documentclass[twoside,english]{uiofysmaster}
 
 \bibliography{references}
-
+\usepackage{simplewick}
 
 % Adding nicer font to listings
 \usepackage{ifxetex}
@@ -194,31 +194,54 @@
 		The last result is very useful for rewriting strings of operators, since it allows us to rewrite a set of two operators as
 		\begin{align}
 			\hat a_i^\dagger \hat a_j = \{ \hat a_i^\dagger \hat a_j \} - \hat a_j \hat a_i^\dagger = \delta_{ij} - \hat a_j \hat a_i^\dagger 
+			\label{interchange operators}
 		\end{align}
 		Which will be at the center of Wick's theorem. 
 	\end{section}
 
-	\begin{section}{Expectation values}
-		Doing calculations in many-body quantum mechanics, we are primerely interested in expectation values. It is therefore crucial that we develop a solid scheme for calculating these values. We assume all states are orthonormal, giving
+	\begin{section}{Inner products}
+		We assume all states are orthonormal, taking the inner product of two states should give
 		\begin{align}
 			\left< i | j \right> = \delta_{ij}
 		\end{align}
-		And for consistency, the vacuum state must be normalized
+		And for consistency, the vacuum state must also be normalized
 		\begin{align}
 			\left< 0 | | 0 \right> = 1
 		\end{align}
-		because
+		this can be demonstrated by looking at the definition of the inner product of two equal states and using the anticommutator relations
 		\begin{align}
 			1 = \left< i | i \right> &= \left< 0 | \hat a_i \hat a_i^\dagger | 0 \right> \\
-									 &= \left< 0 | (\{ \hat a_i, \hat a_i^\dagger \} - \hat a_i^\dagger \hat a_i) | 0 \right> \\
+									 &= \left< 0 | (\delta_{ij} - \hat a_i^\dagger \hat a_i) | 0 \right> \\
 									 &= \left< 0 | 0 \right> - 0 = \left< 0 | 0 \right>
 		\end{align}
-
-
-
+		It turns out we can use this exact scheme for longer chains of operators as well. Looking at the inner product of two general Slater Determinants
+		\begin{align}
+			&\left| A \right> = \left| a_1 a_2 ... a_N \right> = \hat a_1^\dagger \hat a_2^\dagger ... \hat a_N^\dagger \left| 0 \right> \\
+			&\left| B \right> = \left| b_1 b_2 ... b_N \right> = \hat b_1^\dagger \hat b_2^\dagger ... \hat b_N^\dagger \left| 0 \right>
+		\end{align}
+		Writing the inner product
+		\begin{align}
+			\left< A | B \right> = \left< 0 | \hat a_N ... \hat a_2 \hat a_1 \hat b_1^\dagger \hat b_2^\dagger ... \hat b_N^\dagger | 0 \right>
+		\end{align}
+		By moving the annihilation operators all the way to the right, we know that the inner product becomes zero because $\hat a_p \left| 0 \right> = 0$. We utilize the anticommutator relations for interchanging creation and annihilation operators shown in (\ref{interchange operators}). By first moving $a_1$ to the right, we get two possible outcomes
+		\begin{enumerate} 
+			\item One $b_p$ is equal to $a_1$ and we get
+			\begin{align}
+				\hat a_1 \hat b_p^\dagger = \delta_{a_1,b_p} - \hat b_p^\dagger \hat a_1 = 1 - \hat b_p^\dagger \hat a_1 
+				\label{InnerProduct1}
+			\end{align}
+			This will now give us a new and shorter inner product
+			\begin{align}
+				\left< A | B \right> = \left< 0 \right| \hat a_N ... \hat a_2 \hat b_1^\dagger... \hat b_{p-1}^\dagger \hat b_{p+1}^\dagger ... \hat b_N^\dagger \left| 0 \right>(-1)^{p-1} - \left< 0 \right| \hat a_N ... \hat a_2 \hat b_1^\dagger \hat b_2^\dagger ... \hat b_N^\dagger \hat a_1  \left| 0 \right>
+			\end{align}
+			Where the last term will vanish because of $\hat a_1 \left| 0 \right> = 0$. Notice the sign factor coming from $(-1)^{p-1}$. This is due to interchanging creation operators when moving $\hat b_p^\dagger$ from position $p$ and $(p-1)$ steps to the left before using (\ref{InnerProduct1}).  
+			\item No $b_p$ is equal to $a_1$ and all $\delta_{a_1, b_p} = 0$. Applying the same logic as for outcome 1, we get
+			\begin{align}
+				\left< A | B \right> = 0
+			\end{align}
+		\end{enumerate}
+		We do the same for all states and see that this inner product can only be non-zero if all states $a_1 .. a_N$ has a matching state in $b_1 .. b_N$ and vice versa. If the ordering of states is different, a permutation factor $-1^{\sigma(P)}$ is included. 
 	\end{section}
-
-	
 
 	\begin{section}{Representation of Operators}
 		Consider a symmetric one-body operator represented by
@@ -232,19 +255,422 @@
 		\begin{align}
 			\sum_\mu \left< a_1 a_2 ... a_N \right| \hat f_\mu \left| b_1 b_2 ... b_N \right> 
 		\end{align}
+
+		\begin{subsection}{One-Body Operator}
+			In second quantization, a one-body operator is given as
+			\begin{align}
+				\hat F = \sum_{pq} \left< p \right| \hat f \left| q \right> \hat a_p^\dagger \hat a_q 
+			\end{align}
+			Where the matrix element $\left< p \right| \hat f \left| q \right>$ is determined on the nature of the operator $\hat F$. It is common to denote this matrix element as
+			\begin{align}
+				\hat F = \sum_{pq} \left< p \right| \hat f \left| q \right> \hat a_p^\dagger \hat a_q = \sum_{pq} f_{pq} \hat a_p^\dagger \hat a_q
+			\end{align}
+			Doing calculations in many-body quantum mechanics, we are primerely interested in expectation values. It is therefore crucial that we develop a solid scheme for calculating these values. This can be done by for example looking at the following inner product 
+			\begin{align}
+				\left< P \right| \hat F \left| R \right> 
+			\end{align}
+			Inserting the definition of $\hat F$
+			\begin{align}
+				\left< 0 \right| \hat a_M ... \hat a_s \hat a_r \left( \sum_{kl} f_{kl} \hat a_k^\dagger \hat a_l \right) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right>
+			\end{align}
+			Which can be rewritten as
+			\begin{align}
+				\sum_{pq} f_{pq} \left< 0 \right| \hat a_M ... \hat a_s \hat a_r (\hat a_k^\dagger \hat a_l) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right>
+			\end{align}
+			We apply the same logic as in the previous section, which provides us with three different outcomes for this expectation value
+			\begin{enumerate}
+				\item The states $p,q,...,N$ are all identical to the states $r,s,...,M$. This results in
+				\begin{align}
+					\left< P \right| \hat F \left| R \right> = \sum_k^N f_{kk} (-1)^{\sigma(P)}
+				\end{align}
+				Where we have included a perturbation factor in case the ordering of states is different in the two states. 
+				\item If all states except one from each Slater determinant are equal, we get a \textit{noncoincidence} \cite{ShavittAndBartlett}
+				\begin{align}
+					(p = r), \: (s = q), \: ..., \: (n \neq m), \: ..., \: (N = N)
+				\end{align}
+				we can rewrite the expectation value as
+				\begin{align}
+					\sum_{pq} f_{pq} \left< 0 \right| \hat a_M ... \hat a_s \hat a_r (\hat a_k^\dagger \hat a_l) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right> = (-1)^{\sigma(P)} f_{mn}
+				\end{align}
+				Because the operators $\hat a_k^\dagger$ and $\hat a_l$ must be paired with the non-identical states $m$ and $n$ for us to be left with a orthogonal inner product.
+				\item If there are more than one noncoincidence, no contributions can survive, and the expectation value is 
+				\begin{align}
+					\left< P \right| \hat F \left| R \right> = 0
+				\end{align}
+			\end{enumerate}
+		\end{subsection}
+
+		\begin{subsection}{Two-body Operator}
+			I have in this thesis only looked at Hamiltonians consisting of a maximum of two-body interactions. Because of this, I will need a formalism for a two-body operator as well. It is defined almost identically as the one-body operator. We write the general two-body operator as
+			\begin{align}
+				\hat G = \frac{1}{2} \sum_{ijkl} \left< i(1) j(2) \right| g_{12} \left| k(1) l(2) \right> \hat a_i^\dagger \hat a_j^\dagger \hat a_l \hat a_k
+			\end{align}
+			Where the numbers $(1)$ and $(2)$ show which particle occupy the what state. We are, as for the one-body operator, interested in how we can calculate expectation values for this operator. We take the inner product with the SD's $\left| P \right>$ and $\left| R\right>$.
+			\begin{align}
+				\frac{1}{2} \sum_{ijkl} \left< i(1) j(2) \right| g_{12} \left| k(1) l(2) \right>   \left< 0 \right| \hat a_M ... \hat a_s \hat a_r (\hat a_i^\dagger \hat a_j^\dagger \hat a_l \hat a_k) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right>
+			\end{align}
+			There are three possible outcomes here as well 
+			\begin{enumerate}
+				\item If there are none noncoincidences, and all states in SD $\left| P \right>$ is equal to all states in SD $\left| R \right>$, we get 
+				\begin{align}
+				 	\left< P \right| \hat G \left| R \right> = \frac{1}{2}\sum_{p \in P}\sum_{q \in P} (\left< pq\right| \hat g \left| pq \right> - \left< pq\right| \hat g \left| qp \right> ) = \frac{1}{2}\sum_{p \in P}\sum_{q \in P} \left< pq || pq \right>
+				\end{align}
+				Where it is useful to use the antisymmetric matrix element
+				\begin{align}
+					\left< pq || pq \right> = \left< pq\right| \hat g \left| pq \right> - \left< pq\right| \hat g \left| qp \right>  
+				\end{align}
+				\item If we have a single noncoincidence, where all states except one from each SD are perfectly identical, we get \cite{ShavittAndBartlett}
+				\begin{align}
+					\left< P \right| \hat G \left| R \right> = \sum_{q \in P} \left< p' q || p q \right>
+				\end{align}
+				where the states $p'$ and $p$ are the unequal states. 
+				\item If we have two noncoincidences, we get 
+				\begin{align}
+					\left< P \right| \hat G \left| R \right> = \left< p' q' || p q \right> 
+				\end{align}
+				\item If more than two states from each SD are unequal, the expectation value will be $0$.
+			\end{enumerate}
+		\end{subsection}
+
+		\begin{subsection}{The Hamiltonian}
+			We can now write our Hamiltonian using second quantization. The Hamiltonian consist of a one-body and a two-body term
+			\begin{align}
+				\hat H = \hat H_1 + \hat H_2
+			\end{align}
+			Which can be written out as
+			\begin{align}
+				\hat H_1 = \sum_\mu \hat h_\mu, \:\;\;\;\;\; \hat H_2 = \sum_{\mu < \nu} \hat v_{\mu \nu}
+			\end{align}
+			Using atomic units, we can write this as
+			\begin{align}
+				\hat h_\mu = -\frac{1}{2}\nabla_\mu^2 - \sum_A \frac{Z_A}{r_{\mu A}}, \:\;\;\;\;\; \hat v_{\mu \nu} = \frac{1}{r_{\mu \nu}}
+			\end{align}
+			Using the formalism introduced, we can write this as
+			\begin{align}
+				\hat H = \hat H_1 + \hat H_2 = \sum_{ij} \left<i \right| \hat h \left| j \right> \hat a_i^\dagger \hat a_j 
+						+ \frac{1}{4} \sum_{ijkl} \left<ij|| kl \right> \hat a_i^\dagger \hat a_j^\dagger \hat a_l \hat a_k
+			\end{align}
+			Where we have used the anti-symmetric form of the two-body operator
+			\begin{align}
+				\left<ij|| kl \right> = \left< i(1) j(2) \right| \hat v_{12} \left| k(1) l(2) \right> - \left< i(1) j(2) \right| \hat v_{12} \left| l(1) k(2) \right>
+			\end{align}
+		\end{subsection}
+
 	\end{section}
 
- \begin{section}{Fermi Vacuum}
- 	
- \end{section}
+	\begin{section}{Normal Ordering and Wick's Theorem}
+		As one can see, calculations of inner products can be a tedious affair when utilizing the anitcommutator rules. Luckily, one can develop more powerful tools, namely Wick's theorem. Before introducing Wick's theorem, a definition of normal ordering and contractions are needed
+		\begin{subsection}{Normal Ordering}
+			As previously shown, when evaluating a string of operators, the general scheme is to place all annihilation operators to the right of creation operators. This is because, when working on the true vacuum state, annihilation operators give zero. The only non-zero results will then arize from kroenecker delta's when permutating creation-annihilation operators according to (\ref{interchange operators}). 
 
- \begin{section}{Normal Ordering and Wick's Theorem}
- 	
- \end{section}
+			A string of operators with all annihilation operators to the right will be referred to as a \textit{normal ordered} string of operators. Normal ordering of operators is commonly denoted by a curvy bracket or square bracket
+			\begin{align}
+				n[ \hat A \hat B ... \hat N ] = \{ \hat A \hat B ... \hat N \}
+			\end{align}
+			Any expectation value, with respect to the true vacuum, of a set of normal ordered operators will always be zero
+			\begin{align}
+				\left< 0 \right| \{ \hat A \hat B ... \hat N \} \left| 0 \right> = 0 
+				\label{NormalOrdering1}
+			\end{align}
+			One can note that the Hamiltonian operator is already written in a \textit{normal ordered} form. 
+		\end{subsection}
 
- \begin{section}{Partitioning the Hamiltonian}
- 	
- \end{section}
+		\begin{subsection}{Contractions}
+			The second tool needed for Wick's theorem is the definition \textit{contractions} of operators. We define the contraction of general creation and annihilation operators as
+			\begin{align}
+				\bcontraction{}{\hat A}{}{\hat B} 
+				\hat A \hat B
+				\equiv \hat A \hat B - \{ \hat A \hat B \}
+			\end{align}
+			Before taking the expactation value of the two operators with respect to the true vacuum. 
+			Giving the results
+			\begin{align}
+				\bcontraction{}{\hat a_a^\dagger}{}{\hat a_b^\dagger}
+				\hat a_a^\dagger \hat a_b^\dagger 
+				= 
+				\bcontraction{}{\hat a_a}{}{\hat a_b}
+				\hat a_a \hat a_b
+				= 
+				\bcontraction{}{\hat a_a^\dagger}{}{\hat a_b}
+				\hat a_a^\dagger \hat a_b
+				= 0 
+			\end{align}
+			The only non-zero results will be for 
+			\begin{align}
+				\bcontraction{}{\hat a_a}{}{\hat a_b}
+				\hat a_a \hat a_b
+				^\dagger = \delta_{ab}
+			\end{align}
+		\end{subsection}
+	
+		\begin{subsection}{Time-independent Wick's theorem}
+			Wick's theorem states: \textit{A product of a string of creation and annihilation operators is equal to their normal product plus the sum of all possible normal ordered contractions} \cite{ShavittAndBartlett}. Symbolically, this is shown by 
+			\begin{align}
+				\hat A \hat B \hat C \hat D ... = \{\hat A \hat B \hat C \hat D ... \} + \sum \{  \bcontraction[2ex]{}{\hat A}{\hat B \hat C \hat D ...}
+				\hat A \bcontraction{}{\hat B}{\hat C \hat D ..}
+				\hat B \hat C \hat D .... \}
+			\end{align}
+			The usefulness of this relation is when calculating expectation values. Because of (\ref{NormalOrdering1}), the only result that will give a non-zero result, is when all operators are fully contracted. As an example to display the usefulness of Wick's theorem 
+			\begin{align}
+				\left< 0 \right| \hat a_a \hat a_b^\dagger \hat a_c \hat a_d^\dagger \hat a_e \hat a_f^\dagger \left| 0 \right> = \left< 0 \right| \{ 
+				\bcontraction{}{\hat a_a}{}{\hat a_b^\dagger}
+				\hat a_a \hat a_b^\dagger \bcontraction{}{\hat a_c}{}{\hat a_d^\dagger}
+				\hat a_c \hat a_d^\dagger \bcontraction{}{\hat a_e}{}{\hat a_f^\dagger}
+				\hat a_e \hat a_f^\dagger 
+				\} \left| 0 \right> = \delta_{ab} \delta_{cd} \delta_{ef}
+			\end{align}
+			Where the contractions displayed are the only set of non-zero contractions possible. 
+		\end{subsection}
+	\end{section}
+
+	\begin{section}{Particle-Hole Formulation}
+		For larger Slater determinants, it is tedious to write all states in terms of the vacuum state $\left| 0 \right>$. We define a reference state that will be used instead of the pure vacuum. Looking at a general Slater determinant
+		\begin{align}
+			\left| \Phi_0 \right> = \hat a_i^\dagger \hat a_j^\dagger ... \hat a_n^\dagger \left| 0 \right>
+		\end{align}
+		If this SD is the ground state of our system, we can use it as a reference state. We define the highest lying occupied state as the Fermi level, and name all states above the Fermi level \textit{particle states} or \textit{virtual states}. If a state below the Fermi level is vacant, we name it a \textit{hole state}. From here on out, we will use a distinct naming pattern for indices. Indices using the latin alphabet using letters $i, j, k, l, ...$ are reserved for \textit{hole states}. Latin letters $a, b, c, d, ...$ are reserved for \textit{particle states}. Sometimes, we want to name more general states that can take the form of either a \textit{hole state} or a \textit{particle state}. We use the latin letters $p, q, r, s, ...$. For a more convenient way of writing, operators will be written on a shorter and more convenient form
+		\begin{align}
+			\hat a_a = \hat a \:\:\:\:\: \hat a_b^\dagger = \hat b^\dagger \:\:\:\:\: \hat a_i^\dagger = \hat i^\dagger \:\:\:\: ...
+		\end{align}
+		And so forth. The reference state will be written as 
+		\begin{align}
+			\left| \Phi_0 \right> = \hat i^\dagger \hat j^\dagger \hat k^\dagger ... \hat n^\dagger \left| \right> = \left| ijk ... n \right> = \left| \right>
+		\end{align}
+		And excitations will be written as
+		\begin{align}
+			\text{Single Excitation: }\:\:\:\:& \left| \Phi_i^a \right> = \left| ajk ... n \right> = \hat i \hat a^\dagger \left| \right> \\
+			\text{Double Excitation: }\:\:\:\:& \left| \Phi_{ij}^{ab} \right> = \left| abk ... n \right> = \hat i \hat j \hat a^\dagger \hat b^\dagger \left| \right> 
+		\end{align}
+		Where the use of annihilation operators for \textit{hole states} no longer produce zero when used on the reference state. But simply remove one particle from the reference state and create a \textit{hole state}. 
+		\begin{align}
+			\hat a_i \left| \right> = \left| \Phi_i \right> = \left| jk ... n \right>
+		\end{align}
+		This will introduce a small change in Wick's theorem, as the only non-zero contractions are now 
+		\begin{align}
+			\contraction{}{\hat i^\dagger}{}{\hat j}
+			\hat i^\dagger \hat j = \delta_{ij}
+		\end{align}
+		And 
+		\begin{align}
+			\contraction{}{\hat a}{}{\hat b^\dagger}
+			\hat a \hat b^\dagger = \delta_{ab}
+		\end{align}
+		Contractions relative to the Fermi vacuum will now be denoted by brackets \textit{above} the operators instead of below. Apart from this, Wick's theorem is unchanged relative to the Fermi vacuum. \par 
+
+
+		A very important property of the reference state, is the expectation value for the hamiltonian. 
+		\begin{align}
+			\left< \right| \hat H \left| \right> = \left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = \left< ijk...n \right| \hat H \left| ijk...n\right> 
+		\end{align}
+		We name this the reference Energy. The result is given by \cite{ShavittAndBartlett}
+		\begin{align}
+			E_{\text{ref}} = \left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = \sum_i h_{ii} + \frac{1}{2} \sum_{ij} \left< ij || ij \right>
+		\end{align}
+
+	\end{section}
+
+	\begin{section}{Normal ordering of Operators}
+		After defining the new vacuum, we will now rewrite the operators with respect to the reference state.	
+		\begin{subsection}{One-Body Operator}
+			 Consider a general one-body operator
+			\begin{align}
+				\hat F = \sum_{pq} \left< p \right| \hat f \left| q \right> \hat p^\dagger \hat q
+			\end{align}
+			Using Wick's theorem to rewrite the string of operators
+			\begin{align}
+				\hat p^\dagger \hat q = \{\hat p^\dagger \hat q \} + \contraction{}{\hat p}{^\dagger}{\hat q}
+				\hat p^\dagger \hat q
+			\end{align}
+			We get 	
+			\begin{align}
+				\hat F &= \sum_{pq} \left< p \right| \hat f \left| q \right> \{ \hat p^\dagger \hat q \} + \sum_i \left< i \right| \hat f \left| i \right>\\
+					&= \hat F_N + \sum_i \left< i \right| \hat f \left| j \right>
+			\end{align}
+			We notice that since 
+			\begin{align}
+				\left< \right. | \hat F_N |\left. \right> = 0 \:\:\:\: \rightarrow \:\:\:\: \sum_i \left< i \right| \hat f \left| i \right> = \left< \right. | \hat F | \left. \right>
+			\end{align}
+			So we can rewrite the equation as
+			\begin{align}
+				\hat F = F_N + \left< \right. | \hat F | \left. \right>
+			\end{align}
+			Meaning that $F_N$ represent the difference between $\hat F$ and the Fermi expectation value. 
+		\end{subsection}
+		
+		\begin{subsection}{Two-Body operators}
+			The general two-body operator given by
+			\begin{align}
+				\hat G = \frac{1}{4} \sum_{pqrs} \left< pq | \hat g | rs \right>_A \hat p^\dagger \hat q^\dagger \hat s \hat r
+			\end{align}
+			Although the method will be identical for a two-body operator as for a one-body operator, we will require a much larger sum over all possible contractions when using Wick's theorem. Calculation of the result can be viewed in \cite{ShavittAndBartlett}. 
+			\begin{align}
+				\hat G = \frac{1}{4} \sum_{pqrs} \left<pq | \hat g | rs\right>_A \{ \hat p^\dagger \hat q^\dagger \hat s \hat r \}+ \sum_{ipq} \left<pi |\hat g | qi\right>_A \{ \hat p^\dagger \hat q\} + \frac{1}{2} \sum_{ij} \left< ij | \hat g | ij \right>_A 
+				\label{Two-Body Normal Ordering}
+			\end{align}
+			As for the one-body operator
+			\begin{align}
+				\left< \right. | \hat G | \left.  \right> = \frac{1}{2} \sum_{ij} \left< ij | \hat g | ij \right>_A 
+			\end{align}
+			We can now name the terms 
+			\begin{align}
+				\hat G = \hat G_N + \hat G_N' + \left< \right. | \hat G | \left.  \right>
+			\end{align}
+			Where $\hat G_N'$ is a normal-ordered two-body operator. 
+
+		\end{subsection}
+	\end{section}
+
+	\begin{section}{Partitioning the Hamiltonian Operator}
+		The Hamiltonian has been shown to consist of a one-body and a two-body term
+		\begin{align}
+			\hat H = \hat H_1 + \hat H_2
+		\end{align}
+		One can, however, write it in terms of a zero-order term and a perturbation
+		\begin{align}
+			\hat H = \hat H_0 + \hat V
+		\end{align}
+		It is convenient to choose a zero-order Hamiltonian that is diagonal
+		\begin{align}
+			\hat H_0 = \sum_p \epsilon_p \hat p^\dagger \hat p
+		\end{align}
+		This means we can write the perturbation as
+		\begin{align}
+			\hat V &= (\hat H_1 - \hat H_0) + \hat H_2 \\
+			&= \sum_{pq}(h_{pq} - \epsilon_p \delta_{pq} ) \hat p^\dagger \hat q + \frac{1}{4}\left<pq||rs\right>\hat p^\dagger \hat q^\dagger \hat s \hat r 
+		\end{align}
+		First, we define a Fock operator, $\hat F$, and a common practice is to choose the orbital energies as the diagonal elements of this Fock operator. 
+		\begin{align}
+			\hat F = \sum_{pq} f_{pq} \hat p^\dagger \hat q
+		\end{align}
+		With the matrix element defined as
+		\begin{align}
+			f_{pq} = h_{pq} + u_{pq}
+		\end{align}
+		here $u_{pq}$ is the matrix element of a one-body operator $\hat U$ implemented to simplify the zeroth-order term $\hat H_0$ and by simplifying the result when normal ordering the Hamiltonian later. See (\ref{Total Perturbation})
+		\begin{align}
+			\hat U &= \sum_{pq} u_{pq} \hat p^\dagger \hat q \\
+			u_{pq} &= \sum_i \left<pi||qi\right>
+		\end{align}
+		This means we can write $\hat F = \hat H_1 + \hat U$. Inserting the Fock operator into the perturbation
+		\begin{align}
+			\hat V &= \hat F - \hat H_0 - \hat U + \hat H_2 \\
+				   &= \sum_{pq}(f_{pq} - \epsilon_p \delta_{pq} - u_{pq}) \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r	
+		\end{align}
+		For a non-canonical Hartree-Fock case, the Fock matrix is diagonal, namely
+		\begin{align}
+			f_{pq} = \epsilon_p \delta_{pq}
+		\end{align}
+		This means the perturbation can be rewritten as
+		\begin{align}
+			\hat V = -\sum_{pq} u_{pq} \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r	
+		\end{align}
+		With the zeroth-order energies given by 
+		\begin{align}
+			\hat H_0 = \sum_p \epsilon_p \hat p^\dagger \hat p \;\;\;\;\;\; \epsilon_p = h_{pp} + \sum_i \left<pi||pi\right>
+		\end{align}
+		The noncanonical case, the Fock operator, $\hat F$, is block diagonal, with $f_{ia} = 0$. To, again, cancel out the single orbital energies from the perturbation, we split the Fock operator into a diagonal and off-diagonal term
+		\begin{align}
+			\hat F = \hat F^d + \hat F^o
+		\end{align}
+		The diagonal term will now be canceled out, and we are left with the perturbation
+		\begin{align}
+			\hat V = -\sum_{pq} (f_{pq}^o - u_{pq}) \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r
+		\end{align}
+		For convience, we can organize the perturbation into a one-body part and a two-body part, $\hat V_1$ and $\hat V_2$
+		\begin{align}
+			\hat V_1 &= \hat F^o - \hat U = \sum_{pq} (f_{pq}^o - u_{pq}) \hat p^\dagger \hat q \\
+			\hat V_2 &= \hat H_2 = \frac{1}{4} \sum_{pqrs} \left< pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r
+			\label{Partitioned Hamiltonian}
+		\end{align}
+		Resulting in the Hamiltonian
+		\begin{align}
+			\hat H = \hat H_0 + \hat V_1 + \hat V_2
+		\end{align}
+
+	\end{section}
+
+	\begin{section}{Normal Ordering of Hamiltonian}
+		To sum it all up, I will now present a normal ordering of the partitioned Hamiltonian operator. Starting by applying Wick's theorem to the zeroth order term
+		\begin{align}
+			(\hat H_0)_N = \hat H_0 - E^{(0)} = \sum_p \epsilon_p \hat p^\dagger \hat p - \sum_i e_i = \sum_p \epsilon_p \{\hat p^\dagger \hat p\}
+		\end{align}
+		Then applying Wick's theorem to the one- and two-body perturbations given in (\ref{Partitioned Hamiltonian})
+		\begin{align}
+			\hat V_1 = (\hat V_1)_N + \left< \right. | \hat V_1 | \left. \right>
+		\end{align}
+		Where we have 
+		\begin{align}
+			(\hat V_1)_N = \hat F_N^o - \hat U_N = \sum_{pq}(f_{pq}^o - u_{pq})\{ \hat p^\dagger \hat q \}
+		\end{align}
+		and
+		\begin{align}
+			\left< \right. | \hat V_1 | \left. \right> = -\sum_{ij} \left< ij || ij \right> = - \left< \right. | \hat U | \left. \right> 
+		\end{align}
+		Turning to the two-body perturbation and using (\ref{Two-Body Normal Ordering})
+		\begin{align}
+			\hat V_2 = (\hat V_2)_N + \hat V_N' + \left< \right. | \hat V_2 | \left. \right>
+		\end{align}
+		Where we have the following 
+		\begin{align}
+			(\hat V_2)_N &= \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \{ \hat p^\dagger \hat q^\dagger \hat s \hat r \} \\
+			V_N' &= \sum_{pq} \left<pi||pi\right> \{ \hat p^\dagger \hat q \} \\
+			\left< \right. | \hat V_2 | \left. \right> &= \frac{1}{2} \sum_{ij} \left<ij||ij\right>
+		\end{align}
+		We notice now, that after normal ordering the operators, we are left with many terms that can be reorganized into zero-, one- and two-body parts. We can rewrite the total perturbation as
+		\begin{align}
+			\hat V = \hat F_N^o - \hat U_N + \left< \right. | \hat V_1 | \left. \right> + (\hat V_2)_N + \hat V_N' + \left< \right. | \hat V_2 | \left. \right>
+			\label{Total Perturbation}
+		\end{align}
+		Now, by construction of $\hat U$, we see that $\hat U$ and $\hat V_N'$ cancel each other out. Renaming $(\hat V_2)_N = \hat W_N$ We see that the terms left can be written as 
+		\begin{align}
+			\hat V = \hat F_N^o + \hat W_N + \left< \right. | \hat V | \left. \right>
+		\end{align}
+		By applying the same logic as earlier, we write
+		\begin{align}
+			\hat V_N = \hat V - \left< \right. | \hat V | \left. \right>
+		\end{align}
+		So that we finally can write the normal ordered perturbation as
+		\begin{align}
+			\hat V_N = \hat F_N^o + \hat W_N
+		\end{align}
+		We notice here the use of the diagonal Fock matrix. This matrix is just zero in the canonical Hartree Fock case. 
+	\end{section}
+
+	\begin{section}{Correlation Energy}
+		All the many-body quantum mechanics methods described in this thesis will aim to compute the correlation energy. We derive it by substracting 
+		\begin{align}
+			\left< \right. | \hat H | \left. \right> = \left< \right. | \hat H_0 | \left. \right> + \left< \right. | \hat V | \left. \right>
+		\end{align}
+		from the partitioned hamiltonian $\hat H = \hat H_0 + \hat V$. Resulting in
+		\begin{align}
+			\hat H - \left< \right. | \hat H | \left. \right> &= \hat H_0 - \left< \right. | \hat H_0 | \left. \right> + \hat V - \left< \right. |\hat V| \left. \right>
+		\end{align}
+		This can be rewritten in terms of normal ordered operators as 
+		\begin{align}
+			\hat H_N = (\hat H_0)_N + \hat V_N
+		\end{align}
+		The Schrödinger equation for this operator is given as
+		\begin{align}
+			\hat H_N \Psi = \Delta E \Psi 
+		\end{align}
+		Where we have defined the computed energy as
+		\begin{align}
+			\Delta E = E - E_{\text{ref}}
+		\end{align}
+		or 
+		\begin{align}
+			E = E_{\text{ref}} + \Delta E
+		\end{align}
+		This energy is named the correlation energy, and the goal of my thesis has been to implement and compare different methods to compute this energy for different systems. The reference energy, given as
+		\begin{align}
+			E_{\text{ref}} = \left< \right. | \hat H_0 | \left. \right> + \left< \right. | \hat V | \left. \right>
+		\end{align}
+		Is easily computed when the basis is set up. Finally, we can set up the fully partitioned normal ordered Hamiltonian as
+		\begin{align}
+			\hat H_N = \hat F_N^d + \hat F_N^o + \hat W_N
+		\end{align}
+
+	\end{section}
  
 \end{chapter}
 

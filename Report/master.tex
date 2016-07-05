@@ -2,6 +2,7 @@
 
 \bibliography{references}
 \usepackage{simplewick}
+\usepackage{float}
 
 % Adding nicer font to listings
 \usepackage{ifxetex}
@@ -45,7 +46,6 @@
 \begin{chapter}{Introduction}
   This is a very nice introduction to my myster thesis.
   or ..
-  lol
 \end{chapter}
 
 
@@ -554,7 +554,8 @@
 		This means we can write $\hat F = \hat H_1 + \hat U$. Inserting the Fock operator into the perturbation
 		\begin{align}
 			\hat V &= \hat F - \hat H_0 - \hat U + \hat H_2 \\
-				   &= \sum_{pq}(f_{pq} - \epsilon_p \delta_{pq} - u_{pq}) \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r	
+				   &= \sum_{pq}(f_{pq} - \epsilon_p \delta_{pq} - u_{pq}) \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r
+			\label{3.93}	
 		\end{align}
 		For a non-canonical Hartree-Fock case, the Fock matrix is diagonal, namely
 		\begin{align}
@@ -563,6 +564,7 @@
 		This means the perturbation can be rewritten as
 		\begin{align}
 			\hat V = -\sum_{pq} u_{pq} \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r	
+			\label{3.95}
 		\end{align}
 		With the zeroth-order energies given by 
 		\begin{align}
@@ -1168,32 +1170,171 @@
 \begin{chapter}{Infinite Matter}
 	A study of infinite matter is the most comprehensible way of studying nuclear material. This thesis will study the infinite electron gas before the final study of nuclear material. This is done because of pedagogical reasons and because the electron gas has closed form solutions that provide important benchmarking for the code. 
 	\begin{section}{The Infinate Electron Gas}
-		The infinite electron gas gives a good approximation to valence electrons in metal. The gas consist only of interacting electrons with a uniform background of charged ions. The whole system is charge neutral. We assume a cubic box, length $L$ and volume $\Omega = L^3$, with $N_e$ as the number of electrons with a charge density $\rho = N_e / \Omega$.
+		The infinite electron gas gives a good approximation to valence electrons in metal. The gas consist only of interacting electrons with a uniform background of charged ions. The whole system is charge neutral. We assume a finite cubic box as done in \cite{Shepherd2012} and \cite{Shepherd2013}. The box has a length $L$ and volume $\Omega = L^3$, with $N_e$ as the number of electrons with a charge density $\rho = N_e / \Omega$.
 
-		We regard the system as homogenic, using the free particle normalized wave function
-		\begin{align}
-		 	\psi_{\vec k \sigma} (\vec r) = \frac{1}{\sqrt{\Omega}} e^{i \vec k \vec r} \xi_{\sigma}
-		 \end{align}
-		 Where $\vec k$ is the wave number and $\xi_{\sigma}$ is a spin function. 
-		 \begin{align}
-		 	\xi_{+\frac{1}{2}} = \left( \begin{matrix} 1 \\ 0 \end{matrix} \right) \:\;\:\; \xi_{-\frac{1}{2}} = \left( \begin{matrix} 0 \\ 1 \end{matrix} \right)
-		 \end{align}
-		 Assuming periodic boundary conditions, we acquire the following wave numbers
-		 \begin{align}
-		 	k_i = \frac{2\pi n_i}{L} \:\:\:\;\; i = x,y,z \;\;\:\:\: n_i = 0, \pm 1, \pm 2, ...
-		 \end{align}
-		 The electrons interact with the sentral symmetric Colomb potential, $\hat V(\vec r_1, \vec r_2)$ depending only on the distance $\left| \vec r_1 - \vec r_2 \right|$. 
+		\begin{subsection}{The Hamiltonian}
+			The electrons interact with the sentral symmetric Colomb potential, $\hat V(\vec r_1, \vec r_2)$ depending only on the distance $\left| \vec r_1 - \vec r_2 \right|$. The Hamiltonian for infinite electron gas is \cite{Baardsen}
+			\begin{align}
+				\hat H = \hat H_1 + \hat H_2 = \hat H_{\text{kin}} + \hat H_{\text{interaction}}
+			\end{align}
+			The interaction term will be dependent on both the electron-electron interaction, the electron-background interaction and the background-background interaction
+			\begin{align}
+				\hat H = \hat H_{\text{kin}} + \hat H_{\text{ee}} + \hat H_{\text{eb}} + \hat H_{\text{bb}}
+			\end{align}
+			And the kinetic energy, $\hat H_{\text{kin}}$ is given as
+			\begin{align}
+				\hat H_{\text{kin}} = \sum_p \frac{\hbar ^2 k^2}{2m} a_{k \sigma}^{\dagger} a_{k \sigma}
+			\end{align}
+			The background-interaction terms will vanish as explained by Fraser et al \cite{Fraser et al} both for three- and two-dimensional electron gas. When we sum over all particles, we can write the electron-electron interaction term as an Ewald summation term, because it is not possible to use a $1/r$ term for infinite systems \cite{Drummond2008} \cite{MHJonline}. We can write this term as
+			\begin{align}
+				\hat H_{ee} = \sum_{i<j}^N v_E(\mathbf{r}_i - \mathbf{r}_j) + \frac{1}{2}Ne^2v_0
+			\end{align}
+			Where $v_E(\mathbf{r})$ is an effective two-body interaction. $v_0$ is the self-interaction term, defined as 
+			\begin{align}
+				v_0 = \lim_{\mathbf{r}\rightarrow \infty} \left\{ v_E(\mathbf{r}) - \frac{1}{r} \right\}
+			\end{align}
+			The Ewald summation will account for interactions between all electrons in the finite size system as well as all the image electrons that will arize from self-interaction because of periodic boundaries. We define it as 
+			\begin{align}
+				v_E(\mathbf{r}) &= \sum_{k \neq 0} \frac{4\pi}{L^3k^2} e^{i \mathbf{k}\cdot \mathbf{r} } e^{-\eta^2 k^2 / 4} \\
+								&+ \sum_{\mathbf{R}} \frac{1}{|	\mathbf{r} - \mathbf{R}|} \text{erfc} \left( \frac{| \mathbf{r} - \mathbf{R}|}{\eta} \right) - \frac{\pi \eta^2}{L^3}
+			\end{align}
+			$L$ is the size of the box, $\mathbf{k}$ is the momentum vector, while $\mathbf{r}$ represent the position vectors for all electrons. The translational vector $\mathbf{R}$ is used to obtain all image cells in the entire real space \cite{MHJonline}
+			\begin{align}
+				\mathbf{R} = L(n_x \mathbf{u}_x + n_y \mathbf{u}_y + n_z \mathbf{u}_z)
+			\end{align}
+			We have used the error functions
+			\begin{align}
+				\text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2} \text{dt}
+			\end{align}
+			\begin{align}
+				\text{erfc}(x) = 1 - \text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_x^\infty e^{-t^2} \text{dt}
+			\end{align}
+			We use this relation because an interaction on the form $1/|r|$ is not convergent for an infinite number of particle \cite{Audun}. Ewald found that one can rewrite the interaction in terms of these error functions \cite{Ewald}
+			\begin{align}
+				\frac{1}{r} = \frac{\text{erf}(\frac{1}{2}\sqrt{\eta}r)}{r} + \frac{\text{erfc}(\frac{1}{2}\sqrt{\eta}r)}{r}
+			\end{align}
+			One can calculate the two-dimensional Ewald term as well \cite{Baardsen}, resulting in 
+			\begin{align}
+				v_E^{\eta=0, z=0} = \sum_{\mathbf{k} \neq 0} \frac{2 \pi}{L^2 k} e^{i \mathbf{k} \cdot \mathbf{r}_{xy}}
+			\end{align}
+		\end{subsection}
+		
+		\begin{subsection}{The Reference Energy}
+			The reference energy for electron gas can be written as \cite{Baardsen}
+			\begin{align}
+				E_{\text{ref}} = \sum_i \left<i | h_0 | i\right> + \frac{1}{2} \sum_{ij} \left<ij||ij\right> + \frac{1}{2} Av_0
+			\end{align}
+			$A$ is the number of electrons, and the term $A v_0$ is the so-called Madelung constant. It is how we incorporates the self-interaction term into the system. This factor will be larger for smaller system and vanish as we approach the thermodynamic limit. 
+		\end{subsection}
+		
+		\begin{subsection}{The Fock Matrix Elements}
+			The Fock Matrix Elements will be given as
+			\begin{align}
+				\left< p | f | q \right> = \frac{k_p^2}{2m} \delta_{\mathbf{k}_p \mathbf{k}_q} \delta_{m_{s_p} m_{s_q}} + \sum_i \left<pi||qi\right>
+			\end{align}
+			We notice that the Fock Matrix elements can be written as a diagonal part plus the $\hat U$ operator. As we can see from (\ref{3.93}) and (\ref{3.95}), this means the perturbation can be written solely by the two-body interaction
+			\begin{align}
+				\hat V = \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r
+			\end{align}
+		\end{subsection}
 
-		 The Hamiltonian for infinite electron gas is
-		 \begin{align}
-		 	\hat H = \hat T + \hat V
-		 \end{align}
-		 Where we have the kinetic energy, $\hat T$ as
-		 \begin{align}
-		 	\hat T = \sum_p \frac{\hbar ^2 k^2}{2m} a_{k \sigma}^{\dagger} a_{k \sigma}
-		 \end{align}
+		\begin{subsection}{Anti-Symmetric Matrix Elements}
+			We now need to define the matrix elements for the two- and three-dimensional electron gas to calculate the perturbation 
+			\begin{align}
+				&\left< \mathbf{k}_p m_{s_p} \mathbf{k}_q m_{s_q} || \mathbf{k}_r m_{s_r} \mathbf{k}_s m_{s_s} \right> \\
+				&= \frac{4 \pi e^2}{L^3} \delta_{\mathbf{k}_p + \mathbf{k}_q, \mathbf{k}_r + \mathbf{k}_s} \left\{ \delta_{ m_{s_p},m_{s_r} } \delta_{ m_{s_q},m_{s_s} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_r}) \frac{1}{| \mathbf{k}_r - \mathbf{k}_p|^2} \right. \\
+				& - \delta_{ m_{s_p},m_{s_s} } \delta_{ m_{s_q},m_{s_r} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_s}) \left. \frac{1}{| \mathbf{k}_s - \mathbf{k}_p|^2}  \right\}
+			\end{align}
+			The two-dimensial case is almost identical
+			\begin{align}
+				&\left< \mathbf{k}_p m_{s_p} \mathbf{k}_q m_{s_q} || \mathbf{k}_r m_{s_r} \mathbf{k}_s m_{s_s} \right> \\
+				&= \frac{2 \pi e^2}{L^2} \delta_{\mathbf{k}_p + \mathbf{k}_q, \mathbf{k}_r + \mathbf{k}_s} \left\{ \delta_{ m_{s_p},m_{s_r} } \delta_{ m_{s_q},m_{s_s} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_r}) \frac{1}{| \mathbf{k}_r - \mathbf{k}_p|} \right. \\
+				& - \delta_{ m_{s_p},m_{s_s} } \delta_{ m_{s_q},m_{s_r} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_s}) \left. \frac{1}{| \mathbf{k}_s - \mathbf{k}_p|}  \right\}
+			\end{align}		
+		\end{subsection}
+
+		\begin{subsection}{The Plane Wave Basis}
+			When set up with periodic boundary conditions, the Homogenous electron gas can be set up with free particle normalized wave functions
+			\begin{align}
+				\psi_{\vec k \sigma} (\vec r) = \frac{1}{\sqrt{\Omega}} e^{i \vec k \vec r} \xi_{\sigma}
+			\end{align}
+			Where $\vec k$ is the wave number and $\xi_{\sigma}$ is a spin function. 
+			\begin{align}
+				\xi_{+\frac{1}{2}} = \left( \begin{matrix} 1 \\ 0 \end{matrix} \right) \:\;\:\; \xi_{-\frac{1}{2}} = \left( \begin{matrix} 0 \\ 1 \end{matrix} \right)
+			\end{align}
+			Because of periodic boundary conditions, we acquire the following wave numbers
+			\begin{align}
+				k_i = \frac{2\pi n_i}{L} \:\:\:\;\; i = x,y,z \;\;\:\:\: n_i = 0, \pm 1, \pm 2, ...
+			\end{align}
+			and the associated single-particle energies for two dimensions
+			\begin{align}
+				\epsilon_{n_x,n_y} = \frac{\hbar^2}{2m} \left( \frac{2\pi}{L} \right)^2 (n_x^2 + n_y^2)
+			\end{align}
+			And for three dimensions
+			\begin{align}
+				\epsilon_{n_x,n_y,n_z} = \frac{\hbar^2}{2m} \left( \frac{2\pi}{L} \right)^2 (n_x^2 + n_y^2 + n_z^2 )
+			\end{align}
+			By the nature of the single particle energies, the energy levels will be determined by the value of $n_x^2 + n_y^2 + n_z^2$. There are different combinations of $n_x, n_y$ and $n_z$ that set up each energy level. The cumulative number of particles needed to completely fill these energy states will be named \textit{magic numbers} and are listed in table (\ref{Magic Numbers 3d}). 
+			\begin{table}[H]
+				\begin{center}
+					\begin{tabular}[center]{l | c c c | c | c | r }
+						$n_x^2 + n_y^2 + n_z^2$ & $n_x$ & $n_y$ & $n_z$ & $N_{\uparrow \uparrow}$ & $N_{\uparrow \downarrow}$ & $N_{\uparrow \downarrow} \hat \tau$ \\
+						\hline
+						0 & 0 & 0 & 0 & 1 & 2 & 4 \\
+						\hline
+						1 & 1 & 0 & 0 &   &   &   \\
+						  & -1& 0 & 0 &   &   &   \\
+						  & 0 & 1 & 0 &   &   &   \\
+						  & 0 & -1& 0 &   &   &   \\
+						  & 0 & 0 & 1 &   &   &   \\
+						  & 0 & 0 & -1& 7 & 14& 28\\
+						\hline
+						2 & 1 & 1 & 0 &   &   &   \\
+						  & 1 & -1& 0 &   &   &   \\
+						  & 1 & 0 & 1 &   &   &   \\
+						  & 1 & 0 & -1&   &   &   \\
+						  & -1& 1 & 0 &   &   &   \\
+						  & -1& -1& 0 &   &   &   \\
+						  & -1& 0 & 1 &   &   &   \\
+						  & -1& 0 & -1&   &   &   \\
+						  & 0 & 1 & 1 &   &   &   \\
+						  & 0 & 1 & -1&   &   &   \\
+						  & 0 & -1& 1 &   &   &   \\
+						  & 0 & -1& -1&19 &38 & 76\\
+						\hline
+						3 & 1 & 1 & 1 &   &   &   \\
+						  & 1 & 1 & -1&   &   &   \\
+						  & 1 & -1& 1 &   &   &   \\
+						  & 1 & -1& -1&   &   &   \\
+						  & -1& 1 & 1 &   &   &   \\
+						  & -1& 1 & -1&   &   &   \\
+						  & -1& -1& 1 &   &   &   \\
+						  & -1& -1& -1&27 & 54&108\\
+						\hline
+						4 & 2 & 0 & 0 &   &   &   \\
+						  & -2& 0 & 0 &   &   &   \\
+						  & 0 & 2 & 0 &   &   &   \\
+						  & 0 & -2& 0 &   &   &   \\
+						  & 0 & 0 & 2 &   &   &   \\
+						  & 0 & 0 & -2& 33& 66&132\\
+						\hline
+						5 &   &   &   & 57&114&228\\
+						\hline
+						6 &   &   &   & 81&162&324\\
+						\hline
+						7 &   &   &   & 81&162&324\\
+						\hline
+						8 &   &   &   & 93&186&372
+					\end{tabular}
+				\end{center}
+				\caption{All magic numbers for three dimensional infinite matter. The table demonstrates how states will fill up energy levels. $n_x$, $n_y$ and $n_z$ represent momentum quantum numbers, $n_x^2 + n_y^2 + n_z^2$ represent energy level. $N_{\uparrow \uparrow}$ shows magic number without spin degeneracy, $N_{\uparrow \downarrow}$ adds two possible spins, and $N_{\uparrow \downarrow} \hat \tau $ also adds isospin degeneracy.} 
+				\label{Magic Numbers 3d}
+			\end{table}
+
+		\end{subsection}
 
 	\end{section}
+
 	\begin{section}{Infinite Nuclear Matter}
 		Central to my thesis, is the study of infinite nuclear matter. I look at baryonic matter similar to the dense baryonic matter found in neutron stars. I limit the study to temperatures far below Fermi level. The matter is mostly made up of an equilibrium of baryons and leptons. In neutron star matter, we assume the equilibrium consist of protons, neutrons, electrons and muons with densities larger than $0.1 \text{fm}^-3$. The equilibrium conditions are specified by weak interactions
 		\begin{align}
@@ -1695,12 +1836,10 @@
 
 \end{chapter}
 
-
-
-
-\begin{chapter}{Appendix}
+\begin{chapter}{Conclusion and future prospects}
 	
 \end{chapter}
+
 
 \medskip
 
@@ -1710,6 +1849,10 @@
 	\bibitem{Baardsen}
 	Gustav Baardsen
 	\textit{Coupled-cluster theory for infinite matter} 2014
+
+	\bibitem{Audun}
+	Audun Skau Hansen
+	\textit{Coupled Cluster studies of infinite systems,} Master thesis, University of Oslo, 2015
 
 	\bibitem{ShavittAndBartlett}
 	Isaiah Shavitt and Rodney J. Bartlett
@@ -1735,6 +1878,14 @@
 	Stanley Raimes
 	\textit{Many-Electron Theory} 1972
 
+	\bibitem{Susskind2014}
+	Leonard Susskind and Art Friedman
+	\textit{Quantum Mechanics, The Theoretical Minimum} 2014
+
+	\bibitem{Crawford}
+	T. Daniel Crawford and Henry F. Schaefer III
+	\textit{An Introduction to Coupled Cluster Theory for Computational Chemists} 
+
 	\bibitem{Day1967} 
 	B. D. Day
 	\textit{Rev. Mod. Phys.,}
@@ -1744,9 +1895,46 @@
 	D. R. Thompson, M. Lemere and Y.C. Tang.
 	\textit{Nucl. Phys. A,} 286:53 1977.
 
+	\bibitem{Shepherd2012}
+	J. J. Shepherd, A. Grüneis, G.H. Booth, G. Kresse and A. Alavi 
+	\textit{Phys. Rev. B,} 86:035111, 2012.
+
+	\bibitem{Shepherd2013}
+	J.J. Shepherd and A. Grüneis
+	\textit{Phys. Rev. Lett.,} 110:226401, 2013.
+
+	\bibitem{Drummond2008}
+	N. D. Drummond, R. J. Needs, A. Sorouri and W. M. C. Foulkes
+	\textit{Phys. Rev. B,} 78:125106
+
+	\bibitem{Fraser et al}
+	L. M. Fraser, W. M. C. Foulkes, G. Rajagopal, R. J. Needs, S.D. Kenny and A. J. Williamson
+	\textit{Phys. Rev. B,} 53:1814, 1996
+
+	\bibitem{Ewald}
+	P.P. Ewald. Die berechnung optischer und elektrostatischer gitterpotentiale. 
+	\textit{Annalen der Physik,} 369(3), 1921. ISSN 1521-3889. doi: 10.1002/andp.19213690304
+
+	\bibitem{Langtangen}
+	Hans Petter Langtangen
+	\textit{A Primer on Scientific Programming with Python} Scond Edition, Springer 2011
+
+	\bibitem{NumericalRecipes}
+	William H. Press, Saul A. Teukolsky, William T. Vetterling, Brian P. Flannery
+	\textit{Numerical Recipes, The Art of Scientific Computing} Third Edition, Cambridge 2007
+
+	\bibitem{MHJonline}
+	Carlo Barbieri, Wim Dickhoff, Gaute Hagen, Morten Hjorth-Jensen, Artur Polls
+	\textit{Many-body Methods for Nuclear Physics, Nuclear Talent course 2} 
+	URL: \textit{http://nucleartalent.github.io/Course2ManyBodyMethods/doc/web/course.html}
+
 	\bibitem{WholmenGithub}
 	Fredrik Wilhelm Holmen
 	\textit{https://github.com/wholmen/Master} 
+
+	\bibitem{Armadillo}
+	Conrad Sanderson. Armadillo: An open source c++ linear algebra library for fast prototyping and computationally intensive experiments, 2010.
+	URL: \textit{http://arma.sourceforge.net/docs.html}.
 
 \end{thebibliography}
 

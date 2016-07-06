@@ -2,7 +2,7 @@
 
 NuclearBasis::NuclearBasis() {}
 
-NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double rs_input){
+NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double rs_input, bool OnlyNeutrons){
 
     Nshells = Nshells_input; NfilledShells = NFilledShells_input; rs = rs_input;
 
@@ -10,6 +10,8 @@ NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double rs
 
     States = zeros<mat>(0,6);
     Nstates = 0; Nholes = 0;
+
+    int IsospinMax = (OnlyNeutrons) ? 0:1; // If OnlyNeutrons = true, then there will only be one
 
     for (int shell=0; shell<Nshells; shell++){
         // Shell is defined by x^2 + y^2 + z^2 as these quantum numbers give energy.
@@ -29,7 +31,7 @@ NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double rs
                         for (int ms=-1; ms<=1; ms+=2){
 
                             // Looping over isospin
-                            for (int mt=-1; mt<=1; mt+=2){
+                            for (int mt=-1; mt <= IsospinMax; mt+=2){
 
                                 States.insert_rows(Nstates,1);
                                 States(Nstates,0) = e;
@@ -60,11 +62,9 @@ NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double rs
         States(i,0) = States(i,0) * 2*pi*pi / L2;
     }
 
-    Nparticles = Nstates - Nholes;
-    SetUpEpsilon();
-
     Nstates2 = Nstates*Nstates; Nstates3 = Nstates2*Nstates;
-    SetUpInteraction();
+    Nparticles = Nstates - Nholes;
+    Nparticles2 = Nparticles*Nparticles; Nholes2 = Nholes*Nholes;
 }
 
 double NuclearBasis::ReferenceEnergy(){
@@ -86,35 +86,6 @@ double NuclearBasis::ReferenceEnergy(){
         cout << "Number of particles cannot exceed number of available States.";
     }
     return Energy;
-}
-
-double NuclearBasis::ei(int q){
-    double interaction = 0;
-    for (int i=0; i<Nholes; i++){
-        interaction += TwoBodyOperator(q,i,q,i);
-    }
-    return OneBodyOperator(q,q) + interaction;
-}
-
-double NuclearBasis::epsilon(int i, int j, int a, int b){
-    // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
-    return ei(i) + ei(j) - ei(a) - ei(b);
-}
-
-void NuclearBasis::SetUpEpsilon(){
-    EpsilonMatrix = zeros<vec>(Nparticles*Nparticles*Nholes*Nholes);
-
-    for (int i=0; i<Nholes; i++){
-        for (int j=0; j<Nholes; j++){
-            for (int aa=0; aa<Nparticles; aa++){
-                for (int bb=0; bb<Nparticles; bb++){
-
-                    int a = aa + Nholes; int b = bb + Nholes;
-                    EpsilonMatrix(aa + bb*Nparticles + i*Nparticles*Nparticles + j*Nparticles*Nparticles*Nholes) = epsilon(i,j,a,b);
-                }
-            }
-        }
-    }
 }
 
 double NuclearBasis::OneBodyOperator(int p, int q){
@@ -169,27 +140,29 @@ double NuclearBasis::Minnesota(int p, int q, int r, int s){
     return V;
 }
 
-void NuclearBasis::SetUpInteraction(){
-
-    Interaction = zeros<vec>(Nstates*Nstates*Nstates*Nstates);
-
-    for (int p=0; p<Nstates; p++){
-        for (int q=0; q<Nstates; q++){
-            for (int r=0; r<Nstates; r++){
-                for (int s=0; s<Nstates; s++){
-
-                    Interaction(p + q*Nstates + r*Nstates2 + s*Nstates3) = Minnesota(p,q,r,s);
-                }
-            }
-        }
-    }
-}
-
 double NuclearBasis::TwoBodyOperator(int p, int q, int r, int s){
 
-    return Interaction(p + q*Nstates + r*Nstates2 + s*Nstates3);
+    return Minnesota(p,q,r,s);
 }
 
+double NuclearBasis::ei(int q, vec &v){
+    double interaction = 0;
+    for (int i=0; i<Nholes; i++){
+        interaction += v(q + i*Nstates + q*Nstates2 + i*Nstates3);
+    }
+    return OneBodyOperator(q,q) + interaction;
+}
+
+double NuclearBasis::epsilon(int i, int j, int a, int b, vec &v){
+    // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
+    return ei(i,v) + ei(j,v) - ei(a,v) - ei(b,v);
+}
+
+
+
+
+
+// Various kroenecker deltas
 int NuclearBasis::KD_integer(int a, int b){
     // Returns 1 if a and b are equal
     return ( a == b ) ? 1:0;

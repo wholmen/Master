@@ -25,6 +25,7 @@ int main()
     cout << solver.CCD(5); */
 }
 
+/*
 void TestIntermediates(){
     int Nshells = 3; int NfilledShells = 2; double rs = 1;
 
@@ -33,16 +34,18 @@ void TestIntermediates(){
     CCDIntermediates solver = CCDIntermediates(basis);
     cout << solver.CCD(10) << endl;
 }
+*/
 
 void TestBlocks(){
-    int Nshells = 2; int NfilledShells = 1; double rs = 0.4;
+    int Nshells = 3; int NfilledShells = 2; double rs = 1.7;
 
-    NuclearBasis basis = NuclearBasis(Nshells,NfilledShells,rs);
+    NuclearBasis basis = NuclearBasis(Nshells,NfilledShells,rs,false);
     cout << "Reference Energy: " << basis.ReferenceEnergy() << endl;
     Solver solver = Solver(basis);
-    cout << solver.CCD(10) << endl;
+    solver.weight = 0.1;
+    cout << "Nparticles: " << solver.Nholes << " Nstates: " << solver.Nstates << " Energy:" << solver.CCD(40) << endl;
 }
-
+/*
 void AllIterationsNh14Ns54_Intermediates(){
     int Nshells = 2;
     int NfilledShells = 1;
@@ -111,3 +114,4 @@ void ResultsNh14Ns54_Intermediates(){
 
     myfile.close();
 }
+*/

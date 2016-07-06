@@ -13,10 +13,10 @@ class NuclearBasis
 {
 public:
     NuclearBasis();
-    NuclearBasis(int Nshells_input, int NFilledShells_input, double rs_input);
+    NuclearBasis(int Nshells_input, int NFilledShells_input, double rs_input, bool OnlyNeutrons);
 
     mat States;
-    int Nshells; int NfilledShells; int Nholes; int Nstates; int Nstates2; int Nstates3; int Nparticles;
+    int Nshells; int NfilledShells; int Nholes; int Nstates; int Nstates2; int Nstates3; int Nparticles; int Nparticles2; int Nholes2;
 
     double rs;
     double kstep;
@@ -25,18 +25,13 @@ public:
     // Values for computing Minnesota potential
     double v0R, v0T, v0S, kappaR, kappaT, kappaS;
 
-    vec EpsilonMatrix;
-
     // Functions for energy calculations
     double OneBodyOperator(int p, int q);
     double TwoBodyOperator(int p, int q, int r, int s); // Minnesota potential as nuclear interaction
     double Minnesota(int p, int q, int r, int s);
-    double ei(int q);
-    double epsilon(int i, int j, int a, int b); // Returns e_i + e_j - e_a - e_b
-    void SetUpEpsilon();
+    double ei(int q, vec &v);
+    double epsilon(int i, int j, int a, int b, vec &v); // Returns e_i + e_j - e_a - e_b
     double ReferenceEnergy();
-
-    void SetUpInteraction(); vec Interaction;
 
     int KD_k(int a, int b);
     double Absolute_Difference2(int a, int b);

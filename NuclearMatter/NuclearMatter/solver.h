@@ -39,6 +39,11 @@ public:
     double tolerance; // Convergence criteria for iteration process for Amplitudes
     int NIterations;  // Number of iterations used for calculating amplitudes
 
+    // Setting up matrices for computed epsilon and interaction
+    vec Interaction; vec EpsilonMatrix;
+    void SetUpEpsilon();
+    void SetUpInteraction();
+
     // Declaring matrices
     vec t0; // Amplitudes for iteration n
     vec t ; // Amplitudes for iteration n+1
@@ -49,23 +54,15 @@ public:
     mat Kp, Kphh; // Triple state channels. p and h+h-p config
 
     // Diagrams
+    // Without intermediates
     void DiagramL0();
     void DiagramLa();
-
-    // Without intermediates
-    void DiagramLb();
-    void DiagramLc();
-
-    void DiagramQa();
-    void DiagramQb();
     void DiagramQc();
     void DiagramQd();
 
     // With intermediates
     void DiagramI1();
     void DiagramI2();
-    void DiagramI3();
-    void DiagramI4();
 
     // Block list
     void CreateBlocks();
@@ -89,12 +86,6 @@ public:
     double AbsoluteDifference(double a, double b); // Returns sqrt( (a-b)^2 )
     double Identifier(int Nx, int Ny, int Nz, int Sz, int Tz); // Returns the unique identifier for two-state configuration. Returns 2*(Nx + m)*M^3 + 2*(Ny + m)*M^2 + 2*(Nz + m)*M + 2*(Sz + 1);
     int Index(int p, int q, int r, int s); // Returns the index p + q*Np + r*Np*Nq + s*Np*Nq*Nr
-
-    // Diagrams as matrix-matrix multiplication. Included for educational purposes.
-    void DiagramMatrixMatrix_Lc();
-    void DiagramMatrixMatrix_Qb();
-    void DiagramMatrixMatrix_Qc();
-    void DiagramMatrixMatrix_Qd();
 };
 
 #endif // SOLVER_H

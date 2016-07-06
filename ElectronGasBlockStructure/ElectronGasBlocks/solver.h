@@ -39,6 +39,10 @@ public:
     double tolerance; // Convergence criteria for iteration process for Amplitudes
     int NIterations;  // Number of iterations used for calculating amplitudes
 
+    // Setting up matrices for computed epsilon and interaction
+    vec Interaction; vec EpsilonMatrix;
+    void SetUpEpsilon();
+
     // Declaring matrices
     vec t0; // Amplitudes for iteration n
     vec t ; // Amplitudes for iteration n+1

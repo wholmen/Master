@@ -20,10 +20,9 @@ Solver::Solver(ElectronBasis BASIS)
     // Setting up two-state configurations
 
     TwoBodyConfigurations();
-    NPARTICLES = Particles.n_rows;
-    NHOLES = Holes.n_rows;
-
     CreateBlocks();
+
+    SetUpEpsilon();
 
     // Setting up matrices
     t0 = zeros<vec>(Nparticles2*Nholes2);
@@ -125,7 +124,7 @@ void Solver::UpdateAmplitudes(){
     //DiagramMatrixMatrix_Qd();
 
     // Dividing by factor epsilon(i,j,a,b)
-    t = t / basis.EpsilonMatrix;
+    t = t / EpsilonMatrix;
 
     // Adding weight factor
     if (weight != 0) t = weight*t + (1-weight)*t0;
@@ -596,6 +595,9 @@ void Solver::TwoBodyConfigurations(){
             }
         }
     }
+    NPARTICLES = Particles.n_rows;
+    NHOLES = Holes.n_rows;
+
 
     Xhp = zeros<mat>(0,3);
     Xph = zeros<mat>(0,3);
@@ -694,6 +696,23 @@ void Solver::TwoBodyConfigurations(){
     }
     NKp3 = Kphh.n_rows; NKp = Kp.n_rows;
 }
+
+void Solver::SetUpEpsilon(){
+    EpsilonMatrix = zeros<vec>(Nparticles*Nparticles*Nholes*Nholes);
+
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    int a = aa + Nholes; int b = bb + Nholes;
+                    EpsilonMatrix(aa + bb*Nparticles + i*Nparticles*Nparticles + j*Nparticles*Nparticles*Nholes) = basis.epsilon(i,j,a,b);
+                }
+            }
+        }
+    }
+}
+
 
 double Solver::Identifier(int Nx, int Ny, int Nz, int Sz){
     return 2*(Nx + m)*M*M*M + 2*(Ny + m)*M*M + 2*(Nz + m)*M + 2*(Sz + 1);

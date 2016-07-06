@@ -24,8 +24,6 @@ public:
     double kstep;
     double L3, L2, L1;
 
-    vec EpsilonMatrix;
-
     ElectronBasis();
     ElectronBasis(int Nshells_input, int NshellsFilled_input, double rs_input);
 
@@ -33,7 +31,6 @@ public:
     double OneBodyOperator(int p, int q);
     double TwoBodyOperator(int p, int q, int r, int s);
     double ei(int q);
-    void SetUpEpsilon();
     double epsilon(int i, int j, int a, int b);
     double ReferenceEnergy();
 

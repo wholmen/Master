@@ -57,7 +57,6 @@ ElectronBasis::ElectronBasis(int Nshells_input, int NshellsFilled_input, double 
     for (int i=0; i<Nstates; i++){
         States(i,0) = States(i,0) * 2*pi*pi / L2;
     }
-    SetUpEpsilon();
 }
 
 double ElectronBasis::ReferenceEnergy(){
@@ -88,22 +87,6 @@ double ElectronBasis::ei(int q){
         interaction += TwoBodyOperator(q,i,q,i);
     }
     return OneBodyOperator(q,q) + interaction;
-}
-
-void ElectronBasis::SetUpEpsilon(){
-    EpsilonMatrix = zeros<vec>(Nparticles*Nparticles*Nholes*Nholes);
-
-    for (int i=0; i<Nholes; i++){
-        for (int j=0; j<Nholes; j++){
-            for (int aa=0; aa<Nparticles; aa++){
-                for (int bb=0; bb<Nparticles; bb++){
-
-                    int a = aa + Nholes; int b = bb + Nholes;
-                    EpsilonMatrix(aa + bb*Nparticles + i*Nparticles*Nparticles + j*Nparticles*Nparticles*Nholes) = epsilon(i,j,a,b);
-                }
-            }
-        }
-    }
 }
 
 double ElectronBasis::epsilon(int i, int j, int a, int b){

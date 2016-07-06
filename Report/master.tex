@@ -54,12 +54,47 @@
 
 \begin{chapter}{Quantum Mechanics}
  	
-	
-
 	\begin{section}{Postulates}
-
- 		Quantum 
+ 		Quantum mechanics is built upon by a few principles \cite{Audun,Griffiths,Sakurai,Susskind2014}, often called the postulates of quantum mechanics. 
+ 		\begin{enumerate}
+ 			\item \textbf{The Wave Function} \\
+ 			All information on a quantum system is given by the wave function $\left| \Psi(x,t) \right>$. The wave function represent the probability of measuring a particle within a small volume $\text{dx}$ and for a given time, $t$. As the probability cannot exceed $1$, the wave function must be normalized, namely
+ 			\begin{align}
+ 				\int_{-\infty}^\infty \Psi^*(x,t) \Psi(x,t) \text{dx} = 1
+ 			\end{align}
+ 			Physical distinguishable states are orthogonal to each other. Using normalized states, they are orthonormal to each other, meaning that for two unambigously distuingishable states, we have
+ 			\begin{align}
+ 				\left< \lambda | \psi \right> = \delta_{\lambda \psi}
+ 			\end{align}
+ 			\item \textbf{Observables}\\
+			All observables are represented by linear operators, written with a "hat", $\hat O$. These linear operators are bound to be hermitian. An observable could also be called measurable quality. The outcome of a quantum mechanical experiment is an observable. 
+			\item \textbf{Measurments}\\
+			The possible outcomes of an experminent are the eigenvalues of an operator that represent the observable. Represented as a number $\lambda$. If a state is in the eigenstate $\left| \lambda \right>$, the only possible measurment of an experiment is the eigenvalue, $\lambda$. We write this as
+ 			\begin{align}
+ 				\hat O \left| \lambda \right> = \lambda \left| \lambda \right>
+ 			\end{align}
+ 			\item \textbf{Probabilities}\\
+ 			Given a state $\left| \alpha \right>$. The probability of observing $\lambda$ when measuring the observable $\hat O$ is given by 
+ 			\begin{align}
+ 				P(\lambda) = \left< \alpha | \lambda \right> \left< \lambda | \alpha \right> = | \left< \alpha | \lambda \right> |^2 
+ 			\end{align}
+ 			Which measures the overlap of the two states $\left| \alpha \right>$ and $\left| \lambda \right>$. If they are physically distinguishable, the probability is zero. If the probability is non-zero, we have "mixed states".
+ 			\item \textbf{Time development and the Schrodinger equation}\\
+ 			Time developement for states are given by acting on the state with a unitary operator
+ 			\begin{align}
+ 				\left| \Psi(t) \right> = \hat U(t) \left| \Psi(0) \right>
+ 			\end{align}
+ 			This leads us to the time-independent Schrodinger equation
+ 			\begin{align}
+ 				\hat H \left| \Psi(x,t) \right> = i \hbar \frac{\partial}{\partial t} \left| \Psi(x,t) \right> 
+ 			\end{align}
+ 			Where we have defined the Hamiltonian operator $\hat H$. The Hamiltonian will be used throughout the thesis, as its eigenvalues are the measurable energy. We will primerily be focused on solving the \textit{time independent} Schrodinger equation
+ 			\begin{align}
+ 				\hat H \left| \Psi(x) \right> = E \left| \Psi(x) \right> 
+ 			\end{align}
+ 		\end{enumerate}
  	\end{section}
+
 
  	\begin{section}{The Born-Oppenheimer Approximation}
  		The Born-Oppenheimer approximation lies at the heart of many-body quantum mechanics. 
@@ -676,6 +711,61 @@
  
 \end{chapter}
 
+
+
+\begin{chapter}{Diagramatic Representation}
+	It can be quite cumbersome and error-prone to treat the manipulation of states and operators with second quantization \cite{ShavittAndBartlett}. The soon to be introduced many body methods will include various sums over states. One can introduce a new formalism originated in quantum field theory in the form of Feynman diagrams to depict and list these sums. It is quite common to refer to these sums simply as \textit{diagrams}. The main benefits of the diagramatic notation include an easy way of listing non vanishing terms and elucidating various cancelations in the sums. 
+
+	\begin{section}{The Slater Determinant}
+		We begin, as in second quantization, by setting up the Slater determinant. There is a time dependent direction on the diagrams going up. The actual times are irrelevant, but the sequence is important. The reference state, $| \left. \right> = \left| \Phi \right>$ is depicted simply as a horizontal line
+		\begin{figure}[H]
+		\includegraphics[width=\textwidth]{Figures/SlaterDeterminant1.pdf}
+		\label{SlaterDeterminant1}
+		\caption{Diagram for the reference state $| \left. \right>$}
+		\end{figure}
+		While the hole states are represented by vertical lines either going up or down, particle and hole states are depicted by a vertical line. An arrow pointing up relates a particle state, while an arrow pointing down will mean a hole state. Depicting the two states $\left| \Phi^a \right> $ and $\left| \Phi_i \right>$
+		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{Figures/SlaterDeterminant2.pdf}
+			\label{SlaterDeterminant2}
+			\caption{Diagrams for the addition of a particle and a hole state, $\left| \Phi^a \right> $ and $\left| \Phi_i \right> $ respectively}
+		\end{figure}
+		The ket-variant of the singly excited Slater determinant $\left< \Phi_i^a \right| $ can be drawn as
+		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{Figures/SlaterDeterminant3.pdf}
+			\label{SlaterDeterminant3}
+			\caption{Diagram for the singly excited ket state $\left< \Phi_i^a \right|$}
+		\end{figure}
+		And the doubly excited states $\left| \Phi_{ij}^{ab} \right>$ can be drawn as
+		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{Figures/SlaterDeterminant4.pdf}
+			\label{SlaterDeterminant4}
+			\caption{Diagram for the doubly excited bra state $\left| \Phi_{ij}^{ab} \right>$}
+		\end{figure}
+	\end{section}
+
+	\begin{section}{Operators}
+		We need a convention for one body operators as well. The one body Hamiltonian operator is given by 
+		\begin{align}
+			\hat H_1 = \sum_{pq} \left< p | h | \right> \hat p^\dagger \hat q
+		\end{align}
+		We will represent the matrix element $\left< p | h | \right>$ by a dashed line, while there will be one line entering and one line leaving the operator due to the annihilation and creation operator. Because the operator behaves different depending on wether the general operators $p$ and $q$ are hole or particle states, the one body operator will I list the four normal ordered one body operators below \cite{ShavittAndBartlett}
+		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{Figures/OneBodyOperator.pdf}
+			\label{OneBodyOperator}
+			\caption{Diagrams for four different variants of the one body operator. From left to right, the operators shown are $\sum_{ij} h_{ij} i^\dagger j $, $\sum_{ab} h_{ab} a^\dagger b$, $\sum_{ai}h_{ai} a^\dagger i$ and $\sum_{ai} h_{ia} i^\dagger a$}
+		\end{figure}
+
+		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{Figures/TwoBodyOperator.pdf}
+			\label{TwoBodyOperator}
+			\caption{Diagrams for four different variants of the one body operator. From left to right, the operators shown are $\sum_{ij} h_{ij} i^\dagger j $, $\sum_{ab} h_{ab} a^\dagger b$, $\sum_{ai}h_{ai} a^\dagger i$ and $\sum_{ai} h_{ia} i^\dagger a$}
+		\end{figure}
+	\end{section}
+
+	
+
+
+\end{chapter}
 
 
 

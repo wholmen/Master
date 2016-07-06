@@ -200,9 +200,6 @@ void CCDIntermediates::UpdateAmplitudes(){
             }
         }
     }
-    // Dividing by factor epsilon(i,j,a,b)
-    //t = t / epsilon();
-
     // Adding weight factor
     if (weight != 0) t = weight*t + (1-weight)*t0;
 }
@@ -308,15 +305,7 @@ void CCDIntermediates::UpdateI4(){
 double CCDIntermediates::epsilon(int i, int j, int a, int b){
     if (BasisNumber == 1) return pabasis.epsilon(i,j,a,b);
     else if (BasisNumber == 2) return elbasis.epsilon(i,j,a,b);
-    else if (BasisNumber == 3) return ncbasis.epsilon(i,j,a,b);
-    else {cout << "basis is not defined properly in ccd naive. Epsilon not computed properly" << endl; return 0;}
-}
-
-vec CCDIntermediates::epsilon(){
-
-    if (BasisNumber == 1) return pabasis.EpsilonMatrix;
-    else if (BasisNumber == 2) return elbasis.EpsilonMatrix;
-    else if (BasisNumber == 3) return ncbasis.EpsilonMatrix;
+    //else if (BasisNumber == 3) return ncbasis.epsilon(i,j,a,b);
     else {cout << "basis is not defined properly in ccd naive. Epsilon not computed properly" << endl; return 0;}
 }
 

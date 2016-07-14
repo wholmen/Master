@@ -22,7 +22,7 @@ Solver::Solver(ElectronBasis BASIS)
     TwoBodyConfigurations();
     CreateBlocks();
 
-    SetUpEpsilon();
+    //SetUpEpsilon();
 
     // Setting up matrices
     t0 = zeros<vec>(Nparticles2*Nholes2);
@@ -99,8 +99,7 @@ void Solver::UpdateAmplitudes(){
     t0 = t; // We need to save the previous amplitudes in t0. They will be used to compute the new amplitudes stored in t
     t = zeros(Nparticles2*Nholes2);
 
-    DiagramL0();
-    DiagramLa();
+
 
     // Block approach without intermediates.
     //DiagramLb();
@@ -108,11 +107,8 @@ void Solver::UpdateAmplitudes(){
 
     //DiagramQa();
     //DiagramQb();
-    DiagramQc();
-    DiagramQd();
 
     // Block approach with intermediates
-    DiagramI1(); // Lb+Qa
     DiagramI2(); // Lc+Qb
     //DiagramI3(); // Qc
     //DiagramI4(); // Qd
@@ -124,7 +120,16 @@ void Solver::UpdateAmplitudes(){
     //DiagramMatrixMatrix_Qd();
 
     // Dividing by factor epsilon(i,j,a,b)
-    t = t / EpsilonMatrix;
+    //t = t / EpsilonMatrix;
+
+
+    DiagramL0();
+    DiagramLa();
+
+    DiagramQc();
+    DiagramQd();
+
+    DiagramI1(); // Lb+Qa
 
     // Adding weight factor
     if (weight != 0) t = weight*t + (1-weight)*t0;
@@ -177,6 +182,10 @@ void Solver::CreateBlocksPPHH(){
     for (int n=0; n<Npphh; n++){
         blockspphh[n]->FinishBlock();
     }
+
+    for (int n=0; n<Npphh; n++){
+        blockspphh[n]->Epsilonpphh();
+    }
 }
 
 void Solver::CreateBlocksPHHP(){
@@ -214,6 +223,8 @@ void Solver::CreateBlocksPHHP(){
         }
     }
     for (int n=0; n<Nphhp; n++) blocksphhp[n]->FinishBlock();
+
+    for (int n=0; n<Nphhp; n++) blocksphhp[n]->Epsilonphhp();
 }
 
 void Solver::CreateBlocksKHPP(){
@@ -250,6 +261,8 @@ void Solver::CreateBlocksKHPP(){
         }
     }
     for (int n=0; n<Nkhpp; n++) blockskhpp[n]->FinishBlock();
+
+    for (int n=0; n<Nkhpp; n++) blockskhpp[n]->Epsilonkhpp();
 }
 
 void Solver::CreateBlocksKPHH(){
@@ -286,6 +299,8 @@ void Solver::CreateBlocksKPHH(){
         }
     }
     for (int n=0; n<Nkphh; n++) blockskphh[n]->FinishBlock();
+
+    for (int n=0; n<Nkphh; n++) blockskphh[n]->Epsilonkphh();
 }
 
 
@@ -301,14 +316,15 @@ void Solver::DiagramL0(){
     //Align elements to t.
     for (int n=0; n<Npphh; n++){
 
+        mat L0 = blockspphh[n]->V / blockspphh[n]->epsilon;
+
         for (double I=0; I < blockspphh[n]->Holes.n_rows ; I++){
             for (double A=0; A < blockspphh[n]->Particles.n_rows; A++){
 
                 int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
-                int aa = a - Nholes; int bb = b - Nholes;
 
-                t( Index(aa,bb,i,j) ) += blockspphh[n]->V(A,I);
+                t( Index(a,b,i,j) ) += L0(A,I);
             }
         }
     }
@@ -323,16 +339,15 @@ void Solver::DiagramLa(){
     }
 
     for (int n=0; n<Npphh; n++){
-        mat La = blockspphh[n]->V * blockspphh[n]->T;
+        mat La = 0.5*blockspphh[n]->V * blockspphh[n]->T / blockspphh[n]->epsilon;
 
         for (double I=0; I<blockspphh[n]->Holes.n_rows; I++){
             for (double A=0; A<blockspphh[n]->Particles.n_rows; A++){
 
                 int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
-                int aa = a - Nholes; int bb = b - Nholes;
 
-                t( Index(aa,bb,i,j) ) += 0.5 * La(A,I);
+                t( Index(a,b,i,j) ) += La(A,I);
             }
         }
     }
@@ -354,9 +369,8 @@ void Solver::DiagramLb(){
 
                 int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
-                int aa = a - Nholes; int bb = b - Nholes;
 
-                t( Index(aa,bb,i,j) ) += 0.5 * Lb(A,I);
+                t( Index(a,b,i,j) ) += 0.5 * Lb(A,I);
             }
         }
     }
@@ -377,12 +391,11 @@ void Solver::DiagramLc(){
 
                 int i=blocksphhp[n]->Xph(x1,1); int j=blocksphhp[n]->Xhp(x2,0);
                 int a=blocksphhp[n]->Xph(x1,0); int b=blocksphhp[n]->Xhp(x2,1);
-                int aa = a-Nholes; int bb = b-Nholes;
 
-                t( Index(aa,bb,i,j) ) += Lc(x1,x2);
-                t( Index(aa,bb,j,i) ) -= Lc(x1,x2);
-                t( Index(bb,aa,i,j) ) -= Lc(x1,x2);
-                t( Index(bb,aa,j,i) ) += Lc(x1,x2);
+                t( Index(a,b,i,j) ) += Lc(x1,x2);
+                t( Index(a,b,j,i) ) -= Lc(x1,x2);
+                t( Index(b,a,i,j) ) -= Lc(x1,x2);
+                t( Index(b,a,j,i) ) += Lc(x1,x2);
             }
         }
     }
@@ -403,9 +416,8 @@ void Solver::DiagramQa(){
 
                 int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
-                int aa = a - Nholes; int bb = b - Nholes;
 
-                t( Index(aa,bb,i,j) ) += 0.25 * Qa(A,I);
+                t( Index(a,b,i,j) ) += 0.25 * Qa(A,I);
             }
         }
     }
@@ -426,12 +438,11 @@ void Solver::DiagramQb(){
 
                 int i=blocksphhp[n]->Xph(x1,1); int j=blocksphhp[n]->Xhp(x2,0);
                 int a=blocksphhp[n]->Xph(x1,0); int b=blocksphhp[n]->Xhp(x2,1);
-                int aa = a-Nholes; int bb = b-Nholes;
 
-                t( Index(aa,bb,i,j) ) += 0.5 * Qb(x1,x2);
-                t( Index(aa,bb,j,i) ) -= 0.5 * Qb(x1,x2);
-                t( Index(bb,aa,i,j) ) -= 0.5 * Qb(x1,x2);
-                t( Index(bb,aa,j,i) ) += 0.5 * Qb(x1,x2);
+                t( Index(a,b,i,j) ) += 0.5 * Qb(x1,x2);
+                t( Index(a,b,j,i) ) -= 0.5 * Qb(x1,x2);
+                t( Index(b,a,i,j) ) -= 0.5 * Qb(x1,x2);
+                t( Index(b,a,j,i) ) += 0.5 * Qb(x1,x2);
             }
         }
     }
@@ -444,17 +455,16 @@ void Solver::DiagramQc(){
 
     for (int n=0; n<Nkhpp; n++){
 
-        mat Qc = blockskhpp[n]->T * blockskhpp[n]->V * blockskhpp[n]->T2;
+        mat Qc = 0.5*blockskhpp[n]->T * blockskhpp[n]->V * blockskhpp[n]->T2 / blockskhpp[n]->epsilon;
 
         for (int k1=0; k1<blockskhpp[n]->Nk1; k1++){
             for (int k2=0; k2<blockskhpp[n]->Nk3; k2++){
 
                 int j=blockskhpp[n]->K1(k1,0); int i=blockskhpp[n]->K3(k2,0);
                 int a=blockskhpp[n]->K3(k2,1); int b=blockskhpp[n]->K3(k2,2);
-                int aa=a-Nholes;  int bb=b-Nholes;
 
-                t( Index(aa,bb,i,j)) -= 0.5 * Qc( k2,k1 );
-                t( Index(aa,bb,j,i)) += 0.5 * Qc( k2,k1 );
+                t( Index(a,b,i,j)) -= Qc( k2,k1 );
+                t( Index(a,b,j,i)) += Qc( k2,k1 );
             }
         }
     }
@@ -467,17 +477,16 @@ void Solver::DiagramQd(){
 
     for (int n=0; n<Nkphh; n++){
 
-        mat Qd = blockskphh[n]->T * blockskphh[n]->V * blockskphh[n]->T2;
+        mat Qd = 0.5*blockskphh[n]->T * blockskphh[n]->V * blockskphh[n]->T2 / blockskphh[n]->epsilon;
 
         for (int k1=0; k1<blockskphh[n]->Nk1; k1++){
             for (int k2=0; k2<blockskphh[n]->Nk3; k2++){
 
                 int a=blockskphh[n]->K1(k1,0); int b=blockskphh[n]->K3(k2,0);
                 int i=blockskphh[n]->K3(k2,1); int j=blockskphh[n]->K3(k2,2);
-                int aa=a-Nholes;  int bb=b-Nholes;
 
-                t( Index(aa,bb,i,j)) -= 0.5 * Qd( k2,k1 );
-                t( Index(bb,aa,i,j)) += 0.5 * Qd( k2,k1 );
+                t( Index(a,b,i,j)) -= Qd( k2,k1 );
+                t( Index(b,a,i,j)) += Qd( k2,k1 );
             }
         }
     }
@@ -489,16 +498,15 @@ void Solver::DiagramI1(){
 
     for (int n=0; n<Npphh; n++){
 
-        mat I1 = blockspphh[n]->T * blockspphh[n]->I1;
+        mat I1 = 0.5* blockspphh[n]->T * blockspphh[n]->I1 / blockspphh[n]->epsilon;
 
         for (double I=0; I<blockspphh[n]->Holes.n_rows; I++){
             for (double A=0; A<blockspphh[n]->Particles.n_rows; A++){
 
                 int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
-                int aa = a - Nholes; int bb = b - Nholes;
 
-                t( Index(aa,bb,i,j) ) += 0.5 * I1(A,I);
+                t( Index(a,b,i,j) ) += I1(A,I);
             }
         }
     }
@@ -509,20 +517,18 @@ void Solver::DiagramI2(){
 
     for (int n=0; n<Nphhp; n++){
 
-        mat I2 = blocksphhp[n]->T * blocksphhp[n]->I2;
+        mat I2 = blocksphhp[n]->T * blocksphhp[n]->I2 / blocksphhp[n]->epsilon;
 
-        int Nph = blocksphhp[n]->Nph;
-        for (int x1=0; x1<Nph; x1++){
-            for (int x2=0; x2<Nph; x2++){
+        for (int x1=0; x1<blocksphhp[n]->Nph; x1++){
+            for (int x2=0; x2<blocksphhp[n]->Nph; x2++){
 
                 int i=blocksphhp[n]->Xph(x1,1); int j=blocksphhp[n]->Xhp(x2,0);
                 int a=blocksphhp[n]->Xph(x1,0); int b=blocksphhp[n]->Xhp(x2,1);
-                int aa = a-Nholes; int bb = b-Nholes;
 
-                t( Index(aa,bb,i,j) ) += I2(x1,x2);
-                t( Index(aa,bb,j,i) ) -= I2(x1,x2);
-                t( Index(bb,aa,i,j) ) -= I2(x1,x2);
-                t( Index(bb,aa,j,i) ) += I2(x1,x2);
+                t( Index(a,b,i,j) ) += I2(x1,x2);
+                t( Index(a,b,j,i) ) -= I2(x1,x2);
+                t( Index(b,a,i,j) ) -= I2(x1,x2);
+                t( Index(b,a,j,i) ) += I2(x1,x2);
             }
         }
     }
@@ -541,11 +547,12 @@ double Solver::AbsoluteDifference(double a, double b){
     return sqrt( pow(a-b,2) );
 }
 
-int Solver::Index(int p, int q, int r, int s){
+int Solver::Index(int a, int b, int i, int j){
     // p, q, r, s are the indice and not the state number. i.e. by formalism in this program: aa, bb and not a, b
     // Np, Nq, Nr are the number of indices for each state
 
-    return p + q*Nparticles + r*Nparticles2 + s*Nparticles2*Nholes;
+
+    return (a-Nholes) + (b-Nholes)*Nparticles + i*Nparticles2 + j*Nparticles2*Nholes;
 }
 
 void Solver::TwoBodyConfigurations(){

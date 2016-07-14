@@ -28,8 +28,10 @@ void AllIterationsNh14Ns54_Blocks();
 
 int main()
 {
-    //TestSolver1();
+    TestSolver1();
     //PrintMagicNumbers();
+
+    /*
     ResultsNshells4Nfilled2_Blocks();
     ResultsNshells5Nfilled2_Blocks();
     ResultsNshells6Nfilled2_Blocks();
@@ -40,6 +42,7 @@ int main()
 
     AllIterationsNh14Ns54_Intermediates();
     ResultsNh14Ns54_Intermediates();
+    */
 }
 
 void PrintMagicNumbers(){
@@ -54,7 +57,7 @@ void PrintMagicNumbers(){
 }
 
 void TestSolver1(){
-    int Nshells = 5;
+    int Nshells = 7;
     int NfilledShells = 2;
     double rs = 1.0;
 
@@ -64,7 +67,7 @@ void TestSolver1(){
     solve.weight = 0.3;
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using block structure to update amplitudes." << endl;
     cout << "Nstates: " << basis.Nstates << " Nholes: " << basis.Nholes << endl;
-    cout << endl << "CCD Energy:" << setprecision(12) << solve.CCD(20) << endl;
+    cout << endl << "CCD Energy:" << setprecision(12) << solve.CCD(200) << endl;
 
     //CCDIntermediates solve3 = CCDIntermediates(basis);
     //cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using intermediates to update amplitudes." << endl;
@@ -189,17 +192,17 @@ void ResultsNshells5Nfilled2_Blocks(){
 
     Solver solve = Solver(basis);
     solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
     solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -208,17 +211,17 @@ void ResultsNshells5Nfilled2_Blocks(){
 
     solve = Solver(basis);
     solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
     solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -227,17 +230,17 @@ void ResultsNshells5Nfilled2_Blocks(){
 
     solve = Solver(basis);
     solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
     solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
     myfile.close();
 
@@ -265,7 +268,7 @@ void ResultsNshells6Nfilled2_Blocks(){
 
     Solver solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -274,7 +277,7 @@ void ResultsNshells6Nfilled2_Blocks(){
 
     solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -283,7 +286,7 @@ void ResultsNshells6Nfilled2_Blocks(){
 
     solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();
@@ -311,7 +314,7 @@ void ResultsNshells7Nfilled2_Blocks(){
 
     Solver solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -320,7 +323,7 @@ void ResultsNshells7Nfilled2_Blocks(){
 
     solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -329,7 +332,7 @@ void ResultsNshells7Nfilled2_Blocks(){
 
     solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();
@@ -356,7 +359,7 @@ void ResultsNshells8Nfilled2_Blocks(){
 
     Solver solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
@@ -364,7 +367,7 @@ void ResultsNshells8Nfilled2_Blocks(){
 
     solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
@@ -372,7 +375,7 @@ void ResultsNshells8Nfilled2_Blocks(){
 
     solve = Solver(basis);
     solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();

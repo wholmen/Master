@@ -1,0 +1,7 @@
+A coupled cluster study of electron gas using blocks. 
+The system consist of 114 states and 14 holes. These values are chosen to compare results with Audun Skau Hansen's master thesis.
+The results are presented in the following order: 
+weight, rs, Reference Energy, CCDIntermediate result, Iterations
+0.3 1 13.6029 -0.448414398281 65
+0.3 0.5 58.5900422898 -0.51237855038 67
+0.3 2 2.87838827892 -0.358393093504 63

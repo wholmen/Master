@@ -74,6 +74,63 @@ void Block::FinishBlock(){
     Nk3 = K3.n_rows;
 }
 
+void Block::Epsilonpphh(){
+    epsilon = zeros<mat>(Np,Nh);
+
+    for (int I=0; I<Nh; I++){
+        for (int A=0; A<Np; A++){
+
+            int i = Holes(I,0); int j = Holes(I,1);
+            int a = Particles(A,0); int b = Particles(A,1);
+
+            epsilon(A,I) = basis.epsilon(i,j,a,b);
+        }
+    }
+}
+
+void Block::Epsilonphhp(){
+    epsilon = zeros<mat>(Nph,Nph);
+
+    for (int x1=0; x1<Nph; x1++){
+        for (int x2=0; x2<Nph; x2++){
+
+            int i=Xph(x1,1); int j=Xhp(x2,0);
+            int a=Xph(x1,0); int b=Xhp(x2,1);
+
+            epsilon(x1,x2) = basis.epsilon(i,j,a,b);
+        }
+    }
+}
+
+void Block::Epsilonkhpp(){
+    epsilon = zeros<mat>(Nk3,Nk1);
+
+    for (int k1=0; k1<Nk1; k1++){
+        for (int k2=0; k2<Nk3; k2++){
+
+            int j=K1(k1,0); int i=K3(k2,0);
+            int a=K3(k2,1); int b=K3(k2,2);
+
+            epsilon(k2,k1) = basis.epsilon(i,j,a,b);
+        }
+    }
+}
+
+void Block::Epsilonkphh(){
+    epsilon = zeros<mat>(Nk3,Nk1);
+
+    for (int k1=0; k1<Nk1; k1++){
+        for (int k2=0; k2<Nk3; k2++){
+
+            int a=K1(k1,0); int b=K3(k2,0);
+            int i=K3(k2,1); int j=K3(k2,2);
+
+            epsilon(k2,k1) = basis.epsilon(i,j,a,b);
+        }
+    }
+}
+
+
 void Block::SetUpMatrices_Energy(mat &t){
     // It is important that I do not copy the vector t0 into this function, as that might be disastrous for the memory.
     // I will only send in the memory adress.
@@ -254,7 +311,6 @@ void Block::SetUpMatrices_I1(mat &t0){
 
     I1 = zeros<mat>(Nh,Nh);
     T  = zeros<mat>(Np,Nh);
-
     V = zeros<mat>(Nh,Np);
 
     for (int I=0; I<Nh; I++){

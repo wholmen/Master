@@ -42,6 +42,11 @@ public:
     int Index(int p, int q, int r, int s);
 
     void FinishBlock();
+    void Epsilonpphh();
+    void Epsilonphhp();
+    void Epsilonkhpp();
+    void Epsilonkphh();
+    mat epsilon;
 
     // Set up matrices for diagram calculations
     void SetUpMatrices_Energy(mat &t);

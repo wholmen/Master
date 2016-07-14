@@ -21,6 +21,12 @@ void ResultsNshells5Nfilled2_Blocks();
 void ResultsNshells6Nfilled2_Blocks();
 void ResultsNshells7Nfilled2_Blocks();
 void ResultsNshells8Nfilled2_Blocks();
+void ResultsNshells9Nfilled2_Blocks();
+void ResultsNshells10Nfilled2_Blocks();
+void ResultsNshells11Nfilled2_Blocks();
+void ResultsNshells12Nfilled2_Blocks();
+void ResultsNshells13Nfilled2_Blocks();
+
 
 void AllIterationsNh14Ns54_Intermediates();
 void AllIterationsNh14Ns54_Blocks();
@@ -28,28 +34,39 @@ void AllIterationsNh14Ns54_Blocks();
 
 int main()
 {
-    TestSolver1();
-    //PrintMagicNumbers();
+    // Function to test solver
+    //TestSolver1();
 
-    /*
+
+    // Producing results for rs in [0.5,1.0,2.0] for different amount of states.
+
     ResultsNshells4Nfilled2_Blocks();
     ResultsNshells5Nfilled2_Blocks();
     ResultsNshells6Nfilled2_Blocks();
     ResultsNshells7Nfilled2_Blocks();
     ResultsNshells8Nfilled2_Blocks();
+    ResultsNshells9Nfilled2_Blocks();
+    ResultsNshells10Nfilled2_Blocks();
+    ResultsNshells11Nfilled2_Blocks();
+    ResultsNshells12Nfilled2_Blocks();
+    ResultsNshells13Nfilled2_Blocks();
+
+    // Functions to produce a comparison between blocks and intermediates
 
     AllIterationsNh14Ns54_Blocks();
-
     AllIterationsNh14Ns54_Intermediates();
     ResultsNh14Ns54_Intermediates();
-    */
+
+
+    // Function to compute all magic numbers
+    //PrintMagicNumbers();
 }
 
 void PrintMagicNumbers(){
     int NfilledShells = 1;
     double rs = 1.0;
 
-    for (int i=2; i<12; i++){
+    for (int i=2; i<14; i++){
 
         ElectronBasis basis = ElectronBasis(i, NfilledShells, rs);
         cout << "Shell level: " << i-1 << "  Nstates: " << basis.Nstates << endl;
@@ -68,22 +85,6 @@ void TestSolver1(){
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using block structure to update amplitudes." << endl;
     cout << "Nstates: " << basis.Nstates << " Nholes: " << basis.Nholes << endl;
     cout << endl << "CCD Energy:" << setprecision(12) << solve.CCD(200) << endl;
-
-    //CCDIntermediates solve3 = CCDIntermediates(basis);
-    //cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using intermediates to update amplitudes." << endl;
-    //cout << endl << "CCD Energy:" << solve3.CCD(20) << endl;
-
-    /*
-    Solver solve4 = Solver(basis);
-    cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using naive approach to update amplitudes." << endl;
-    cout << endl << "CCD Energy:" << solve4.CCD(true) << endl;
-    */
-    /*
-    Solver solve2 = Solver(basis);
-
-    cout << endl << endl << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using naive implementation to update amplitudes." << endl;
-    cout << endl << "CCD Energy:" << solve2.CCD(true) << endl;
-    */
 }
 
 
@@ -247,7 +248,6 @@ void ResultsNshells5Nfilled2_Blocks(){
     cout << "Function 'ResultsNshells5Nfilled2_Blocks()' ended" << endl;
 }
 
-
 void ResultsNshells6Nfilled2_Blocks(){
 
     cout << "Function 'ResultsNshells6Nfilled2_Blocks()' started" << endl;
@@ -382,6 +382,223 @@ void ResultsNshells8Nfilled2_Blocks(){
 
     cout << "Function 'ResultsNshells8Nfilled2_Blocks()' ended" << endl;
 }
+
+void ResultsNshells9Nfilled2_Blocks(){
+
+    cout << "Function 'ResultsNshells9Nfilled2_Blocks()' started" << endl;
+
+    int Nshells = 9;
+    int NfilledShells = 2;
+    double rs = 1.0;
+
+    ElectronBasis basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    ofstream myfile;
+    myfile.open("../Results/Solver_Nshells9Nfilled2.txt");
+    myfile << "A coupled cluster study of electron gas using blocks. " << endl;
+    myfile << "The system consist of " << basis.Nstates << " states and " << basis.Nholes << " holes. These values are chosen to compare results with Audun Skau Hansen's master thesis." << endl;
+    myfile << "The results are presented in the following order: " << endl;
+    myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
+
+    Solver solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    myfile << " " << solve.NIterations << endl;
+
+    // Changing rs for new results.
+    rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    myfile << " " << solve.NIterations << endl;
+
+    // Changing rs for new results.
+    rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    myfile << " " << solve.NIterations << endl;
+
+    myfile.close();
+
+    cout << "Function 'ResultsNshells9Nfilled2_Blocks()' ended" << endl;
+}
+
+void ResultsNshells10Nfilled2_Blocks(){
+
+    cout << "Function 'ResultsNshells10Nfilled2_Blocks()' started" << endl;
+
+    int Nshells = 10;
+    int NfilledShells = 2;
+    double rs = 1.0;
+
+    ElectronBasis basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    ofstream myfile;
+    myfile.open("../Results/Solver_Nshells10Nfilled2.txt");
+    myfile << "A coupled cluster study of electron gas using blocks. " << endl;
+    myfile << "The system consist of " << basis.Nstates << " states and " << basis.Nholes << " holes. These values are chosen to compare results with Audun Skau Hansen's master thesis." << endl;
+    myfile << "The results are presented in the following order: " << endl;
+    myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
+
+    Solver solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    myfile << " " << solve.NIterations << endl;
+
+    // Changing rs for new results.
+    rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    myfile << " " << solve.NIterations << endl;
+
+    // Changing rs for new results.
+    rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    myfile << " " << solve.NIterations << endl;
+
+    myfile.close();
+
+    cout << "Function 'ResultsNshells10Nfilled2_Blocks()' ended" << endl;
+}
+
+void ResultsNshells11Nfilled2_Blocks(){
+
+    cout << "Function 'ResultsNshells11Nfilled2_Blocks()' started" << endl;
+
+    int Nshells = 11;
+    int NfilledShells = 2;
+    double rs = 1.0;
+
+    ElectronBasis basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    ofstream myfile;
+    myfile.open("../Results/Solver_Nshells11Nfilled2.txt");
+    myfile << "A coupled cluster study of electron gas using blocks. " << endl;
+    myfile << "The system consist of " << basis.Nstates << " states and " << basis.Nholes << " holes. These values are chosen to compare results with Audun Skau Hansen's master thesis." << endl;
+    myfile << "The results are presented in the following order: " << endl;
+    myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
+
+    Solver solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    myfile << " " << solve.NIterations << endl;
+
+    // Changing rs for new results.
+    rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    myfile << " " << solve.NIterations << endl;
+
+    // Changing rs for new results.
+    rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    myfile << " " << solve.NIterations << endl;
+
+    myfile.close();
+
+    cout << "Function 'ResultsNshells11Nfilled2_Blocks()' ended" << endl;
+}
+
+void ResultsNshells12Nfilled2_Blocks(){
+
+    cout << "Function 'ResultsNshells12Nfilled2_Blocks()' started" << endl;
+
+    int Nshells = 12;
+    int NfilledShells = 2;
+    double rs = 1.0;
+
+    ElectronBasis basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    ofstream myfile;
+    myfile.open("../Results/Solver_Nshells12Nfilled2.txt");
+    myfile << "A coupled cluster study of electron gas using blocks. " << endl;
+    myfile << "The system consist of " << basis.Nstates << " states and " << basis.Nholes << " holes. These values are chosen to compare results with Audun Skau Hansen's master thesis." << endl;
+    myfile << "The results are presented in the following order: " << endl;
+    myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
+
+    Solver solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    myfile << " " << solve.NIterations << endl;
+
+    // Changing rs for new results.
+    rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    myfile << " " << solve.NIterations << endl;
+
+    // Changing rs for new results.
+    rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    myfile << " " << solve.NIterations << endl;
+
+    myfile.close();
+
+    cout << "Function 'ResultsNshells12Nfilled2_Blocks()' ended" << endl;
+}
+
+void ResultsNshells13Nfilled2_Blocks(){
+
+    cout << "Function 'ResultsNshells13Nfilled2_Blocks()' started" << endl;
+
+    int Nshells = 13;
+    int NfilledShells = 2;
+    double rs = 1.0;
+
+    ElectronBasis basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    ofstream myfile;
+    myfile.open("../Results/Solver_Nshells13Nfilled2.txt");
+    myfile << "A coupled cluster study of electron gas using blocks. " << endl;
+    myfile << "The system consist of " << basis.Nstates << " states and " << basis.Nholes << " holes. These values are chosen to compare results with Audun Skau Hansen's master thesis." << endl;
+    myfile << "The results are presented in the following order: " << endl;
+    myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
+
+    Solver solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    myfile << " " << solve.NIterations << endl;
+
+    // Changing rs for new results.
+    rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    myfile << " " << solve.NIterations << endl;
+
+    // Changing rs for new results.
+    rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    solve = Solver(basis);
+    solve.weight = 0.3;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    myfile << " " << solve.NIterations << endl;
+
+    myfile.close();
+
+    cout << "Function 'ResultsNshells13Nfilled2_Blocks()' ended" << endl;
+}
+
+// Functions to produce a comparison between blocks and intermediates
 
 void AllIterationsNh14Ns54_Blocks(){
     cout << "Function 'AllIterationsNh14Ns54_Blocks()' started" << endl;

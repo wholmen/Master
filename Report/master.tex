@@ -760,8 +760,18 @@
 			\label{TwoBodyOperator}
 			\caption{Diagrams for four different variants of the one body operator. From left to right, the operators shown are $\sum_{ij} h_{ij} i^\dagger j $, $\sum_{ab} h_{ab} a^\dagger b$, $\sum_{ai}h_{ai} a^\dagger i$ and $\sum_{ai} h_{ia} i^\dagger a$}
 		\end{figure}
+
+		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{Figures/TwoBodyOperator2.pdf}
+			\label{TwoBodyOperator2}
+			\caption{Diagrams for four different variants of the one body operator. From left to right, the operators shown are $\sum_{ij} h_{ij} i^\dagger j $, $\sum_{ab} h_{ab} a^\dagger b$, $\sum_{ai}h_{ai} a^\dagger i$ and $\sum_{ai} h_{ia} i^\dagger a$}
+		\end{figure}
+
 	\end{section}
 
+	\begin{section}{Contractions}
+		
+	\end{section}
 	
 
 
@@ -770,7 +780,7 @@
 
 
 \begin{chapter}{Many-Body Methods}
-	We have already justified the use of a Slater Determinant to describe the first approximation of the full wave function, $\ket{\Psi}$. Where
+	We define an ansatz for the ground state, $\left| \Phi_0 \right>$ as a Slater determinant consisting of the single particle states, $\left| \phi_i \right>$
 	\begin{align}
 		\ket{\Psi} \approx \ket{\Phi_0} = 	\frac{1}{ \sqrt{N!} } \left|\begin{matrix}
 			\phi_1(\mathbf{x}_1) & \phi_2(\mathbf{x}_1) & ... & \phi_N(\mathbf{x}_1) \\
@@ -778,22 +788,29 @@
 			... & & & \\
 			\phi_1(\mathbf{x}_N) & \phi_2(\mathbf{x}_N) & ... & \phi_N(\mathbf{x}_N) 
 		\end{matrix} \right|
-	\end{align}	
-	This first representation fails to account for the Coulombic interrraction between the electrons, and we need higher-order approximations on top 
-	of the Slater Determinant to improve our results. \par
-	This chapter will look at three methods, namely the Configuration interraction, Many-body Perturbation theory and Hartree-Fock approximations. The
-	Master thesis is on Coupled Cluster theory, and that will be more elaborately explained in it's own chapter. It is useful to benchmark Coupled Cluster 
-	with similar many-body method. 
+	\end{align}
+	Written in terms of second quantization
+	\begin{align}
+		\left| \Phi_0 \right> = \left( \prod_{i \leq F} \hat i^\dagger \right) \left| 0 \right> = |\left.  \right> 
+	\end{align}
+	Typically one chooses well-known and mathematically simple single particle states that are easy to implement. In this thesis, I have used a free particle wave function as single-particle states for infinite matter. Using this basis, I obviously fail to incorporate the interaction between electrons since $\phi_1$ remains unchanged if I also add $\phi_2$. This can be solved by using a smarter basis, which is the goal of Hartree-Fock. Hartree-Fock will, through an iterative method, change the single particle states to get a better result. This can be viewed as incorporating the interaction as a \textit{mean field} approximation. 
 
- \begin{section}{Configuration Interraction}
- 		We can write the configuration interaction wavefunction as 
-  	\begin{align}
-  		\ket{\Psi_{CI}} = (1 + \hat C) \ket{\Phi_0} 
-   	\end{align}
-  	\begin{align}
-  		\hat C = \hat C_1 + \hat C_2 + ... =  \sum_{ia} c_i^a a_a^{\dagger} a_i + \frac{1}{4} \sum_{ijab} c_{ij}^{ab} a_a^{\dagger} a_b^{\dagger} a_j a_i + ...
-   	\end{align}
- \end{section}	
+	I will in this thesis present, and use, three \textit{post Hartree-Fock} methods. These are \textit{Full Configuration Interaction Theory}, \textit{Many Body Perturbation Theory} and \textit{Coupled Cluster Theory}, where the latter is the main focus of my thesis. These methods aim to compute the \textit{Corrolation Energy} as presented in the chapter on Second Quantization. It is quite common to first implement the Hartree-Fock method, providing the most precise reference energy. 
+
+	\begin{section}{Full Configuration Interaction Theory}
+		The first \textit{Post Hartree-Fock} method to be presented is the \textit{Full Configuration Interaction theory}. We expand the true wave function as a linear combination of the ground state ansatz and all possible excitations
+		\begin{align}
+			\left| \Psi \right> = C_0 \left| \Phi_0 \right> + \sum_{ai} C_i^a \left| \Phi_i^a \right> + \sum_{abij} C_{ij}^{ab} \left| \Phi_{ij}^{ab} \right> + ... 
+		\end{align}
+
+		We can write the configuration interaction wavefunction as 
+		\begin{align}
+			\ket{\Psi_{CI}} = (1 + \hat C) \ket{\Phi_0} 
+		\end{align}
+		\begin{align}
+			\hat C = \hat C_1 + \hat C_2 + ... =  \sum_{ia} c_i^a a_a^{\dagger} a_i + \frac{1}{4} \sum_{ijab} c_{ij}^{ab} a_a^{\dagger} a_b^{\dagger} a_j a_i + ...
+		\end{align}
+	\end{section}	
 
  \begin{section}{Many-body Perturbation Theory}
  	

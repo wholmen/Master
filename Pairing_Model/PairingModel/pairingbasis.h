@@ -4,7 +4,7 @@
 #include <armadillo>
 #include <iostream>
 
-#define pi 3.1415
+#define pi 3.14159265359
 
 using namespace std;
 using namespace arma;

@@ -5,6 +5,7 @@
 #include <electronbasis.h>
 #include <block.h>
 #include <iomanip>
+#include <time.h>
 
 #include <../../Solvers/Solvers/ccdintermediates.h>
 #include <../../Solvers/Solvers/ccdnaive.h>
@@ -35,11 +36,11 @@ void AllIterationsNh14Ns54_Blocks();
 int main()
 {
     // Function to test solver
-    //TestSolver1();
+    TestSolver1();
 
 
     // Producing results for rs in [0.5,1.0,2.0] for different amount of states.
-
+    /*
     ResultsNshells4Nfilled2_Blocks();
     ResultsNshells5Nfilled2_Blocks();
     ResultsNshells6Nfilled2_Blocks();
@@ -50,19 +51,20 @@ int main()
     ResultsNshells11Nfilled2_Blocks();
     ResultsNshells12Nfilled2_Blocks();
     ResultsNshells13Nfilled2_Blocks();
-
+    */
     // Functions to produce a comparison between blocks and intermediates
-
+    /*
     AllIterationsNh14Ns54_Blocks();
     AllIterationsNh14Ns54_Intermediates();
     ResultsNh14Ns54_Intermediates();
-
+    */
 
     // Function to compute all magic numbers
     //PrintMagicNumbers();
 }
 
 void PrintMagicNumbers(){
+
     int NfilledShells = 1;
     double rs = 1.0;
 
@@ -74,17 +76,29 @@ void PrintMagicNumbers(){
 }
 
 void TestSolver1(){
-    int Nshells = 5;
+    clock_t start, finish;
+    int Nshells = 7;
     int NfilledShells = 2;
     double rs = 1.0;
 
+    start = clock();
     ElectronBasis basis = ElectronBasis(Nshells, NfilledShells, rs);
+    finish = clock(); double ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Electronbasis needed " << ptime << " seconds." << endl;
 
+    start = clock();
     Solver solve = Solver(basis);
+    finish = clock(); ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Setting up solver needed " << ptime << " seconds." << endl;
+
     solve.weight = 0.3;
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl << "Using block structure to update amplitudes." << endl;
     cout << "Nstates: " << basis.Nstates << " Nholes: " << basis.Nholes << endl;
+
+    start = clock();
     cout << endl << "CCD Energy:" << setprecision(12) << solve.CCD(200) << endl;
+    finish = clock(); ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Iterations needed " << ptime << " seconds." << endl;
 }
 
 

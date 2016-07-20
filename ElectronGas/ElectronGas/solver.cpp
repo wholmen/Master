@@ -17,8 +17,12 @@ Solver::Solver(ElectronBasis BASIS)
     weight = 1.0;
 
     // Setting up two-state configurations
-    TwoBodyConfigurations();
-    CreateBlocks();
+    start = clock(); TwoBodyConfigurations();
+
+    finish = clock(); cout << "TwoBodyConfigurations used " << (double(finish-start)/CLOCKS_PER_SEC) << " seconds. " << endl;
+
+    start = clock(); CreateBlocks();
+    finish = clock(); cout << "CreateBlocks used " << (double(finish-start)/CLOCKS_PER_SEC) << " seconds. " << endl;
 
     // Setting up matrices
     t0 = zeros<vec>(Nparticles2*Nholes2);
@@ -94,15 +98,43 @@ void Solver::UpdateAmplitudes(){
     t0 = t; // We need to save the previous amplitudes in t0. They will be used to compute the new amplitudes stored in t
     t = zeros(Nparticles2*Nholes2);
 
-    // Block approach without intermediates.
+
+    // Diagram L0 and La
+    start = clock();
     DiagramL0();
     DiagramLa();
-    DiagramQc();
-    DiagramQd();
+    finish = clock();
+    double ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Inside iterations. L0, La needed " << ptime << " seconds. " << endl;
 
-    // Block approach with intermediates
-    DiagramI1(); // Lb+Qa
-    DiagramI2(); // Lc+Qb
+    // Diagram Qc
+    start = clock();
+    DiagramQc();
+    finish = clock();
+    ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Inside iterations. Qc needed " << ptime << " seconds. " << endl;
+
+    // Diagram Qd
+    start = clock();
+    DiagramQd();
+    finish = clock();
+    ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Inside iterations. Qd needed " << ptime << " seconds. " << endl;
+
+    // Intermediate diagram I1. Lb + Qa
+    start = clock();
+    DiagramI1();
+    finish = clock();
+    ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Inside iterations. I1 needed " << ptime << " seconds. " << endl;
+
+    // Intermediate diagram I1. Lc + Qb
+    start = clock();
+    DiagramI2();
+    finish = clock();
+    ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Inside iterations. I2 needed " << ptime << " seconds. " << endl;
+
 
     // Adding weight factor
     if (weight != 0) t = weight*t + (1-weight)*t0;
@@ -388,8 +420,13 @@ void Solver::DiagramI1(){
 }
 
 void Solver::DiagramI2(){
+    clock_t start = clock();
     for (int n=0; n<Nphhp; n++) blocksphhp[n]->SetUpMatrices_I2(t0);
+    clock_t finish = clock();
+    double ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Inside Diagram I2. SetUpMatrices_I2 needed " << ptime << " seconds. " << endl;
 
+    start = clock();
     for (int n=0; n<Nphhp; n++){
 
         mat I2 = blocksphhp[n]->T * blocksphhp[n]->I2 / blocksphhp[n]->epsilon;
@@ -407,6 +444,9 @@ void Solver::DiagramI2(){
             }
         }
     }
+    finish = clock();
+    ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Inside Diagram I2. Doing calculations needed " << ptime << " seconds. " << endl;
 }
 
 // Following functions are various assisting functions for program flow.
@@ -428,6 +468,7 @@ void Solver::TwoBodyConfigurations(){
     Holes = zeros<mat>(0,3);
     Particles = zeros<mat>(0,3);
 
+    start = clock();
     int n=0; // n will count how many two-state combinations we find. Used as indice in the matrix
     for (int i=0; i<Nholes; i++){
         for (int j=0; j<Nholes; j++){
@@ -471,9 +512,18 @@ void Solver::TwoBodyConfigurations(){
     NPARTICLES = Particles.n_rows;
     NHOLES = Holes.n_rows;
 
+    finish = clock();
+    double ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Direct state needed " << ptime << " seconds. " << endl;
 
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // %%%%%%%%% SETTING UP CROSS STATES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Xhp = zeros<mat>(0,3);
     Xph = zeros<mat>(0,3);
+
+    start = clock();
 
     n=0;
     for (int i=0; i<Nholes; i++){
@@ -497,6 +547,13 @@ void Solver::TwoBodyConfigurations(){
     }
     NX = Xhp.n_rows;
 
+    finish = clock();
+    ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "Cross state needed " << ptime << " seconds. " << endl;
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // %%%%%%%%%%%%%%% SETTING UP K_h AND K_pph %%%%%%%%%%%%%%%%%%%%%%%
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Kh = zeros<mat>(0,2); Khpp = zeros<mat>(0,4);
 
     n=0;
@@ -513,6 +570,7 @@ void Solver::TwoBodyConfigurations(){
         n++;
     }
     n=0;
+    start = clock();
     for (int i=0; i<Nholes; i++){
         for (int aa=0; aa<Nparticles; aa++){
             for (int bb=0; bb<Nparticles; bb++){
@@ -526,13 +584,21 @@ void Solver::TwoBodyConfigurations(){
 
                     Khpp.insert_rows(n,1);
                     Khpp(n,0) = i; Khpp(n,1) = a; Khpp(n,2) = b; Khpp(n,3) = Identifier(Nx,Ny,Nz,Sz);
+                    n++;
                 }
             }
         }
     }
     NKh3 = Khpp.n_rows; NKh = Kh.n_rows;
+    finish = clock();
+    ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "K_h and K_hpp states needed " << ptime << " seconds. " << endl;
 
 
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // %%%%%%%%%%%%%%%%% SETTING UP K_p AND K_phh STATES %%%%%%%%%%%%%%%%%%%%%%
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    start = clock();
     Kp = zeros<mat>(0,2); Kphh = zeros<mat>(0,4);
     n=0;
     for (int aa=0; aa<Nparticles; aa++){
@@ -568,6 +634,9 @@ void Solver::TwoBodyConfigurations(){
         }
     }
     NKp3 = Kphh.n_rows; NKp = Kp.n_rows;
+    finish = clock();
+    ptime = (double(finish-start)/CLOCKS_PER_SEC);
+    cout << "K_p and K_phh states needed " << ptime << " seconds. " << endl;
 }
 
 double Solver::Identifier(int Nx, int Ny, int Nz, int Sz){

@@ -6,6 +6,7 @@
 #include <electronbasis.h>
 #include <math.h>
 #include <block.h>
+#include <time.h>
 
 #define pi 3.14159265359
 
@@ -47,6 +48,7 @@ public:
     mat Xph, Xhp; // Cross states. p-h config or h-p config
     mat Kh, Khpp; // Triple state channels. h and p+p-h config
     mat Kp, Kphh; // Triple state channels. p and h+h-p config
+    clock_t start, finish; // Variables for measuring time needed for various processes.
 
     // Diagrams
     void DiagramL0();

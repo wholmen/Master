@@ -26,26 +26,25 @@
 \maketitle
 
 \begin{abstract}
-  This is an abstract text.
+	This is an abstract text.
 \end{abstract}
 
 \begin{dedication}
-  To someone
-  \\\vspace{12pt}
-  This is a dedication to my cat.
+	To someone
+	\\\vspace{12pt}
+  
 \end{dedication}
 
 \begin{acknowledgements}
-  I acknowledge my acknowledgements.
+	I acknowledge my acknowledgements.
 \end{acknowledgements}
+
 
 \tableofcontents
 
 
-
 \begin{chapter}{Introduction}
-  This is a very nice introduction to my myster thesis.
-  or ..
+	In this thesis, I have calculated the ground state energy for the pairing model, homogenous electron gas and infinite nuclear matter. My main focus has been to implement the coupled cluster method with double excitations 
 \end{chapter}
 
 
@@ -719,9 +718,9 @@
 	\begin{section}{The Slater Determinant}
 		We begin, as in second quantization, by setting up the Slater determinant. There is a time dependent direction on the diagrams going up. The actual times are irrelevant, but the sequence is important. The reference state, $| \left. \right> = \left| \Phi \right>$ is depicted simply as a horizontal line
 		\begin{figure}[H]
-		\includegraphics[width=\textwidth]{Figures/SlaterDeterminant1.pdf}
-		\label{SlaterDeterminant1}
-		\caption{Diagram for the reference state $| \left. \right>$}
+			\includegraphics[width=\textwidth]{Figures/SlaterDeterminant1.pdf}
+			\label{SlaterDeterminant1}
+			\caption{Diagram for the reference state $| \left. \right>$}
 		\end{figure}
 		While the hole states are represented by vertical lines either going up or down, particle and hole states are depicted by a vertical line. An arrow pointing up relates a particle state, while an arrow pointing down will mean a hole state. Depicting the two states $\left| \Phi^a \right> $ and $\left| \Phi_i \right>$
 		\begin{figure}[H]
@@ -769,10 +768,60 @@
 
 	\end{section}
 
-	\begin{section}{Contractions}
-		
+	\begin{section}{Contractions and Inner products}
+		As seen, contractions are an important part of many body methods. Representing contractions is easy with using a diagrammatic approach. It is done by connecting the lines between operators and Slater determinants. Take, as an example, the Slater determinant \cite{Audun,ShavittAndBartlett}
+		\begin{align}
+			\left| \Phi_i^a \right> = \hat a^\dagger \hat i | \left. \right> 
+		\end{align}
+		and the general one body operator 
+		\begin{align}
+			\hat U = \sum_{bc} \left< b | \hat u | c \right> \{ \hat b^\dagger \hat c \}
+		\end{align}
+		When the operator $\hat U$ acts on the Slater determinant, we the resulting Slater determinant will change 
+		\begin{align}
+			\hat U \left| \Phi_i^a \right> = \sum_{bc} \left< b | \hat u | c \right> \{ \hat b^\dagger \hat c \} \{ \hat a^\dagger \hat i \} | \left. \right>
+		\end{align}
+		We can write this out using the generalized Wick's theorem, noticing that there only one possible contraction that is non-zero. 
+		\begin{align}
+			= \left< b | \hat u | c \right> \{ \hat b^\dagger \hat c \hat a^\dagger \hat i \} + \left< b | \hat u | c \right> \{ \hat b^\dagger \contraction{}{\hat c}{}{\hat a^\dagger}
+			\hat c \hat a^\dagger \hat i \} = 0 + \left< b | \hat u | c \right> \delta_{ac} \left| \Phi_i^b \right>
+		\end{align}
+		Which gives
+		\begin{align}
+			\left< b | \hat u | a \right> \{ \hat b^\dagger \hat i \} | \left. \right> = \left< b | \hat u | a \right> \left| \Phi_i^b \right>
+		\end{align}
+		The diagrammatic representation will be shown as
+		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{Figures/Contraction.pdf}
+			\label{Contraction}
+			\caption{Diagrams for four different variants of the one body operator. From left to right, the operators shown are $\sum_{ij} h_{ij} i^\dagger j $, $\sum_{ab} h_{ab} a^\dagger b$, $\sum_{ai}h_{ai} a^\dagger i$ and $\sum_{ai} h_{ia} i^\dagger a$}
+		\end{figure}
+		Representing an inner product of two Slater Determinants is done by putting together the diagram for a ket state and the diagram for a bra state. Looking at the previous example, taking the expectation value of the general operator $\hat U$, we get 
+		\begin{align}
+			\left< \Phi_k^d \right| \hat U \left| \Phi_i^a \right>
+		\end{align}
+		Which can be written out as
+		\begin{align}
+			\sum_{bj} \left< b | \hat u | c \right> \left< \right. | \{ \hat k^\dagger \hat d \} \{ \hat b^\dagger \hat c \} \{ \hat a^\dagger \hat i \} | \left. \right>
+		\end{align}
+		Calculating with generalized Wick's theorem
+		\begin{align}
+			= \left< d | \hat u | a \right> \delta_{db} \delta_{ac} \delta_{ki}
+		\end{align}
+		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{Figures/InnerProduct.pdf}
+			\label{InnerProduct}
+			\caption{Diagrams for four different variants of the one body operator. From left to right, the operators shown are $\sum_{ij} h_{ij} i^\dagger j $, $\sum_{ab} h_{ab} a^\dagger b$, $\sum_{ai}h_{ai} a^\dagger i$ and $\sum_{ai} h_{ia} i^\dagger a$}
+		\end{figure}
 	\end{section}
 	
+	\begin{section}{Interpreting Diagrams}
+		Diagrams can be translated back to mathematical expressions using a toolset for interpreting diagrams. The most common use of diagrams is to present different 
+	\end{section}
+
+	\begin{section}{Linked Diagram theorem}
+		A very important theorem when using 
+	\end{section}
 
 
 \end{chapter}
@@ -970,17 +1019,21 @@
 	 	\begin{subsection}{Equations for Reileigh-Schrodinger Perturbation Theory}
 	 		We can interpret $\omega$ different ways. I here present the Reileigh-Schrodinger Perturbation Theory which postulates that
 	 		\begin{align}
-	 			\omega = W_0 
+	 			\omega = E_0^{(0)}
 	 		\end{align}
-	 		Such that 
+	 		Such that we get the expression for the resolvent
+	 		\begin{align}
+	 			\hat R_0 = \frac{\hat Q}{E_0^{0} - \hat H_0}
+	 		\end{align}
+	 		Giving
 	 		\begin{align}
 	 			\left| \Psi_0 \right> = \frac{ \hat V - \Delta E }{\omega - \hat H_0} \left| \Psi_0 \right>
 	 		\end{align}
-	 		and we get the final equations
+	 		and we get the final equation for the wave function 
 	 		\begin{align}
 	 			\left| \Psi_0 \right> = \sum_0^\infty \left\{ \hat R(\omega) (\hat V + - \Delta E) \right\}^m \left| \Phi_0 \right>
 	 		\end{align}
-	 		and
+	 		and for the correlation energy
 	 		\begin{align}
 	 			\Delta E = \sum_0^\infty \left< \Phi_0 \right| \hat V \left[ \hat R(\omega) (\hat V - \Delta E) \right]^m \left| \Phi_0 \right>  
 	 		\end{align}
@@ -990,13 +1043,22 @@
 	 			E^{(2)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat V \left| \Phi_0 \right> \\
 	 			E^{(3)} &= \left< \Phi_0 \right| \hat V \hat R_0 (\hat V - E^{(1)})  \hat R_0 \hat V \left| \Phi_0 \right> \\
 	 			E^{(4)} &= \left< \Phi_0 \right| \hat V \hat R_0 (\hat V - E^{(1)})  \hat R_0 (\hat V - E^{(1)}) \hat R_0 \hat V \left| \Phi_0 \right> 
-	 					- E^{(2)} \left< \Phi_0 \right| \hat V \hat R_0^2 \hat V \left| \Phi_0 \right>\\
+	 					- E^{(2)} \left< \Phi_0 \right| \hat V \hat R_0^2 \hat V \left| \Phi_0 \right>
 	  		\end{align*}
 	  		Because of the frequent appearance, we can rewrite $\hat V - E^{(1)}$ as
 	  		\begin{align}
-	  			\hat \Omega = \hat V - E^{(1)}
+	  			\hat \Omega = \hat V - E^{(1)} = \hat V - \left< \Phi_0 \right| \hat V \left| \Phi_0 \right>
 	  		\end{align}
-	  		We name this new variable the wave operator
+	  		We name this new variable the wave operator, and rewrite the equations in a simpler form. 
+	  		\begin{align*}
+	 			E^{(1)} &= \left< \Phi_0 \right| \hat V \left| \Phi_0 \right>  = V_{00}\\
+	 			E^{(2)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat V \left| \Phi_0 \right> \\
+	 			E^{(3)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat \Omega \hat R_0 \hat V \left| \Phi_0 \right> \\
+	 			E^{(4)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat \Omega  \hat R_0 \hat \Omega \hat R_0 \hat V \left| \Phi_0 \right> 
+	 					- E^{(2)} \left< \Phi_0 \right| \hat V \hat R_0^2 \hat V \left| \Phi_0 \right>
+	 			\label{MBPT equations}
+	  		\end{align*}
+	  		I am, in this thesis, concerned with calculating the correlation energy, and these four equations will be implemented for the Pairing model. 
 	 	\end{subsection}
 	\end{section}
 
@@ -1303,32 +1365,246 @@
 
 	\end{section}
 
-
-	\begin{section}{Many-Body Perturbation Theory}
- 		Given that our Hartree-Fock basis is canonical, $\hat F_N^0 = 0$, and $f_{pq} = \epsilon_p \delta_{pq}$, we can
+	\begin{section}{Hartree-Fock calculations}
+		When doing Hartree-Fock calculations on the pairing model, the goal is to minimize the Hamiltonian expectation value through a change in basis. The ground state energy is given by 
+		\begin{align}
+			\left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = E^{\text{HF}}
+		\end{align}
+		This leads to the iterative equation 
+		\begin{align}
+  			\sum_{\gamma} h_{\alpha \gamma}^{\text{HF}} C_{a \gamma} = \epsilon_{a} C_{a \alpha}
+  		\end{align}
+  		where 
+  		\begin{align}
+  			h_{\alpha \gamma}^{\text{HF}} = \left< \alpha \right| h \left| \gamma \right> + \sum_{b=1}^N \sum_{\beta \delta} C_{b \beta}^* C_{b \delta} \left< \alpha \beta \right| v \left| \gamma \delta \right> 
+  		\end{align}
+  		For the first iteration, we must make a guess on the factors, $C_{b \beta}^*$ and $C_{b \delta}$. A natural starting point is to set
+  		\begin{align}
+  			C_{b \beta} = \delta_{b \beta} \:\:\:\:\:\: C_{b \delta} = \delta_{b \delta}
+  		\end{align}
+  		This is the same as saying we use the original basis in the first iteration, as there is no overlap between the states
+  		\begin{align}
+  			\left| \psi_a \right> = \sum_ \lambda \delta_{a \lambda} \left| \psi_ \lambda \right> 
+  		\end{align}
+  		To evaluate the hatree-fock matrix elements, we look at the states below Fermi level 
+  		\begin{align}
+  			\{p, \sigma\} \in \{ 1 \uparrow, 1 \downarrow, 2 \uparrow, 2 \downarrow \}
+  		\end{align}
+  		The greek basis will therefore loop over these four states. The one-electron operator $\hat H_0$ is diagonal, so the matrix element
+  		\begin{align}
+  			\left< \alpha | h | \gamma \right> 
+  		\end{align}
+ 		Will also be diagonal. Because of the starting point for the basis coefficients, we see that the two-electron operator can be written as
+ 		\begin{align}
+ 			V = \sum_{ b = 1 }^4 \left< \alpha b | v | \gamma b \right>  
+ 		\end{align}
+ 		Because the pairing model do not allow broken pairs, this matrix element will only be non-zero when $\alpha = \gamma$ and when $p_{\alpha} = p_{b}$, $\sigma_ \alpha = \sigma_b$. The Hartree-Fock matrix will therefore be diagonal, meaning the original basis is a canonical Hartree-Fock basis. Hartree-Fock calculations on this basis will not provide any new results. The Hartree-Fock energy can be calculated
+ 		\begin{align}
+ 			E^{\text{HF}} = \left< \Phi_0 \right| \hat H \left| \Phi_0 \right> &= \left< \Phi_0 \right| \hat H_0 \left| \Phi_0 \right> + \left< \Phi_0 \right| \hat V \left| \Phi_0 \right> \\
+ 			&= 2 - g 
+ 		\end{align}
+ 		This energy will be referred to as the reference energy 
  	\end{section}
 
- 	\begin{section}{Canonical Hartree-Fock}
- 		In the pairing model, we work with the Normal-ordered Hamiltonian
+	\begin{section}{Many-Body Perturbation Theory}
+ 		When setting up the MBPT equations, it is useful to present them as diagrams. All the diagrams for the first, second and third order perturbation theory can be presented in figure ()
+ 		
+		Because of special properties of the Pairing model, many of these diagrams can be removed by a visual examination. First, we have no broken pairs, meaning that a general two-body matrix element 
+		\begin{align}
+			\left< pq | v | rs \right> 
+		\end{align}
+		is only non-zero if \textit{both} $p$ and $q$ are hole states or \textit{both} are particle states. The same restriction applies to $r$ and $s$. The second thing to notice, is that we have a canonical Hartree-Fock. That means only diagonal one-body matrix elements are non-zero. We will compute the correlation energy $\Delta E$, using the Hamiltonian
+		\begin{align}
+			\hat H_N = \hat F_N^d + \hat F_N^o + \hat W = \hat F_N^d + \hat W
+		\end{align}
+		where
+		\begin{align}
+			f_{pq} = \epsilon_p \delta_{pq}
+		\end{align}
+ 		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{Figures/FirstSecondThirdOrder.pdf}
+			\caption{Diagrams for Many Body Perturbation theory to second and third order. }
+			\label{mbpt23}
+		\end{figure}
+
+		\begin{subsection}{Interpreting diagrams}
+			When reading the diagrams, and connecting them to the equations presented in the equations (\ref{MBPT equations}), there are a simple set of rules. We have the expression for the resolvent, $\hat R_0$ given as 
+			\begin{align}
+				\hat R_0 = \frac{\hat Q}{E_0^{(0)} - \hat H_0} = \sum_I \frac{\left| \Phi_I \right> \left< \Phi_I \right| }{E_0^{(0)} - E_I^{(0)}}
+			\end{align}
+			Where we sum over all states apart from $\left| \Phi_0 \right>$. When this operator operates on any state $\left| J \right>$ other than $\left| \Phi_0 \right> $, it will only produce \cite{ShavittAndBartlett}
+			\begin{align}
+				\hat R_0 \left| J \right> = \left| J \right> \frac{1}{E_0^{(0)} - E_J^{(0)}}
+			\end{align}
+			Meaning that the resolvent will only introduce a denominator expressed in terms of zeroth-order energies. We will introduce a more practical notation for this denominator
+			\begin{align}
+				\epsilon_{ij..}^{ab..} = E_0^{(0)} - E_{\left| \Phi_{ij..}^{ab..} \right> } = \epsilon_i + \epsilon_j + ... - \epsilon_a - \epsilon_b - ...
+			\end{align}
+			The operator $\hat V$, as shown in equations (\ref{MBPT equations}), will give rise to matrix elements. If we have a canonical Hartree-Fock basis, we can rewrite 
+			\begin{align}
+				\hat V = \hat W + \hat F^o = \hat W 
+			\end{align}
+			And there will only be two-body matrix elements present and all diagrams with one-body interactions can be removed. In the noncanonical Hartree-Fock case, $\hat F^o$ will give non-zero results and must be present. The procedure for interpreting the diagram and write out the corresponding equations can be summed up in the following sequence of operations
+		\end{subsection}
+
+		\begin{subsection}{Label all lines}
+			First one should identify which lines represent hole states and which represent particle states, and label the lines with the corresponding letter, using $i,j,k,l,...$ for hole states and $a,b,c,d,...$ for particle states. 
+		\end{subsection}
+
+		\begin{subsection}{Identify the operators}
+			A one-body vertex should be identified as the one body operator used for the system, where one set up the matrix element $f_p^q$ by the labels as
+			\begin{align}
+				f_p^q = \left< \text{line out} \right| \hat f \left| \text{line in} \right>
+			\end{align}
+			The two-body vertices are identified as the two body operators, and when identified, one should set up the corresponding matrix elements following the interpretation rule
+			\begin{align}
+				\left< pq || rs \right> = \left< \text{left in, right in} || \text{left out, right out} \right> 
+			\end{align}
+		\end{subsection}
+
+		\begin{subsection}{Identify the denominator}
+			To identify the denominator produced by the resolvent, $\hat R_0$, one draws imaginary lines between the interactions and set up the $\epsilon$ for every state-line that was crossed 
+		\end{subsection}
+
+		\begin{subsection}{Including phase factor}
+			The resulting diagram will get a phase factor depending on how many hole states and how many closed loops there are. The factor is given by 
+			\begin{align}
+				(-1)^{\text{Closed loops} + \text{Number of holes}}
+			\end{align}
+		\end{subsection}
+
+		\begin{subsection}{Identify equivalent lines}
+			Equivalent lines are pairs of lines that connect at the same vertices. They must also have be of the same kind, either both particle states or both hole states. They will introduce a factor given as 
+			\begin{align}
+				\left( \frac{1}{2} \right)^{\text{number of equivalent lines}}
+			\end{align}
+		\end{subsection}
+
+		\begin{subsection}{Second Order Perturbation Theory}
+			Starting with diagram 1, we see that this diagram is non-zero, because there is no one-body operator and no pairs are broken. We can set up the equation as
+			\begin{align}
+				E_\text{Diagram 1} = (-1)^{2+2} \frac{1}{2^2} \sum_{\substack{ab \\ ij}} \frac{\left< ij || ab \right> \left< ab || ij \right>}{\epsilon_{ij}^{ab}}
+			\end{align}
+			Diagram 2 can be written out as
+			\begin{align}
+				E_\text{Diagram 2} = \sum_{ia} \frac{\left<i\right|f\left|a\right> \left<a\right| \hat f \left| i \right>}{\epsilon_i^a} = 0
+			\end{align}
+			This, however, will be zero. This is because we are operating with a canonical Hartree-Fock basis. By the definition of a non canonical Hartree Fock basis, $f_i^a = 0$, that basis would provide the same result. That means, only diagram 1 will provide a non-zero result for second order perturbation theory. 
+
+		\end{subsection}
+
+		\begin{subsection}{Third Order Perturbation Theory}
+			Looking at the third order diagrams, shown in figure () , numbering from 3 to 15. Third order diagrams have three interaction parts. One at the top and one at the bottom of the diagram along with an intermediate interaction part in the middle. As we did for diagram 2, we can exclude all diagrams with a one-body operator, leaving only diagrams 3, 4 and 5. 
+			\begin{align}
+				E_{\text{diagram 3}} = \sum_{\substack{abc \\ ijk}} \frac{\left<ij||ab\right>\left<bk||jc\right>\left<ac||ij\right>}{\epsilon_{ij}^{ac} \epsilon_{ij}^{ab}} = 0
+			\end{align}
+			However, here we see a problem. We have an interaction term $\left<bk||jc\right>$, which is a broken pair. The Pairing model do not allow such states, and this must be zero. This is not a problem for the diagrams 4 and 5. 
+			\begin{align}
+				E_{\text{diagram 4}} = \frac{1}{2^3} \sum_{\substack{abcd \\ ij}} \frac{\left<cd||ij\right>\left<ab||cd\right>\left<ij||ab\right>}{\epsilon_{ij}^{cd} \epsilon_{ij}^{ab}}
+			\end{align}
+			\begin{align}
+				E_{\text{diagram 4}} = \frac{1}{2^3} \sum_{\substack{ab \\ ijkl}} \frac{\left<ab||kl\right>\left<kl||ij\right>\left<ij||ab\right>}{\epsilon_{kl}^{ab} \epsilon_{ij}^{ab}}
+			\end{align}
+			So when doing perturbation theory to third degree with a canonical Hartree-Fock basis as for the Pairing model, one only need to calculate the diagrams 1, 4 and 5. 
+
+		\end{subsection}
+
+		\begin{subsection}{Fourth Order Perturbation Theory}
+			When calculating the correlation energy with the fourth order energy, the second and third order are included as well. The amount of diagrams increase dramatically when adding the fourth order, but as we only work with a canonical Hartree-Fock basis, the amount is somewhat limited \cite{ShavittAndBartlett}. We group the diagrams by the excitations they produce, i.e. how many pairs of external lines. 
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{Figures/fourthorder1p1h.png}
+				\caption{Goldstone diagrams for fourth order reileigh schrodinger perturbation theory with 1p1h excitations}
+				\label{figure:mbpt1p1h}
+			\end{figure}
+			The first set of diagrams in figure (\ref{figure:mbpt1p1h}) show diagrams giving rise to 1 particle and 1 hole excitations. All these diagrams have an intermediate step with a 1p-1h part. The Pairing model do not allow broken pairs, meaning that intermediate steps with 1p-1h or 3p-3h interaction parts must be zero. Therefore none of these diagrams are included in the calculations.
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{Figures/fourthorder2p2h.png}
+				\caption{Goldstone diagrams for fourth order reileigh schrodinger perturbation theory with 2p2h excitations}
+				\label{figure:mbpt2p2h}
+			\end{figure}
+			The set of diagrams shown in figure (\ref{figure:mbpt2p2h}), give rise to a 2 particle and 2 hole excitation. For all these diagrams, there are only 2p-2h interaction parts for all intermediate steps. However, many of these diagrams give rise to a broken pair interaction of the form 
+			\begin{align}
+			 	\left< ai || pq \right> 
+			\end{align}
+			Only the diagrams 5,6,14 and 15 have no broken pair interactions. They are calculated as
+			\begin{align}
+				E_{\text{diagram 5}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<cd||kl\right>\left<kl||ij\right>\left<ab||cd\right>\left<ij||ab\right> }{ \epsilon_{kl}^{cd} \epsilon_{ij}^{cd} \epsilon_{ij}^{ab} }
+			\end{align} 
+			And diagram 6
+			\begin{align}
+				E_{\text{diagram 6}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<cd||kl\right>\left<kl||ij\right>\left<ab||cd\right>\left<ij||ab\right> }{ \epsilon_{kl}^{ab} \epsilon_{kl}^{cd} \epsilon_{ij}^{ab} }
+			\end{align} 
+			For diagram 14, we get 
+			\begin{align}
+				E_{\text{diagram 14}} = \frac{1}{2^4} \sum_{\substack{abcdef\\ij}} \frac{ \left<ij||ab\right>\left<ab||cd\right>\left<cd||ef\right>\left<ef||ij\right> }{ \epsilon_{ij}^{ab} \epsilon_{ij}^{cd} \epsilon_{ij}^{ef} }
+			\end{align} 
+			And for diagram 15
+			\begin{align}
+				E_{\text{diagram 15}} = \frac{1}{2^4} \sum_{\substack{ab\\ijklmn}} \frac{ \left<ij||ab\right>\left<kl||ij\right>\left<mn||kl\right>\left<ab||mn\right> }{ \epsilon_{ij}^{ab} \epsilon_{kl}^{ab} \epsilon_{mn}^{ab} }
+			\end{align} 
+
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{Figures/fourthorder3p3h.png}
+				\caption{Goldstone diagrams for fourth order reileigh schrodinger perturbation theory with 3p3h excitations}
+				\label{figure:mbpt3p3h}
+			\end{figure}
+			The diagrams depicted in figure (\ref{figure:mbpt3p3h}), show the fourth order diagrams giving rise to 3 particles and 3 holes excitations. We notice that all these diagrams include one intermediate step with a 3p-3h excitation. Therefore we can exclude all these diagrams from the calculations.  
+
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{Figures/fourthorder4p4h.png}
+				\caption{Goldstone diagrams for fourth order Reileigh Schrodinger perturbation theory with 4p4h excitations}
+				\label{figure:mbpt4p4h}
+			\end{figure}
+			The last set of diagrams, depicted in figure (\ref{figure:mbpt4p4h}), show the fourth order diagrams that include a 4 particle and 4 hole part. Invoking the Linked diagram theorem, we can immediatly exclude diagram 33 and diagram 41. Diagram 34 to 40 do will be non-zero, and must be calculated. For diagram 34, we get
+			\begin{align}
+				E_{\text{diagram 34}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ab||ik\right>\left<cd||jl\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{jl}^{cd} }
+			\end{align}
+			We notice that there are 3 closed loops and 4 hole states, giving rise to the negative phase factor. We also notice that we have two pairs of equivalent lines, arising from the particle states, introducing a factor $\frac{1}{4}$. One can also notice the fourth order denominator term $\epsilon_{ijkl}^{abcd}$, arising from the 4p-4h intermediate excitation part. The last diagrams are calculated following the same principles, giving 
+			\begin{align}
+				E_{\text{diagram 35}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ac||ij\right>\left<bd||kl\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{kl}^{bd} }
+			\end{align}
+			And diagram 36. Please notice that there are a mistake in the drawing of the diagram 36. The right-most particle state is supposed to be a hole state, giving the correct equation 
+			\begin{align}
+				E_{\text{diagram 36}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ab||kl\right>\left<cd||ij\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ij}^{cd} }
+			\end{align}
+			Diagram 37 is also depicted with the right-most state wrong. It is supposed to be a particle state, giving
+			\begin{align}
+				E_{\text{diagram 37}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<cd||ij\right>\left<ab||kl\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{kl}^{ab} }
+			\end{align}
+			and for diagram 38, we notice that there are no equal state pairs
+			\begin{align}
+				E_{\text{diagram 38}} = \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<db||lj\right>\left<ac||ik\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ik}^{ac} }
+			\end{align}
+			Diagram 39 gives
+			\begin{align}
+				E_{\text{diagram 39}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<bd||kl\right>\left<ac||ij\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ij}^{ac} }
+			\end{align}
+			And finally, diagram 40 gives the equation
+			\begin{align}
+				E_{\text{diagram 40}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<cd||jl\right>\left<ab||ik\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ik}^{ab} }
+			\end{align}
+			
+		\end{subsection}
+ 		
+ 	\end{section}
+
+ 	\begin{section}{Spin Summations}
+ 		We have up until now, not taken into account the effect of spin in the matrix elements. Because of spin orthogonality, terms may vanish from certain two-electron matrix elements. Listed here, are all the different ways spins can be organized, along with the resulting integration. Representing the spin up orbital with a bar, we get \cite{ShavittAndBartlett}
  		\begin{align}
- 			\hat H_N = \hat F_N^d + \hat F_N^0 + \hat W		
+ 			\left< pq || rs \right> &= \left< pq | \hat v | rs \right> - \left< pq | \hat v | sr \right> \\
+ 			\left< p\bar q || r\bar s \right> &= \left<pq | \hat v | rs \right> \\
+ 			\left< p \bar q|| \bar r s \right> &= - \left<pq | \hat v | sr \right> \\
+ 			\left< \bar p q|| \bar r s\right> &= \left< pq | \hat v | rs \right> \\
+ 			\left< \bar p q|| r \bar s \right> &= - \left< pq | \hat v | sr \right> \\
+ 			\left< \bar p \bar q || \bar r \bar s \right> &= \left< pq | \hat v | rs \right> - \left< pq | \hat v | sr \right> 
  		\end{align}
- 		Which is part of the total Hamiltonian by
+ 		Because of the restrictions on the pairing model, the first and last equation will also be zero, because the states are not allowed to exist. Matrix elements, where there is an unequal amount of equal spin orbitals will all give zero as result as well
  		\begin{align}
- 			\hat H = \hat H_N + E_{\text{ref}}
- 		\end{align}
- 		Where
- 		\begin{align}
- 			\hat H_N \left| \Psi \right> = \Delta E \left| \Psi \right> 
- 		\end{align}
- 		If we use a Canonical Hartree-Fock basis, the Fock matrix will be diagonal, meaning 
- 		\begin{align}
- 			\hat F_N^o = 0 \;\;\; \text{     and  } \:\;\: f_{pq} = \epsilon_p \delta_{pq}
- 		\end{align}
- 		A noncanonical Hartree-Fock will be block diagonal with 
- 		\begin{align}
- 			f_{ia} = \left< i \right| \hat f \left| a \right> = 0
- 		\end{align}
+ 			\left< \bar p q || rs \right> &= \left< p \bar q || rs \right> = \left< pq || \bar r s \right> = \left< pq || r \bar s \right> = 0 \\
+ 			\left< \bar p \bar q || rs \right> &= \left< pq || \bar r \bar s \right>  = 0 \\
+ 			\left< \bar p \bar q || \bar r s \right> &= \left< \bar p \bar q || r \bar s \right> = \left< \bar p q || \bar r \bar s \right> = \left< p \bar q || \bar r \bar s \right> = 0
+ 		\end{align} 
+
 
  	\end{section}
 

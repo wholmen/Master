@@ -820,7 +820,7 @@
 	\end{section}
 
 	\begin{section}{Linked Diagram theorem}
-		A very important theorem when using 
+		
 	\end{section}
 
 
@@ -1848,7 +1848,7 @@
 
 
 
-\begin{chapter}{Implementation}
+\begin{chapter}{Implementation of CCD}
 	In this thesis I have created three different solvers for Coupled Cluster Doubles equations. 
 	\begin{enumerate}
 		\item A naive brute force implementation of the equations summing over all variables. 
@@ -2163,7 +2163,7 @@
 	\end{section}
 
 	\begin{section}{Parallellization}
-		An important part of optimizing the code, is by setting up a parallell code. By doing this, we can fully utilize the capacity of computers with many processing cores. I have, in this project, used the Super Computer Smaug located at Institute of Physics at the University of Oslo. 
+		To fully utilize the computational power in modern processors, one must use a parallellized code. Modern processors usually come with more than one core to save power output at the same effiency \cite{IntelOpenMP}. A standard written C++ program will be processed using only 1 \textit{thread}, meaning that a single core only will be used. The super computer, \textit{Smaug}, located at the Institute of Physics at the University of Oslo is built of processors with many but low performing cores given todays standards. If one can split the program into multiple threads, each executed at the same time in different cores, one can hope to reduce computational time substansially. 
 	\end{section}
 
 \end{chapter}
@@ -2382,6 +2382,11 @@
 	Carlo Barbieri, Wim Dickhoff, Gaute Hagen, Morten Hjorth-Jensen, Artur Polls
 	\textit{Many-body Methods for Nuclear Physics, Nuclear Talent course 2} 
 	URL: \textit{http://nucleartalent.github.io/Course2ManyBodyMethods/doc/web/course.html}
+
+	\bibitem{IntelOpenMP}
+	Tim Mattson
+	\textit{Intel Youtube Course in OpenMp: Introduction to OpenMP - Tim Mattson (Intel)}
+	URL: \textit{https://www.youtube.com/playlist?list=PLLX-Q6B8xqZ8n8bwjGdzBJ25X2utwnoEG}.
 
 	\bibitem{WholmenGithub}
 	Fredrik Wilhelm Holmen

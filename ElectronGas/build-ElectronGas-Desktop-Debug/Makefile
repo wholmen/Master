@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = 
 CFLAGS        = -m64 -pipe -g -Wall -W -fPIC $(DEFINES)
-CXXFLAGS      = -m64 -pipe -g -std=c++0x -Wall -W -fPIC $(DEFINES)
+CXXFLAGS      = -m64 -pipe -fopenmp -g -std=c++0x -Wall -W -fPIC $(DEFINES)
 INCPATH       = -I../ElectronGas -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
 QMAKE         = /usr/lib/x86_64-linux-gnu/qt5/bin/qmake
 DEL_FILE      = rm -f
@@ -35,8 +35,8 @@ COMPRESS      = gzip -9f
 DISTNAME      = ElectronGas1.0.0
 DISTDIR = /home/wilhelm/repositories/Master/ElectronGas/build-ElectronGas-Desktop-Debug/.tmp/ElectronGas1.0.0
 LINK          = g++
-LFLAGS        = -m64
-LIBS          = $(SUBLIBS) -llapack -lblas -larmadillo 
+LFLAGS        = -m64 -fopenmp
+LIBS          = $(SUBLIBS) -llapack -lblas -larmadillo -fopenmp 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed

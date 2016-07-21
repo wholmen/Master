@@ -172,12 +172,9 @@ void Block::SetUpMatrices_La(mat &t0){
         for (int C=0; C<Np; C++){
             V(A,C) = basis.TwoBodyOperator( Particles(A,0), Particles(A,1), Particles(C,0), Particles(C,1) );
         }
+
         for (int I=0; I<Nh; I++){
-
-            int i = Holes(I,0); int j = Holes(I,1);
-            int a = Particles(A,0); int b = Particles(A,1);
-
-            T(A,I) = t0( Index(a,b,i,j) );
+            T(A,I) = t0( Index(Particles(A,0),Particles(A,1),Holes(I,0),Holes(I,1)) );
         }
     }
 }

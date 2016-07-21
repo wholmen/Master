@@ -16,8 +16,13 @@ Solver::Solver(ElectronBasis BASIS)
     // Weight when adding diagrams to new amplitudes
     weight = 1.0;
 
+
     // Setting up two-state configurations
-    start = clock(); TwoBodyConfigurations();
+    start = clock();
+
+    DirectStates_Parallel();
+    CrossStates_Parallel();
+    TripleStates_Parallel();
 
     finish = clock(); cout << "TwoBodyConfigurations used " << (double(finish-start)/CLOCKS_PER_SEC) << " seconds. " << endl;
 
@@ -40,14 +45,26 @@ double Solver::CCD(int MaxIterations){
 
     // Start the iteration process
     NIterations = 0; tolerance = 1e-12;
+
+
     while ( AbsoluteDifference(E1,E0) > tolerance && NIterations < MaxIterations){
 
+        double time0 = omp_get_wtime();
         E0 = E1;
+        double timeamp = omp_get_wtime();
         UpdateAmplitudes();
+        double timeamp2 = omp_get_wtime();
+
+        double timeen = omp_get_wtime();
         E1 = CorrolationEnergy();
+        double timeen2 = omp_get_wtime();
+
         NIterations ++;
+        double time1 = omp_get_wtime(); cout << "Every iteration needs " << time1-time0 << " seconds. amplitudes: " << timeamp2-timeamp << " energy: " << timeen2-timeen << endl;
     }
+
     return E1;
+
 }
 
 vec Solver::CCD_ReturnAllIterations(){
@@ -78,8 +95,12 @@ vec Solver::CCD_ReturnAllIterations(){
 double Solver::CorrolationEnergy(){
 
     // Set up matrices for all blocks
-    for (int i=0; i<Npphh; i++){
-        blockspphh[i] ->SetUpMatrices_Energy(t);
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
+
+        for (int i=id; i<Npphh; i+=threads) blockspphh[i] ->SetUpMatrices_Energy(t);
     }
 
     // Do the matrix-matrix multiplications for all blocks
@@ -105,40 +126,41 @@ void Solver::UpdateAmplitudes(){
     DiagramLa();
     finish = clock();
     double ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "Inside iterations. L0, La needed " << ptime << " seconds. " << endl;
+    //cout << "Inside iterations. L0, La needed " << ptime << " seconds. " << endl;
 
     // Diagram Qc
     start = clock();
     DiagramQc();
     finish = clock();
     ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "Inside iterations. Qc needed " << ptime << " seconds. " << endl;
+    //cout << "Inside iterations. Qc needed " << ptime << " seconds. " << endl;
 
     // Diagram Qd
     start = clock();
     DiagramQd();
     finish = clock();
     ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "Inside iterations. Qd needed " << ptime << " seconds. " << endl;
+    //cout << "Inside iterations. Qd needed " << ptime << " seconds. " << endl;
 
     // Intermediate diagram I1. Lb + Qa
     start = clock();
     DiagramI1();
     finish = clock();
     ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "Inside iterations. I1 needed " << ptime << " seconds. " << endl;
+    //cout << "Inside iterations. I1 needed " << ptime << " seconds. " << endl;
 
     // Intermediate diagram I1. Lc + Qb
     start = clock();
     DiagramI2();
     finish = clock();
     ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "Inside iterations. I2 needed " << ptime << " seconds. " << endl;
+    //cout << "Inside iterations. I2 needed " << ptime << " seconds. " << endl;
 
 
     // Adding weight factor
     if (weight != 0) t = weight*t + (1-weight)*t0;
 }
+
 
 void Solver::CreateBlocks(){
 
@@ -166,11 +188,10 @@ void Solver::CreateBlocksPPHH(){
             }
         }
     }
+
     blockspphh = new Block*[Npphh];
 
-    for (int n=0; n<Npphh; n++){
-        blockspphh[n] = new Block(basis, Nholes, Nparticles);
-    }
+    for (int n=0; n<Npphh; n++) blockspphh[n] = new Block(basis, Nholes, Nparticles);
 
     for (int I=0; I<NHOLES; I++){
         for (int A=0; A<NPARTICLES; A++){
@@ -184,12 +205,17 @@ void Solver::CreateBlocksPPHH(){
             }
         }
     }
+
     for (int n=0; n<Npphh; n++){
         blockspphh[n]->FinishBlock();
     }
 
-    for (int n=0; n<Npphh; n++){
-        blockspphh[n]->Epsilonpphh();
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
+
+        for (int n=id; n<Npphh; n+=threads) blockspphh[n]->Epsilonpphh();
     }
 }
 
@@ -229,7 +255,14 @@ void Solver::CreateBlocksPHHP(){
     }
     for (int n=0; n<Nphhp; n++) blocksphhp[n]->FinishBlock();
 
-    for (int n=0; n<Nphhp; n++) blocksphhp[n]->Epsilonphhp();
+
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
+
+        for (int n=id; n<Nphhp; n+=threads) blocksphhp[n]->Epsilonphhp();
+    }
 }
 
 void Solver::CreateBlocksKHPP(){
@@ -267,7 +300,13 @@ void Solver::CreateBlocksKHPP(){
     }
     for (int n=0; n<Nkhpp; n++) blockskhpp[n]->FinishBlock();
 
-    for (int n=0; n<Nkhpp; n++) blockskhpp[n]->Epsilonkhpp();
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
+
+        for (int n=id; n<Nkhpp; n+=threads) blockskhpp[n]->Epsilonkhpp();
+    }
 }
 
 void Solver::CreateBlocksKPHH(){
@@ -305,19 +344,30 @@ void Solver::CreateBlocksKPHH(){
     }
     for (int n=0; n<Nkphh; n++) blockskphh[n]->FinishBlock();
 
-    for (int n=0; n<Nkphh; n++) blockskphh[n]->Epsilonkphh();
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
+
+        for (int n=id; n<Nkphh; n+=threads) blockskphh[n]->Epsilonkphh();
+    }
 }
 
 
 void Solver::DiagramL0(){
+    double time0, time1;
+    time0 = omp_get_wtime();
 
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
 
-    // Set up matrices for all blockspphh
-    for (int i=0; i<Npphh; i++){
-        blockspphh[i] ->SetUpMatrices_L0();
+        for (int i=id; i<Npphh; i+=threads) blockspphh[i]->SetUpMatrices_L0();
     }
-    // For L0 diagram, not computation is needed. Only aligning V elements to t.
+    time1 = omp_get_wtime(); //cout << "Inside L0. SetUpMatrices needs: " << time1-time0 << " seconds" << endl;
 
+    time0 = omp_get_wtime();
     //Align elements to t.
     for (int n=0; n<Npphh; n++){
 
@@ -333,16 +383,27 @@ void Solver::DiagramL0(){
             }
         }
     }
+    time1 = omp_get_wtime(); //cout << "Inside L0. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
 }
 
 void Solver::DiagramLa(){
 
     // Tested. Working.
+    double time0, time1;
+    time0 = omp_get_wtime();
 
-    for (int i=0; i<Npphh; i++){
-        blockspphh[i]->SetUpMatrices_La(t0);
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
+
+        for (int i=id; i<Npphh; i+=threads){
+            blockspphh[i]->SetUpMatrices_La(t0);
+        }
     }
+    time1 = omp_get_wtime(); //cout << "Inside La. SetUpMatrices needs: " << time1-time0 << " seconds" << endl;
 
+    time0 = omp_get_wtime();
     for (int n=0; n<Npphh; n++){
         mat La = 0.5*blockspphh[n]->V * blockspphh[n]->T / blockspphh[n]->epsilon;
 
@@ -356,12 +417,23 @@ void Solver::DiagramLa(){
             }
         }
     }
+    time1 = omp_get_wtime(); //cout << "Inside La. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
 }
 
 void Solver::DiagramQc(){
-    // Block Approach
-    for (int n=0; n<Nkhpp; n++) blockskhpp[n]->SetUpMatrices_Qc(t0);
+    double time0, time1;
+    time0 = omp_get_wtime();
 
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
+
+        for (int n=id; n<Nkhpp; n+=threads) blockskhpp[n]->SetUpMatrices_Qc(t0);
+    }
+    time1 = omp_get_wtime(); //cout << "Inside Qc. SetUpMatrices needs: " << time1-time0 << " seconds" << endl;
+
+    time0 = omp_get_wtime();
     for (int n=0; n<Nkhpp; n++){
 
         mat Qc = 0.5*blockskhpp[n]->T * blockskhpp[n]->V * blockskhpp[n]->T2 / blockskhpp[n]->epsilon;
@@ -377,12 +449,23 @@ void Solver::DiagramQc(){
             }
         }
     }
+    time1 = omp_get_wtime(); //cout << "Inside Qc. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
 }
 
 void Solver::DiagramQd(){
-    // Block Approach
-    for (int n=0; n<Nkphh; n++) blockskphh[n]->SetUpMatrices_Qd(t0);
+    double time0, time1;
+    time0 = omp_get_wtime();
 
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
+
+        for (int n=id; n<Nkphh; n+=threads) blockskphh[n]->SetUpMatrices_Qd(t0);
+    }
+    time1 = omp_get_wtime(); //cout << "Inside Qd. SetUpMatrices needs: " << time1-time0 << " seconds" << endl;
+
+    time0 = omp_get_wtime();
     for (int n=0; n<Nkphh; n++){
 
         mat Qd = 0.5*blockskphh[n]->T * blockskphh[n]->V * blockskphh[n]->T2 / blockskphh[n]->epsilon;
@@ -398,11 +481,23 @@ void Solver::DiagramQd(){
             }
         }
     }
+    time1 = omp_get_wtime(); //cout << "Inside Qd. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
 }
 
 void Solver::DiagramI1(){
-    for (int n=0; n<Npphh; n++) blockspphh[n]->SetUpMatrices_I1(t0);
+    double time0, time1;
+    time0 = omp_get_wtime();
 
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
+
+        for (int n=id; n<Npphh; n+=threads) blockspphh[n]->SetUpMatrices_I1(t0);
+    }
+    time1 = omp_get_wtime(); //cout << "Inside I1. SetUpMatrices needs: " << time1-time0 << " seconds" << endl;
+
+    time0 = omp_get_wtime();
     for (int n=0; n<Npphh; n++){
 
         mat I1 = 0.5* blockspphh[n]->T * blockspphh[n]->I1 / blockspphh[n]->epsilon;
@@ -417,16 +512,24 @@ void Solver::DiagramI1(){
             }
         }
     }
+    time1 = omp_get_wtime(); //cout << "Inside I1. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
 }
 
 void Solver::DiagramI2(){
-    clock_t start = clock();
-    for (int n=0; n<Nphhp; n++) blocksphhp[n]->SetUpMatrices_I2(t0);
-    clock_t finish = clock();
-    double ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "Inside Diagram I2. SetUpMatrices_I2 needed " << ptime << " seconds. " << endl;
+    double time0,time1;
+    time0 = omp_get_wtime();
 
-    start = clock();
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int threads = omp_get_num_threads();
+
+        for (int n=id; n<Nphhp; n+=threads) blocksphhp[n]->SetUpMatrices_I2(t0);
+    }
+    time1 = omp_get_wtime(); //cout << "Inside I2. SetUpMatrices needs: " << time1-time0 << " seconds" << endl;
+
+    time0 = omp_get_wtime();
+
     for (int n=0; n<Nphhp; n++){
 
         mat I2 = blocksphhp[n]->T * blocksphhp[n]->I2 / blocksphhp[n]->epsilon;
@@ -444,9 +547,7 @@ void Solver::DiagramI2(){
             }
         }
     }
-    finish = clock();
-    ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "Inside Diagram I2. Doing calculations needed " << ptime << " seconds. " << endl;
+    time1 = omp_get_wtime(); //cout << "Inside I1. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
 }
 
 // Following functions are various assisting functions for program flow.
@@ -461,71 +562,97 @@ int Solver::Index(int a, int b, int i, int j){
     return (a-Nholes) + (b-Nholes)*Nparticles + i*Nparticles2 + j*Nparticles2*Nholes;
 }
 
-void Solver::TwoBodyConfigurations(){
 
-    // Function tested. Function working.
+void Solver::DirectStates_Parallel(){
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // %%%%%%%%%%%% SETTING UP DIRECT STATES %%%%%%%%%%%%%%%%%%%%%%%
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     Holes = zeros<mat>(0,3);
+
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int nthreads = omp_get_num_threads();
+
+        // Setting up size for the partial Holes matrix. This size is more deeply explained in the thesis.
+        int size = floor( Nholes/nthreads) * (Nholes-1);
+        if ( id < Nholes%nthreads) size += Nholes - 1;
+
+        mat partialStates = zeros<mat>(size,3);
+
+        int n=0; // n will count how many two-state combinations we find. Used as indice in the matrix
+        for (int i=id; i<Nholes; i += nthreads){
+            for (int j=0; j<Nholes; j++){
+
+                if (i != j){ // Pauli principle demands that the particles must be unequal
+
+                    // Setting up direct channels for holes
+
+                    // Two-hole momentum and spin
+                    int Nx = basis.States(i,1) + basis.States(j,1); // Combining x-momentum
+                    int Ny = basis.States(i,2) + basis.States(j,2); // Combining y-momentum
+                    int Nz = basis.States(i,3) + basis.States(j,3); // Combining z-momentum
+                    int Sz = basis.States(i,4) + basis.States(j,4); // Combining spin
+
+                    // Adding a new two-hole-state configuration to matrix. (i, j, Identifier)
+                    partialStates(n,0) = i; partialStates(n,1) = j; partialStates(n,2) = Identifier(Nx,Ny,Nz,Sz);
+
+                    n++;
+                }
+            }
+        }
+        #pragma omp critical
+        Holes.insert_rows(0,partialStates);
+    }
+
+
     Particles = zeros<mat>(0,3);
 
-    start = clock();
-    int n=0; // n will count how many two-state combinations we find. Used as indice in the matrix
-    for (int i=0; i<Nholes; i++){
-        for (int j=0; j<Nholes; j++){
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int nthreads = omp_get_num_threads();
 
-            if (i != j){ // Pauli principle demands that the particles must be unequal
+        // Setting up size for the partial Holes matrix. This size is more deeply explained in the thesis.
+        int size = floor( Nparticles/nthreads) * (Nparticles-1);
+        if ( id < Nparticles%nthreads) size += Nparticles - 1;
 
-                // Setting up direct channels for holes
+        mat partialStates = zeros<mat>(size,3);
 
-                // Two-hole momentum and spin
-                int Nx = basis.States(i,1) + basis.States(j,1); // Combining x-momentum
-                int Ny = basis.States(i,2) + basis.States(j,2); // Combining y-momentum
-                int Nz = basis.States(i,3) + basis.States(j,3); // Combining z-momentum
-                int Sz = basis.States(i,4) + basis.States(j,4); // Combining spin
+        int n=0; // n will count how many two-state combinations we find. Used as indice in the matrix
+        for (int aa=id; aa<Nparticles; aa+=nthreads){
+            for (int bb=0; bb<Nparticles; bb++){
 
-                // Adding a new two-hole-state configuration to matrix. (i, j, Identifier)
-                Holes.insert_rows(n,1);
-                Holes(n,0) = i; Holes(n,1) = j; Holes(n,2) = Identifier(Nx,Ny,Nz,Sz);
+                if (aa != bb){
+                    int a=aa+Nholes; int b=bb+Nholes;
 
-                n++;
+                    int Nx = basis.States(a,1) + basis.States(b,1);
+                    int Ny = basis.States(a,2) + basis.States(b,2);
+                    int Nz = basis.States(a,3) + basis.States(b,3);
+                    int Sz = basis.States(a,4) + basis.States(b,4);
+
+                    partialStates(n,0) = a; partialStates(n,1) = b; partialStates(n,2) = Identifier(Nx,Ny,Nz,Sz);
+                    n++;
+                }
             }
         }
-    }
-    n=0;
-    for (int aa=0; aa<Nparticles; aa++){
-        for (int bb=0; bb<Nparticles; bb++){
-            int a=aa+Nholes; int b=bb+Nholes;
-
-            if (aa != bb){
-
-                int Nx = basis.States(a,1) + basis.States(b,1);
-                int Ny = basis.States(a,2) + basis.States(b,2);
-                int Nz = basis.States(a,3) + basis.States(b,3);
-                int Sz = basis.States(a,4) + basis.States(b,4);
-
-                Particles.insert_rows(n,1);
-                Particles(n,0) = a; Particles(n,1) = b; Particles(n,2) = Identifier(Nx,Ny,Nz,Sz);
-                n++;
-            }
-        }
+        #pragma omp critical
+        Particles.insert_rows(0,partialStates);
     }
     NPARTICLES = Particles.n_rows;
     NHOLES = Holes.n_rows;
+}
 
-    finish = clock();
-    double ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "Direct state needed " << ptime << " seconds. " << endl;
-
-
+void Solver::CrossStates_Parallel(){
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // %%%%%%%%% SETTING UP CROSS STATES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    Xhp = zeros<mat>(0,3);
-    Xph = zeros<mat>(0,3);
+    Xhp = zeros<mat>(Nparticles*Nholes,3);
+    Xph = zeros<mat>(Nparticles*Nholes,3);
 
-    start = clock();
-
-    n=0;
+    int n=0;
     for (int i=0; i<Nholes; i++){
         for (int aa=0; aa<Nparticles; aa++){
             int a = aa + Nholes;
@@ -536,9 +663,6 @@ void Solver::TwoBodyConfigurations(){
             int Nzc = basis.States(i,3) - basis.States(a,3);
             int Szc = basis.States(i,4) - basis.States(a,4);
 
-            Xhp.insert_rows(n,1);
-            Xph.insert_rows(n,1);
-
             Xhp(n,0) = i; Xhp(n,1) = a; Xhp(n,2) = Identifier(Nxc,Nyc,Nzc,Szc);
             Xph(n,0) = a; Xph(n,1) = i; Xph(n,2) = Identifier(-Nxc,-Nyc,-Nzc,-Szc);
 
@@ -546,17 +670,15 @@ void Solver::TwoBodyConfigurations(){
         }
     }
     NX = Xhp.n_rows;
+}
 
-    finish = clock();
-    ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "Cross state needed " << ptime << " seconds. " << endl;
-
+void Solver::TripleStates_Parallel(){
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // %%%%%%%%%%%%%%% SETTING UP K_h AND K_pph %%%%%%%%%%%%%%%%%%%%%%%
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Kh = zeros<mat>(0,2); Khpp = zeros<mat>(0,4);
 
-    n=0;
+    int n=0;
     for (int i=0; i<Nholes; i++){
 
         int Nx = basis.States(i,1); // Combining x-momentum
@@ -569,36 +691,48 @@ void Solver::TwoBodyConfigurations(){
         Kh(n,0) = i; Kh(n,1) = Identifier(Nx,Ny,Nz,Sz);
         n++;
     }
-    n=0;
-    start = clock();
-    for (int i=0; i<Nholes; i++){
-        for (int aa=0; aa<Nparticles; aa++){
-            for (int bb=0; bb<Nparticles; bb++){
 
-                int a=aa+Nholes; int b=bb+Nholes;
-                if (aa != bb){
-                    int Nx = basis.States(a,1) + basis.States(b,1) - basis.States(i,1);
-                    int Ny = basis.States(a,2) + basis.States(b,2) - basis.States(i,2);
-                    int Nz = basis.States(a,3) + basis.States(b,3) - basis.States(i,3);
-                    int Sz = basis.States(a,4) + basis.States(b,4) - basis.States(i,4);
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int nthreads = omp_get_num_threads();
 
-                    Khpp.insert_rows(n,1);
-                    Khpp(n,0) = i; Khpp(n,1) = a; Khpp(n,2) = b; Khpp(n,3) = Identifier(Nx,Ny,Nz,Sz);
-                    n++;
+        // Setting up size for the partial Holes matrix. This size is more deeply explained in the thesis.
+        int size = floor( Nparticles/nthreads) * Nholes*(Nparticles-1);
+        if ( id < Nparticles%nthreads) size += Nholes*(Nparticles-1);
+
+        mat partialStates = zeros<mat>(size,4);
+
+        int n=0;
+        for (int aa=id; aa<Nparticles; aa += nthreads){
+            for (int i=0; i<Nholes; i++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    if (aa != bb){
+                        int a=aa+Nholes; int b=bb+Nholes;
+                        int Nx = basis.States(a,1) + basis.States(b,1) - basis.States(i,1);
+                        int Ny = basis.States(a,2) + basis.States(b,2) - basis.States(i,2);
+                        int Nz = basis.States(a,3) + basis.States(b,3) - basis.States(i,3);
+                        int Sz = basis.States(a,4) + basis.States(b,4) - basis.States(i,4);
+
+                        partialStates(n,0) = i; partialStates(n,1) = a; partialStates(n,2) = b; partialStates(n,3) = Identifier(Nx,Ny,Nz,Sz);
+                        n++;
+                    }
                 }
             }
         }
+        #pragma omp critical
+        {
+            Khpp.insert_rows(0,partialStates);
+        }
     }
-    NKh3 = Khpp.n_rows; NKh = Kh.n_rows;
-    finish = clock();
-    ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "K_h and K_hpp states needed " << ptime << " seconds. " << endl;
 
+    NKh3 = Khpp.n_rows; NKh = Kh.n_rows;
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // %%%%%%%%%%%%%%%%% SETTING UP K_p AND K_phh STATES %%%%%%%%%%%%%%%%%%%%%%
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    start = clock();
+
     Kp = zeros<mat>(0,2); Kphh = zeros<mat>(0,4);
     n=0;
     for (int aa=0; aa<Nparticles; aa++){
@@ -614,29 +748,43 @@ void Solver::TwoBodyConfigurations(){
         Kp(n,0) = a; Kp(n,1) = Identifier(Nx,Ny,Nz,Sz);
         n++;
     }
-    n=0;
-    for (int i=0; i<Nholes; i++){
-        for (int j=0; j<Nholes; j++){
-            for (int aa=0; aa<Nparticles; aa++){
 
-                int a=aa+Nholes;
-                if (i != j){
-                    int Nx = basis.States(i,1) + basis.States(j,1) - basis.States(a,1);
-                    int Ny = basis.States(i,2) + basis.States(j,2) - basis.States(a,2);
-                    int Nz = basis.States(i,3) + basis.States(j,3) - basis.States(a,3);
-                    int Sz = basis.States(i,4) + basis.States(j,4) - basis.States(a,4);
+    #pragma omp parallel
+    {
+        int id = omp_get_thread_num();
+        int nthreads = omp_get_num_threads();
 
-                    Kphh.insert_rows(n,1);
-                    Kphh(n,0) = a; Kphh(n,1) = i; Kphh(n,2) = j; Kphh(n,3) = Identifier(Nx,Ny,Nz,Sz);
-                    n++;
+        // Setting up size for the partial Holes matrix. This size is more deeply explained in the thesis.
+        int size = floor( Nholes/nthreads) * Nparticles*(Nholes-1);
+        if ( id < Nholes%nthreads) size += Nparticles*(Nholes-1);
+
+        mat partialStates = zeros<mat>(size,4);
+        int n=0;
+        for (int i=id; i<Nholes; i+=nthreads){
+            for (int j=0; j<Nholes; j++){
+                for (int aa=0; aa<Nparticles; aa++){
+
+                    if (i != j){
+                        int a=aa+Nholes;
+                        int Nx = basis.States(i,1) + basis.States(j,1) - basis.States(a,1);
+                        int Ny = basis.States(i,2) + basis.States(j,2) - basis.States(a,2);
+                        int Nz = basis.States(i,3) + basis.States(j,3) - basis.States(a,3);
+                        int Sz = basis.States(i,4) + basis.States(j,4) - basis.States(a,4);
+
+                        partialStates(n,0) = a; partialStates(n,1) = i; partialStates(n,2) = j; partialStates(n,3) = Identifier(Nx,Ny,Nz,Sz);
+                        n++;
+                    }
                 }
             }
         }
+        #pragma omp critical
+        {
+            Kphh.insert_rows(0,partialStates);
+        }
     }
+
     NKp3 = Kphh.n_rows; NKp = Kp.n_rows;
-    finish = clock();
-    ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "K_p and K_phh states needed " << ptime << " seconds. " << endl;
+
 }
 
 double Solver::Identifier(int Nx, int Ny, int Nz, int Sz){

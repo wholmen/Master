@@ -7,6 +7,7 @@
 #include <math.h>
 #include <block.h>
 #include <time.h>
+#include <omp.h>
 
 #define pi 3.14159265359
 
@@ -74,8 +75,9 @@ public:
     vec CCD_ReturnAllIterations();
     double CorrolationEnergy(); // Function used to calculate energy for every iteration in the amplitudes
     void UpdateAmplitudes(); // Function that updates the amplitudes
-    void TwoBodyConfigurations(); // A function call that set up the matrices Holes, Particles and States with sizes (NHOLES,3) (NPARTICLES,3) (NSTATES,3). Each row contains (state1, state2, identifier)
-
+    void DirectStates_Parallel(); // Parallelized version of TwoBodyConfigurations(). A function call that set up the matrices Holes, Particles and States with sizes (NHOLES,3) (NPARTICLES,3) (NSTATES,3). Each row contains (state1, state2, identifier)
+    void CrossStates_Parallel();  // Parallelized version of TwoBodyConfigurations()
+    void TripleStates_Parallel(); // Parallelized version of TwoBodyConfigurations()
 
     // Various assisting functions
     double AbsoluteDifference(double a, double b); // Returns sqrt( (a-b)^2 )

@@ -28,6 +28,7 @@ void ResultsNshells11Nfilled2_Blocks();
 void ResultsNshells12Nfilled2_Blocks();
 void ResultsNshells13Nfilled2_Blocks();
 
+void ResultsNshells14to40Nfilled2_Blocks();
 
 void AllIterationsNh14Ns54_Intermediates();
 void AllIterationsNh14Ns54_Blocks();
@@ -36,8 +37,9 @@ void AllIterationsNh14Ns54_Blocks();
 int main()
 {
     // Function to test solver
-    TestSolver1();
+    //TestSolver1();
 
+    ResultsNshells14to40Nfilled2_Blocks();
 
     // Producing results for rs in [0.5,1.0,2.0] for different amount of states.
     /*
@@ -75,9 +77,11 @@ void PrintMagicNumbers(){
     }
 }
 
+
+
 void TestSolver1(){
     clock_t start, finish;
-    int Nshells = 7;
+    int Nshells = 40;
     int NfilledShells = 2;
     double rs = 1.0;
 
@@ -99,6 +103,7 @@ void TestSolver1(){
     cout << endl << "CCD Energy:" << setprecision(12) << solve.CCD(200) << endl;
     finish = clock(); ptime = (double(finish-start)/CLOCKS_PER_SEC);
     cout << "Iterations needed " << ptime << " seconds." << endl;
+
 }
 
 
@@ -610,6 +615,35 @@ void ResultsNshells13Nfilled2_Blocks(){
     myfile.close();
 
     cout << "Function 'ResultsNshells13Nfilled2_Blocks()' ended" << endl;
+}
+
+void ResultsNshells14to40Nfilled2_Blocks(){
+
+    ofstream myfile;
+    myfile.open("../Results/Solver_Nshells14to40Nfilled2.txt");
+    myfile << "A coupled cluster study of electron gas using a parallel code with blocks implementation for different amount of states" << endl;
+    myfile << "The results are presented in the following order: " << endl;
+    myfile << "States, Occupied States, weight, rs, Reference Energy, CCD Energy, Iterations, time spent initiate, time spent iterating" << endl;
+
+
+    int Nfilled = 2; double rs = 1.0;
+    for (int Nshells=14; Nshells<41; Nshells++){
+
+        ElectronBasis basis = ElectronBasis(Nshells,Nfilled,rs);
+
+        double time_init_0 = omp_get_wtime();
+        Solver solve = Solver(basis);
+        double time_init_1 = omp_get_wtime();
+
+        solve.weight = 0.3;
+
+        double time_iter_0 = omp_get_wtime();
+        double E = solve.CCD(200);
+        double time_iter_1 = omp_get_wtime();
+
+        myfile << basis.Nstates << " " << basis.Nholes << " " << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << E << " " << solve.NIterations << " " << time_init_1 - time_init_0 << " " << time_iter_1 - time_iter_0 << endl;
+    }
+
 }
 
 // Functions to produce a comparison between blocks and intermediates

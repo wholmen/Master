@@ -22,3 +22,8 @@ HEADERS += \
     ../../Solvers/Solvers/ccdnaive.h
 
 LIBS += -llapack -lblas -larmadillo
+
+
+QMAKE_CXXFLAGS+= -fopenmp
+QMAKE_LFLAGS +=  -fopenmp
+LIBS += -fopenmp

@@ -52,14 +52,18 @@
 
 
 \begin{chapter}{Quantum Mechanics}
- 	
+ 	At the 
 	\begin{section}{Postulates}
  		Quantum mechanics is built upon by a few principles \cite{Audun,Griffiths,Sakurai,Susskind2014}, often called the postulates of quantum mechanics. 
  		\begin{enumerate}
  			\item \textbf{The Wave Function} \\
- 			All information on a quantum system is given by the wave function $\left| \Psi(x,t) \right>$. The wave function represent the probability of measuring a particle within a small volume $\text{dx}$ and for a given time, $t$. As the probability cannot exceed $1$, the wave function must be normalized, namely
+ 			All information on a quantum system is given by the wave function $\Psi(x,t) $. The wave function represent the probability of measuring a particle within a small volume $\text{dx}$ and for a given time, $t$. As the probability cannot exceed $1$, the wave function must be normalized, namely
  			\begin{align}
  				\int_{-\infty}^\infty \Psi^*(x,t) \Psi(x,t) \text{dx} = 1
+ 			\end{align}
+ 			Using Dirac notation, we write the wave function as
+ 			\begin{align}
+ 				\left| \Psi \right>
  			\end{align}
  			Physical distinguishable states are orthogonal to each other. Using normalized states, they are orthonormal to each other, meaning that for two unambigously distuingishable states, we have
  			\begin{align}
@@ -90,48 +94,123 @@
  			Where we have defined the Hamiltonian operator $\hat H$. The Hamiltonian will be used throughout the thesis, as its eigenvalues are the measurable energy. We will primerily be focused on solving the \textit{time independent} Schrodinger equation
  			\begin{align}
  				\hat H \left| \Psi(x) \right> = E \left| \Psi(x) \right> 
- 			\end{align}
+ 			\end{align} 
  		\end{enumerate}
  	\end{section}
 
+ 	\begin{section}{The many-body wavefunction}
+ 		A single particle in isolation, occupy the single particle wave function \cite{Audun,Crawford}
+ 		\begin{align}
+ 			\phi_i(\mathbf{x}_1)
+ 		\end{align}
+ 		Single particle wave functions are described by the small letter $\phi$, holding all relevant quantum numbers. The vector $\mathbf{x}_1$ holds information on translational position as well as spin for particle $1$. When aiming to describe a system consisting of many such particles, it is tempting to think of the many body wave function as a function of each particle's wave function 
+ 		\begin{align}
+ 			\Phi = \Phi( \phi_1(\mathbf{x}_1), \phi_2(\mathbf{x}_2), ..., \phi_N(\mathbf{x}_N) )
+ 		\end{align}
+ 		Where we will use the large letters $\Psi$ and $\Phi$ as the many body wave functions. This wave function will be sought in the combined Hilbert space of the single particle functions \cite{MHJSlides}
+ 		\begin{align}
+ 			\Phi \in \mathcal{H} = \mathcal{H}_1 \oplus \mathcal{H}_2 \oplus ... \oplus \mathcal{H}_N
+ 		\end{align}
+ 		Where $\mathcal{H}_i$ represent the Hilbert space for particle $i$. This combined space is referred to as the Fock space \cite{MHJSlides}. A first guess for the wave function can be the \textit{Hatree-product} of single particle functions \cite{Audun,ShavittAndBartlett,Szabo} 
+ 		\begin{align}
+ 			\Phi_h = \phi_1(\mathbf{x}_1), \phi_2(\mathbf{x}_2), ..., \phi_N(\mathbf{x}_N) = \prod_{i=1}^N \phi_i(\mathbf{x}_i)
+ 		\end{align}
+
+ 	\end{section}
+
+ 	\begin{section}{Pauli's Exclusion Principle}
+ 		Pauli exclusion principle, also called the antisymmetry principle or the symmetrization requirement \cite{Szabo,Griffiths} is quite often included as one of the underlying postulates of quantum mechanics. Guessing that the two-body wave function is on the form of a Hatree-product
+ 		\begin{align}
+ 			\Psi(\mathbf{x}_1,\mathbf{x}_2) = \phi_1({\mathbf{x}_1}) \phi_b(\mathbf{x}_2)
+ 		\end{align}
+ 		We are claiming that the two particles are distinguishable. That electron $1$ occupy state $\phi_1$ and electron $2$ occupy $\phi_2$. All particles, however, are completely identical, with no way of separating them from each other \cite{Griffiths}. Therefore, one must require a different form on the wavefunction, one that does not commit the particles to specific wavefunctions. Introducing a general wavefunction
+ 		\begin{align}
+ 			\Psi(\mathbf{x}_1,\mathbf{x}_2) = A[\psi_1(\mathbf{x}_1) \psi_2(\mathbf{x}_2) \pm \mathbf{x}_2) \psi_2(\mathbf{x}_1)]
+ 		\end{align}
+ 		With $A$ given as a normalization factor. We notice the choice of sign. Particles with spin integers, named bosons, will require the use of the positive sign, and the wavefunction will therefore remain unchanged through the interchange of particles. Particles with spin half-integers, will require the use of a negative sign. All particles used in calculations in this thesis are fermions. Namely electrons, neutrons or protons. We can introduce the specific antisymmetrization requirement for this thesis as
+ 		\begin{align}
+ 			\Psi(\mathbf{x}_1,\mathbf{x}_2) = -\Psi(\mathbf{x}_2,\mathbf{x}_1)
+ 		\end{align}
+ 		An exchange of particles can be represented through the use of a pertubation operator $\hat P$, which gives 
+ 		\begin{align}
+ 			\hat P \Psi(\mathbf{x}_1,\mathbf{x}_2) = \Psi(\mathbf{x}_2,\mathbf{x}_1)
+ 		\end{align}
+ 	\end{section}
+
+	\begin{section}{Slater Determinant}
+		The antisymmetrized wave function grows rapidly for every added particle, and we need to introduce a more convenient notation, called the Slater Determinant. Written in terms of the perturbation operator \cite{Audun}
+		\begin{align}
+			\Phi_{SD} = \frac{1}{\sqrt{N!}} \sum_\lambda^{N!} \hat P_\lambda (-1)^{n(\lambda)} \Phi_h		 	
+		\end{align} 
+		Where the perturbation operator, $\hat P_{\lambda}$ performes every perturbation possible, and introducing a factor $-1$ every time a perturbation is performed. Introducing the anti-symmetry operator $\mathcal{A}$, we can write the shorthand equation
+		\begin{align}
+			\Phi_{SD} = \sqrt{N!}\mathcal{A}\Phi_h
+		\end{align}
+		Where we have defined $\mathcal{A}$ as \cite{MHJSlides}
+		\begin{align}
+			\mathcal{A} = \frac{1}{N!} \sum_\lambda (-1)^\lambda \hat P
+		\end{align}
+		This operator holds important properties, like commuting with the Hamiltonian operator
+		\begin{align}
+			\left[\hat H, \mathcal{A}\right] = 0
+		\end{align}
+		and 
+		\begin{align}
+			\mathcal{A}^2 = \mathcal{A}, \:\:\:\:\:\:\:\: \mathcal{A} = \mathcal{A}^\dagger
+		\end{align}
+		A more intuitive representation of the Slater determinant is on the matrix form 
+		\begin{align}
+			\Phi_{SD} = \frac{1}{ \sqrt{N!} } \left|\begin{matrix}
+				\phi_1(\mathbf{x}_1) & \phi_2(\mathbf{x}_1) & \cdots & \phi_N(\mathbf{x}_1) \\
+				\phi_1(\mathbf{x}_2) & \phi_2(\mathbf{x}_2) & \cdots & \phi_N(\mathbf{x}_2) \\
+				\vdots & \vdots & \ddots & \vdots \\
+				\phi_1(\mathbf{x}_N) & \phi_2(\mathbf{x}_N) & \cdots & \phi_N(\mathbf{x}_N) 
+			\end{matrix} \right|
+		\end{align}
+		This way of writing the many-body wave function will represent linear a combination of products of the one-body wave functions $\phi_i$'s and all the electronic coordinates $\mathbf{x}_i$ distributed among them in all possible ways. Exchanging two lines will change the sign such that the Slater Determinant will respect the antisymmetric requirement. Introducing a convenient shorthand expression using Dirac-notation, consisting only of the diagonal elements of the Slater determinant \cite{Crawford}
+		\begin{align}
+			\left| \Phi \right > = \left| \phi_1(\mathbf{x}_1) \phi_2(\mathbf{x}_2) ... \phi_N({\mathbf{x}_N}) \right>  
+		\end{align}
+		Which will be the preferred representation of a Slater determinant until Second quantization is introduced. 
+	\end{section}
+
+	\begin{section}{An ansatz for the Wave Function}
+		The true wave function, represented by
+		\begin{align}
+			\Psi
+		\end{align}
+		is rarely known. On the contrary, one of the goals of many body quantum mechanics is to find an expression for $\Psi $. To find $\Psi$, one can introduce the Slater Determinant as a approximation to the wave function 
+		\begin{align}
+			\Psi \approx \Phi_{SD}
+		\end{align}
+		made up of a set of known single particle wave functions $\phi_i$. Choosing a set of single particle functions that lies close to the true state, will provide good results. Calculations will be made easier by using single particle states that are eigenstates of the one-body Hamiltonian operator. One could, for example, choose the hydrogen orbitals as single particle functions when calculating on electrons around an atom. We name $\Phi_{SD}$ the ansatz for the true wave function. 
+	\end{section}
+
+ 	\begin{section}{The Hamiltonian}
+ 		The Hamiltonian operator represent the total energy for the system, namely the kinetic energy and the potential energy
+ 		\begin{align}
+ 			\hat H = \hat T + \hat V
+ 		\end{align}
+ 		Where we can write the kinetic energy as
+ 		\begin{align}
+ 			\hat T = \sum_p \frac{\hbar^2}{2m} 
+ 		\end{align}
+ 	\end{section}
+
+	\begin{section}{Building a many body state}
+		
+	\end{section}
 
  	\begin{section}{The Born-Oppenheimer Approximation}
  		The Born-Oppenheimer approximation lies at the heart of many-body quantum mechanics. 
  	\end{section}
 
- 	\begin{section}{Pauli's Exclusion Principle}
- 		Pauli exclusion principle, also called the antisymmetry principle \cite{Szabo} 
- 	\end{section}
-
-	\begin{section}{The Variational Principle}
-
-	\end{section}
-
-	\begin{section}{Slater Determinant}
-		A system composed of a nuclei and electrons moving in accordance to the forces of electromagnetic attraction can be described by assigning each electron
-		a wave function 
-		\begin{align}
-			\phi_i(\mathbf{x}_i)
-		\end{align}
-		Where $\mathbf{x}_i$ is the position vector for the electron i. Describing a system of many electrons can be done writing a Slater Determinant
-		\begin{align}
-			\ket{\Phi_0} = \frac{1}{ \sqrt{N!} } \left|\begin{matrix}
-				\phi_1(\mathbf{x}_1) & \phi_2(\mathbf{x}_1) & ... & \phi_N(\mathbf{x}_1) \\
-				\phi_1(\mathbf{x}_2) & \phi_2(\mathbf{x}_2) & ... & \phi_N(\mathbf{x}_2) \\
-				... & & & \\
-				\phi_1(\mathbf{x}_N) & \phi_2(\mathbf{x}_N) & ... & \phi_N(\mathbf{x}_N) 
-			\end{matrix} \right|
-		\end{align}
-		This way of writing the many-body wave function will represent linear a combination of products of the one-body wave functions $\phi_i$'s and all the electronic coordinates
-		$\mathbf{x}_i$ distributed among them in all possible ways. Exchanging two lines will change the sign such that the Slater Determinant will respect the anti-symmetry 
-		requirement. \par
-		We can choose the one-body wave functions that is most rewarding the specified system. When calculating on electrons moving with respect to a nuclei, one can choose the wave
-		functions to be the 1s, 2s, 2p, .. orbitals. This representation will not, however, take into account the Colombic repulsion between two electrons and will only be an 
-		approximation to the true wavefunction, $\ket{\Psi}$.
-	\end{section}
-
 	\begin{section}{Matrix Elements}
 		
+	\end{section}
+
+	\begin{section}{The Variational Principle}
+		The variational principle is a very powerful principle, 
 	\end{section}
 
 \end{chapter}
@@ -1102,11 +1181,19 @@
 
 
 
-\begin{chapter}{Coupled-Cluster Theory}
- 	In Coupled Cluster theory, the ansatz we make is to make an expansion in the wave function
- 	\begin{align}
- 		\ket{\Psi} \approx e^{\hat T} \ket{\Psi_0}
-  	\end{align}
+\begin{chapter}{Coupled-Cluster Theory} 
+	Coupled Cluster Theory is similar to Full Configuration Interaction theory. Coupled-cluster theory is a post-Hartree-Fock method, so we set up an ansatz for the ground state wave function, $\left| \Phi_0 \right>$. One can, for the best results, optimize this basis by the use of Hartree-Fock method. The goal of Coupled-cluster theory is to improve the ansatz by including a set of excitations. Coester and Kummel initiall developed the ideas that led to the coupled-cluster theory in the late 1950's \cite{MHJonline}. 
+ 	
+ 	\begin{section}{The Exponential Ansatz}
+ 		The basic idea of Coupled-cluster theory is to express the true wavefunction as an exponential operator working on the Slater determinant  
+ 		\begin{align}
+	 		\ket{\Psi} \approx e^{\hat T} \ket{\Phi_0}
+	  	\end{align}
+
+
+ 	\end{section}
+
+ 	
   	The operator $\hat T$ is a linear combination of the cluster operators
   	\begin{align}
   		\hat T = \hat T_1 + \hat T_2 + \hat T_3 + ... + \hat T_N
@@ -2163,7 +2250,7 @@
 	\end{section}
 
 	\begin{section}{Parallellization}
-		To fully utilize the computational power in modern processors, one must use a parallellized code. Modern processors usually come with more than one core to save power output at the same effiency \cite{IntelOpenMP}. A standard written C++ program will be processed using only 1 \textit{thread}, meaning that a single core only will be used. The super computer, \textit{Smaug}, located at the Institute of Physics at the University of Oslo is built of processors with many but low performing cores given todays standards. If one can split the program into multiple threads, each executed at the same time in different cores, one can hope to reduce computational time substansially. 
+		To fully utilize the computational power in modern processors, one must use a parallellized code. Modern processors usually come with more than one core to save power output at the same effiency \cite{IntelOpenMP}. A standard written C++ program will be processed using only 1 \textit{thread}, meaning that a single core only will be used. The super computer, \textit{Smaug}, located at the Institute of Physics at the University of Oslo is built of processors with many but low performing cores given todays standards. If one can split the program into multiple threads, each executed at the same time in different cores, one can hope to reduce computational time substansially. OpenMP is an 
 	\end{section}
 
 \end{chapter}
@@ -2336,6 +2423,10 @@
 	T. Daniel Crawford and Henry F. Schaefer III
 	\textit{An Introduction to Coupled Cluster Theory for Computational Chemists} 
 
+	\bibitem{Kummel}
+	Hermann G. Kummel. A biography of the coupled cluster method. 
+	\textit{International Journal of Modern Physics B,} 17(28), 2003. 
+
 	\bibitem{Day1967} 
 	B. D. Day
 	\textit{Rev. Mod. Phys.,}
@@ -2383,10 +2474,19 @@
 	\textit{Many-body Methods for Nuclear Physics, Nuclear Talent course 2} 
 	URL: \textit{http://nucleartalent.github.io/Course2ManyBodyMethods/doc/web/course.html}
 
+	\bibitem{MHJSlides}
+	Morten Hjorth-Jensen
+	\textit{Slides from the course FYS-KJM4480 2013/2014}
+	URL: \textit{http://www.uio.no/studier/emner/matnat/fys/FYS-KJM4480/h13/undervisningsmateriale/Slides\%20from\%20lectures/fys4480.pdf}
+
 	\bibitem{IntelOpenMP}
 	Tim Mattson
 	\textit{Intel Youtube Course in OpenMp: Introduction to OpenMP - Tim Mattson (Intel)}
 	URL: \textit{https://www.youtube.com/playlist?list=PLLX-Q6B8xqZ8n8bwjGdzBJ25X2utwnoEG}.
+
+	\bibitem{Smaug}
+	\textit{Computational physics homepage on use of computational cluster, Smaug.}
+	URL: \textit{http://comp-phys.net/cluster-info/using-smaug/}
 
 	\bibitem{WholmenGithub}
 	Fredrik Wilhelm Holmen

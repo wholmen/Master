@@ -12,9 +12,10 @@
   \renewcommand{\listingsfont}{\listingsfontfamily}
 \fi
 
+\setlength{\parskip}{1em}
 
 \author{Fredrik Wilhelm Holmen}
-\title{Master thesis Wilhelm Coupled Cluster}
+\title{A Study of Coupled Cluster Methods for infinite matter}
 \date{Autumn 2015}
 
 \begin{document}
@@ -26,17 +27,20 @@
 \maketitle
 
 \begin{abstract}
-	This is an abstract text.
+	In this thesis, we present the formalism of many body methods, with an emphasis on the Coupled Cluster method with double excitations. 
 \end{abstract}
 
-\begin{dedication}
-	To someone
-	\\\vspace{12pt}
-  
-\end{dedication}
-
 \begin{acknowledgements}
-	I acknowledge my acknowledgements.
+	The work I have done in this thesis could never been done without the help of Morten Hjorth-Jensen, my advisor. You have taught me everyting I have used in this thesis, through your many great courses and personal interactions. I want to thank you for the amazing work you have done for the group Computational Physics and for how you inspire everyone you meet. The material I present in this thesis are built heavily upon the work of others. A special thank you to Audun Skau Hansen. My work is influenced by your great thesis. 
+
+	I would like to thank Henrik Sveinsson for being a great inspiration and a good friend. You taught me the value of hard work and high ambitions! It was you who sparked my interest in physics at Oslo katedralskole when I followed your path in the natural sciences. I would also like to thank Bjørnar Pettersen and Marit Ingebrigtsen, my two of my teachers at Oslo katedralskole. 
+
+	The last five years have been an amazing experience. I have learned way more than I thought possible, I have met great people and I have been given opportunities by the institute to develop my skills as a tutor. Much of the positive experience is owed to the community at Lillefy, the home of Fysikkforeningen and Fysisk Fagutvalg, where I have emptied countless cups of coffee. Vetle Wegner Ingeberg, Henrik Limseth, Torgeir Mo, Sigve Smedsrud Harang, Anders Lauvland have been my best friends for the last five years. You have selflessly shared your knowledge, good humour and beers. 
+
+	I am thankful for my time at Computational Physics, a splendid master group, filled with brilliant and caring people. You have made an relaxed atmosphere, where interesting discussions and competitive card games light up the day. A special thank you to Marte Julie Sætra, Jonas van den Brink, Sean Bruce Miller and Emilie Fjørner for sharing my office and giving me loads of help. 
+
+	Thank you My Tien Diep for always keeping my motivation high and reducing my nerdy obsessions to a tolerable level.
+
 \end{acknowledgements}
 
 
@@ -45,6 +49,32 @@
 
 \begin{chapter}{Introduction}
 	In this thesis, I have calculated the ground state energy for the pairing model, homogenous electron gas and infinite nuclear matter. My main focus has been to implement the coupled cluster method with double excitations 
+
+	\begin{subsection}{Goals of the work}
+		
+	\end{subsection}
+
+	\begin{subsection}{Structure}
+		The first part of the thesis is purely a theoretical part, going through the formalism needed to develop many body methods. My own contributions are presenented in the chapter on implementation, and in the developed code, open to everyone at gibhub.com \cite{WholmenGithub}.
+
+		Chapter 2 Gives a short introduction to quantum mechanics, with a main focus on presenting the many-body wave function, the many-body Hamiltonian and the calculations of matrix elements. 
+
+		Chapter 3 Presents the formalism \textit{second quantization}. A powerful formalism that simplifies notation by rewriting states as operators. Wick's theorem gives a powerful tool to perform fast computations of matrix elements. This chapter will also aim to formulate the main goal of post-Hartree Fock methods, the calculation of the \textit{correlation energy}. 
+
+		Chapter 4 Gives a brief introduction to the use of Feynman diagrams to represent states, operators and contractions
+
+		Chapter 5 present a brief introduction to three many body methods, first the full configuration interaction, then the perturbation theory and Hartree-Fock theory. 
+
+		Chapter 6 gives a deeper introduction to coupled-cluster method and set up the equations for coupled-cluster with double excitations. 
+
+		Chapter 7 present the Pairing model, first introducing the Hamiltonian and basis states. The chapter focuses on how I implemented Full Configuration Interaction, Hartree-Fock calculations and many body perturbation theory to calculate the ground state energy. 
+
+		Chapter 8 present infinite matter, setting up the wave function, the Hamiltonian and the magic numbers needed to set up the basis. First looking at the homogenous electron gas before introducing the Minnesota potential for nuclear matter. 
+
+		Chapter 9 gives a thurough explanation of the various computational elements of the coupled-cluster solver. First explaining the general concepts of the direct implementation, before delving into more advanced implementations exploiting symmetries and efficiency of matrix multiplication. 
+
+		Chapter 10 contains all results produced for both the Pairing model, homogeneous electron gas and the neutron gas. 
+	\end{subsection}
 \end{chapter}
 
 
@@ -145,6 +175,7 @@
 		Where the perturbation operator, $\hat P_{\lambda}$ performes every perturbation possible, and introducing a factor $-1$ every time a perturbation is performed. Introducing the anti-symmetry operator $\mathcal{A}$, we can write the shorthand equation
 		\begin{align}
 			\Phi_{SD} = \sqrt{N!}\mathcal{A}\Phi_h
+			\label{equation:SlaterDeterminant}
 		\end{align}
 		Where we have defined $\mathcal{A}$ as \cite{MHJSlides}
 		\begin{align}
@@ -157,6 +188,7 @@
 		and 
 		\begin{align}
 			\mathcal{A}^2 = \mathcal{A}, \:\:\:\:\:\:\:\: \mathcal{A} = \mathcal{A}^\dagger
+			\label{equation:OperatorA}
 		\end{align}
 		A more intuitive representation of the Slater determinant is on the matrix form 
 		\begin{align}
@@ -191,22 +223,90 @@
  		\begin{align}
  			\hat H = \hat T + \hat V
  		\end{align}
- 		Where we can write the kinetic energy as
+ 		Where we can write the kinetic energy as \cite{MHJSlides}
  		\begin{align}
- 			\hat T = \sum_p \frac{\hbar^2}{2m} 
+ 			\hat T = \sum_{i=1}^N \frac{ \mathbf{p}_i^2}{2m_i} \sum_{i=1}^N \left( \frac{\hbar^2}{2m_i} \nabla_i^2 \right) = \sum_{i=1} t(x_i)
  		\end{align}
- 	\end{section}
-
-	\begin{section}{Building a many body state}
-		
-	\end{section}
-
- 	\begin{section}{The Born-Oppenheimer Approximation}
- 		The Born-Oppenheimer approximation lies at the heart of many-body quantum mechanics. 
+ 		And a general potential operator can be written as
+ 		\begin{align}
+ 			\hat V = \sum_{i=1}^N \hat u_{ext}(x_i) + \sum_{ji = 1}^N v(x_i,x_j) + \sum_{ijk=1}^N v(x_i,x_j,x_k) + \cdots 
+ 		\end{align}
+ 		Where we have included the possibility of more than two-body interactions. When doing quantum chemistry, it is common to \textit{freeze} the core. This is called the Born-Oppenheimer Approximation, and simplifies the potential a lot. We now need to look at electrons interacting with a positive core through the Coulombic interaction. The Coulombic potential is a two-body potential, and including the interaction between every electron, we can rewrite the Hamiltonian as
+ 		\begin{align}
+ 			\hat H = \sum_{i=1}^{N_e} t(x_i) - \sum_{i=1}^{N_e} k \frac{Z}{r_i} + \sum_{i<j}^{N_e} \frac{k}{r_{ij}}
+ 		\end{align}
+ 		Where $N_e$ is the number of electrons and $k = 1.44$eVnm. It is useful to group the one- and two-body parts together
+ 		\begin{align}
+ 			\hat H = \hat H_0 + \hat H_1
+ 		\end{align}
+ 		Where we have the one-electron energy
+ 		\begin{align}
+ 			\hat H_0 = \sum_{i=1}^{N_e} t(x_i) - \sum_{i=1}^{N_e} k \frac{Z}{r_i}
+ 		\end{align}
+ 		and the interaction term
+ 		\begin{align}
+ 			\hat H_1 = \sum_{i<j}^{N_e} \frac{k}{r_{ij}}
+ 		\end{align}
+ 		It is very useful to have an ansatz for the wavefunction that satisfies the relation
+ 		\begin{align}
+ 			\hat H_0 \left| \phi_\lambda \right> = \epsilon_\lambda \left| \phi_\lambda \right>
+ 		\end{align}
+ 		In this thesis, I have only included a two-body interaction for my potentials, simplifing the calculations on nuclear matter by using easier potentials. 
  	\end{section}
 
 	\begin{section}{Matrix Elements}
-		
+		A Slater determinant will have an energy, given by the Hamiltonian operator
+		\begin{align}
+			\hat H \left| \Phi_{SD} \right> = \epsilon_{SD} \left| \Phi \right>
+		\end{align}
+		We aim to calculate the energy, and to do that, we need to introduce the concept of expectation values. By taking the Hermitian conjugate of a wave function, one finds the \textit{bra} version of the state. The original state is known as a $ket$ state. 
+		\begin{align}
+			\left( \left| \Phi_{SD} \right> \right)^\dagger = \left( \Phi_{SD}^* \right)^T = \left< \Phi_{SD} \right| 
+		\end{align}
+		The expectation value is defined as taking the inner product of two states, where one is worked on by an operator
+		\begin{align}
+			\int_{-\infty}^\infty \Phi_{SD}^\dagger \hat H \Phi_{SD} d \tau = \epsilon_{SD}
+		\end{align}
+		Because of the orthonormality of the states, this calculation will result in the energy. In terms of Dirac notation, this is usually referred to as \textit{multiplying from the left by a bra state}
+		\begin{align}
+			\left< \Phi_{SD} | \hat H | \Phi_{SD} \right> = \epsilon_{SD}
+		\end{align}
+		By splitting the Hamiltonian into the one-body and two-body part
+		\begin{align}
+			\hat H = \hat H_0 + \hat H_1 = \sum_i \hat h_0(x_i) + \sum_{i<j} \hat v(i,j)
+		\end{align}
+		we can rephrase the expectation value as a one-body calculation and a two-body calculation. 
+		\begin{align}
+			\left< \Phi_{SD} \right| \hat H \left| \Phi_{SD} \right> = \left< \Phi_{SD} \right| \hat H_0 \left| \Phi_{SD} \right> + \left< \Phi_{SD} \right| \hat H_1 \left| \Phi_{SD} \right>
+		\end{align}
+		Written out, this gives 
+		\begin{align}
+			\left< \Phi_{SD} \right| \sum_i \hat h_0(x_i) \left| \Phi_{SD} \right> + \left< \Phi_{SD} \right| \sum_{i<j} \hat v \left| \Phi_{SD} \right>
+		\end{align}
+		We will commonly refer to these elements as \textit{matrix elements}
+
+		\begin{subsection}{Calculation of matrix elements}
+			Looking at the one-body matrix element, we use equations (\ref{equation:SlaterDeterminant},\ref{equation:OperatorA})
+			\begin{align}
+				\left< \Phi_{SD} \right| \hat h_0(x_i) \left| \Phi_{SD} \right> = N! \left< \Phi_h \right| \hat h_0(x_i) \mathcal{A} \left| \Phi_h \right> 
+			\end{align}
+			Which, written out on the integral form gives
+			\begin{align}
+				\sum_i N! \int \Phi_h^* \hat h_0(x_i) \mathcal{A} \Phi_h d\tau 
+			\end{align}
+			Substituting out the Hatree-product and $\mathcal{A}$ for the perturbation operator, we are left with
+			\begin{align}
+				\sum_i \sum_\lambda (-1)^\lambda \int d\tau \left( \prod_j \phi_j(x_j)^* \right) \hat h_0(x_i) \hat P \left( \prod_k \phi_k(x_k) \right)
+			\end{align}
+			Because of the orthogonality of the single particle states, we can deduce that if $\hat h_0 \phi_i = \epsilon_i \phi_i$, any perturbation of particles on one Hartree-product, will set up an inner product of different particles and give zero as a result. We can therefore reduce the calculation to a single sum of unperturbed inner products. 
+			\begin{align}
+				\sum_i \epsilon_i \int \left( \prod_j \phi_j(x_j)^* \right) \left( \prod_k \phi_k(x_k) \right) = \sum_i \epsilon_i
+			\end{align}
+			So, by using single particle wave functions that are eigenstates for the one-body Hamiltonian operator, we get the simple result
+			\begin{align}
+				\left< \right. \hat H_0 \left. \right> = E_0 = \sum_i \epsilon_i 
+			\end{align}
+		\end{subsection}
 	\end{section}
 
 	\begin{section}{The Variational Principle}

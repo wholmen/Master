@@ -33,14 +33,17 @@ void ResultsNshells36to40Nfilled2_Blocks();
 void AllIterationsNh14Ns54_Intermediates();
 void AllIterationsNh14Ns54_Blocks();
 
+void CompareTimeAllSolvers();
 
 int main()
 {
     // Function to test solver
     //TestSolver1();
 
+    CompareTimeAllSolvers();
+
     //ResultsNshells3to35Nfilled2_Blocks();
-    ResultsNshells36to40Nfilled2_Blocks();
+    //ResultsNshells36to40Nfilled2_Blocks();
 
     // Producing results for rs in [0.5,1.0,2.0] for different amount of states.
     /*
@@ -107,7 +110,51 @@ void TestSolver1(){
 
 }
 
+void CompareTimeAllSolvers(){
 
+    ofstream myfile;
+    myfile.open("../Results/CompareTimeNaiveBlock.txt");
+    myfile << "A coupled cluster study of electron gas comparing a parallel code with blocks implementation for different amount of states with the naive implementation with and without intermediates" << endl;
+    myfile << "The results are presented in the following order: " << endl;
+    myfile << "Solver type, Shells, States, Occupied States, weight, rs, Reference Energy, Iterations, time, CCD Energy" << endl;
+
+    for (int Nshells = 2; Nshells <= 4; Nshells++){
+
+        int Nfilled = (Nshells == 2) ? 1 : 2;
+        double rs = 1.0;
+
+        ElectronBasis basis = ElectronBasis(Nshells,Nfilled,rs);
+
+        double time0 = omp_get_wtime();
+        Solver solve = Solver(basis);
+        solve.weight = 0.3;
+        double E = solve.CCD(200);
+        double time1 = omp_get_wtime();
+
+        myfile << setprecision(12) << "Block " << Nshells << " " << basis.Nstates << " " << basis.Nholes << " " << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time1-time0 << " " << E << endl;
+
+
+        time0 = omp_get_wtime();
+        CCDIntermediates solve2 = CCDIntermediates(basis);
+        solve2.weight = 0.3;
+        solve2.tolerance = 1e-12;
+        E = solve2.CCD(200);
+        time1 = omp_get_wtime();
+
+        myfile << setprecision(12) << "Imdts " << Nshells << " " << basis.Nstates << " " << basis.Nholes << " " << solve2.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve2.NIterations << " " << time1-time0 << " " << E << endl;
+
+        time0 = omp_get_wtime();
+        CCDNaive solve3 = CCDNaive(basis);
+        solve3.weight = 0.3;
+        solve3.tolerance = 1e-12;
+        E = solve3.CCD(200);
+        time1 = omp_get_wtime();
+
+        myfile << setprecision(12) << "Naive " << Nshells << " " << basis.Nstates << " " << basis.Nholes << " " << solve3.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve3.NIterations << " " << time1-time0 << " " << E << endl;
+
+    }
+
+}
 
 
 void ResultsNshells4Nfilled2_Blocks(){

@@ -1,3 +1,7 @@
 A coupled cluster study of electron gas using a parallel code with blocks implementation for different amount of states
 The results are presented in the following order: 
 Shells, States, Occupied States, weight, rs, Reference Energy, Iterations, time spent initiate, time spent iterating, CCD Energy
+36 1790 14 0.3 1 13.6035573356 66 105.55550415 2152.23601636 -0.512710549649
+37 1850 14 0.3 1 13.6035573356 66 111.838239051 2287.39791206 -0.51276799963
+38 1898 14 0.3 1 13.6035573356 66 112.713537128 2458.02586513 -0.512809235591
+39 2042 14 0.3 1 13.6035573356 66 138.762907883 2843.72000088 -0.512934564247

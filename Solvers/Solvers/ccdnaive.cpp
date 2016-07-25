@@ -12,7 +12,7 @@ CCDNaive::CCDNaive(PairingBasis BASIS) {
 
 
     // Weight when adding diagrams to new amplitudes
-    weight = 1.0;
+    weight = 1.0; tolerance = 1e-6;
 
     // Setting up matrices
     t0 = zeros<vec>(Nparticles2*Nholes2);
@@ -27,7 +27,7 @@ CCDNaive::CCDNaive(ElectronBasis BASIS){
     Nparticles = Nstates - Nholes; Nparticles2 = Nparticles*Nparticles; Nparticles3 = Nparticles2*Nparticles;
 
     // Weight when adding diagrams to new amplitudes
-    weight = 1.0;
+    weight = 1.0; tolerance = 1e-6;
 
     // Setting up matrices
     t0 = zeros<vec>(Nparticles2*Nholes2);
@@ -69,7 +69,7 @@ double CCDNaive::CCD(int MaxIterations){
     double E1 = CorrelationEnergy(); //cout << E1 << endl;
 
     // Start the iteration process
-    NIterations = 0; tolerance = 1e-6;
+    NIterations = 0;
     while ( AbsoluteDifference(E1,E0) > tolerance && NIterations < MaxIterations){
 
         E0 = E1;

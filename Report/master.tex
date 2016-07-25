@@ -79,10 +79,8 @@
 
 
 
-
-
 \begin{chapter}{Quantum Mechanics}
- 	At the 
+ 	
 	\begin{section}{Postulates}
  		Quantum mechanics is built upon by a few principles \cite{Audun,Griffiths,Sakurai,Susskind2014}, often called the postulates of quantum mechanics. 
  		\begin{enumerate}
@@ -296,26 +294,81 @@
 			\end{align}
 			Substituting out the Hatree-product and $\mathcal{A}$ for the perturbation operator, we are left with
 			\begin{align}
-				\sum_i \sum_\lambda (-1)^\lambda \int d\tau \left( \prod_j \phi_j(x_j)^* \right) \hat h_0(x_i) \hat P \left( \prod_k \phi_k(x_k) \right)
+				\sum_i \sum_\lambda (-1)^\lambda \int d\tau \left( \prod_j \phi_j(x_j)^* \right) \hat h_0(x_i) \hat P_\lambda \left( \prod_k \phi_k(x_k) \right)
 			\end{align}
-			Because of the orthogonality of the single particle states, we can deduce that if $\hat h_0 \phi_i = \epsilon_i \phi_i$, any perturbation of particles on one Hartree-product, will set up an inner product of different particles and give zero as a result. We can therefore reduce the calculation to a single sum of unperturbed inner products. 
+			Because of the orthogonality of the single particle states, we can deduce that any perturbation of particles on one Hartree-product, will set up an inner product of different particles and give zero as a result. We can therefore reduce the calculation to a single sum of unperturbed inner products. 
 			\begin{align}
-				\sum_i \epsilon_i \int \left( \prod_j \phi_j(x_j)^* \right) \left( \prod_k \phi_k(x_k) \right) = \sum_i \epsilon_i
+				\sum_i \ \int d\tau \left( \prod_j \phi_j(x_j)^* \right) \hat h_0(x_i) \left( \prod_k \phi_k(x_k) \right) 
 			\end{align}
-			So, by using single particle wave functions that are eigenstates for the one-body Hamiltonian operator, we get the simple result
+			Since the operator $\hat h_0(x_i)$ only works on $\phi_i(x_i)$, we can split the sum into two parts. Looking at the equation for particle i.
+			\begin{align}
+				\left< \phi_i \right| \hat h_0 \left| \phi_i \right> \cdot  \left( \prod_{j \neq i} \int d\tau \left| \phi_j(x_j) \right|^2 \right)
+			\end{align}
+			Which, using the orthonormality relations, become
+			\begin{align}
+				\left< \phi_i \right| \hat h_0 \left| \phi_i \right> \cdot 1
+			\end{align}
+			And we can write the one-body matrix elements as
+			\begin{align}
+				E_0 = \sum_i \left< \phi_i \right| \hat h_0 \left| \phi_i \right>
+			\end{align}
+			By using single particle wave functions that are eigenstates for the one-body Hamiltonian operator, we get the simple result
 			\begin{align}
 				\left< \right. \hat H_0 \left. \right> = E_0 = \sum_i \epsilon_i 
 			\end{align}
+
+			Applying the same logic for the two-body part
+			\begin{align}
+				\left< \Phi_{SD} \right| \hat H_1 \left| \Phi_{SD} \right>
+			\end{align}
+			We want to calculate 
+			\begin{align}
+				N! \left< \Phi_h \right| \sum_{i<j} \hat v_{ij} \mathcal{A} \left| \Phi_h \right> = N! \sum_{i<j} \int \Phi_h^* \hat v(x_i,x_j) \mathcal{A} \Phi_h d\tau
+			\end{align}
+			Written in terms of the perturbation operator
+			\begin{align}
+				\sum_{i<j} \sum_\sigma (-1)^\sigma \int \Phi_h^* v(x_1,x_2) \hat P \Phi_h d\tau
+			\end{align}
+			The two-body interaction will allow for a single perturbation, because it is dependent on the distance between the two particles. Every other particle must be unperturbed. 
+			\begin{align} 
+				\sum_{i<j} \int \Phi_h^* v(x_i,x_j) (1 - P_{ij}) \Phi_h d\tau
+			\end{align}
+			Where $P_{ij}$ means the interchange of the two particles $i$ and $j$. By the same argument as for the one-particle operator, most states vanish due to orthonormality, and we are left with the terms that take part in the interaction. 
+			\begin{align}
+				\frac{1}{2} \sum_\mu \sum_\nu & \left[ \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\mu(x_i) \phi_\nu(x_j) d x_i d x_j \right.  \\     -& \left. \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\nu(x_i) \phi_\mu(x_j) d x_i d x_j \right]
+			\end{align}
+			Where we have introduced the factor $\frac{1}{2}$ because the sum now counts all states twice. The first term is known as the direct term, and the second term is known as the \textit{exchange term} or the \textit{Fock} term and it incorporates the Pauli principle. We need to introduce an easier notation to present this matrix element
+			\begin{align}
+				\left< \mu \nu | v | \mu \nu \right> = \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\mu(x_i) \phi_\nu(x_j) d x_i d x_j
+			\end{align}
+			and 
+			\begin{align}
+				\left< \mu \nu | v | \nu \mu \right> = \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\nu(x_i) \phi_\mu(x_j) d x_i d x_j
+			\end{align}
+			And finally, we write it on an anti-symmetric form
+			\begin{align}
+				\left< \mu \nu | v | \mu \nu \right>_{AS} = \left< \mu \nu | v | \mu \nu \right> - \left< \mu \nu | v | \nu \mu \right> 
+			\end{align}
+			Meaning that we can write the expectation value of the interaction as a sum of alle the anti-symmetric matrix elements
+			\begin{align}
+				\left< \Phi_{SD} \right| \hat H_1 \left| \Phi_{SD} \right> = E_{\text{interaction}} = \frac{1}{2} \sum_{\mu \nu} \left< \mu \nu | v | \mu \nu \right>_{AS}
+ 			\end{align}
 		\end{subsection}
 	\end{section}
 
 	\begin{section}{The Variational Principle}
-		The variational principle is a very powerful principle, 
+		The variational principle is a very powerful principle, useful when doing many-body quantum theory. It states that, if you have a system with the true many body wave function $\left| \Psi \right>$ and the exact energy
+		\begin{align}
+			\left< \Psi \right| \hat H \left| \Psi \right> = \epsilon_0
+		\end{align}
+		Then, any approximate wave function will produce a larger energy \cite{Szabo}
+		\begin{align}
+			\left< \Phi \right| \hat H \left| \Phi \right> \leq \epsilon_0
+		\end{align}
+		So we can search for the wave function providing the lowest possible energy 
 	\end{section}
 
 \end{chapter}
-
-
 
 
 
@@ -994,14 +1047,11 @@
 		\end{figure}
 	\end{section}
 	
-	\begin{section}{Interpreting Diagrams}
-		Diagrams can be translated back to mathematical expressions using a toolset for interpreting diagrams. The most common use of diagrams is to present different 
-	\end{section}
+	\begin{section}{Interpreting Diagrams}	
+		The many-body methods presented in the thesis rely heavily upon operator expressions and contractions. A common use of diagrams, is to perform  contractions using the rules presented in this chapter, to set up diagrams representing the energy and wave functions. This is by many considered to be more efficient than to perform calculations using Wick's theorem by hand. 
 
-	\begin{section}{Linked Diagram theorem}
-		
+		An important part of using diagrams, is to have a consistant toolset to translate diagrams into mathematical expressions. These tools exist, see for example \cite{ShavittAndBartlett}, and the implementation of perturbation theory for Pairing model presented in this thesis.  
 	\end{section}
-
 
 \end{chapter}
 
@@ -1241,6 +1291,18 @@
 	 	\end{subsection}
 	\end{section}
 
+	\begin{section}{Linked Diagram theorem}
+		The linked diagram theorem is an important theorem, presented by Goldstone in 1957 \cite{ShavittAndBartlett,Goldstone} which leads to the cancellation of all unlinked diagrams in Reyleigh-Schrodinger perturbation theory.
+
+		The theorem states that the wave function and the energy can be expressed as a sum of linked diagrams \textit{only}. Reducing the equations to 
+		\begin{align}
+			E^{(n)} = \left< \right. | \hat W (\hat R_0 \hat W)^{n-1} \left. | \right>_L \\
+			\left| \Psi^{(n)} \right> = \left[ (\hat R_0 \hat W)^n |\left.\right>  \right]_L
+		\end{align}
+		More specifically, we see that the second order term for $E^{(4)}$ in \ref{MBPT equations}, will vanish. 
+
+	\end{section}
+
 	\begin{section}{Hartree-Fock calculations}
  		When doing Hartree-Fock calculation, we do a change of basis and instead of expanding our Hamiltonian, we vary the wavefunction to minimize the energy. We name the original basis by greek letters and the new basis by latin letters. The original basis should be chosen such that we can calculate the its expectation value. 
  		\begin{align}
@@ -1280,53 +1342,119 @@
 
 
 
-
 \begin{chapter}{Coupled-Cluster Theory} 
 	Coupled Cluster Theory is similar to Full Configuration Interaction theory. Coupled-cluster theory is a post-Hartree-Fock method, so we set up an ansatz for the ground state wave function, $\left| \Phi_0 \right>$. One can, for the best results, optimize this basis by the use of Hartree-Fock method. The goal of Coupled-cluster theory is to improve the ansatz by including a set of excitations. Coester and Kummel initiall developed the ideas that led to the coupled-cluster theory in the late 1950's \cite{MHJonline}. 
  	
  	\begin{section}{The Exponential Ansatz}
- 		The basic idea of Coupled-cluster theory is to express the true wavefunction as an exponential operator working on the Slater determinant  
+ 		The basic idea of Coupled-cluster theory is to express the true wavefunction as an exponential operator working on the Slater determinant \cite{ShavittAndBartlett,MHJonline,Crawford}
  		\begin{align}
 	 		\ket{\Psi} \approx e^{\hat T} \ket{\Phi_0}
 	  	\end{align}
+	  	The operator $\hat T$, is a sum of the excitation operators, also known as cluster operators
+	  	\begin{align}
+	  		\hat T = \hat T_1 + \hat T_2 + \hat T_3 + ... + \hat T_N
+	  	\end{align}
+	  	Where the operators are defined as
+	  	\begin{align}
+	  		T_1 &= \sum_{ia} t_i^a \hat a_a^{\dagger} \hat a_i \\
+	  		T_2 &= \frac{1}{2} \sum_{ijab} t_{ij}^{ab} \hat a_a^{\dagger}\hat a_b^{\dagger} \hat a_j \hat a_i \\
+	  		T_N &= \left(\frac{1}{n!}\right)^2 \sum_{ij..ab..}^n t_{ij..n}^{ab..n} \hat a_a^{\dagger}\hat a_b^{\dagger} ...\hat a_n^{\dagger} \hat a_n ... \hat a_j \hat a_i \\
+	  	\end{align}
+	  	Which is very similar to configuration interaction theory.
+	\end{section}
 
-
+	\begin{section}{Comparison with Configuration Interaction}
+	  	By doing an expansion of the exponential operator, we can rewrite it as
+	  	\begin{align}
+	  		e^{\hat T} = 1 + \hat T + \frac{\hat T^2}{2!} + \frac{\hat T^3}{3!} + \cdots
+	  	\end{align}
+	  	Calculating the terms and organizing them in terms of total excitations, we can write the exponential operator as 
+	  	\begin{align}
+	  		e^{\hat T} = \left( 1 \right)  + \left( \hat T_1 \right) + \left( \hat T_2 + \frac{\hat T_1^2}{2} \right) + \left( \hat T_3 + \hat T_1 \hat T_2 + \frac{\hat T_1^3}{6} \right) + \cdots 
+	  	\end{align}	
+	  	
+	  	Remembering the equations for configuration interaction
+	  	\begin{align}
+	  		\ket{\Psi_{CI}} = (1 + \hat C) \ket{\Phi_0} 
+	   	\end{align}
+	   	Where
+	  	\begin{align}
+	  		\hat C = \hat C_1 + \hat C_2 + ... =  \sum_{ia} c_i^a a_a^{\dagger} a_i + \frac{1}{4} \sum_{ijab} c_{ij}^{ab} a_a^{\dagger} a_b^{\dagger} a_j a_i + ...
+	   	\end{align}
+	   	By comparing configuration interaction with coupled-cluster theory, we see that we can write
+	   	\begin{align}
+	   		\hat C_0 = 1 \:\:\:\:\:\:\: \hat C_1 = \hat T_1 
+	   	\end{align}
+	   	\begin{align}
+	   		\hat C_2 = \hat T_2 + \frac{1}{2} T_1^2
+	   	\end{align}
+	   	and 
+	   	\begin{align}
+	   		\hat C_3 = \hat T_3 + \hat T_1 \hat T_2 + \frac{\hat T_1^3}{6}
+	   	\end{align}
+	   	The difference we notice, is that coupled-cluster introduces a mixing of excitation operators for every level of total excitations. 
  	\end{section}
 
- 	
-  	The operator $\hat T$ is a linear combination of the cluster operators
-  	\begin{align}
-  		\hat T = \hat T_1 + \hat T_2 + \hat T_3 + ... + \hat T_N
-  	\end{align}
-  	Where the operators represent
-  	\begin{align}
-  		T_1 &= \sum_{ia} t_i^a \hat a_a^{\dagger} \hat a_i \\
-  		T_2 &= \frac{1}{2} \sum_{ijab} t_{ij}^{ab} \hat a_a^{\dagger}\hat a_b^{\dagger} \hat a_j \hat a_i \\
-  		T_2 &= \left(\frac{1}{n!}\right)^2 \sum_{ij..ab..}^n t_{ij..n}^{ab..n} \hat a_a^{\dagger}\hat a_b^{\dagger} ...\hat a_n^{\dagger} \hat a_n ... \hat a_j \hat a_i \\
-  	\end{align}
+	\begin{section}{Truncating the Exponential Ansatz}
+	  	By including infinite terms, this expansion will represent the true wave function, but to be computationally viable, the equations must be truncated at some point. 
+	  	\begin{enumerate}
+	  		\item By including only $\hat T = \hat T_1$, we are doing coupled-cluster singles, or CCS
+	  		\item By truncating the equations at double excitations, $\hat T = \hat T_1 + \hat T_2$, we are doing coupled-cluster singles and doubles, or CCSD
+	  		\item By truncating the equations at triple excitations, $\hat T = \hat T_1 + \hat T_2 + \hat T_3$, we are doing coupled-cluster singles, doubles and 		triples, or CCSDT 
+	  		\item four excitations are called quadruples, and so on
+	  	\end{enumerate}
 
-  	We can write the configuration interaction wavefunction as 
-  	\begin{align}
-  		\ket{\Psi_{CI}} = (1 + \hat C) \ket{\Phi_0} 
-   	\end{align}
-  	\begin{align}
-  		\hat C = \hat C_1 + \hat C_2 + ... =  \sum_{ia} c_i^a a_a^{\dagger} a_i + \frac{1}{4} \sum_{ijab} c_{ij}^{ab} a_a^{\dagger} a_b^{\dagger} a_j a_i + ...
-   	\end{align}
-   	Comparing this linear expansion to the exponential expansion from Coupled Cluster, we can see that
-   	\begin{align}
-   		\hat C_2 = \hat T_2 + \frac{1}{2} T_1^2
-   	\end{align}
-   	Where we can see that even if we truncate Configuration Interaction and Coupled Cluster at the same level, there are more \textit{disconnected} wave function contributions (REFERENCE page 17 IN C\&S) in the Coupled Cluster theory. Both the Coupled Cluster and Configuration Interaction theory provides the exact energy by including the operators to infinite order, i.e. no truncation. 
+	  	We introduce a new operator, given as 
+	  	\begin{align}
+	  		\overline H = e^{-\hat T} \hat H e^{\hat T} 
+	  	\end{align}
+	  	When calculating the energy, we look at the expectation value for the Hamiltonian 
+	  	\begin{align}
+	  		\left< \Phi_0 \right| e^{-\hat T} \hat H e^{\hat T} \left| \Phi_0 \right> = \left< \Phi_0 \right| \overline H \left| \Phi_0 \right> = E
+	  	\end{align}
+	  	By subsequent left-projection of various excited states, we get amplitude equations
+	  	\begin{align}
+	  		\left< \Phi_{ij\cdots}^{ab\cdots} \right| \overline H \left| \Phi_0 \right> = E
+	  	\end{align}
+	  	We have now decoupled the amplitude equations from the energy equations, reducing the complexity of a coupled-cluster solver. The energy-equation is a function of the amplitudes $t_i, t_j, \cdots$ and $t_a, t_b, \cdots$, which can now be found through a different set of iterative equations. We have introduced the similarity transformed Hamiltonian, which can be significantly simplified using the Baker-Campbell-Hausdorff formula \cite{Crawford}
+	  	\begin{align}
+	  		\overline H = e^{-\hat T} \hat H e^{\hat T} =& \hat H + [ \hat H, \hat T] + \frac{1}{2!} [[\hat H, \hat T], \hat T] \\ + &\frac{1}{3!} [[[ \hat H, \hat T ], \hat T ], \hat T ] + \frac{1}{4!} [[[[\hat H, \hat T], \hat T], \hat T], \hat T] + \cdots \nonumber
+	  	\end{align}
+	  	At first glance, this equation does not look like a simplification, but based on properties on the system, we can truncate this expansion. The cluster operators, $\hat T_1, \hat T_2, \hat T_3, \cdots$ commute with each other, but they do not generally commute with the Hamiltonian operator. Consider the general commutation of the one-body Hamiltonian and the $T_1$ cluster operator
+	  	\begin{align}
+	  		[\hat H_0, \hat T_1] = [\hat p^\dagger \hat q, \hat a^\dagger \hat i] = \hat p^\dagger \hat q \hat a^\dagger \hat i - \hat a^\dagger \hat i \hat p^\dagger \hat q
+	  	\end{align}
+	  	We can use the anti-commutator relations to rewrite two terms on the right-hand side
+	  	\begin{align}
+	  		\hat p^\dagger \delta_{qa} \hat i - \hat a^\dagger \delta_{ip} \hat q
+	  	\end{align}
+	  	Because $p$ and $q$ is the sum of all possible states, not limited to virtual or occupied states, we cannot explicitly state that the Kronecker delta functions $\delta_{qa}$ or $\delta_{ip}$ are either $0$ or $1$. 
 
-  	\begin{section}{Size Extensivity}
+	  	Because the cluster operators commute, to get a non-zero result, the Hamiltonian must create one Kronecker-delta function for each of the participating cluster operators. For every system in this thesis, we are only working with a two-body Hamiltonian, so a commutation with more than four cluster operators must provide zero. We will get a natural truncation, that holds for both the energy and amplitude equations. This is true for all systems that have a two-body Hamiltonian. We now write the similarity transformed Hamiltonian as
+	  	\begin{align}
+	  		\overline H = e^{-\hat T} \hat H e^{\hat T} = \hat H &+ [ \hat H, \hat T] + \frac{1}{2!} [[\hat H, \hat T], \hat T] + \frac{1}{3!} [[[ \hat H, \hat T ], \hat T ], \hat T ] \\  &+ \frac{1}{4!} [[[[\hat H, \hat T], \hat T], \hat T], \hat T] \nonumber
+	  	\end{align}
+
+	\end{section}  	
+
+	\begin{section}{The Variational Principle}
+		Using a variational method comes with great advantages. One can be sure to have calculated an upper boundary to the energy, but the coupled-cluster energy equation do not conform to any variational conditions \cite{Crawford}. However, the exponential ansatz does allow for another way of setting up the energy equation
+		\begin{align}
+			E_{\text{exact}} \leq E = \frac{\left< \Phi_0 \right| (e^{\hat T})^\dagger \hat H e^{\hat T} \left| \Phi_0 \right>}{\left< \Phi_0 \right| (e^{\hat T})^\dagger \hat H e^{\hat T} \left| \Phi_0 \right>} = \frac{\left< \Psi \right| \hat H \left| \Psi \right>}{\left< \Psi \right| \hat H \left| \Psi \right>}
+		\end{align}
+		Which is variational. Unfortunatly, this equation do not have a natural truncation, and will be much more difficult to solve. 
+	\end{section}
+
+  	\begin{section}{Size-Extensivity}
   		It can be important to have a wave function that scales with size. Imagine a two particles, $X$ and $Y$ with infinity separation, they do not interact. This means we should be able to write the total energy as
   		\begin{align}
   			E = E_X + E_Y
   		\end{align}
-  		Doing Coupled Cluster
+  		Rewriting the cluster operators in terms of the two particles
   		\begin{align}
   			\hat T = \hat T_X + \hat T_Y 
   		\end{align}
+  		The wave function can be rewritten as 
   		\begin{align}
   			\ket{\Psi}_{CC} = e^{\hat T_X + \hat T_Y} \ket{\Phi_0} = e^{\hat T_X} e^{\hat T_Y} \ket{\Psi_0}
   		\end{align}
@@ -1334,23 +1462,48 @@
   		\begin{align}
   			E_{CC} = E_{CC}^X + E_{CC}^Y
   		\end{align}
-  		This means Coupled Cluster is size extensive, contrary to the Configuration Interaction. 
+  		For Configuration Interaction, multiplicative separability is not possible
+  		\begin{align}
+  			\Psi_{CI} = \left(1 + \hat C\right) \Phi_0 = \left( 1 + \hat C_x + \hat C_y \right) \Phi_0
+  		\end{align}
+  		Which cannot be rewritten as two separable parts. This means the coupled-cluster theory produces a \textit{size-extensive} energy, contrary to full configuration interaction. A size-extensive system will scale perfectly with the size of the system, regardless of the interaction between the particles.
+
   	\end{section}
 
-  	\begin{section}{The CCD Equations}
-  		The Coupled Cluster Doubles equations can be finalized as
+  	\begin{section}{The Coupled-Cluster Doubles Equations}
+  		We need to truncate the cluster operator, $\hat T$, and the approximation used in this thesis, is to only allow 2p-2h excitations. This is normally referred to as the coupled-cluster doubles equations, or CCD. We can rewrite the operator as \cite{MHJonline}
   		\begin{align}
-  			E_{CCD} = E_{ref} + \Delta E_{CCD} 
+  			\hat T \approx \hat T_2
+  		\end{align}
+  		The wave function will be approximated by 
+  		\begin{align}
+  			\left| \Psi_0 \right> \approx \left| \Psi_{\text{CCD}} \right> = e^{\hat T_2} \left| \Phi_0 \right>
+  		\end{align}
+  		Inserting this ansatz into the Hamiltonian expectation value, we get
+  		\begin{align}
+  			\left< \Phi_0 \right| e^{-\hat T_2} \hat H e^{\hat T_2} \left| \Phi_0 \right> 
+  		\end{align}
+  		Which will have the natural truncation at 
+  		\begin{align}
+  			\left< \Phi_0 \right|  \hat H (1 + \hat T_2) \left| \Phi_0 \right> = E_{\text{CCD}}
+  		\end{align}
+  		Leading up to the energy equation
+  		\begin{align}
+  			E_{\text{CCD}} = E_{\text{ref}} + \frac{1}{4} \sum_{abij} \left<ij|\hat v|ab\right> t_{ij}^{ab}
   		\end{align}
   		With the reference energy defined as 
   		\begin{align}
-  			E_{ref} = \sum_i \left< i \middle| \hat h_0 \middle| j\right> + \sum_{ij} \left<ij\middle|\hat v\middle|ij\right> + \frac{1}{2}Av_0
+  			E_{ref} = \sum_i \left< i \right| \hat h_0 \left| j\right> + \sum_{ij} \left<ij\middle|\hat v\middle|ij\right> + \frac{1}{2}Av_0
   		\end{align}
-  		and the corrolation energy given by
+  		$v_0$ is a constant, nonzero for the finite electron gas. The second part of the energy, is known as the correlation energy. It is given by
   		\begin{align}
   			\Delta E_{CCD} = \frac{1}{4} \sum_{ijab}\left<ij\middle|\hat v\middle|ab\right> t_{ij}^{ab}
   		\end{align}
-  		$v_0$ is a constant, nonzero for the finite electron gas. After several applications of Wick's theorem, the amplitude equations can be reduced to
+  		The computation of this correlation energy is the goal of the coupled-cluster theory. This is dependent on the amplitudes $t_{ij}^{ab}$, so we need the amplitude equations, found by
+  		\begin{align}
+  			\left< \Phi_{ij}^{ab} \right| x^{-\hat T_2} \hat H_N e^{\hat T_2} \left| \Phi_0 \right> = 0
+  		\end{align}
+  		After several applications of Wick's theorem, the amplitude equations can be reduced to 
   		\begin{align}
   			(\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b) t_{ij}^{ab} = \left<ab\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} \\
   			+ \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab} + \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac} \\
@@ -1390,7 +1543,7 @@
   	\begin{section}{Intermediates}
   		As Coupled Cluster computations are consume large amounts of computational power, researchers are spending much effort trying to reduce computational cost. One way of reducing the cost is by refactoring the amplitude equations such that we can perform an intermediate computation first and use the result to compute various diagrams later. 
 
-  		Rewriting the equation, (\ref{CCD_equations1}) for CCD amplitudes (Source: Gustav Baardsen / Audun):
+  		Rewriting the equation, (\ref{CCD_equations1}) for CCD amplitudes \cite{Baardsen,Audun}:
   		\begin{align}
   			(\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b) t_{ij}^{ab} = \left<ab\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} \\
   			+ \frac{1}{2} \sum_{kl} t_{kl}^{ab} \left[ \left<kl\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd} \left<kl\middle|\hat v\middle|cd\right> t_{ij}^{cd} \right] \\
@@ -1417,7 +1570,6 @@
   	\end{section}
 
 \end{chapter}
-
 
 
 
@@ -1795,12 +1947,7 @@
 
  	\end{section}
 
- 	
-
- 	
-
 \end{chapter}
-
 
 
 
@@ -2030,8 +2177,8 @@
 		\end{subsection}
 		
 	\end{section}
-\end{chapter}
 
+\end{chapter}
 
 
 
@@ -2357,7 +2504,6 @@
 
 
 
-
 \begin{chapter}{Results}
 	
 	\begin{section}{The Pairing Model}
@@ -2384,7 +2530,7 @@
 		\end{align}
 		Where g represents the interaction strength. The table below shows my results for various g's both using the exact mbpt2 calculations and my numerically computed results. All results can be accessed on github \cite{WholmenGithub}
 
-		\begin{table}
+		\begin{table}[H]
 			\begin{center}
 				\begin{tabular}[center]{l | c | c | r}
 					g & $E_0$ & exact $ \Delta E_{MBPT2}$  & $\Delta E_{MBPT2}$ \\
@@ -2409,7 +2555,7 @@
 			t_{ij}^{ab(1)} = \frac{1}{4} \sum_{ijab} \frac{\left<ab\middle|\middle|ij\right>}{\epsilon_{ij}^{ab}} 
  		\end{align}
  		Which is equal to second order pertubation theory. 
- 		\begin{table}
+ 		\begin{table}[H]
 			\begin{center}
 				\begin{tabular}[center]{l | c | r}
 					g & $ \Delta E_{MBPT2}$  & $\Delta E_{CCD}^{(1)}$ \\
@@ -2434,7 +2580,7 @@
 			\end{enumerate}		
 			As shown in table (\ref{Results2}), the naive implementation reproduces the mbpt2 energies as expected. I have used both the naive and intermediate CCD solver to compute corrolation energies for the Pairing model and again, \cite{Hjorth-Jensen2016} provides us with a good benchmark for the CCD equations.
 
-			\begin{table}
+			\begin{table}[H]
 				\begin{center}
 					\begin{tabular}[center]{l | c | r}
 						g & $ \Delta E_{CCD}$ Naive  & $\Delta E_{CCD}$ Intermediates \\
@@ -2454,24 +2600,127 @@
 		\end{subsection}
 		\begin{subsection}{Comparison of various solvers}
 			The full configuration interaction provides us with the exact solution for the 4p4h Pairing model. It can therefore be useful to compare the performance of Perturbation theory to second, third and fourth order with Coupled Cluster Doubles and configuration interaction without the four-particle excitation. 
-			\begin{figure}H
+			\begin{figure}[H]
 				\includegraphics[width=\linewidth]{../Pairing_Model/Results/Figures/Pairing4p4h_CompareDE_AllMethods.png}
-				\caption{Comparing }
-				\label{Results4}
+				\caption{Comparing the correlation energy for a 4 particle, 4 hole Pairing model. This has been calculated for various interaction terms, $g \in [-1,1]$ and for the single particle energy factor $\xi = 1$. The figure show relative performance for various solvers.}
+				\label{figure:CompareCorrelationPairing}
 			\end{figure}
 
-			\begin{figure}
+			\begin{figure}[H]
 				\includegraphics[width=\linewidth]{../Pairing_Model/Results/Figures/Pairing4p4h_CompareE_AllMethods.png}
-				\caption{}
-				\label{Results5}
+				\caption{Comparing the ground state energy for a 4 particle, 4 hole Pairing model, given by $E_{\text{ref}} + \Delta E$ This has been calculated for various interaction terms, $g \in [-1,1]$ and for the single particle energy factor $\xi = 1$. The figure show relative performance for various solvers.}
+				\label{figure:CompareEnergyPairing}
 			\end{figure}
+			One can see, from figures (\ref{figure:CompareCorrelationPairing},\ref{figure:CompareEnergyPairing}), that the performance is good across the board close to $g = 0$, where the interaction is weak or non-existent. Once the interaction grows stronger, one notice that perturbation theory starts deviating a lot from the exact solution given by Full Configuration Interaction. That is particularly obvious for a negative interaction term. The cupled-cluster doubles equations perform very well, barely distinguishable from FCI even at very strong interactions. The same can be said for Configuration Interaction without the 4p-4h excitation term.  
+		\end{subsection}
+
+	\end{section}
+
+	\newpage
+
+	\begin{section}{The Homogeneous Electron Gas}
+		Results for the Homogeneous Electron gas has various 
+
+		\begin{subsection}{The Reference Energy}
+			A benchmark on the reference energy is useful to test the implementation of the states and the interaction. It does not require any coupled-cluster solver, because it is not dependent on the amplitudes. It serves as a good first hand benchmark for the system, and Audun Skau Hansen and Gustav Baardsen \cite{Baardsen,Audun} present results that have been reproduced 
+			\begin{table}[H]
+				\begin{center}
+					\begin{tabular}[center]{l | c  c  c  r}
+						$r_s$ & $E_{\text{ref}} / N_p$ & $E_{\text{ref}} / N_p$ \cite{Baardsen} & $E_{\text{ref}} / N_p$ \cite{Audun} \\
+						\hline
+						1.0 & 0.971682666829 & 0.971682666826 & 0.9717 \\
+						0.5 & 4.185191069164 &  &  \\
+						2.0 & 0.205613116474 &  &  
+					\end{tabular}
+				\end{center}
+				\caption{Reference energy, computed for three different $r_s$ for the homogenous electron gas with $14$ particles, compared with results from \cite{Baardsen,Audun}. My results are from \cite{WholmenGithub}}
+				\label{table:ReferenceEnergyHEG}
+			\end{table}
 
 		\end{subsection}
 
+		\begin{subsection}{Comparison of solvers}
+			As shown, both the naive and intermediate solver reproduces satisfactory results for the Pairing model, and can be further used for benchmarking the implementation of the more advanced solver. 
+			\begin{table}[H]
+				\begin{center}
+					\begin{tabular}[center]{l | c  c  c  r}
+						$N_{\text{particles}}$ & $N_{\text{states}}$ & $ \Delta E_{CCD}$ naive  & $\Delta E_{CCD}$ interm. & $\Delta E_{CCD}$ block \\
+						\hline
+						2 & 14 & -0.0148295981858 & -0.0148295981858 & -0.0148295981858 \\
+						14 & 38 & x & -0.276499387418 & -0.276499387418 \\
+						14 & 52 & x & x & x 
+					\end{tabular}
+				\end{center}
+				\caption{Calculations on the Homogeneous electron gas, using three different implementations of CCD equations. Showing results to benchmark the block solver, which was not benchmarked on the Pairing model. The System has been calculated with $2$ or $14$ particles and the total states either $38$ or $54$. The calculations has been made with a relaxing factor of $0.3$ and $r_s = 1.0$. Results found in file \textit{CompareTimeNaiveBlock.txt} \cite{WholmenGithub}}
+				\label{table:CompareSolversHEG}
+			\end{table}
+			As we can see, the three solvers produce the exact same results, serving as a succesful benchmark for the block solver. These are relatively small calculations, at least compared to the thermodynamic limit. To fully grasp the point of using the block solver for larger computations, I have compared the time spent on performing the calculations for all three solvers
+			\begin{table}[H]
+				\begin{center}
+					\begin{tabular}[center]{l | c  c  c  r}
+						$N_{\text{particles}}$ & $N_{\text{states}}$ & $ \Delta E_{CCD}$ naive  & $\Delta E_{CCD}$ intermediates & $\Delta E_{CCD}$ block \\
+						\hline
+						2 & 14 & 44.42 s & 3.31 s & 0.10 s \\
+						14 & 38 & & 4400 s & 0.57 s \\
+						14 & 52 & & &  
+					\end{tabular}
+				\end{center}
+				\caption{Calculations on the Homogeneous electron gas, using three different implementations of CCD equations. Showing time needed for every solver to calculate results in figure (\ref{table:CompareSolversHEG}. The System has been calculated with $2$ or $14$ particles and the total states either $38$ or $54$. The calculations has been made with a relaxing factor of $0.3$ and $r_s = 1.0$. Results found in file \textit{CompareTimeNaiveBlock.txt} \cite{WholmenGithub}}
+				\label{table:CompareSolversTimeHEG}
+			\end{table}
+			One see the enormous leap of computational time, where the intermediate solver needs almost 10 000 times the computational time and the naive solver even more for the small system with $38$ states. 
+		\end{subsection}
+ 		
+		For a more thurough benchmark of the block solver, I have compared results for different states, $r_s$ and weights, to compare with results from Audun Skau Hansen's results \cite{Audun}. I present only the results achieved by the use of a weight factor $\alpha = 0.3$. The results are equal for other weights, and the number of iterations needed are around $1/3$ for $\alpha = 1.0$, but for $r_s = 2.0$, the results are unstable without using the relaxing factor. The results are found in various files on github \cite{WholmenGithub}.
+		\begin{table}[H]
+			\begin{center}
+				\begin{tabular}[center]{l  c | c  c r}
+					$r_s$ & $N_{\text{states}}$ & $\Delta E_{CCD}$ block & $\Delta E_{CCD}$ interm. & $\Delta E_{CCD}$ \cite{Audun} \\
+					\hline
+					1.0 &  54 &  & -0.317822842713 & -0.317822843688933 \\
+						&  68 & -0.393111684222 &   \\
+						& 114 & -0.448370339677 &   \\
+						& 162 & -0.480598577044 &   \\
+						& 186 & -0.48574931126 &   \\
+						& 246 & -0.493104480852 &   \\
+						& 294 & -0.498888247804 &   \\
+						& 342 & -0.502383801567  &   \\
+						& 358 & -0.502945598665 &   \\
+					\hline
+					0.5 &  54 &  & -0.358965572879    \\
+						&  68 & -0.450092739731 &   \\
+						& 114 & -0.512323822059 &   \\
+						& 162 & -0.547617336159 &   \\
+						& 186 & -0.553483340559 &   \\
+						& 246 & -0.562328327732 &   \\
+						& 294 & -0.56901515653 &   \\
+						& 342 & -0.573260163441 &   \\
+						& 358 & -0.573972930484 &   \\
+					\hline
+					2.0 &  54 &  & -0.258915612334    \\
+						&  68 & -0.313926204257 &   \\
+						& 114 & -0.3583621351 \\
+						& 162 & -0.385671281859 \\
+						& 186 & -0.38971325028 &   \\
+						& 246 & -0.394990917401 &   \\
+						& 294 & -0.399450084364 &   \\
+						& 342 & -0.401921005254 &   \\
+						& 358 & -0.402283566702 &   \\
+				\end{tabular}
+			\end{center}
+			\caption{ }
+			\label{table:CompareAudun}
+		\end{table}
+
+		\begin{subsection}{The Thermodynamic limit}
+			
+		\end{subsection}
 
 	\end{section}
 
 \end{chapter}
+
+
 
 \begin{chapter}{Conclusion and future prospects}
 	
@@ -2501,23 +2750,27 @@
 
 	\bibitem{Griffiths}
 	David J. Griffiths
-	\textit{Introduction to Quantum Mechanics} Second edition 2005
+	\textit{Introduction to Quantum Mechanics} Second edition 2005.
 
 	\bibitem{Sakurai}
 	J.J. Sakurai
-	\textit{Modern Quantum Mechanics} Revised Edition 1993
+	\textit{Modern Quantum Mechanics} Revised Edition 1993.
 
 	\bibitem{Hjorth-Jensen2016}
 	Morten Hjorth-Jensen, Maria Paola Lombardo and Ubiraja van Kolck
-	\textit{An Advanced Course in Computational Nuclear Physics} 2016
+	\textit{An Advanced Course in Computational Nuclear Physics} 2016.
 
 	\bibitem{Raimes}
 	Stanley Raimes
-	\textit{Many-Electron Theory} 1972
+	\textit{Many-Electron Theory} 1972.
 
 	\bibitem{Susskind2014}
 	Leonard Susskind and Art Friedman
-	\textit{Quantum Mechanics, The Theoretical Minimum} 2014
+	\textit{Quantum Mechanics, The Theoretical Minimum} 2014.
+
+	\bibitem{Goldstone}
+	J. Goldstone
+	\textit{Derivation of the Brueckner Many-Body Theory, Proc. R. Soc. (London)} 1957. 
 
 	\bibitem{Crawford}
 	T. Daniel Crawford and Henry F. Schaefer III

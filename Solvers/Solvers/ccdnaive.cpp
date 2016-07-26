@@ -63,10 +63,12 @@ vec CCDNaive::CCD_ReturnAllIterations(){
 double CCDNaive::CCD(int MaxIterations){
     // Set up the first calculation for all amplitudes equal to zero
     double E0 = CorrelationEnergy(); // Can be hardcoded to 0 to save computation cost
-    //cout << E0 << endl;
+    cout << "Energy using naive. E0/N: " << E0 / Nholes << "  E0: " << E0 << endl;
+
     // Generate first set of new amplitudes and do second calculation
     UpdateAmplitudes();
     double E1 = CorrelationEnergy(); //cout << E1 << endl;
+    cout << "Energy using naive. E0/N: " << E1 / Nholes << "  E0: " << E1 << endl;
 
     // Start the iteration process
     NIterations = 0;
@@ -74,7 +76,8 @@ double CCDNaive::CCD(int MaxIterations){
 
         E0 = E1;
         UpdateAmplitudes();
-        E1 = CorrelationEnergy(); //cout << E1 << endl;
+        E1 = CorrelationEnergy();
+        cout << "Energy using naive. E0/N: " << E1 / Nholes << "  E0: " << E1 << endl;
         NIterations ++;
     }
     return E1;

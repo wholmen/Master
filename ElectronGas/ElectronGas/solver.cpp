@@ -15,7 +15,7 @@ Solver::Solver(ElectronBasis BASIS)
 
     // Weight when adding diagrams to new amplitudes
     weight = 1.0;
-
+    tolerance = 1e-16;
 
     // Setting up two-state configurations
     start = clock();
@@ -44,8 +44,7 @@ double Solver::CCD(int MaxIterations){
     double E1 = CorrolationEnergy();
 
     // Start the iteration process
-    NIterations = 0; tolerance = 1e-12;
-
+    NIterations = 0;
 
     while ( AbsoluteDifference(E1,E0) > tolerance && NIterations < MaxIterations){
 

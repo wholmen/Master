@@ -15,7 +15,11 @@ using namespace std;
 
 void PrintMagicNumbers();
 void TestSolver1();
+
 void ResultsNh14Ns54_Intermediates();
+void ResultsNh14Ns66_Intermediates();
+void ResultsNh14Ns114_Intermediates();
+
 void ResultsNshells4Nfilled2_Blocks();
 void ResultsNshells5Nfilled2_Blocks();
 void ResultsNshells6Nfilled2_Blocks();
@@ -40,12 +44,13 @@ int main()
     // Function to test solver
     //TestSolver1();
 
-    CompareTimeAllSolvers();
+    //CompareTimeAllSolvers();
 
     //ResultsNshells3to35Nfilled2_Blocks();
     //ResultsNshells36to40Nfilled2_Blocks();
 
     // Producing results for rs in [0.5,1.0,2.0] for different amount of states.
+
     /*
     ResultsNshells4Nfilled2_Blocks();
     ResultsNshells5Nfilled2_Blocks();
@@ -58,12 +63,16 @@ int main()
     ResultsNshells12Nfilled2_Blocks();
     ResultsNshells13Nfilled2_Blocks();
     */
+
     // Functions to produce a comparison between blocks and intermediates
     /*
     AllIterationsNh14Ns54_Blocks();
     AllIterationsNh14Ns54_Intermediates();
-    ResultsNh14Ns54_Intermediates();
     */
+    ResultsNh14Ns54_Intermediates();
+    ResultsNh14Ns66_Intermediates();
+    ResultsNh14Ns114_Intermediates();
+
 
     // Function to compute all magic numbers
     //PrintMagicNumbers();
@@ -128,6 +137,7 @@ void CompareTimeAllSolvers(){
         double time0 = omp_get_wtime();
         Solver solve = Solver(basis);
         solve.weight = 0.3;
+        solve.tolerance = 1e-6;
         double E = solve.CCD(200);
         double time1 = omp_get_wtime();
 
@@ -137,7 +147,7 @@ void CompareTimeAllSolvers(){
         time0 = omp_get_wtime();
         CCDIntermediates solve2 = CCDIntermediates(basis);
         solve2.weight = 0.3;
-        solve2.tolerance = 1e-12;
+        solve2.tolerance = 1e-6;
         E = solve2.CCD(200);
         time1 = omp_get_wtime();
 
@@ -146,7 +156,7 @@ void CompareTimeAllSolvers(){
         time0 = omp_get_wtime();
         CCDNaive solve3 = CCDNaive(basis);
         solve3.weight = 0.3;
-        solve3.tolerance = 1e-12;
+        solve3.tolerance = 1e-6;
         E = solve3.CCD(200);
         time1 = omp_get_wtime();
 
@@ -179,18 +189,18 @@ void ResultsNshells4Nfilled2_Blocks(){
     myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
 
     Solver solve = Solver(basis);
-    solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    solve.weight = 1.0; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    solve.weight = 0.7; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -198,18 +208,18 @@ void ResultsNshells4Nfilled2_Blocks(){
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    solve.weight = 1.0; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    solve.weight = 0.7; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -217,18 +227,18 @@ void ResultsNshells4Nfilled2_Blocks(){
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    solve.weight = 1.0; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    solve.weight = 0.7; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -259,18 +269,18 @@ void ResultsNshells5Nfilled2_Blocks(){
     myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
 
     Solver solve = Solver(basis);
-    solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 1.0; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.7; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -278,18 +288,18 @@ void ResultsNshells5Nfilled2_Blocks(){
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 1.0; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.7; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -297,18 +307,18 @@ void ResultsNshells5Nfilled2_Blocks(){
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 1.0; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.7; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
     myfile.close();
 
@@ -334,8 +344,8 @@ void ResultsNshells6Nfilled2_Blocks(){
 
 
     Solver solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -343,8 +353,8 @@ void ResultsNshells6Nfilled2_Blocks(){
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -352,8 +362,8 @@ void ResultsNshells6Nfilled2_Blocks(){
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();
@@ -380,8 +390,8 @@ void ResultsNshells7Nfilled2_Blocks(){
 
 
     Solver solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -389,8 +399,8 @@ void ResultsNshells7Nfilled2_Blocks(){
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
 
@@ -398,8 +408,8 @@ void ResultsNshells7Nfilled2_Blocks(){
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();
@@ -425,24 +435,24 @@ void ResultsNshells8Nfilled2_Blocks(){
     myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
 
     Solver solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();
@@ -468,24 +478,24 @@ void ResultsNshells9Nfilled2_Blocks(){
     myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
 
     Solver solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();
@@ -511,24 +521,24 @@ void ResultsNshells10Nfilled2_Blocks(){
     myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
 
     Solver solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(200);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(200);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();
@@ -554,24 +564,24 @@ void ResultsNshells11Nfilled2_Blocks(){
     myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
 
     Solver solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(300);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(300);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(300);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();
@@ -597,24 +607,24 @@ void ResultsNshells12Nfilled2_Blocks(){
     myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
 
     Solver solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(300);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(300);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(300);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();
@@ -640,24 +650,24 @@ void ResultsNshells13Nfilled2_Blocks(){
     myfile << "weight, rs, Reference Energy, CCDIntermediate result, Iterations" << endl;
 
     Solver solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(300);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(300);
     myfile << " " << solve.NIterations << endl;
 
     // Changing rs for new results.
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = Solver(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(300);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(16) << solve.CCD(300);
     myfile << " " << solve.NIterations << endl;
 
     myfile.close();
@@ -685,13 +695,13 @@ void ResultsNshells3to35Nfilled2_Blocks(){
         Solver solve = Solver(basis);
         double time_init_1 = omp_get_wtime();
 
-        solve.weight = 0.3;
+        solve.weight = 0.3; solve.tolerance = 1e-16;
 
         double time_iter_0 = omp_get_wtime();
         double E = solve.CCD(200);
         double time_iter_1 = omp_get_wtime();
 
-        myfile << setprecision(12) << Nshells << " " << basis.Nstates << " " << basis.Nholes << " " << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time_init_1 - time_init_0 << " " << time_iter_1 - time_iter_0 << " " << E << endl;
+        myfile << setprecision(16) << Nshells << " " << basis.Nstates << " " << basis.Nholes << " " << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time_init_1 - time_init_0 << " " << time_iter_1 - time_iter_0 << " " << E << endl;
     }
 
 }
@@ -938,6 +948,7 @@ void ResultsNh14Ns54_Intermediates(){
     int Nshells = 4;
     int NfilledShells = 2;
     double rs = 1.0;
+    double time0, time1, E;
 
     ElectronBasis basis = ElectronBasis(Nshells, NfilledShells, rs);
 
@@ -946,62 +957,140 @@ void ResultsNh14Ns54_Intermediates(){
     myfile << "A coupled cluster study of electron gas using intermediates. " << endl;
     myfile << "The system consist of " << basis.Nstates << " states and " << basis.Nholes << " holes. These values are chosen to compare results with Audun Skau Hansen's master thesis." << endl;
     myfile << "The results are presented in the following order: " << endl;
-    myfile << "rs, weight, Reference Energy, CCDIntermediate result, Iterations" << endl;
+    myfile << "rs, weight, Reference Energy, Iterations, time, CCDIntermediate result" << endl;
 
     CCDIntermediates solve = CCDIntermediates(basis);
-    solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
-    myfile << " " << solve.NIterations << endl;
 
-    solve = CCDIntermediates(basis);
-    solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
-    myfile << " " << solve.NIterations << endl;
-
-    solve = CCDIntermediates(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
-    myfile << " " << solve.NIterations << endl;
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    time0 = omp_get_wtime();
+    E = solve.CCD(200);
+    time1 = omp_get_wtime();
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time1-time0 << " " << setprecision(16) << E << endl;
 
 
     // Changing rs for new results.
     rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = CCDIntermediates(basis);
-    solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
-    myfile << " " << solve.NIterations << endl;
-
-    solve = CCDIntermediates(basis);
-    solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
-    myfile << " " << solve.NIterations << endl;
-
-    solve = CCDIntermediates(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
-    myfile << " " << solve.NIterations << endl;
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    time0 = omp_get_wtime();
+    E = solve.CCD(200);
+    time1 = omp_get_wtime();
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time1-time0 << " " << setprecision(16) << E << endl;
 
 
     // Changing rs for new results.
     rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
 
     solve = CCDIntermediates(basis);
-    solve.weight = 1.0;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
-    myfile << " " << solve.NIterations << endl;
-
-    solve = CCDIntermediates(basis);
-    solve.weight = 0.7;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
-    myfile << " " << solve.NIterations << endl;
-
-    solve = CCDIntermediates(basis);
-    solve.weight = 0.3;
-    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << setprecision(12) << solve.CCD(50);
-    myfile << " " << solve.NIterations << endl;
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    time0 = omp_get_wtime();
+    E = solve.CCD(200);
+    time1 = omp_get_wtime();
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time1-time0 << " " << setprecision(16) << E << endl;
 
 
     myfile.close();
     cout << "Function 'ResultsNh14Ns54_Intermediates()' ended" << endl;
+}
+
+void ResultsNh14Ns66_Intermediates(){
+
+    cout << "Function 'ResultsNh14Ns66_Intermediates()' started" << endl;
+
+    int Nshells = 5;
+    int NfilledShells = 2;
+    double rs = 1.0;
+    double time0, time1, E;
+
+    ElectronBasis basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    ofstream myfile;
+    myfile.open("../Results/CCDIntermediates_Nh14_Ns66.txt");
+    myfile << "A coupled cluster study of electron gas using intermediates. " << endl;
+    myfile << "The system consist of " << basis.Nstates << " states and " << basis.Nholes << " holes. These values are chosen to compare results with Audun Skau Hansen's master thesis." << endl;
+    myfile << "The results are presented in the following order: " << endl;
+    myfile << "rs, weight, Reference Energy, CCDIntermediate result, Iterations" << endl;
+
+    CCDIntermediates solve = CCDIntermediates(basis);
+
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    time0 = omp_get_wtime();
+    E = solve.CCD(200);
+    time1 = omp_get_wtime();
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time1-time0 << " " << setprecision(16) << E << endl;
+
+    // Changing rs for new results.
+    rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
+    solve = CCDIntermediates(basis);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    time0 = omp_get_wtime();
+    E = solve.CCD(200);
+    time1 = omp_get_wtime();
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time1-time0 << " " << setprecision(16) << E << endl;
+
+
+    // Changing rs for new results.
+    rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
+    solve = CCDIntermediates(basis);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    time0 = omp_get_wtime();
+    E = solve.CCD(200);
+    time1 = omp_get_wtime();
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time1-time0 << " " << setprecision(16) << E << endl;
+
+
+    myfile.close();
+    cout << "Function 'ResultsNh14Ns66_Intermediates()' ended" << endl;
+}
+
+void ResultsNh14Ns114_Intermediates(){
+
+    cout << "Function 'ResultsNh14Ns66_Intermediates()' started" << endl;
+
+    int Nshells = 6;
+    int NfilledShells = 2;
+    double rs = 1.0;
+    double time0, time1, E;
+
+    ElectronBasis basis = ElectronBasis(Nshells, NfilledShells, rs);
+
+    ofstream myfile;
+    myfile.open("../Results/CCDIntermediates_Nh14_Ns114.txt");
+    myfile << "A coupled cluster study of electron gas using intermediates. " << endl;
+    myfile << "The system consist of " << basis.Nstates << " states and " << basis.Nholes << " holes. These values are chosen to compare results with Audun Skau Hansen's master thesis." << endl;
+    myfile << "The results are presented in the following order: " << endl;
+    myfile << "rs, weight, Reference Energy, CCDIntermediate result, Iterations" << endl;
+
+    CCDIntermediates solve = CCDIntermediates(basis);
+
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    time0 = omp_get_wtime();
+    E = solve.CCD(200);
+    time1 = omp_get_wtime();
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time1-time0 << " " << setprecision(16) << E << endl;
+
+
+    // Changing rs for new results.
+    rs = 0.5; basis = ElectronBasis(Nshells, NfilledShells, rs);
+    solve = CCDIntermediates(basis);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    time0 = omp_get_wtime();
+    E = solve.CCD(200);
+    time1 = omp_get_wtime();
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time1-time0 << " " << setprecision(16) << E << endl;
+
+
+    // Changing rs for new results.
+    rs = 2.0; basis = ElectronBasis(Nshells, NfilledShells, rs);
+    solve = CCDIntermediates(basis);
+    solve.weight = 0.3; solve.tolerance = 1e-16;
+    time0 = omp_get_wtime();
+    E = solve.CCD(200);
+    time1 = omp_get_wtime();
+    myfile << solve.weight << " " << basis.rs << " " << basis.ReferenceEnergy() << " " << solve.NIterations << " " << time1-time0 << " " << setprecision(16) << E << endl;
+
+
+    myfile.close();
+    cout << "Function 'ResultsNh14Ns114_Intermediates()' ended" << endl;
 }

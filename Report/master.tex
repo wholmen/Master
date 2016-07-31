@@ -48,28 +48,35 @@
 
 
 \begin{chapter}{Introduction}
-	In this thesis, I have calculated the ground state energy for the pairing model, homogenous electron gas and infinite nuclear matter. My main focus has been to implement the coupled cluster-method with double excitations.
+	This thesis is aiming to utilize many-body methods for computing the ground state energy for three different systems. The Pairing model, the homogeneous electron gas and the infinite nuclear matter. Well-performing many-body methods are very computationally costly, and a brute force implementation of configuration interaction, perturbation theory and coupled-cluster doubles theory is only a viable option for small systems. The thesis investigates how one can implement a more efficient solver for the coupled-cluster doubles equations to gain an understanding of large systems. 
 
-	\begin{subsection}{Goals of the work}
-		To present the theory behind various many-body methods. 
- 
-		To implement and compare different methods of many-body quantum mechanics to compute the correlation energy for the Pairing model. 
+	\begin{subsection}{Motivation}
+		The Pairing model is an interesting model to solve, not because of it's direct representation of real matter, but because it lives in a small and finite Hilbert space. This allows us compute the exact ground state energy with full configuration interaction. The result is an important tool for comparing the performance of different solvers. Because it is a small and confined system, it is easy to calculate matrix elements by hand, leading to an exact solution for perturbation theory and coupled-cluster doubles results are known. The system is therefore exceptionally good at benchmarking the implementation of many-body methods. 
 
-		To implement the coupled-cluster doubles equations to compute the correlation energy for the homogeneous electron gas and nuclear matter. 
+		Moving on to the homogeneous electron gas, we present an infinite system of electrons interacting with each other and a background charge. By only taking care of electron-electron interaction, we generate a system that can be dealt with using common tools of many-body quantum mechanics. This is one of the first systems to be evaluated by many-body methods, and the litterature present rich data for comparing results from my solver. 
 
-		To exploit matrix-matrix multiplications, symmetries and conservation laws to optimize the coupled-cluster doubles solver. 
+		The main goal of nuclear physics, is to understand the fundamental physics of the nucleas, it's constituents and their interaction. We can generate experimental data on ground state energies, and by applying the known many-body quantum mechanics, we hope to reproduce these results and gain larger insights into the life of nuclear matter. By ahieving  results, it means the nucleus can be described by the shell model, with a set of occupied and unoccupied single-particle states and an interaction between particles. In quantum chemistry, an important goal is to compute precise energies for the nucleus. The problem with these systems is that they present various complications at the borders. By creating an infinite system of nuclear particles, we remove all borders and unknown finite-size effects, and we are left with a study of the interaction between particles. The search for the optimal effective interaction between nuclear matter is important, and hopefully, a study of infinite nuclear matter can give valuable insight search. 
+	\end{subsection}
 
-		Parallelize the code to compute the correlation energy for very large electron gas systems and nuclear matter systems to the thermodynamic limit. 
+	\begin{subsection}{Goals for the Work}
+		I have worked systematically to achieve goals set up by the introduction to the thesis. The main goals of this thesis can be summarized in a few points: 
+		\begin{itemize}
+			\item A first goal for the thesis has been to present the theory behind four many-body methods. Starting with fundamental many-body quantum mechanics and second quantization before deriving the equations for configuration interaction, Hartree-Fock theory, Reileigh-Schr\"{o}dinger perturbation theory and coupled-cluster doubles. 
+			\item The second goal was to implement the Pairing model and the four solvers, coded in c++. The implementations could compute the ground state correlation energy to compare the efficiency of different solvers. The Pairing model could also serve as valuable benchmarking for the solvers.
+			\item Next, I needed to present and implement the homogeneous electron gas system and the infinite nuclear matter system. Only the coupled-cluster doubles equations would be used to compute correlation energies for these systems. 
+			\item The original, brute force, coupled-cluster solver is too slow to compute correlation energies for large basis sets. I needed to look at how matrix-matrix multiplication and symmetries of the system could be exploited to reduce the computational costs. Presenting and implementing a much more advanced and efficient coupled-cluster doubles code has been the hardest and most time-consuming part of the thesis. 
+			\item Finally, the last goal has been to produce results for very large basis sets, needing a parallelized code to run on the local computational cluster, called Smaug. 
+		\end{itemize}
 	\end{subsection}
 
 	\begin{subsection}{Structure}
 		The first part of the thesis is purely a theoretical part, going through the formalism needed to develop many-body methods. My own contributions are presenented in the chapter on implementation, and in the developed code, open to everyone at gibhub.com \cite{WholmenGithub}.
 
-		Chapter 2 Gives a short introduction to quantum mechanics, with a main focus on presenting the many-body wave function, the many-body Hamiltonian and the calculations of matrix elements. 
+		Chapter 2 gives a short introduction to quantum mechanics, with a main focus on presenting the many-body wave function, the many-body Hamiltonian and the calculations of matrix elements. 
 
-		Chapter 3 Presents the formalism \textit{second quantization}. A powerful formalism that simplifies notation by rewriting states as operators. Wick's theorem gives a powerful tool to perform fast computations of matrix elements. This chapter will also aim to formulate the main goal of post-Hartree Fock methods, the calculation of the \textit{correlation energy}. 
+		Chapter 3 presents the formalism \textit{second quantization}. A powerful formalism that simplifies notation by rewriting states as operators. Wick's theorem gives a powerful tool to perform fast computations of matrix elements. This chapter will also aim to formulate the main goal of post-Hartree Fock methods, the calculation of the \textit{correlation energy}. 
 
-		Chapter 4 Gives a brief introduction to the use of Feynman diagrams to represent states, operators and contractions.
+		Chapter 4 gives a brief introduction to the use of Feynman diagrams to represent states, operators and contractions.
 
 		Chapter 5 presents a brief introduction to three many-body methods; first the full configuration interaction, then the perturbation theory and Hartree-Fock theory. 
 
@@ -79,9 +86,9 @@
 
 		Chapter 8 presents two different systems; the homogeneous electron gas and infinite nuclear matter with the Minnesota potential. 
 
-		Chapter 9 gives a thurough explanation of the various computational elements of the coupled-cluster solver. First explaining the general concepts of the direct implementation, before delving into more advanced implementations exploiting symmetries and efficiency of matrix multiplication. 
+		Chapter 9 gives a thourough explanation of the various computational elements of the coupled-cluster solver. First explaining the general concepts of the direct implementation, before delving into more advanced implementations exploiting symmetries and efficiency of matrix multiplication. 
 
-		Chapter 10 contains all results produced for both the Pairing model, homogeneous electron gas and infinite nuclear matter. 
+		Chapter 10 contains all results produced for both the Pairing model, homogeneous electron gas and infinite nuclear matter, while chapter 11 summarizes the thesis with a conclusion. 
 	\end{subsection}
 \end{chapter}
 
@@ -90,7 +97,7 @@
 \begin{chapter}{Quantum Mechanics}
  	
 	\begin{section}{Postulates}
- 		Quantum mechanics is built upon by a few principles \cite{Audun,Griffiths,Sakurai,Susskind2014}, often called the postulates of quantum mechanics. 
+ 		Quantum mechanics is built upon a few principles \cite{Audun,Griffiths,Sakurai,Susskind2014}, often called the postulates of quantum mechanics. 
  		\begin{enumerate}
  			\item \textbf{The Wave Function} \\
  			All information on a quantum system is given by the wave function $\Psi(x,t) $. The wave function represents the probability of measuring a particle within a small volume $\text{dx}$ and for a given time, $t$. As the probability cannot exceed $1$, the wave function must be normalized, namely
@@ -107,8 +114,8 @@
  			\end{align}
  			\item \textbf{Observables}\\
 			All observables are represented by linear operators, written with a "hat", $\hat O$. These linear operators are bound to be hermitian. An observable could also be called measurable quality. The outcome of a quantum mechanical experiment is an observable. 
-			\item \textbf{Measurments}\\
-			The possible outcomes of an experminent are the eigenvalues of an operator that represent the observable, represented as a number $\lambda$. If a state is in the eigenstate $\left| \lambda \right>$, the only possible measurment of an experiment is the eigenvalue, $\lambda$. We write this as
+			\item \textbf{Measurements}\\
+			The possible outcomes of an experminent are the eigenvalues of an operator that represents the observable, represented as a number $\lambda$. If a state is in the eigenstate $\left| \lambda \right>$, the only possible measurement of an experiment is the eigenvalue, $\lambda$. We write this as
  			\begin{align}
  				\hat O \left| \lambda \right> = \lambda \left| \lambda \right>
  			\end{align}
@@ -118,24 +125,24 @@
  				P(\lambda) = \left< \alpha | \lambda \right> \left< \lambda | \alpha \right> = | \left< \alpha | \lambda \right> |^2 
  			\end{align}
  			Which measures the overlap of the two states $\left| \alpha \right>$ and $\left| \lambda \right>$. If they are physically distinguishable, the probability is zero. If the probability is non-zero, we have "mixed states".
- 			\item \textbf{Time development and the Schrodinger equation}\\
+ 			\item \textbf{Time development and the Schr\"{o}dinger equation}\\
  			Time developement for states are given by acting on the state with a unitary operator
  			\begin{align}
  				\left| \Psi(t) \right> = \hat U(t) \left| \Psi(0) \right>
  			\end{align}
- 			This leads us to the time-independent Schrodinger equation
+ 			This leads us to the time-independent Schr\"{o}dinger equation
  			\begin{align}
  				\hat H \left| \Psi(x,t) \right> = i \hbar \frac{\partial}{\partial t} \left| \Psi(x,t) \right> 
  			\end{align}
- 			Where we have defined the Hamiltonian operator $\hat H$. The Hamiltonian will be used throughout the thesis, as its eigenvalues are the measurable energy. We will primerily be focused on solving the \textit{time independent} Schrodinger equation
+ 			Where we have defined the Hamiltonian operator $\hat H$. The Hamiltonian will be used throughout the thesis, as its eigenvalues are the measurable energy. We will primarily focus on solving the \textit{time independent} Schr\"{o}dinger equation
  			\begin{align}
  				\hat H \left| \Psi(x) \right> = E \left| \Psi(x) \right> 
  			\end{align} 
  		\end{enumerate}
  	\end{section}
 
- 	\begin{section}{The Many-Body Wavefunction}
- 		A single particle in isolation, occupy the single particle wave function \cite{Audun,Crawford}
+ 	\begin{section}{The Many-Body Wave Function}
+ 		A single particle, in isolation, occupy the single particle wave function \cite{Audun,Crawford}
  		\begin{align}
  			\phi_i(\mathbf{x}_1)
  		\end{align}
@@ -159,7 +166,7 @@
  		\begin{align}
  			\Psi(\mathbf{x}_1,\mathbf{x}_2) = \phi_1({\mathbf{x}_1}) \phi_b(\mathbf{x}_2)
  		\end{align}
- 		We are claiming that the two particles are distinguishable. That electron $1$ occupy state $\phi_1$ and electron $2$ occupy $\phi_2$. All particles, however, are completely identical, with no way of separating them from each other \cite{Griffiths}. Therefore, one must require a different form on the wavefunction, one that does not commit the particles to specific wave functions. Introducing a general wave function
+ 		We are claiming that the two particles are distuinguishable, i.e. that electron $1$ occupy state $\phi_1$ and electron $2$ occupy $\phi_2$. All particles, however, are completely identical, with no way of separating them from each other \cite{Griffiths}. Therefore, one must require a different form on the wave function, one that does not commit the particles to specific wave functions. Introducing a general wave function
  		\begin{align}
  			\Psi(\mathbf{x}_1,\mathbf{x}_2) = A[\psi_1(\mathbf{x}_1) \psi_2(\mathbf{x}_2) \pm \mathbf{x}_2) \psi_2(\mathbf{x}_1)]
  		\end{align}
@@ -410,7 +417,7 @@
 		\begin{align}
 			\left( \hat a_i^\dagger \left| 0 \right> \right)^\dagger = \left< 0 \right| \hat a_i = \left< \phi_i \right|
 		\end{align}
-		We see that the creation and annihilator operatorare each other's adjoint operator. We can define the counting operator, $\hat N$, which will count how many states are occupied in a Slater determinant
+		We see that the creation and annihilator operator are each other's adjoint operator. We can define the counting operator, $\hat N$, which will count how many states are occupied in a Slater determinant
 		\begin{align}
 			\hat N = \sum_p \hat a^\dagger_p \hat a_p = \sum_p \hat n_p
 		\end{align}
@@ -421,7 +428,7 @@
 		\begin{align}
 			\hat a_1^{\dagger} \hat a_2^{\dagger}... \hat a_N^{\dagger} \ket{0} = \left| \phi_1 \phi_2 ... \phi_N \right>
 		\end{align}
-		Permutations of the operators introduces a sign-change, which is equivalent to interchanging rows in the determinant. We need second quantization to respect the antisymmetrization condition, so a permutation of two states should introduce a change of sign
+		Permutations of the operators introduce a sign-change, which is equivalent to interchanging rows in the determinant. We need second quantization to respect the antisymmetrization condition, so a permutation of two states should introduce a change of sign
 		\begin{align}
 			\hat a_1^{\dagger} \hat a_2^{\dagger} \ket{0} = \ket{\phi_1 \phi_2} = -\ket{\phi_2 \phi_1} = -\hat a_2^{\dagger} \hat a_1^{\dagger} \ket{0}
 		\end{align}
@@ -460,7 +467,6 @@
 			\{ \hat a_i \hat a_j \} \left| 0 \right> &= \hat a_i \hat a_j \left| 0 \right> + \hat a_j \hat a_i \left| 0 \right> = \hat a_i \hat a_j \left| 0 \right> - \hat a_i \hat a_j \left| 0 \right> = 0\\
 			\{ \hat a_i^\dagger \hat a_j^\dagger \} \left| 0 \right> &= \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> + \hat a_j^\dagger \hat a_i^\dagger \left| 0 \right> = \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> - \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> = 0
  		\end{align}
-
  		Ending up with our relations
  		\begin{align}
  			&\{ \hat a_i \hat a_j \} = 0 \\
@@ -541,7 +547,7 @@
 			\begin{align}
 				\hat F = \sum_{pq} \left< p \right| \hat f \left| q \right> \hat a_p^\dagger \hat a_q = \sum_{pq} f_{pq} \hat a_p^\dagger \hat a_q
 			\end{align}
-			Doing calculations in many-body quantum mechanics, we are primerely interested in expectation values. It is therefore crucial that we develop a solid scheme for calculating these values. This can be done by for example looking at the following inner product 
+			Doing calculations in many-body quantum mechanics, we are primarily interested in expectation values. It is therefore crucial that we develop a solid scheme for calculating these values. This can be done by for example looking at the following inner product 
 			\begin{align}
 				\left< P \right| \hat F \left| R \right> 
 			\end{align}
@@ -587,7 +593,7 @@
 			\end{align}
 			There are three possible outcomes here as well 
 			\begin{enumerate}
-				\item If there are none noncoincidences, and all states in SD $\left| P \right>$ is equal to all states in SD $\left| R \right>$, we get 
+				\item If there are none noncoincidences, and all states in SD $\left| P \right>$ are equal to all states in SD $\left| R \right>$, we get 
 				\begin{align}
 				 	\left< P \right| \hat G \left| R \right> = \frac{1}{2}\sum_{p \in P}\sum_{q \in P} (\left< pq\right| \hat g \left| pq \right> - \left< pq\right| \hat g \left| qp \right> ) = \frac{1}{2}\sum_{p \in P}\sum_{q \in P} \left< pq || pq \right>
 				\end{align}
@@ -609,7 +615,7 @@
 		\end{subsection}
 
 		\begin{subsection}{The Hamiltonian}
-			We can now write our Hamiltonian using second quantization. The Hamiltonian consist of a one-body and a two-body term
+			We can now write our Hamiltonian using second quantization. The Hamiltonian consists of a one-body and a two-body term
 			\begin{align}
 				\hat H = \hat H_1 + \hat H_2
 			\end{align}
@@ -637,7 +643,7 @@
 	\begin{section}{Normal Ordering and Wick's Theorem}
 		As one can see, calculations of inner products can be a tedious affair when utilizing the anticommutator rules. Luckily, one can develop more powerful tools, namely Wick's theorem. Before introducing Wick's theorem, a definition of normal ordering and contractions are needed.
 		\begin{subsection}{Normal Ordering}
-			As previously shown, when evaluating a string of operators, the general scheme is to place all annihilation operators to the right of creation operators. This is because, when working on the true vacuum state, annihilation operators give zero. The only non-zero results will then arize from kroenecker delta's when permutating creation-annihilation operators according to (\ref{interchange operators}). 
+			As previously shown, when evaluating a string of operators, the general scheme is to place all annihilation operators to the right of creation operators. This is because, when working on the true vacuum state, annihilation operators give zero. The only non-zero results will then arize from kroenecker delta's when permutating creation-annihilation operators according to equation (\ref{interchange operators}). 
 
 			A string of operators with all annihilation operators to the right will be referred to as a \textit{normal ordered} string of operators. Normal ordering of operators is commonly denoted by a curvy bracket or square bracket
 			\begin{align}
@@ -652,14 +658,13 @@
 		\end{subsection}
 
 		\begin{subsection}{Contractions}
-			The second tool needed for Wick's theorem is the definition \textit{contractions} of operators. We define the contraction of general creation and annihilation operators as
+			The second tool needed for Wick's theorem is the definition \textit{contractions} of operators. We define the contraction of general creation and annihilation operators as 
 			\begin{align}
 				\bcontraction{}{\hat A}{}{\hat B} 
 				\hat A \hat B
 				\equiv \hat A \hat B - \{ \hat A \hat B \}
 			\end{align}
-			Before taking the expectation value of the two operators with respect to the true vacuum. 
-			Giving the results
+			And taking the expectation value of the two operators with respect to the true vacuum, providing the contractions
 			\begin{align}
 				\bcontraction{}{\hat a_a^\dagger}{}{\hat a_b^\dagger}
 				\hat a_a^\dagger \hat a_b^\dagger 
@@ -704,7 +709,7 @@
 		\begin{align}
 			\left| \Phi_0 \right> = \hat a_i^\dagger \hat a_j^\dagger ... \hat a_n^\dagger \left| 0 \right>
 		\end{align}
-		If this SD is the ground state of our system, we can use it as a reference state. We define the highest lying occupied state as the Fermi level, and name all states above the Fermi level \textit{particle states} or \textit{virtual states}. If a state below the Fermi level is vacant, we name it a \textit{hole state}. From here on out, we will use a distinct naming pattern for indices. Indices using the latin alphabet using letters $i, j, k, l, ...$ are reserved for \textit{hole states}. Latin letters $a, b, c, d, ...$ are reserved for \textit{particle states}. Sometimes, we want to name more general states that can take the form of either a \textit{hole state} or a \textit{particle state}. We use the latin letters $p, q, r, s, ...$. For a more convenient way of writing, operators will be written on a shorter and more convenient form
+		If this Slater Determinant is the ground state of our system, we can use it as a reference state. We define the highest lying occupied state as the Fermi level, and name all states above the Fermi level \textit{particle states} or \textit{virtual states}. If a state below the Fermi level is vacant, we name it a \textit{hole state}. From here on out, we will use a distinct naming pattern for indices. Indices using the latin alphabet using letters $i, j, k, l, ...$ are reserved for \textit{hole states}. Latin letters $a, b, c, d, ...$ are reserved for \textit{particle states}. Sometimes, we want to name more general states that can take the form of either a \textit{hole state} or a \textit{particle state}. We use the latin letters $p, q, r, s, ...$. For a more convenient way of writing, operators will be written on a shorter and more convenient form
 		\begin{align}
 			\hat a_a = \hat a \:\:\:\:\: \hat a_b^\dagger = \hat b^\dagger \:\:\:\:\: \hat a_i^\dagger = \hat i^\dagger \:\:\:\: ...
 		\end{align}
@@ -872,7 +877,7 @@
 		\begin{align}
 			(\hat H_0)_N = \hat H_0 - E^{(0)} = \sum_p \epsilon_p \hat p^\dagger \hat p - \sum_i e_i = \sum_p \epsilon_p \{\hat p^\dagger \hat p\}
 		\end{align}
-		Then applying Wick's theorem to the one- and two-body perturbations given in (\ref{Partitioned Hamiltonian}), we get 
+		Then applying Wick's theorem to the one- and two-body perturbations given in equation \ref{Partitioned Hamiltonian}, we get 
 		\begin{align}
 			\hat V_1 = (\hat V_1)_N + \left< \right. | \hat V_1 | \left. \right>
 		\end{align}
@@ -884,7 +889,7 @@
 		\begin{align}
 			\left< \right. | \hat V_1 | \left. \right> = -\sum_{ij} \left< ij || ij \right> = - \left< \right. | \hat U | \left. \right> 
 		\end{align}
-		Turning to the two-body perturbation and using the equation (\ref{Two-Body Normal Ordering}), we can write the two-body part as
+		Turning to the two-body perturbation and using the equation \ref{Two-Body Normal Ordering}, we can write the two-body part as
 		\begin{align}
 			\hat V_2 = (\hat V_2)_N + \hat V_N' + \left< \right. | \hat V_2 | \left. \right>
 		\end{align}
@@ -939,7 +944,7 @@
 		\begin{align}
 			E = E_{\text{ref}} + \Delta E
 		\end{align}
-		This energy is named the correlation energy, and the goal of my thesis has been to implement and compare different methods to compute this energy for different systems. The reference energy, given as
+		This energy is named the correlation energy, and the goal of my thesis is to implement and compare different methods to compute this energy for different systems. The reference energy, given as
 		\begin{align}
 			E_{\text{ref}} = \left< \right. | \hat H_0 | \left. \right> + \left< \right. | \hat V | \left. \right>
 		\end{align}
@@ -985,15 +990,15 @@
 	\end{section}
 
 	\begin{section}{Operators}
-		We need a convention for one body operators as well. A general one-body operator is given by 
+		We need a convention for one-body operators as well. A general one-body operator is given by 
 		\begin{align}
 			\hat F_N = \sum_{pq} \left< p \right| \hat f \left| q \right> \left\{ \hat p^\dagger \hat q \right\}
 		\end{align}
-		We will represent the matrix element $\left< p \right| \hat f \left| q \right>$ by a dashed line, while there will be one line entering and one line leaving the operator due to the annihilation and creation operator. Because the operator behaves different depending on wether the general operators $p$ and $q$ are virtual or occupied states, it can be drawn as four different forms. Presenting the various forms in the picture below \cite{ShavittAndBartlett}
+		We will represent the matrix element $\left< p \right| \hat f \left| q \right>$ by a dashed line, while there will be one line entering and one line leaving the operator due to the annihilation and creation operator. Because the operator behaves different depending on whether the general operators $p$ and $q$ are virtual or occupied states, it can be drawn as four different forms. Presenting the various forms in the figure below \cite{ShavittAndBartlett}
 		\begin{figure}[H]
 			\includegraphics[width=\textwidth]{Figures/OneBodyOperator.pdf}
 			\label{OneBodyOperator}
-			\caption{Diagrams for four different variants of the one body operator. From left to right, the operators shown are $\sum_{ij} h_{ij} i^\dagger j $, $\sum_{ab} h_{ab} a^\dagger b$, $\sum_{ai}h_{ai} a^\dagger i$ and $\sum_{ai} h_{ia} i^\dagger a$}
+			\caption{Diagrams for four different variants of the one-body operator. From left to right, the operators shown are $\sum_{ij} h_{ij} i^\dagger j $, $\sum_{ab} h_{ab} a^\dagger b$, $\sum_{ai}h_{ai} a^\dagger i$ and $\sum_{ai} h_{ia} i^\dagger a$}
 		\end{figure}
 		The same logic can be applied to the general two-body operator, given by 
 		\begin{align}
@@ -1037,7 +1042,7 @@
 		\begin{align}
 			\left| \Phi_i^a \right> = \hat a^\dagger \hat i | \left. \right> 
 		\end{align}
-		and the general one body operator 
+		and the general one-body operator 
 		\begin{align}
 			\hat U = \sum_{bc} \left< b | \hat u | c \right> \{ \hat b^\dagger \hat c \}
 		\end{align}
@@ -1278,8 +1283,8 @@
 	 		\end{align}
 	 	\end{subsection}
 
-	 	\begin{subsection}{Equations for Reileigh-Schrodinger Perturbation Theory}
-	 		We can interpret $\omega$ different ways. I here present the Reileigh-Schrodinger Perturbation Theory which postulates that
+	 	\begin{subsection}{Equations for Reileigh-Schr\"{o}dinger Perturbation Theory}
+	 		We can interpret $\omega$ in different ways. I here present the Reileigh-Schr\"{o}dinger Perturbation Theory which postulates that
 	 		\begin{align}
 	 			\omega = E_0^{(0)}
 	 		\end{align}
@@ -1325,7 +1330,7 @@
 	\end{section}
 
 	\begin{section}{Linked Diagram theorem}
-		The linked diagram theorem is an important theorem, presented by Goldstone in 1957 \cite{ShavittAndBartlett,Goldstone} which leads to the cancellation of all unlinked diagrams in Reyleigh-Schrodinger perturbation theory.
+		The linked diagram theorem is an important theorem, presented by Goldstone in 1957 \cite{ShavittAndBartlett,Goldstone} which leads to the cancellation of all unlinked diagrams in Reileigh-Schr\"{o}dinger perturbation theory.
 
 		The theorem states that the wave function and the energy can be expressed as a sum of linked diagrams \textit{only}. Reducing the equations to 
 		\begin{align}
@@ -1337,7 +1342,7 @@
 	\end{section}
 
 	\begin{section}{Hartree-Fock calculations}
- 		When doing Hartree-Fock calculation, we do a change of basis and instead of expanding our Hamiltonian, we vary the wave function to minimize the energy. We name the original basis by greek letters and the new basis by latin letters. The original basis should be chosen such that we can calculate it's expectation value. 
+ 		When doing Hartree-Fock calculation, we conduct a change of the basis, and instead of expanding our Hamiltonian, we vary the wave function to minimize the energy. We name the original basis by greek letters and the new basis by latin letters. The original basis should be chosen such that we can calculate it's expectation value. 
  		\begin{align}
  			\left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = E^{\text{HF}}
  		\end{align}
@@ -1552,7 +1557,7 @@
   		\begin{align}
   			\hat P\left( ij \middle| ab \right) = (1 - \hat P_{ij}) (1 - \hat P_{ab})
   		\end{align}
-  		We notice that some parts are linear in the amplitude, while some are quadradic. Sorting them into the linear and quadradic parts, $L$ and $Q$ respectably, I get
+  		We notice that some parts are linear in the amplitude, while some are quadratic. Sorting them into the linear and quadratic parts, $L$ and $Q$ respectably, I get
   		\begin{align}
   			L(t_{ij}^{ab}) = \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} + \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab} + \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac}
   		\end{align}
@@ -1769,7 +1774,7 @@
  		\begin{align}
  			V = \sum_{ b = 1 }^4 \left< \alpha b | v | \gamma b \right>  
  		\end{align}
- 		Because the pairing model do not allow broken pairs, this matrix element will only be non-zero when $\alpha = \gamma$ and when $p_{\alpha} = p_{b}$, $\sigma_ \alpha = \sigma_b$. The Hartree-Fock matrix will therefore be diagonal, meaning the original basis is a canonical Hartree-Fock basis. Hartree-Fock calculations on this basis will not provide any new results. The Hartree-Fock energy can be calculated
+ 		Because the pairing model does not allow broken pairs, this matrix element will only be non-zero when $\alpha = \gamma$ and when $p_{\alpha} = p_{b}$, $\sigma_ \alpha = \sigma_b$. The Hartree-Fock matrix will therefore be diagonal, meaning the original basis is a canonical Hartree-Fock basis. Hartree-Fock calculations on this basis will not provide any new results. The Hartree-Fock energy can be calculated
  		\begin{align}
  			E^{\text{HF}} = \left< \Phi_0 \right| \hat H \left| \Phi_0 \right> &= \left< \Phi_0 \right| \hat H_0 \left| \Phi_0 \right> + \left< \Phi_0 \right| \hat V \left| \Phi_0 \right> \\
  			&= 2 - g 
@@ -1778,7 +1783,7 @@
  	\end{section}
 
 	\begin{section}{Many-Body Perturbation Theory}
- 		When setting up the MBPT equations, it is useful to present them as diagrams. All the diagrams for the first, second and third order perturbation theory can be presented in figure ()
+ 		When setting up the perturbation theory equations, it is useful to present them as diagrams. All the diagrams for the first, second and third order perturbation theory are presented and translated to equations in this section. 
  		
 		Because of special properties of the Pairing model, many of these diagrams can be removed by a visual examination. First, we have no broken pairs, meaning that a general two-body matrix element 
 		\begin{align}
@@ -1795,7 +1800,7 @@
  		\begin{figure}[H]
 			\includegraphics[width=\textwidth]{Figures/FirstSecondThirdOrder.pdf}
 			\caption{Diagrams for Many-Body Perturbation theory to second and third order. }
-			\label{mbpt23}
+			\label{figure:mbpt23}
 		\end{figure}
 
 		\begin{subsection}{Interpreting diagrams}
@@ -1815,7 +1820,7 @@
 			\begin{align}
 				\hat V = \hat W + \hat F^o = \hat W 
 			\end{align}
-			And there will only be two-body matrix elements present and all diagrams with one-body interactions can be removed. In the noncanonical Hartree-Fock case, $\hat F^o$ will give non-zero results and must be present. The procedure for interpreting the diagram and write out the corresponding equations can be summed up in the following sequence of operations
+			And there will only be two-body matrix elements present, which implies that all diagrams with one-body interactions can be removed. In the noncanonical Hartree-Fock case, $\hat F^o$ will give non-zero results and must be present. The procedure for interpreting the diagram and write out the corresponding equations can be summed up in the following sequence of operations
 		\end{subsection}
 
 		\begin{subsection}{Label all lines}
@@ -1823,7 +1828,7 @@
 		\end{subsection}
 
 		\begin{subsection}{Identify the operators}
-			A one-body vertex should be identified as the one body operator used for the system, where one sets up the matrix element $f_p^q$ by the labels as
+			A one-body vertex should be identified as the one-body operator used for the system, where one sets up the matrix element $f_p^q$ by the labels as
 			\begin{align}
 				f_p^q = \left< \text{line out} \right| \hat f \left| \text{line in} \right>
 			\end{align}
@@ -1834,7 +1839,7 @@
 		\end{subsection}
 
 		\begin{subsection}{Identify the denominator}
-			To identify the denominator produced by the resolvent, $\hat R_0$, one draws imaginary lines between the interactions and set up the $\epsilon$ for every state-line that was crossed 
+			To identify the denominator produced by the resolvent, $\hat R_0$, one draws imaginary lines between the interactions and set up the $\epsilon$ for every state-line that was crossed.
 		\end{subsection}
 
 		\begin{subsection}{Including phase factor}
@@ -1865,11 +1870,11 @@
 		\end{subsection}
 
 		\begin{subsection}{Third Order Perturbation Theory}
-			Looking at the third order diagrams, shown in figure () , numbering from 3 to 15. Third order diagrams have three interaction parts. One at the top and one at the bottom of the diagram along with an intermediate interaction part in the middle. As we did for diagram 2, we can exclude all diagrams with a one-body operator, leaving only diagrams 3, 4 and 5. 
+			The third order diagrams, shown in figure \ref{figure:mbpt23}, are numbered from 3 to 15. Third order diagrams have three interaction parts: One at the top and one at the bottom of the diagram along with an intermediate interaction part in the middle. Applying the same logic that we applied for diagram 2, we can exclude all diagrams with a one-body interaction term, leaving only diagrams 3, 4 and 5. 
 			\begin{align}
 				E_{\text{diagram 3}} = \sum_{\substack{abc \\ ijk}} \frac{\left<ij||ab\right>\left<bk||jc\right>\left<ac||ij\right>}{\epsilon_{ij}^{ac} \epsilon_{ij}^{ab}} = 0
 			\end{align}
-			However, here we see a problem. We have an interaction term $\left<bk||jc\right>$, which is a broken pair. The Pairing model do not allow such states, and this must be zero. This is not a problem for the diagrams 4 and 5. 
+			However, here we see a problem. We have an interaction term $\left<bk||jc\right>$, which is a broken pair. The Pairing model does not allow such states, and this must be zero. This is not a problem for the diagrams 4 and 5. 
 			\begin{align}
 				E_{\text{diagram 4}} = \frac{1}{2^3} \sum_{\substack{abcd \\ ij}} \frac{\left<cd||ij\right>\left<ab||cd\right>\left<ij||ab\right>}{\epsilon_{ij}^{cd} \epsilon_{ij}^{ab}}
 			\end{align}
@@ -1887,7 +1892,7 @@
 				\caption{Goldstone diagrams for fourth order Reileigh-Schr\"{o}dinger perturbation theory with 1p1h excitations}
 				\label{figure:mbpt1p1h}
 			\end{figure}
-			The first set of diagrams in figure (\ref{figure:mbpt1p1h}) show diagrams giving rise to a 1particle-1hole excitation. All these diagrams have an intermediate step with a 1p-1h part. The Pairing model do not allow broken pairs, meaning that intermediate steps with 1p-1h or 3p-3h interaction parts must be zero. Therefore none of these diagrams are included in the calculations.
+			The first set of diagrams in figure (\ref{figure:mbpt1p1h}) show diagrams giving rise to a 1particle-1hole excitation. All these diagrams have an intermediate step with a 1p-1h part. The Pairing model does not allow broken pairs, meaning that intermediate steps with 1p-1h or 3p-3h interaction parts must be zero. Therefore none of these diagrams are included in the calculations.
 			\begin{figure}[H]
 				\includegraphics[width=\textwidth]{Figures/fourthorder2p2h.png}
 				\caption{Goldstone diagrams for fourth order Reileigh-Schr\"{o}dinger perturbation theory with 2p2h excitations}
@@ -1934,7 +1939,7 @@
 			\begin{align}
 				E_{\text{diagram 35}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ac||ij\right>\left<bd||kl\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{kl}^{bd} }
 			\end{align}
-			And diagram 36. Please notice that there are a mistake in the drawing of the diagram 36. The right-most particle state is supposed to be a hole state, giving the correct equation 
+			And diagram 36. Please notice that there is a mistake in the drawing of the diagram 36. The right-most particle state is supposed to be a hole state, giving the correct equation 
 			\begin{align}
 				E_{\text{diagram 36}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ab||kl\right>\left<cd||ij\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ij}^{cd} }
 			\end{align}
@@ -1960,7 +1965,7 @@
  	\end{section}
 
  	\begin{section}{Spin Summations}
- 		We have up until now, not taken into account the effect of spin in the matrix elements. Because of spin orthogonality, terms may vanish from certain two-electron matrix elements. Listed here, are all the different ways spins can be organized, along with the resulting integration. Representing the spin up orbital with a bar, we get \cite{ShavittAndBartlett}
+ 		Up to this point, we have not taken into account the effect of spin in the matrix elements. Because of spin orthogonality, terms may vanish from certain two-electron matrix elements. Listed here, are all the different ways spins can be organized, along with the resulting integration. Representing the spin up orbital with a bar, we get \cite{ShavittAndBartlett}
  		\begin{align}
  			\left< pq || rs \right> &= \left< pq | \hat v | rs \right> - \left< pq | \hat v | sr \right> \\
  			\left< p\bar q || r\bar s \right> &= \left<pq | \hat v | rs \right> \\
@@ -1984,12 +1989,12 @@
 
 
 \begin{chapter}{Infinite Matter}
-	A study of infinite matter is the most comprehensible way of studying nuclear material. This thesis will study the infinite electron gas before the final study of nuclear material. This is done because of pedagogical reasons and because the electron gas has closed form solutions that provide important benchmarking for the code. 
+	A study of infinite matter is the most comprehensible way of studying nuclear material. This thesis will study the infinite electron gas before the final study of nuclear material. This is done for pedagogical reasons and because the electron gas has closed form solutions that provide important benchmarking for the code. 
 	\begin{section}{The Infinate Electron Gas}
-		The infinite electron gas gives a good approximation to valence electrons in metal. The gas consist only of interacting electrons with a uniform background of charged ions. The whole system is charge neutral. We assume a finite cubic box as done in \cite{Shepherd2012} and \cite{Shepherd2013}. The box has a length $L$ and volume $\Omega = L^3$, with $N_e$ as the number of electrons with a charge density $\rho = N_e / \Omega$.
+		The infinite electron gas gives a good approximation to valence electrons in metal. The gas consists only of interacting electrons with a uniform background of charged ions. The whole system is charge neutral. We assume a finite cubic box as done in \cite{Shepherd2012} and \cite{Shepherd2013}. The box has a length $L$ and volume $\Omega = L^3$, with $N_e$ as the number of electrons with a charge density $\rho = N_e / \Omega$.
 
 		\begin{subsection}{The Hamiltonian}
-			The electrons interact with the sentral symmetric Colomb potential, $\hat V(\vec r_1, \vec r_2)$ depending only on the distance $\left| \vec r_1 - \vec r_2 \right|$. The Hamiltonian for infinite electron gas is \cite{Baardsen}
+			The electrons interact with the central symmetric Colomb potential, $\hat V(\vec r_1, \vec r_2)$ depending only on the distance $\left| \vec r_1 - \vec r_2 \right|$. The Hamiltonian for infinite electron gas is \cite{Baardsen}
 			\begin{align}
 				\hat H = \hat H_1 + \hat H_2 = \hat H_{\text{kin}} + \hat H_{\text{interaction}}
 			\end{align}
@@ -2025,7 +2030,7 @@
 			\begin{align}
 				\text{erfc}(x) = 1 - \text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_x^\infty e^{-t^2} \text{dt}
 			\end{align}
-			We use this relation because an interaction on the form $1/|r|$ is not convergent for an infinite number of particle \cite{Audun}. Ewald found that one can rewrite the interaction in terms of these error functions \cite{Ewald}
+			We use this relation because an interaction on the form $1/|r|$ is not convergent for an infinite number of particles \cite{Audun}. Ewald found that one can rewrite the interaction in terms of these error functions \cite{Ewald}
 			\begin{align}
 				\frac{1}{r} = \frac{\text{erf}(\frac{1}{2}\sqrt{\eta}r)}{r} + \frac{\text{erfc}(\frac{1}{2}\sqrt{\eta}r)}{r}
 			\end{align}
@@ -2040,7 +2045,7 @@
 			\begin{align}
 				E_{\text{ref}} = \sum_i \left<i | h_0 | i\right> + \frac{1}{2} \sum_{ij} \left<ij||ij\right> + \frac{1}{2} Av_0
 			\end{align}
-			$A$ is the number of electrons, and the term $A v_0$ is the so-called Madelung constant. It is how we incorporates the self-interaction term into the system. This factor will be larger for smaller system and vanish as we approach the thermodynamic limit. 
+			$A$ is the number of electrons, and the term $A v_0$ is the so-called Madelung constant. It is how we incorporate the self-interaction term into the system. This factor will be larger for smaller system and vanish as we approach the thermodynamic limit. 
 		\end{subsection}
 		
 		\begin{subsection}{The Fock Matrix Elements}
@@ -2152,7 +2157,7 @@
 	\end{section}
 
 	\begin{section}{Infinite Nuclear Matter}
-		Central to my thesis, is the study of infinite nuclear matter. I look at baryonic matter similar to the dense baryonic matter found in neutron stars. I limit the study to temperatures far below Fermi level. The matter is mostly made up of an equilibrium of baryons and leptons. In neutron star matter, we assume the equilibrium consist of protons, neutrons, electrons and muons with densities larger than $0.1 \text{fm}^-3$. The equilibrium conditions are specified by weak interactions
+		Central to my thesis, is the study of infinite nuclear matter. I look at baryonic matter similar to the dense baryonic matter found in neutron stars. I limit the study to temperatures far below Fermi level. The matter is mostly made up of an equilibrium of baryons and leptons. In neutron star matter, we assume the equilibrium consists of protons, neutrons, electrons and muons with densities larger than $0.1 \text{fm}^-3$. The equilibrium conditions are specified by weak interactions
 		\begin{align}
 		 	b_1 \rightarrow b_2 + l + \bar \nu_l \:\:\:\:\:\: b_2 + l \rightarrow b_1 + \nu_l
 		\end{align} 
@@ -2214,11 +2219,11 @@
 
 
 \begin{chapter}{Implementation of CCD}
-	In this thesis I have created three different solvers for Coupled Cluster Doubles equations. 
+	In this thesis I have created three different solvers for coupled-cluster doubles equations. 
 	\begin{enumerate}
 		\item A naive brute force implementation of the equations summing over all variables. 
 		\item A naive brute force implementation of intermediate equations summing over all variables.
-		\item Rewriting summations as matrix-matrix multiplications and exploiting various symmetry arguments one can set up a block implementation.
+		\item Rewriting summations as matrix-matrix multiplications and exploiting various symmetry arguments that one can set up as a block implementation.
 	\end{enumerate}	
 	There is a significant performance leap between each method, but I have included the first two solvers for both educational and benchmarking purposes. The Pairing model with 4 particles and 4 holes is a small system that one can easily solve using the naive approach. After producing expected results with the naive solver, I have compared the more complicated solvers to the naive solver for all systems. 
 
@@ -2253,7 +2258,7 @@
 		 	\label{matrix matrix multiplication}
 		\end{align} 
 
-		As our goal is to rewrite the Coupled Cluster equations as matrix-matrix products. We will need to map tensors of rank $\geq 2$ onto matrices. One mapping that provides systematic and unique matrix elements can be 
+		As our goal is to rewrite the Coupled Cluster equations as matrix-matrix products, we will need to map tensors of rank $\geq 2$ onto matrices. One mapping that provides systematic and unique matrix elements can be 
 		\begin{align}
 			\left<pq\middle| \hat v\middle|rs\right> = V_{\alpha(p,q),\beta(r,s)}
 		\end{align}
@@ -2288,7 +2293,7 @@
 		\end{align}
 
 		\begin{subsection}{Aligning elements}	
-			Unfortunately, not all product are perfectly aligned like $L_a$. Consider, for example, the term, $L_c$
+			Unfortunately, not all products are perfectly aligned like $L_a$. Consider, for example, the term, $L_c$
 			\begin{align}
 				L_c = -P\left(ij\middle|ab\right) \sum_{kc} \left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac}
 			\end{align}
@@ -2300,7 +2305,7 @@
 			\begin{align}
 				t_{ik}^{ac} \rightarrow T_{\delta(ik)}^{\gamma(ac)}
 			\end{align}
-			This matrix multiplication is misaligned, and if the number of particles is unequal to the number of holes, the matrices' size will incompatible. 
+			This matrix multiplication is misaligned, and if the number of particles is unequal to the number of holes, the matrices' size will be incompatible. 
 			\begin{align}
 				(L_c)_ \delta^\alpha \neq -P\left(ij\middle|ab\right) \sum_ \beta V_{\beta(cj)}^{\alpha(kb)} T_{\delta(ik)}^{\gamma(ac)}
 			\end{align}
@@ -2361,7 +2366,7 @@
 	\end{section}
 
 	\begin{section}{Block Implementation}
-		One can both greatly reducing memory usage and improve computational speed by exploiting symmetries for infinite matter. Due to kroenecker delta's in the interaction, one such symmetry is the conservation of momentum
+		One can both greatly reduce memory usage and improve computational speed by exploiting symmetries for infinite matter. Due to kroenecker delta's in the interaction, one such symmetry is the conservation of momentum
 		\begin{align}
 			\delta_{\vec k_p + \vec k_q, \vec k_r + \vec k_s} \rightarrow \vec k_p + \vec k_q = \vec k_r + \vec k_s
 		\end{align}
@@ -2421,11 +2426,11 @@
 			\begin{align}
 			 	\mathbf{k}_a + \mathbf{k}_b = \mathbf{k}_c + \mathbf{k}_d = \mathbf{k}_i + \mathbf{k}_j 
 			\end{align}
-			Which are implemented using the direct channels. We will however run into some trouble when computing the unaligned diagrams $L_c$, $Q_b$, $Q_c$ and $Q_d$. The $L_c$ diagram is given by 
+			Which are implemented using the direct channels. We will however run into some trouble when computing the unaligned diagrams $L_c$, $Q_b$, $Q_c$ and $Q_d$. Looking at the diagram $L_c$, given by 
 			\begin{align}
 				L_c = - \hat P(ij|ab) \sum_{kc} \left<kb\middle|\hat v\middle| cj \right> t_{ik}^{ac}
 			\end{align}
-			Looking at the conservation requirement for $L_c$
+			With the corresponding conservation requirements given by
 			\begin{align}
 				\mathbf{k}_k + \mathbf{k}_b = \mathbf{k}_c + \mathbf{k}_j = \mathbf{k}_a + \mathbf{k}_c = \mathbf{k}_i + \mathbf{k}_k
 			\end{align}
@@ -2456,7 +2461,7 @@
 				&\:\:\:\:\:\: \text{Id}' = \text{Index}(-N_x,-N_y,-N_z,-S_z,-T_z) \\
 				&\:\:\:\:\:\: X' \leftarrow (\text{ one-body state 2}, \text{ one-body state 1}, \text{ Id'})
 			\end{align*}
-			Where $X'$ is the cross channel compliment, $X(pq) = X'(qp)$. The coss-channels are used for calculating $Q_b$ and $L_c$. 
+			Where $X'$ is the cross channel compliment, $X(pq) = X'(qp)$. The cross-channels are used for calculating $Q_b$ and $L_c$. 
 
 			Looking at the diagram $Q_c$
 			\begin{align}
@@ -2530,7 +2535,7 @@
 	\begin{section}{Parallellization}
 		To fully utilize the computational power in modern processors, one must use a parallellized code. Modern processors usually come with more than one core to save power output at the same effiency \cite{IntelOpenMP}. A standard written C++ program will be processed using only 1 \textit{thread}, meaning that a single core only will be used. The super computer, \textit{Smaug}, located at the Institute of Physics at the University of Oslo is built of processors with many but low performing cores given todays standards. If one can split the program into multiple threads, each executed at the same time in different cores, one can hope to reduce computational time substansially. 
 		
-		OpenMP is a library, which will handle the 
+		OpenMP is a library. 
 	\end{section}
 
 \end{chapter}
@@ -2644,7 +2649,7 @@
 				\caption{Comparing the ground state energy for a 4 particle, 4 hole Pairing model, given by $E_{\text{ref}} + \Delta E$ This has been calculated for various interaction terms, $g \in [-1,1]$ and for the single particle energy factor $\xi = 1$. The figure show relative performance for various solvers.}
 				\label{figure:CompareEnergyPairing}
 			\end{figure}
-			One can see, from figures (\ref{figure:CompareCorrelationPairing},\ref{figure:CompareEnergyPairing}), that the performance is good across the board close to $g = 0$, where the interaction is weak or non-existent. Once the interaction grows stronger, one notice that perturbation theory starts deviating a lot from the exact solution given by Full Configuration Interaction. That is particularly obvious for a negative interaction term. The cupled-cluster doubles equations perform very well, barely distinguishable from FCI even at very strong interactions. The same can be said for Configuration Interaction without the 4p-4h excitation term.  
+			One can see from figures (\ref{figure:CompareCorrelationPairing},\ref{figure:CompareEnergyPairing}) that the performance is good across the board close to $g = 0$, where the interaction is weak or non-existent. Once the interaction grows stronger, one notice that perturbation theory starts deviating a lot from the exact solution given by Full Configuration Interaction. That is particularly obvious for a negative interaction term. The cupled-cluster doubles equations perform very well, barely distinguishable from FCI even at very strong interactions. The same can be said for Configuration Interaction without the 4p-4h excitation term.  
 		\end{subsection}
 
 	\end{section}
@@ -2710,8 +2715,8 @@
 				\begin{tabular}[center]{l  c  c  c r}
 					$r_s$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ block & $\Delta E_{CCD}$ interm. & $\Delta E_{CCD}$ \cite{Audun} \\
 					\hline
-					1.0 &  54 & -0.3178228436888622 & -0.317822842713 & -0.317822843688933 \\
-						&  66 & -0.3931116842237731 & & -0.3926965898061966 \\
+					1.0 &  54 & -0.3178228436888622 & -0.3178228436888617 & -0.317822843688933 \\
+						&  66 & -0.3931116842237731 & -0.392696589806104 & -0.3926965898061966 \\
 						& 114 & -0.4483703396794002 & & -0.4479105961757175 \\
 						& 162 & -0.4805985770458347 & & -0.4805572589306416 \\
 						& 186 & -0.4857493112620241 & & -0.4855229317521318 \\
@@ -2720,8 +2725,8 @@
 						& 342 & -0.5023838015693459 & & -0.5019526761547779 \\
 						& 358 & -0.5029455986670885 & & -0.502519673607641\\
 					\hline
-					0.5 &  54 & -0.3589655739945123 & -0.358965572879 &   \\
-						&  66 & -0.4500927397323694 &  & \\
+					0.5 &  54 & -0.3589655739945123 & -0.3589655739945096 &   \\
+						&  66 & -0.4500927397323694 & -0.4498148680442103 & \\
 						& 114 & -0.5123238220612253 &  & -0.5120153541478306 \\
 						& 162 & -0.5476173361611851 &  & \\
 						& 186 & -0.5534833405611211 &  & \\
@@ -2730,8 +2735,8 @@
 						& 342 & -0.5732601634435416 &  & -0.572964549890367 \\
 						& 358 & -0.5739729304859902 &  & \\
 					\hline
-					2.0 &  54 & -0.2589156130046961 & -0.258915612334 &   \\
-						&  66 & -0.3139262042590158 &  & \\
+					2.0 &  54 & -0.2589156130046961 & -0.2589156130046975 &   \\
+						&  66 & -0.3139262042590158 & -0.3134082887534144 & \\
 						& 114 & -0.3583621351017488 &  &  -0.3577968843144996 \\
 						& 162 & -0.3856712818606722 &  & \\
 						& 186 & -0.3897132502824209 &  & \\
@@ -2746,7 +2751,13 @@
 		\end{table}
 
 		\begin{subsection}{The Thermodynamic limit}
-			
+			Because of the truncation of possible single-particle states made to the wave function ansatz, coupled-cluster theory do not produce the exact wave function. We can however, see how the ground state changes when we add more states. One will notice that the energy will converge towards a limit, named the thermodynamical limit. This will be the best possible approximation possible result for coupled-cluster doubles. 
+
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{../ElectronGas/Results/Figures/Thermodynamic_limit.png}
+				\caption{Thermodynamic limit}
+				\label{figure:thermodynamic_limit}
+			\end{figure}
 		\end{subsection}
 
 	\end{section}

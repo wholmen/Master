@@ -1,0 +1,100 @@
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{subsection.1.0.1}{Motivation}{chapter.1}% 2
+\BOOKMARK [2][-]{subsection.1.0.2}{Goals for the Work}{subsection.1.0.1}% 3
+\BOOKMARK [2][-]{subsection.1.0.3}{Structure}{subsection.1.0.1}% 4
+\BOOKMARK [0][-]{chapter.2}{Quantum Mechanics}{}% 5
+\BOOKMARK [1][-]{section.2.1}{Postulates}{chapter.2}% 6
+\BOOKMARK [1][-]{section.2.2}{The Many-Body Wave Function}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.3}{Pauli's Exclusion Principle}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.4}{Slater Determinant}{chapter.2}% 9
+\BOOKMARK [1][-]{section.2.5}{An ansatz for the Wave Function}{chapter.2}% 10
+\BOOKMARK [1][-]{section.2.6}{The Hamiltonian}{chapter.2}% 11
+\BOOKMARK [1][-]{section.2.7}{Matrix Elements}{chapter.2}% 12
+\BOOKMARK [2][-]{subsection.2.7.1}{Calculation of matrix elements}{section.2.7}% 13
+\BOOKMARK [1][-]{section.2.8}{The Variational Principle}{chapter.2}% 14
+\BOOKMARK [0][-]{chapter.3}{Second Quantization}{}% 15
+\BOOKMARK [1][-]{section.3.1}{Annihilation and Creation operators}{chapter.3}% 16
+\BOOKMARK [1][-]{section.3.2}{Strings of Operators}{chapter.3}% 17
+\BOOKMARK [1][-]{section.3.3}{Anticommutator Relations}{chapter.3}% 18
+\BOOKMARK [1][-]{section.3.4}{Inner products}{chapter.3}% 19
+\BOOKMARK [1][-]{section.3.5}{Representation of Operators}{chapter.3}% 20
+\BOOKMARK [2][-]{subsection.3.5.1}{One-Body Operator}{section.3.5}% 21
+\BOOKMARK [2][-]{subsection.3.5.2}{Two-body Operator}{section.3.5}% 22
+\BOOKMARK [2][-]{subsection.3.5.3}{The Hamiltonian}{section.3.5}% 23
+\BOOKMARK [1][-]{section.3.6}{Normal Ordering and Wick's Theorem}{chapter.3}% 24
+\BOOKMARK [2][-]{subsection.3.6.1}{Normal Ordering}{section.3.6}% 25
+\BOOKMARK [2][-]{subsection.3.6.2}{Contractions}{section.3.6}% 26
+\BOOKMARK [2][-]{subsection.3.6.3}{Time-independent Wick's theorem}{section.3.6}% 27
+\BOOKMARK [1][-]{section.3.7}{Particle-Hole Formulation}{chapter.3}% 28
+\BOOKMARK [1][-]{section.3.8}{Normal ordering of Operators}{chapter.3}% 29
+\BOOKMARK [2][-]{subsection.3.8.1}{One-Body Operator}{section.3.8}% 30
+\BOOKMARK [2][-]{subsection.3.8.2}{Two-Body operators}{section.3.8}% 31
+\BOOKMARK [1][-]{section.3.9}{Partitioning the Hamiltonian Operator}{chapter.3}% 32
+\BOOKMARK [1][-]{section.3.10}{Normal Ordering of Hamiltonian}{chapter.3}% 33
+\BOOKMARK [1][-]{section.3.11}{Correlation Energy}{chapter.3}% 34
+\BOOKMARK [0][-]{chapter.4}{Diagramatic Representation}{}% 35
+\BOOKMARK [1][-]{section.4.1}{The Slater Determinant}{chapter.4}% 36
+\BOOKMARK [1][-]{section.4.2}{Operators}{chapter.4}% 37
+\BOOKMARK [1][-]{section.4.3}{Contractions and Inner products}{chapter.4}% 38
+\BOOKMARK [1][-]{section.4.4}{Interpreting Diagrams}{chapter.4}% 39
+\BOOKMARK [0][-]{chapter.5}{Many-Body Methods}{}% 40
+\BOOKMARK [1][-]{section.5.1}{Full Configuration Interaction Theory}{chapter.5}% 41
+\BOOKMARK [2][-]{subsection.5.1.1}{The Hamiltonian Matrix}{section.5.1}% 42
+\BOOKMARK [2][-]{subsection.5.1.2}{Computational cost}{section.5.1}% 43
+\BOOKMARK [1][-]{section.5.2}{Many-body Perturbation Theory}{chapter.5}% 44
+\BOOKMARK [2][-]{subsection.5.2.1}{General derivation of Many-Body Particle Theory equations}{section.5.2}% 45
+\BOOKMARK [2][-]{subsection.5.2.2}{Equations for Reileigh-Schr\366dinger Perturbation Theory}{section.5.2}% 46
+\BOOKMARK [1][-]{section.5.3}{Linked Diagram theorem}{chapter.5}% 47
+\BOOKMARK [1][-]{section.5.4}{Hartree-Fock calculations}{chapter.5}% 48
+\BOOKMARK [0][-]{chapter.6}{Coupled-Cluster Theory}{}% 49
+\BOOKMARK [1][-]{section.6.1}{The Exponential Ansatz}{chapter.6}% 50
+\BOOKMARK [1][-]{section.6.2}{Comparison with Configuration Interaction}{chapter.6}% 51
+\BOOKMARK [1][-]{section.6.3}{Truncating the Exponential Ansatz}{chapter.6}% 52
+\BOOKMARK [1][-]{section.6.4}{The Variational Principle}{chapter.6}% 53
+\BOOKMARK [1][-]{section.6.5}{Size-Extensivity}{chapter.6}% 54
+\BOOKMARK [1][-]{section.6.6}{The Coupled-Cluster Doubles Equations}{chapter.6}% 55
+\BOOKMARK [1][-]{section.6.7}{Intermediates}{chapter.6}% 56
+\BOOKMARK [0][-]{chapter.7}{The Pairing Model}{}% 57
+\BOOKMARK [1][-]{section.7.1}{The Hamiltonian}{chapter.7}% 58
+\BOOKMARK [1][-]{section.7.2}{Configuration Interaction theory}{chapter.7}% 59
+\BOOKMARK [1][-]{section.7.3}{Hartree-Fock calculations}{chapter.7}% 60
+\BOOKMARK [1][-]{section.7.4}{Many-Body Perturbation Theory}{chapter.7}% 61
+\BOOKMARK [2][-]{subsection.7.4.1}{Interpreting diagrams}{section.7.4}% 62
+\BOOKMARK [2][-]{subsection.7.4.2}{Label all lines}{section.7.4}% 63
+\BOOKMARK [2][-]{subsection.7.4.3}{Identify the operators}{section.7.4}% 64
+\BOOKMARK [2][-]{subsection.7.4.4}{Identify the denominator}{section.7.4}% 65
+\BOOKMARK [2][-]{subsection.7.4.5}{Including phase factor}{section.7.4}% 66
+\BOOKMARK [2][-]{subsection.7.4.6}{Identify equivalent lines}{section.7.4}% 67
+\BOOKMARK [2][-]{subsection.7.4.7}{Second Order Perturbation Theory}{section.7.4}% 68
+\BOOKMARK [2][-]{subsection.7.4.8}{Third Order Perturbation Theory}{section.7.4}% 69
+\BOOKMARK [2][-]{subsection.7.4.9}{Fourth Order Perturbation Theory}{section.7.4}% 70
+\BOOKMARK [1][-]{section.7.5}{Spin Summations}{chapter.7}% 71
+\BOOKMARK [0][-]{chapter.8}{Infinite Matter}{}% 72
+\BOOKMARK [1][-]{section.8.1}{The Infinate Electron Gas}{chapter.8}% 73
+\BOOKMARK [2][-]{subsection.8.1.1}{The Hamiltonian}{section.8.1}% 74
+\BOOKMARK [2][-]{subsection.8.1.2}{The Reference Energy}{section.8.1}% 75
+\BOOKMARK [2][-]{subsection.8.1.3}{The Fock Matrix Elements}{section.8.1}% 76
+\BOOKMARK [2][-]{subsection.8.1.4}{Anti-Symmetric Matrix Elements}{section.8.1}% 77
+\BOOKMARK [2][-]{subsection.8.1.5}{The Plane Wave Basis}{section.8.1}% 78
+\BOOKMARK [1][-]{section.8.2}{Infinite Nuclear Matter}{chapter.8}% 79
+\BOOKMARK [1][-]{section.8.3}{Nuclear Interaction}{chapter.8}% 80
+\BOOKMARK [2][-]{subsection.8.3.1}{The Minnesota Potential}{section.8.3}% 81
+\BOOKMARK [0][-]{chapter.9}{Implementation of CCD}{}% 82
+\BOOKMARK [1][-]{section.9.1}{Implementing the CCD equations}{chapter.9}% 83
+\BOOKMARK [1][-]{section.9.2}{Matrix Representation of Contractions}{chapter.9}% 84
+\BOOKMARK [2][-]{subsection.9.2.1}{Aligning elements}{section.9.2}% 85
+\BOOKMARK [1][-]{section.9.3}{Block Implementation}{chapter.9}% 86
+\BOOKMARK [2][-]{subsection.9.3.1}{Two-state configurations}{section.9.3}% 87
+\BOOKMARK [2][-]{subsection.9.3.2}{Unaligned channels}{section.9.3}% 88
+\BOOKMARK [2][-]{subsection.9.3.3}{Permutations}{section.9.3}% 89
+\BOOKMARK [1][-]{section.9.4}{Setting Up Basis}{chapter.9}% 90
+\BOOKMARK [1][-]{section.9.5}{Parallellization}{chapter.9}% 91
+\BOOKMARK [0][-]{chapter.10}{Results}{}% 92
+\BOOKMARK [1][-]{section.10.1}{The Pairing Model}{chapter.10}% 93
+\BOOKMARK [2][-]{subsection.10.1.1}{Comparison of CCD solvers}{section.10.1}% 94
+\BOOKMARK [2][-]{subsection.10.1.2}{Comparison of various solvers}{section.10.1}% 95
+\BOOKMARK [1][-]{section.10.2}{The Homogeneous Electron Gas}{chapter.10}% 96
+\BOOKMARK [2][-]{subsection.10.2.1}{The Reference Energy}{section.10.2}% 97
+\BOOKMARK [2][-]{subsection.10.2.2}{Comparison of solvers}{section.10.2}% 98
+\BOOKMARK [2][-]{subsection.10.2.3}{The Thermodynamic limit}{section.10.2}% 99
+\BOOKMARK [0][-]{chapter.11}{Conclusion and future prospects}{}% 100

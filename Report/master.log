@@ -1,0 +1,1245 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.4.22)  31 JUL 2016 22:19
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**master.tex
+(/home/wilhelm/repositories/Master/Report/master.tex
+LaTeX2e <2016/02/01>
+Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/uiofysmaster.cls
+Document Class: uiofysmaster 2012/08/22 v1.0 LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk12.clo
+File: bk12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/packages.tex
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+\lst@mode=\count88
+\lst@gtempboxa=\box26
+\lst@token=\toks15
+\lst@length=\count89
+\lst@currlwidth=\dimen103
+\lst@column=\count90
+\lst@pos=\count91
+\lst@lostspace=\dimen104
+\lst@width=\dimen105
+\lst@newlines=\count92
+\lst@lineno=\count93
+\lst@maxwidth=\dimen106
+
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+\c@lstnumber=\count94
+\lst@skipnumbers=\count95
+\lst@framebox=\box27
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2015/06/04 1.6 listings configuration
+))
+Package: listings 2015/06/04 1.6 (Carsten Heinz)
+
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Package option `usenames' ignored on input line 216.
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+
+(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count96
+)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 2015/12/30 v3.0k Driver-dependent file (DPC,SPQR)
+))
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/package-config/listings.tex
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/iftex.sty
+Package: iftex 2013/04/04 v0.2 Provides if(tex) conditional for PDFTeX, XeTeX, 
+and LuaTeX
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+)
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/package-config/listings-qmake.tex)
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/package-config/listings-glsl.tex)
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/package-config/listings-std.tex)
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/package-config/listings-arma.tex)
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/package-config/listings-qt.tex)
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/package-config/listings-qml.tex)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count97
+\calc@Bcount=\count98
+\calc@Adimen=\dimen107
+\calc@Bdimen=\dimen108
+\calc@Askip=\skip43
+\calc@Bskip=\skip44
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count99
+\calc@Cskip=\skip45
+)
+\DepthReference=\skip46
+\HeightReference=\skip47
+\Width=\skip48
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2016/03/03 v2.15a AMS math features
+\@mathmargin=\skip49
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks16
+\ex@=\dimen109
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen110
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count100
+LaTeX Info: Redefining \frac on input line 199.
+\uproot@=\count101
+\leftroot@=\count102
+LaTeX Info: Redefining \overline on input line 297.
+\classnum@=\count103
+\DOTSCASE@=\count104
+LaTeX Info: Redefining \ldots on input line 394.
+LaTeX Info: Redefining \dots on input line 397.
+LaTeX Info: Redefining \cdots on input line 518.
+\Mathstrutbox@=\box28
+\strutbox@=\box29
+\big@size=\dimen111
+LaTeX Font Info:    Redeclaring font encoding OML on input line 630.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 631.
+\macc@depth=\count105
+\c@MaxMatrixCols=\count106
+\dotsspace@=\muskip10
+\c@parentequation=\count107
+\dspbrk@lvl=\count108
+\tag@help=\toks17
+\row@=\count109
+\column@=\count110
+\maxfields@=\count111
+\andhelp@=\toks18
+\eqnshift@=\dimen112
+\alignsep@=\dimen113
+\tagshift@=\dimen114
+\tagwidth@=\dimen115
+\totwidth@=\dimen116
+\lineht@=\dimen117
+\@envbody=\toks19
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks20
+LaTeX Info: Redefining \[ on input line 2735.
+LaTeX Info: Redefining \] on input line 2736.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2015/03/04 v2.20.2
+\thm@style=\toks21
+\thm@bodyfont=\toks22
+\thm@headfont=\toks23
+\thm@notefont=\toks24
+\thm@headpunct=\toks25
+\thm@preskip=\skip52
+\thm@postskip=\skip53
+\thm@headsep=\skip54
+\dth@everypar=\toks26
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
+Package: hobsub-hyperref 2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
+Package: hobsub-generic 2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
+Package: hobsub 2012/05/28 v1.13 Construct package bundles (HO)
+Package hobsub Info: Skipping package `infwarerr' (already loaded).
+Package hobsub Info: Skipping package `ltxcmds' (already loaded).
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+Package: intcalc 2007/09/27 v1.1 Expandable calculations with integers (HO)
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+Package: pdfescape 2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
+Package: bigintcalc 2012/04/08 v1.3 Expandable calculations on big integers (HO
+)
+Package: bitset 2011/01/30 v1.1 Handle bit-vector datatype (HO)
+Package: uniquecounter 2011/01/30 v1.2 Provide unlimited unique counter (HO)
+)
+Package hobsub Info: Skipping package `hobsub' (already loaded).
+Package: letltxmacro 2010/09/02 v1.4 Let assignment for LaTeX macros (HO)
+Package: hopatch 2012/05/28 v1.2 Wrapper for package hooks (HO)
+Package: xcolor-patch 2011/01/30 xcolor patch
+Package: atveryend 2011/06/30 v1.8 Hooks at the very end of document (HO)
+Package atveryend Info: \enddocument detected (standard20110627).
+Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
+Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
+Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/auxhook.sty
+Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+)
+\@linkdim=\dimen118
+\Hy@linkcounter=\count112
+\Hy@pagecounter=\count113
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
+)
+\Hy@SavedSpaceFactor=\count114
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+Package hyperref Info: Option `breaklinks' set `true' on input line 4319.
+Package hyperref Info: Hyper figures OFF on input line 4443.
+Package hyperref Info: Link nesting OFF on input line 4448.
+Package hyperref Info: Hyper index ON on input line 4451.
+Package hyperref Info: Plain pages OFF on input line 4458.
+Package hyperref Info: Backreferencing OFF on input line 4463.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4688.
+\c@Hy@tempcnt=\count115
+
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip11
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 5041.
+\XeTeXLinkMargin=\dimen119
+\Fld@menulength=\count116
+\Field@Width=\dimen120
+\Fld@charsize=\dimen121
+Package hyperref Info: Hyper figures OFF on input line 6295.
+Package hyperref Info: Link nesting OFF on input line 6300.
+Package hyperref Info: Hyper index ON on input line 6303.
+Package hyperref Info: backreferencing OFF on input line 6310.
+Package hyperref Info: Link coloring OFF on input line 6315.
+Package hyperref Info: Link coloring with OCG OFF on input line 6320.
+Package hyperref Info: PDF/A mode OFF on input line 6325.
+LaTeX Info: Redefining \ref on input line 6365.
+LaTeX Info: Redefining \pageref on input line 6369.
+\Hy@abspage=\count117
+\c@Item=\count118
+\c@Hfootnote=\count119
+)
+
+Package hyperref Message: Driver (autodetected): hpdftex.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
+\Fld@listcount=\count120
+\c@bookmark@seq@number=\count121
+
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
+Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+82.
+)
+\Hy@SectionHShift=\skip55
+)
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/package-config/hyperref.tex
+Package hyperref Info: Option `colorlinks' set `true' on input line 7.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+\Gm@cnth=\count122
+\Gm@cntv=\count123
+\c@Gm@tempcnt=\count124
+\Gm@bindingoffset=\dimen122
+\Gm@wd@mp=\dimen123
+\Gm@odd@mp=\dimen124
+\Gm@even@mp=\dimen125
+\Gm@layoutwidth=\dimen126
+\Gm@layoutheight=\dimen127
+\Gm@layouthoffset=\dimen128
+\Gm@layoutvoffset=\dimen129
+\Gm@dimlist=\toks27
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+\fancy@headwidth=\skip56
+\f@ncyO@elh=\skip57
+\f@ncyO@erh=\skip58
+\f@ncyO@olh=\skip59
+\f@ncyO@orh=\skip60
+\f@ncyO@elf=\skip61
+\f@ncyO@erf=\skip62
+\f@ncyO@olf=\skip63
+\f@ncyO@orf=\skip64
+)
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/package-config/fancyhdr.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/02/04 v1.7-139 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
+\captionmargin=\dimen130
+\captionmargin@=\dimen131
+\captionwidth=\dimen132
+\caption@tempdima=\dimen133
+\caption@indent=\dimen134
+\caption@parindent=\dimen135
+\caption@hangindent=\dimen136
+)
+\c@ContinuedFloat=\count125
+Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
+)
+\c@theorem=\count126
+
+(/home/wilhelm/texmf/tex/latex/uiofysmaster/commands.tex
+\seccount=\count127
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2016/01/03 v1.0q Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 95.
+)
+\Gin@req@height=\dimen137
+\Gin@req@width=\dimen138
+))
+\bibdata{references}
+(/home/wilhelm/repositories/Master/Report/master.bbl)
+(/usr/share/texlive/texmf-dist/tex/latex/simplewick/simplewick.sty
+Package: simplewick 2007/11/23 v1.2a
+
+Package: simplewick v1.2a (2007/11/23)
+\swb@xone=\box30
+\swb@xtwo=\box31
+\swb@xthree=\box32
+\swb@xfour=\box33
+\swdimen@ne=\dimen139
+\swdimentw@=\dimen140
+) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count128
+\float@exts=\toks28
+\float@box=\box34
+\@float@everytoks=\toks29
+\@floatcapt=\box35
+)
+(/home/wilhelm/repositories/Master/Report/master.aux)
+\openout1 = `master.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+\c@lstlisting=\count129
+
+(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count130
+\scratchdimen=\dimen141
+\scratchbox=\box36
+\nofMPsegments=\count131
+\nofMParguments=\count132
+\everyMPshowfont=\toks30
+\MPscratchCnt=\count133
+\MPscratchDim=\dimen142
+\MPnumerator=\count134
+\makeMPintoPDFobject=\count135
+\everyMPtoPDFconversion=\toks31
+)
+\AtBeginShipoutBox=\box37
+Package hyperref Info: Link coloring ON on input line 21.
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
+)
+\c@section@level=\count136
+)
+LaTeX Info: Redefining \ref on input line 21.
+LaTeX Info: Redefining \pageref on input line 21.
+LaTeX Info: Redefining \nameref on input line 21.
+
+(/home/wilhelm/repositories/Master/Report/master.out)
+(/home/wilhelm/repositories/Master/Report/master.out)
+\@outlinefile=\write3
+\openout3 = `master.out'.
+
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(79.6678pt, 411.14224pt, 106.69783pt)
+* v-part:(T,H,B)=(113.81102pt, 617.4248pt, 113.81102pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=411.14224pt
+* \textheight=617.4248pt
+* \oddsidemargin=7.39781pt
+* \evensidemargin=34.42784pt
+* \topmargin=9.66724pt
+* \headheight=15.0pt
+* \headsep=19.8738pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=88.0pt
+* \marginparsep=7.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: End \AtBeginDocument code.
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+)
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(85.35826pt, 426.79135pt, 85.35826pt)
+* v-part:(T,H,B)=(85.35826pt, 674.33032pt, 85.35826pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=426.79135pt
+* \textheight=674.33032pt
+* \oddsidemargin=13.08827pt
+* \evensidemargin=13.08827pt
+* \topmargin=-21.78552pt
+* \headheight=15.0pt
+* \headsep=19.8738pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=88.0pt
+* \marginparsep=7.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+
+<figures/apollonseglet/Apollonseglet/UiO_Segl_cmyk.pdf, id=406, 140.94772pt x 1
+40.95068pt>
+File: figures/apollonseglet/Apollonseglet/UiO_Segl_cmyk.pdf Graphic file (type 
+pdf)
+ <use figures/apollonseglet/Apollonseglet/UiO_Segl_cmyk.pdf>
+Package pdftex.def Info: figures/apollonseglet/Apollonseglet/UiO_Segl_cmyk.pdf 
+used on input line 27.
+(pdftex.def)             Requested size: 142.27217pt x 142.27518pt.
+
+[1
+
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} </home/wilhelm/texmf/tex/la
+tex/uiofysmaster/figures/apollonseglet/Apollonseglet/UiO_Segl_cmyk.pdf>]
+[2
+
+
+] [3
+
+] [4
+
+
+]
+Missing character: There is no Ã in font cmr12!
+Missing character: There is no ¦ in font cmr12!
+ [5] [6
+
+
+] (/home/wilhelm/repositories/Master/Report/master.toc
+Underfull \vbox (badness 3557) has occurred while \output is active []
+
+ [1
+
+]
+Underfull \vbox (badness 3009) has occurred while \output is active []
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.40 ...rline {5}Many-Body Methods}{45}{chapter.5}
+                                                   [2]pdfTeX warning (ext4): de
+stination with the same identifier (name{page.}) has been already used, duplica
+te ignored
+<to be read again> 
+                   \relax 
+l.64 ...ntify the operators}{73}{subsection.7.4.3}
+                                                   [3]pdfTeX warning (ext4): de
+stination with the same identifier (name{page.}) has been already used, duplica
+te ignored
+<to be read again> 
+                   \relax 
+l.87 ...tate configurations}{96}{subsection.9.3.1}
+                                                   [4])
+\tf@toc=\write4
+\openout4 = `master.toc'.
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.47 \tableofcontents
+                      [5]pdfTeX warning (ext4): destination with the same ident
+ifier (name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.47 \tableofcontents
+                      [6
+
+]
+Chapter 1.
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 53.
+
+[1
+
+]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 64.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 64.
+ [2] [3] [4]
+Chapter 2.
+[5
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6]
+Underfull \vbox (badness 1688) has occurred while \output is active []
+
+ [7]
+Underfull \vbox (badness 3000) has occurred while \output is active []
+
+ [8]
+Underfull \vbox (badness 3803) has occurred while \output is active []
+
+ [9]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [10]
+Underfull \vbox (badness 4168) has occurred while \output is active []
+
+ [11]
+Underfull \vbox (badness 4168) has occurred while \output is active []
+
+ [12]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [13]
+[14] [15] [16
+
+]
+Chapter 3.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [17]
+Underfull \vbox (badness 1859) has occurred while \output is active []
+
+ [18]
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [19]
+[20]
+Underfull \vbox (badness 2229) has occurred while \output is active []
+
+ [21]
+[22]
+Underfull \vbox (badness 1062) has occurred while \output is active []
+
+ [23]
+Underfull \vbox (badness 2142) has occurred while \output is active []
+
+ [24]
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+
+Underfull \vbox (badness 5533) has occurred while \output is active []
+
+ [25]
+[26]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [27]
+Underfull \vbox (badness 1033) has occurred while \output is active []
+
+ [28]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [29]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [30]
+Underfull \vbox (badness 7907) has occurred while \output is active []
+
+ [31]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32]
+[33] [34
+
+]
+Chapter 4.
+<Figures/SlaterDeterminant1.pdf, id=954, 597.50786pt x 31.29803pt>
+File: Figures/SlaterDeterminant1.pdf Graphic file (type pdf)
+
+<use Figures/SlaterDeterminant1.pdf>
+Package pdftex.def Info: Figures/SlaterDeterminant1.pdf used on input line 968.
+
+(pdftex.def)             Requested size: 411.14224pt x 21.53595pt.
+
+<Figures/SlaterDeterminant2.pdf, id=955, 597.50786pt x 128.0374pt>
+File: Figures/SlaterDeterminant2.pdf Graphic file (type pdf)
+
+<use Figures/SlaterDeterminant2.pdf>
+Package pdftex.def Info: Figures/SlaterDeterminant2.pdf used on input line 974.
+
+(pdftex.def)             Requested size: 411.14224pt x 88.10167pt.
+ [35 </home/wilhelm/repositories/Master/Report/Figures/SlaterDeterminant1.pdf>]
+
+<Figures/SlaterDeterminant3.pdf, id=964, 597.50786pt x 128.0374pt>
+File: Figures/SlaterDeterminant3.pdf Graphic file (type pdf)
+
+<use Figures/SlaterDeterminant3.pdf>
+Package pdftex.def Info: Figures/SlaterDeterminant3.pdf used on input line 980.
+
+(pdftex.def)             Requested size: 411.14224pt x 88.10167pt.
+
+<Figures/SlaterDeterminant4.pdf, id=965, 597.50786pt x 128.0374pt>
+File: Figures/SlaterDeterminant4.pdf Graphic file (type pdf)
+
+<use Figures/SlaterDeterminant4.pdf>
+Package pdftex.def Info: Figures/SlaterDeterminant4.pdf used on input line 986.
+
+(pdftex.def)             Requested size: 411.14224pt x 88.10167pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [36 </home/wilhelm/repositories/Master/Report/Figures/SlaterDeterminant2.pdf> 
+</home/wilhelm/repositories/Master/Report/Figures/SlaterDeterminant3.pdf
+
+pdfTeX warning: pdflatex (file /home/wilhelm/repositories/Master/Report/Figures
+/SlaterDeterminant3.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> </home/wilhelm/repositories/Master/Report/Figures/SlaterDeterminant4.pdf
+
+pdfTeX warning: pdflatex (file /home/wilhelm/repositories/Master/Report/Figures
+/SlaterDeterminant4.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+>] <Figures/OneBodyOperator.pdf, id=996, 597.50786pt x 469.47046pt>
+File: Figures/OneBodyOperator.pdf Graphic file (type pdf)
+
+<use Figures/OneBodyOperator.pdf>
+Package pdftex.def Info: Figures/OneBodyOperator.pdf used on input line 999.
+(pdftex.def)             Requested size: 411.14224pt x 323.03952pt.
+
+Underfull \vbox (badness 4366) has occurred while \output is active []
+
+ [37 </home/wilhelm/repositories/Master/Report/Figures/OneBodyOperator.pdf>]
+<Figures/TwoBodyOperator0.pdf, id=1013, 597.50786pt x 199.1693pt>
+File: Figures/TwoBodyOperator0.pdf Graphic file (type pdf)
+
+<use Figures/TwoBodyOperator0.pdf>
+Package pdftex.def Info: Figures/TwoBodyOperator0.pdf used on input line 1009.
+(pdftex.def)             Requested size: 411.14224pt x 137.04706pt.
+
+<Figures/TwoBodyOperator.pdf, id=1014, 597.50786pt x 825.12991pt>
+File: Figures/TwoBodyOperator.pdf Graphic file (type pdf)
+
+<use Figures/TwoBodyOperator.pdf>
+Package pdftex.def Info: Figures/TwoBodyOperator.pdf used on input line 1025.
+(pdftex.def)             Requested size: 411.14224pt x 567.76645pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [38 </home/wilhelm/repositories/Master/Report/Figures/TwoBodyOperator0.pdf>]
+Overfull \vbox (1.14165pt too high) has occurred while \output is active []
+
+
+[39 </home/wilhelm/repositories/Master/Report/Figures/TwoBodyOperator.pdf>]
+<Figures/TwoBodyOperator2.pdf, id=1037, 597.50786pt x 825.12991pt>
+File: Figures/TwoBodyOperator2.pdf Graphic file (type pdf)
+
+<use Figures/TwoBodyOperator2.pdf>
+Package pdftex.def Info: Figures/TwoBodyOperator2.pdf used on input line 1032.
+(pdftex.def)             Requested size: 411.14224pt x 567.76645pt.
+
+Overfull \vbox (1.14165pt too high) has occurred while \output is active []
+
+
+[40 </home/wilhelm/repositories/Master/Report/Figures/TwoBodyOperator2.pdf>]
+[41] <Figures/Contraction.pdf, id=1062, 597.50786pt x 569.05513pt>
+File: Figures/Contraction.pdf Graphic file (type pdf)
+
+<use Figures/Contraction.pdf>
+Package pdftex.def Info: Figures/Contraction.pdf used on input line 1065.
+(pdftex.def)             Requested size: 411.14224pt x 391.56308pt.
+ [42 </home/wilhelm/repositories/Master/Report/Figures/Contraction.pdf>]
+<Figures/InnerProduct.pdf, id=1078, 597.50786pt x 398.3386pt>
+File: Figures/InnerProduct.pdf Graphic file (type pdf)
+
+<use Figures/InnerProduct.pdf>
+Package pdftex.def Info: Figures/InnerProduct.pdf used on input line 1082.
+(pdftex.def)             Requested size: 411.14224pt x 274.09415pt.
+ [43 </home/wilhelm/repositories/Master/Report/Figures/InnerProduct.pdf>]
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+ [44]
+Chapter 5.
+
+Overfull \hbox (2.12708pt too wide) in paragraph at lines 1111--1113
+\OT1/cmr/m/n/12 Typically one chooses well-known and math-e-mat-i-cally sim-ple
+ single-particle states
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [45
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [46]
+Overfull \hbox (14.60558pt too wide) in paragraph at lines 1167--1167
+[] 
+ []
+
+
+Overfull \hbox (14.60558pt too wide) in paragraph at lines 1184--1184
+[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [47]
+Underfull \vbox (badness 6252) has occurred while \output is active []
+
+ [48]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [49]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [50]
+Overfull \hbox (14.08893pt too wide) in paragraph at lines 1286--1286
+[]\OT1/cmr/bx/n/14.4 Equations for Reileigh-Schr^^?odinger Per-tur-ba-tion The-
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [51]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [52]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [53]
+[54]
+Chapter 6.
+
+Overfull \hbox (1.49606pt too wide) in paragraph at lines 1384--1385
+\OT1/cmr/m/n/12 Coupled-cluster the-ory is sim-i-lar to full con-fig-u-ra-tion 
+in-ter-ac-tion the-ory. Coupled-
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [55
+
+]
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+
+Underfull \vbox (badness 7133) has occurred while \output is active []
+
+ [56]
+[57]
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+ [58]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [59]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [60]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [61]
+[62]
+Underfull \vbox (badness 7397) has occurred while \output is active []
+
+ [63]
+[64]
+Chapter 7.
+<Figures/Pairing_model.pdf, id=1323, 597.50786pt x 386.95747pt>
+File: Figures/Pairing_model.pdf Graphic file (type pdf)
+
+<use Figures/Pairing_model.pdf>
+Package pdftex.def Info: Figures/Pairing_model.pdf used on input line 1616.
+(pdftex.def)             Requested size: 411.14224pt x 266.26288pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[65
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [66 </home/wilhelm/repositories/Master/Report/Figures/Pairing_model.pdf>]
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+ [67]
+<Figures/Pairing_model2.pdf, id=1475, 597.50786pt x 278.83702pt>
+File: Figures/Pairing_model2.pdf Graphic file (type pdf)
+
+<use Figures/Pairing_model2.pdf>
+Package pdftex.def Info: Figures/Pairing_model2.pdf used on input line 1688.
+(pdftex.def)             Requested size: 452.25897pt x 211.05461pt.
+
+Overfull \hbox (41.11673pt too wide) in paragraph at lines 1688--1690
+[][]
+ []
+
+
+Underfull \vbox (badness 3514) has occurred while \output is active []
+
+ [68 </home/wilhelm/repositories/Master/Report/Figures/Pairing_model2.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [69]
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [70]
+<Figures/FirstSecondThirdOrder.pdf, id=1982, 692.5875pt x 498.86375pt>
+File: Figures/FirstSecondThirdOrder.pdf Graphic file (type pdf)
+
+<use Figures/FirstSecondThirdOrder.pdf>
+Package pdftex.def Info: Figures/FirstSecondThirdOrder.pdf used on input line 1
+801.
+(pdftex.def)             Requested size: 411.14224pt x 296.14633pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [71]
+[72 </home/wilhelm/repositories/Master/Report/Figures/FirstSecondThirdOrder.pdf
+>] [73] [74] <Figures/fourthorder1p1h.png, id=2033, 443.6575pt x 129.48375pt>
+File: Figures/fourthorder1p1h.png Graphic file (type png)
+
+<use Figures/fourthorder1p1h.png>
+Package pdftex.def Info: Figures/fourthorder1p1h.png used on input line 1891.
+(pdftex.def)             Requested size: 411.14224pt x 119.99384pt.
+
+Underfull \vbox (badness 2126) has occurred while \output is active []
+
+ [75]
+<Figures/fourthorder2p2h.png, id=2043, 442.65375pt x 216.81pt>
+File: Figures/fourthorder2p2h.png Graphic file (type png)
+
+<use Figures/fourthorder2p2h.png>
+Package pdftex.def Info: Figures/fourthorder2p2h.png used on input line 1897.
+(pdftex.def)             Requested size: 411.14224pt x 201.3864pt.
+
+Overfull \hbox (1.4743pt too wide) in paragraph at lines 1895--1900
+[]\OT1/cmr/m/n/12 The first set of di-a-grams in fig-ure ([][]7.4[][]) show di-
+a-grams giv-ing rise to a 1particle-
+ []
+
+[76 </home/wilhelm/repositories/Master/Report/Figures/fourthorder1p1h.png> </ho
+me/wilhelm/repositories/Master/Report/Figures/fourthorder2p2h.png>]
+<Figures/fourthorder3p3h.png, id=2054, 449.68pt x 515.9275pt>
+File: Figures/fourthorder3p3h.png Graphic file (type png)
+
+<use Figures/fourthorder3p3h.png>
+Package pdftex.def Info: Figures/fourthorder3p3h.png used on input line 1923.
+(pdftex.def)             Requested size: 411.14224pt x 471.73053pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [77]
+<Figures/fourthorder4p4h.png, id=2064, 437.635pt x 206.7725pt>
+File: Figures/fourthorder4p4h.png Graphic file (type png)
+
+<use Figures/fourthorder4p4h.png>
+Package pdftex.def Info: Figures/fourthorder4p4h.png used on input line 1930.
+(pdftex.def)             Requested size: 411.14224pt x 194.2589pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [78 </home/wilhelm/repositories/Master/Report/Figures/fourthorder3p3h.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [79 </home/wilhelm/repositories/Master/Report/Figures/fourthorder4p4h.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [80]
+[81] [82
+
+]
+Chapter 8.
+
+Underfull \vbox (badness 8170) has occurred while \output is active []
+
+ [83]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [84]
+[85]
+Underfull \vbox (badness 7759) has occurred while \output is active []
+
+ [86]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [87]
+Overfull \vbox (28.3467pt too high) has occurred while \output is active []
+
+
+[88]
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+
+Underfull \vbox (badness 1325) has occurred while \output is active []
+
+ [89]
+[90]
+Chapter 9.
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+[91
+
+] [92] [93]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [94]
+[95] [96] [97]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [98]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [99]
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+Missing character: There is no Â in font cmr12!
+Missing character: There is no   in font cmr12!
+
+Underfull \vbox (badness 2351) has occurred while \output is active []
+
+ [100]
+[101] [102
+
+]
+Chapter 10.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [103]
+[104]
+<../Pairing_Model/Results/Figures/Pairing4p4h_CompareDE_AllMethods.png, id=2355
+, 578.16pt x 433.62pt>
+File: ../Pairing_Model/Results/Figures/Pairing4p4h_CompareDE_AllMethods.png Gra
+phic file (type png)
+
+<use ../Pairing_Model/Results/Figures/Pairing4p4h_CompareDE_AllMethods.png>
+Package pdftex.def Info: ../Pairing_Model/Results/Figures/Pairing4p4h_CompareDE
+_AllMethods.png used on input line 2642.
+(pdftex.def)             Requested size: 411.14224pt x 308.35536pt.
+
+[105]
+<../Pairing_Model/Results/Figures/Pairing4p4h_CompareE_AllMethods.png, id=2364,
+ 578.16pt x 433.62pt>
+File: ../Pairing_Model/Results/Figures/Pairing4p4h_CompareE_AllMethods.png Grap
+hic file (type png)
+
+<use ../Pairing_Model/Results/Figures/Pairing4p4h_CompareE_AllMethods.png>
+Package pdftex.def Info: ../Pairing_Model/Results/Figures/Pairing4p4h_CompareE_
+AllMethods.png used on input line 2648.
+(pdftex.def)             Requested size: 411.14224pt x 308.35536pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [106 <../Pairing_Model/Results/Figures/Pairing4p4h_CompareDE_AllMethods.png>] 
+[107 <../Pairing_Model/Results/Figures/Pairing4p4h_CompareE_AllMethods.png>] [1
+08]
+Overfull \hbox (2.65967pt too wide) in paragraph at lines 2715--2748
+ [] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [109]
+<../ElectronGas/Results/Figures/Thermodynamic_limit.png, id=2411, 578.16pt x 43
+3.62pt>
+File: ../ElectronGas/Results/Figures/Thermodynamic_limit.png Graphic file (type
+ png)
+ <use ../ElectronGas/Results/Figures/Thermodynamic_limit.png>
+Package pdftex.def Info: ../ElectronGas/Results/Figures/Thermodynamic_limit.png
+ used on input line 2757.
+(pdftex.def)             Requested size: 411.14224pt x 308.35536pt.
+
+Underfull \vbox (badness 3148) has occurred while \output is active []
+
+ [110]
+[111 <../ElectronGas/Results/Figures/Thermodynamic_limit.png>] [112
+
+]
+Chapter 11.
+[113] [114
+
+]
+Missing character: There is no Ã in font cmr12!
+Missing character: There is no ¼ in font cmr12!
+Missing character: There is no Ã in font cmr12!
+Missing character: There is no ¼ in font cmr12!
+ [115]
+Underfull \hbox (badness 3942) in paragraph at lines 2853--2855
+[]\OT1/cmr/m/n/12 P.P. Ewald. Die berech-nung op-tis-cher und elek-tro-statis-c
+her git-ter-
+ []
+
+
+Underfull \hbox (badness 2680) in paragraph at lines 2853--2855
+\OT1/cmr/m/n/12 po-ten-tiale. \OT1/cmr/m/it/12 An-nalen der Physik, \OT1/cmr/m/
+n/12 369(3), 1921. ISSN 1521-3889. doi:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2865--2868
+[]\OT1/cmr/m/n/12 Morten Hjorth-Jensen \OT1/cmr/m/it/12 Nu-clear Shell Model, N
+u-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2865--2868
+\OT1/cmr/m/it/12 clear Tal-ent course 2 \OT1/cmr/m/n/12 URL (14. july, 2016):
+ []
+
+
+Overfull \hbox (18.9908pt too wide) in paragraph at lines 2865--2868
+\OT1/cmr/m/n/12 http://nucleartalent.github.io/Course2ManyBodyMethods/doc/pub/f
+ci/pdf/fci-
+ []
+
+
+Overfull \hbox (12.83914pt too wide) in paragraph at lines 2870--2873
+\OT1/cmr/m/it/12 http://nucleartalent.github.io/Course2ManyBodyMethods/doc/web/
+course.html 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2875--2878
+[]\OT1/cmr/m/n/12 Morten Hjorth-Jensen \OT1/cmr/m/it/12 Slides from the course 
+FYS-KJM4480
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2875--2878
+\OT1/cmr/m/it/12 2013/2014 \OT1/cmr/m/n/12 URL: \OT1/cmr/m/it/12 http://www.uio
+.no/studier/emner/matnat/fys/FYS-
+ []
+
+
+Overfull \hbox (10.07799pt too wide) in paragraph at lines 2875--2878
+\OT1/cmr/m/it/12 KJM4480/h13/undervisningsmateriale/Slides%20from%20lectures/fy
+s4480.pdf 
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2899.
+[116]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2899.
+ (/home/wilhelm/repositories/Master/Report/master.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2899.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2899.
+
+Package rerunfilecheck Info: File `master.out' has not changed.
+(rerunfilecheck)             Checksum: 3701E6D13F62F304E76AA25C60BF5BE7;7179.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2899.
+ ) 
+Here is how much of TeX's memory you used:
+ 10600 strings out of 493029
+ 158994 string characters out of 6136234
+ 296318 words of memory out of 5000000
+ 13173 multiletter control sequences out of 15000+600000
+ 14983 words of font info for 52 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 44i,16n,60p,1057b,1196s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmti12.pfb>
+Output written on /home/wilhelm/repositories/Master/Report/master.pdf (128 page
+s, 883337 bytes).
+PDF statistics:
+ 2679 PDF objects out of 2984 (max. 8388607)
+ 2295 compressed objects within 23 object streams
+ 786 named destinations out of 1000 (max. 500000)
+ 906 words of extra memory for PDF output out of 10000 (max. 10000000)
+

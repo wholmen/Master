@@ -40,7 +40,7 @@ public:
     // Declaring matrices
     vec t0; // Amplitudes for iteration n
     vec t ; // Amplitudes for iteration n+1
-
+    vec EpsilonMatrix;
 
     // Declaring functions for program flow
 
@@ -50,6 +50,7 @@ public:
     vec CCD_ReturnAllIterations();
     double v(int p, int q, int r, int s); // Interaction
     double epsilon(int i, int j, int a, int b);
+    void SetUpEpsilonMatrix();
 
     // Intermediates
     mat I1, I2, I3, I4;

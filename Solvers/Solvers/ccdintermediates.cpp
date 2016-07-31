@@ -74,11 +74,12 @@ double CCDIntermediates::CCD(int MaxIterations){
     double E0 = CorrelationEnergy(); // Can be hardcoded to 0 to save computation cost
     cout << "Energy using intermediates. E0/N: " << E0 / Nholes << "  E0: " << E0 << endl;
 
+    SetUpEpsilonMatrix();
+
     // Generate first set of new amplitudes and do second calculation
     UpdateAmplitudes();
     double E1 = CorrelationEnergy();
     cout << "Energy using intermediates. E0/N: " << E1 / Nholes << "  E0: " << E1 << endl;
-
     // Start the iteration process
     NIterations = 0;
     while ( AbsoluteDifference(E1,E0) > tolerance && NIterations < MaxIterations){
@@ -117,6 +118,22 @@ vec CCDIntermediates::CCD_ReturnAllIterations(){
     return energies;
 }
 
+void CCDIntermediates::SetUpEpsilonMatrix(){
+    EpsilonMatrix = zeros<vec>(Nparticles2*Nholes2);
+
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+                    int a=aa+Nholes; int b = bb+Nholes;
+                    EpsilonMatrix( aa + bb*Nparticles + i*Nparticles2 + j*Nparticles2*Nholes ) = epsilon(i,j,a,b);
+                }
+            }
+        }
+    }
+
+}
+
 double CCDIntermediates::CorrelationEnergy(){
     double E = 0.0;
 
@@ -136,7 +153,11 @@ double CCDIntermediates::CorrelationEnergy(){
 
 void CCDIntermediates::UpdateAmplitudes(){
 
-    t0 = t; UpdateI1(); UpdateI2(); UpdateI3(); UpdateI4();
+    t0 = t;
+    UpdateI1();
+    UpdateI2();
+    UpdateI3();
+    UpdateI4();
 
     for (int i=0; i<Nholes; i++){
         for (int j=0; j<Nholes; j++){
@@ -146,9 +167,9 @@ void CCDIntermediates::UpdateAmplitudes(){
                     // a, b used as states, sent to basis.epsilon and v
                     // aa,bb used as iteration elements to pick out state a,b stored in matrices t,t0,I1,I2,I3,I4
                     int a = aa + Nholes; int b = bb + Nholes;
-                    double tau = 0;
+                    double tau = 0; double term;
 
-                    double term = 0;
+                    term = 0;
                     for (int cc=0; cc<Nparticles; cc++){
                         for (int dd=0; dd<Nparticles; dd++){
 
@@ -156,7 +177,6 @@ void CCDIntermediates::UpdateAmplitudes(){
                             term += v(a,b,c,d) * t0( Index(cc,dd,i,j)); // i+j*Nholes, cc+dd*Nparticles);
                         }
                     }
-                    tau += 0.5*term;
 
                     term = 0;
                     for (int k=0; k<Nholes; k++){
@@ -193,15 +213,20 @@ void CCDIntermediates::UpdateAmplitudes(){
                     }
                     tau += 0.5*term;
 
-                    tau += v(a,b,i,j); // Weighting the iterative scheme
+                    tau += v(a,b,i,j);
 
-                    t( Index(aa,bb,i,j)) = tau / epsilon(i,j,a,b);
+                    t( Index(aa,bb,i,j)) = tau;
                 }
             }
         }
     }
+    // Divinding by epsilon
+    t = t / EpsilonMatrix;
+
     // Adding weight factor
     if (weight != 0) t = weight*t + (1-weight)*t0;
+
+
 }
 
 void CCDIntermediates::UpdateI1(){

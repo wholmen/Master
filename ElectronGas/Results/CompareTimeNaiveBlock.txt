@@ -1,5 +1,8 @@
 A coupled cluster study of electron gas comparing a parallel code with blocks implementation for different amount of states with the naive implementation with and without intermediates
 The results are presented in the following order: 
 Solver type, Shells, States, Occupied States, weight, rs, Reference Energy, Iterations, time, CCD Energy
-Block 2 14 2 0.3 1 0 82 0.18326472491 -0.0148295981873
-Imdts 2 14 2 0.3 1 0 58 3.34503066214 -0.0148295981858
+Block 2 14 2 0.3 1 0 22 0.0696018 -0.0148277
+Imdts 2 14 2 0.3 1 0 23 1.26141 -0.0153723
+Naive 2 14 2 0.3 1 0 22 17.3393 -0.0148277
+Block 3 38 14 0.3 1 13.6036 26 0.761511 -0.276498
+Imdts 3 38 14 0.3 1 13.6036 27 1803.26 -0.283604

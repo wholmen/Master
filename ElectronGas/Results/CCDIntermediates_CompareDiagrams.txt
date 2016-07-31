@@ -1,0 +1,10 @@
+A coupled cluster study of electron gas using intermediates. Checking contribution from each diagram.
+The system consist of 66 states and 14 holes.
+The results are presented in the following order: 
+Diagram, weight, rs, Reference Energy, Iterations, time, CCD energy
+L0 0.3 1 13.6036 94 72.5738 -0.5294024987072101
+La 0.3 1 13.60355733556576 0 651.2240513670258 0
+I1 0.3 1 13.60355733556576 0 78.75031522801146 0
+I2 0.3 1 13.60355733556576 0 257.6718636392616 0
+Qc 0.3 1 13.60355733556576 0 31.47442761994898 0
+Qd 0.3 1 13.60355733556576 0 39.47224576724693 0

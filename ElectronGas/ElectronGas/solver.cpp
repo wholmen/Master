@@ -103,7 +103,7 @@ double Solver::CorrolationEnergy(){
     }
 
     // Do the matrix-matrix multiplications for all blocks
-    double E = 0;
+    double E = 0.0;
     for (int i=0; i<Npphh; i++){
 
         mat Energy = blockspphh[i]->V * blockspphh[i]->T;
@@ -112,6 +112,7 @@ double Solver::CorrolationEnergy(){
         E += sum(eigval);
     }
     return E / 4.0;
+
 }
 
 void Solver::UpdateAmplitudes(){
@@ -148,7 +149,7 @@ void Solver::UpdateAmplitudes(){
     ptime = (double(finish-start)/CLOCKS_PER_SEC);
     //cout << "Inside iterations. I1 needed " << ptime << " seconds. " << endl;
 
-    // Intermediate diagram I1. Lc + Qb
+    // Intermediate diagram I2. Lc + Qb
     start = clock();
     DiagramI2();
     finish = clock();
@@ -158,6 +159,8 @@ void Solver::UpdateAmplitudes(){
 
     // Adding weight factor
     if (weight != 0) t = weight*t + (1-weight)*t0;
+
+
 }
 
 
@@ -354,6 +357,7 @@ void Solver::CreateBlocksKPHH(){
 
 
 void Solver::DiagramL0(){
+
     double time0, time1;
     time0 = omp_get_wtime();
 
@@ -383,6 +387,8 @@ void Solver::DiagramL0(){
         }
     }
     time1 = omp_get_wtime(); //cout << "Inside L0. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
+
+
 }
 
 void Solver::DiagramLa(){

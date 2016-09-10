@@ -58,6 +58,8 @@ double Solver::CCD(int MaxIterations){
         E1 = CorrolationEnergy();
         double timeen2 = omp_get_wtime();
 
+        cout << E1 << endl;
+
         NIterations ++;
         double time1 = omp_get_wtime(); cout << "Every iteration needs " << time1-time0 << " seconds. amplitudes: " << timeamp2-timeamp << " energy: " << timeen2-timeen << endl;
     }
@@ -490,6 +492,7 @@ void Solver::DiagramQd(){
 }
 
 void Solver::DiagramI1(){
+
     double time0, time1;
     time0 = omp_get_wtime();
 
@@ -521,6 +524,38 @@ void Solver::DiagramI1(){
 }
 
 void Solver::DiagramI2(){
+    /*
+    UpdateI2();
+
+    for (int i=0; i<Nholes; i++){
+        for (int j=0; j<Nholes; j++){
+            for (int aa=0; aa<Nparticles; aa++){
+                for (int bb=0; bb<Nparticles; bb++){
+
+                    int a = aa+Nholes; int b = bb+Nholes;
+                    double tau = 0;
+
+                    for (int k=0; k<Nholes; k++){
+                        for (int cc=0; cc<Nparticles; cc++){
+
+                            int c = cc+Nholes;
+
+                            tau += I2(j+k*Nholes, bb+cc*Nparticles) * t0( Index(a,c,i,k)); //i+k*Nholes, aa+cc*Nparticles); // No permutation
+                            tau -= I2(i+k*Nholes, bb+cc*Nparticles) * t0( Index(a,c,j,k)); //j+k*Nholes, aa+cc*Nparticles); // Permutation i,j
+                            tau -= I2(j+k*Nholes, aa+cc*Nparticles) * t0( Index(b,c,i,k)); //i+k*Nholes, bb+cc*Nparticles); // Permutation a,b
+                            tau += I2(i+k*Nholes, aa+cc*Nparticles) * t0( Index(b,c,j,k)); //j+k*Nholes, bb+cc*Nparticles); // Permutation a,b,i,j
+                        }
+                    }
+
+                    tau = tau/basis.epsilon(i,j,a,b);
+                    t( Index(a,b,i,j)) += tau;
+                }
+            }
+        }
+    }*/
+
+
+
     double time0,time1;
     time0 = omp_get_wtime();
 
@@ -537,7 +572,7 @@ void Solver::DiagramI2(){
 
     for (int n=0; n<Nphhp; n++){
 
-        mat I2 = blocksphhp[n]->T * blocksphhp[n]->I2 / blocksphhp[n]->epsilon;
+        mat I2 =  blocksphhp[n]->I2 * blocksphhp[n]->T / blocksphhp[n]->epsilon;
 
         for (int x1=0; x1<blocksphhp[n]->Nph; x1++){
             for (int x2=0; x2<blocksphhp[n]->Nph; x2++){
@@ -554,6 +589,8 @@ void Solver::DiagramI2(){
     }
     time1 = omp_get_wtime(); //cout << "Inside I1. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
 }
+
+
 
 // Following functions are various assisting functions for program flow.
 
@@ -677,6 +714,7 @@ void Solver::CrossStates_Parallel(){
     NX = Xhp.n_rows;
 }
 
+
 void Solver::TripleStates_Parallel(){
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // %%%%%%%%%%%%%%% SETTING UP K_h AND K_pph %%%%%%%%%%%%%%%%%%%%%%%
@@ -794,4 +832,34 @@ void Solver::TripleStates_Parallel(){
 
 double Solver::Identifier(int Nx, int Ny, int Nz, int Sz){
     return 2*(Nx + m)*M*M*M + 2*(Ny + m)*M*M + 2*(Nz + m)*M + 2*(Sz + 1);
+}
+
+
+void Solver::UpdateI2(){
+    // I2 is the Intermediate matrix 2. It contains pre-calculated values for all variations of
+    // j, k, b, c. The values are located at I2(j + k*Nholes, b + c*Nparticles)
+    // I2 has the size (Nholes^2, Nparticles^2)
+
+    I2 = zeros<mat>(Nholes*Nholes, Nparticles*Nparticles);
+
+    for (int j=0; j<Nholes; j++){
+        for (int k=0; k<Nholes; k++){
+            for (int bb=0; bb<Nparticles; bb++){
+                for (int cc=0; cc<Nparticles; cc++){
+                    int b = bb + Nholes; int c = cc + Nholes; // Converting iteration element into basis state number
+
+                    I2(j+k*Nholes, bb+cc*Nparticles) = 0;
+                    /*
+                    for (int l=0; l<Nholes; l++){
+                        for (int dd=0; dd<Nparticles; dd++){
+
+                            int d = dd + Nholes;
+                            I2(j+k*Nholes, bb+cc*Nparticles) += basis.TwoBodyOperator(k,l,c,d) * t0( Index(d,b,l,j)); //l+j*Nholes, dd+bb*Nparticles);
+                        }
+                    }*/
+                    I2(j+k*Nholes, bb+cc*Nparticles) = basis.TwoBodyOperator(k,b,c,j) + 0.5*I2(j+k*Nholes, bb+cc*Nparticles);
+                }
+            }
+        }
+    }
 }

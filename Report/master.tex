@@ -27,7 +27,7 @@
 \maketitle
 
 \begin{abstract}
-	In this thesis, we present the formalism of many-body methods, with an emphasis on the Coupled Cluster method with double excitations. 
+	In this thesis, we present the formalism of many-body methods, with an emphasis on the Coupled Cluster method with double excitations. The methods are tested on three physical systems, the pairing model, the infinite electron gas and the infinite nuclear matter to reproduce satisfactory results given in literature.  
 \end{abstract}
 
 \begin{acknowledgements}
@@ -55,7 +55,7 @@
 
 		Moving on to the homogeneous electron gas, we present an infinite system of electrons interacting with each other and a background charge. By only taking care of electron-electron interaction, we generate a system that can be dealt with using common tools of many-body quantum mechanics. This is one of the first systems to be evaluated by many-body methods, and the litterature present rich data for comparing results from my solver. 
 
-		The main goal of nuclear physics, is to understand the fundamental physics of the nucleas, it's constituents and their interaction. We can generate experimental data on ground state energies, and by applying the known many-body quantum mechanics, we hope to reproduce these results and gain larger insights into the life of nuclear matter. By ahieving  results, it means the nucleus can be described by the shell model, with a set of occupied and unoccupied single-particle states and an interaction between particles. In quantum chemistry, an important goal is to compute precise energies for the nucleus. The problem with these systems is that they present various complications at the borders. By creating an infinite system of nuclear particles, we remove all borders and unknown finite-size effects, and we are left with a study of the interaction between particles. The search for the optimal effective interaction between nuclear matter is important, and hopefully, a study of infinite nuclear matter can give valuable insight search. 
+		The main goal of nuclear physics, is to understand the fundamental physics of the nucleus, it's constituents and their interaction. We can generate experimental data on ground state energies, and by applying the known many-body quantum mechanics, we hope to reproduce these results and gain larger insights into the life of nuclear matter. By ahieving  results, it means the nucleus can be described by the shell model, with a set of occupied and unoccupied single-particle states and an interaction between particles. In quantum chemistry, an important goal is to compute precise energies for the nucleus. The problem with these systems is that they present various complications at the borders. By creating an infinite system of nuclear particles, we remove all borders and unknown finite-size effects, and we are left with a study of the interaction between particles. The search for the optimal effective interaction between nuclear matter is important, and hopefully, a study of infinite nuclear matter can give valuable insight search. 
 	\end{subsection}
 
 	\begin{subsection}{Goals for the Work}
@@ -2698,9 +2698,9 @@
 					\begin{tabular}[center]{l | c  c  c  r}
 						$N_{\text{particles}}$ & $N_{\text{states}}$ & $ \Delta E_{CCD}$ naive  & $\Delta E_{CCD}$ intermediates & $\Delta E_{CCD}$ block \\
 						\hline
-						2 & 14 & 44.42 s & 3.31 s & 0.10 s \\
-						14 & 38 & & 4400 s & 0.57 s \\
-						14 & 52 & & &  
+						2 & 14 & 17.54 s & 1.28 s & 0.01 s \\
+						14 & 38 & 7.5 \text{days} & 28.4 \text{mins} & 0.49 s \\
+						14 & 52 & \text{N/A} & 2.9 \text{hours} & 0.73 s  
 					\end{tabular}
 				\end{center}
 				\caption{Calculations on the Homogeneous electron gas, using three different implementations of CCD equations. Showing time needed for every solver to calculate results in figure (\ref{table:CompareSolversHEG}. The System has been calculated with $2$ or $14$ particles and the total states either $38$ or $54$. The calculations has been made with a relaxing factor of $0.3$ and $r_s = 1.0$. Results found in file \textit{CompareTimeNaiveBlock.txt} \cite{WholmenGithub}}
@@ -2767,7 +2767,17 @@
 
 
 \begin{chapter}{Conclusion and future prospects}
-	
+	Looking back at the goals defined in the introduction I have succeded in 
+
+	Laying out the ground work for devoloping many-body methods. I have presented and explained the implementation of full configuration interaction, Hartree-Fock method, Reileigh-Schr\"{o}dinger perturbation theory and coupled-cluster theory. I have also presented the three quantum mechanical systems that were investigated in the thesis. I have tried to write a complete and well-explained theory part, that hopefully can be useful for a future generation of students that are new to many-body quantum mechanics.  
+ 
+	I moved on to implementing all four methods from scratch in a brute-force manner. The methods were applied to the small and uncomplicated pairing model. For this system, the coupled-cluster doubles iteration proved to calculate results closest to the true value, found by full configuration interaction. As expected, perturbation theory had problems for a strong interaction. When developing perturbation theory, one assumes the ratio $\frac{\Delta E}{E_{\text{ref}}}$ to be small, which demands a weak interaction. The code is available for further development and testing for everyone at github. 
+
+	I further developed code for the infinite electron gas, which was tested and benchmarked to previous literature. Applying the same coupled-cluster doubles code on this system, I soon found out that even for small systems, a brute force implementation is way too demanding because of loops in eight dimensions. The first attempt at optimizing the coupled-cluster doubles code included only a factorization of the terms, known as \textit{intermediates}. This significantly reduced the computational cost. The code was tested on the pairing model to ensure correct implementation. The code also reproduced results from the literature. The code for intermediates and electron gas is also available for everyone to use at github. 
+
+	As I wanted to compute results towards the thermodynamic limit, only using intermediates proved to be way to costly. The main bulk of my time has been spent on implementing a new solver that rewrites the coupled-cluster equations as matrix-matrix multiplications. Because of the packages LAPAK/BLAS, matrix-matrix multiplication offers a significant speed improvement. The matrices consume a lot of memory, so utilizing symmetries present in infinite matter, one can rewrite the multiplication as a set of small multiplications. This proved to be almost succesful, almost reproducing expected results. This code was used to solve large systems of both infinite electron and infinite nuclear matter, giving results close to the thermodynamic limit. Further optimalization was done by the parallelization of loops. As all the code used in my thesis, this code is available to the reader on github for testing and further development. 
+
+	Further improvements on the solver can be achieved by adding singles, triples and quadruples to the equations for more precise calculations. Further optimalizations can possibly be done to memory handling. My work can be used as a foundation for further implementations or it can be used for educational purposes for future students. For this reason, I have tried to write a clean and well documented code that can be understood by an educated reader. It can be interesting to calculate results for infinite nuclear matter with a more complex interaction term than the Minnesota potential.
 \end{chapter}
 
 

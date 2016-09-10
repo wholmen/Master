@@ -71,8 +71,16 @@ void Block::FinishBlock(){
     Nh = Holes.n_rows;
     Np = Particles.n_rows;
     Nph = Xph.n_rows;
+    int Nhp = Xhp.n_rows;
     Nk1 = K1.n_rows;
     Nk3 = K3.n_rows;
+
+
+    for (int i=0; i<Nph; i++){
+
+        cout << Xph(i,0) << " " << Xph(i,1) << "   " << Xhp(i,0) << " " << Xhp(i,1) << "     " << Nhp << " " << Nph << endl;
+
+    }
 }
 
 void Block::Epsilonpphh(){
@@ -250,8 +258,12 @@ void Block::SetUpMatrices_I2(mat &t0){
     I2 = zeros<mat>(Nph,Nph);
     T  = zeros<mat>(Nph,Nph);
     V  = zeros<mat>(Nph,Nph);
+    I1 = zeros<mat>(Nph,Nph);
+    T2 = zeros<mat>(Nph,Nph);
+
 
     for (int x1=0; x1<Nph; x1++){
+
         for (int x2=0; x2<Nph; x2++){
 
             int i=Xph(x1,1); int j=Xhp(x2,0);
@@ -260,6 +272,7 @@ void Block::SetUpMatrices_I2(mat &t0){
             T(x1,x2) = t0( Index(a,b,i,j));
             V(x2,x1) = basis.TwoBodyOperator(j,i,b,a);
         }
+
         for (int x2=0; x2<Nph; x2++){
 
             int a=Xph(x1,0); int i=Xph(x1,1);
@@ -268,8 +281,9 @@ void Block::SetUpMatrices_I2(mat &t0){
             I2(x2,x1) = basis.TwoBodyOperator(j,a,b,i);
         }
     }
-    I2 = I2 + 0.5*V*T;
+    I2 = 0.5*T*V + I2;
 }
+
 
 int Block::Index(int a, int b, int i, int j){
     // p, q, r, s are the indice and not the state number. i.e. by formalism in this program: aa, bb and not a, b

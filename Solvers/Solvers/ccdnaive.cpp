@@ -174,7 +174,7 @@ void CCDNaive::UpdateAmplitudes(){
                             }
                         }
                     }
-                    tau = v(a,b,i,j) + tau; //Weighting the iterative scheme
+                    tau = v(a,b,i,j) + tau;
 
                     t( Index(aa,bb,i,j,Nparticles,Nparticles,Nholes) ) = tau / epsilon(i,j,a,b);
                 }

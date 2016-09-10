@@ -42,17 +42,18 @@ void CompareTimeAllSolvers();
 int main()
 {
     // Function to test solver
+    //CompareTimeAllSolvers();
+
+
     //TestSolver1();
 
 
-    CompareTimeAllSolvers();
-
-    //ResultsNshells3to35Nfilled2_Blocks();
-    //ResultsNshells36to40Nfilled2_Blocks();
+    ResultsNshells3to35Nfilled2_Blocks();
+    ResultsNshells36to40Nfilled2_Blocks();
 
     // Producing results for rs in [0.5,1.0,2.0] for different amount of states.
 
-    /*
+
     ResultsNshells4Nfilled2_Blocks();
     ResultsNshells5Nfilled2_Blocks();
     ResultsNshells6Nfilled2_Blocks();
@@ -63,11 +64,12 @@ int main()
     ResultsNshells11Nfilled2_Blocks();
     ResultsNshells12Nfilled2_Blocks();
     ResultsNshells13Nfilled2_Blocks();
-    */
+
 
     // Functions to produce a comparison between blocks and intermediates
-    /*
+
     AllIterationsNh14Ns54_Blocks();
+    /*
     AllIterationsNh14Ns54_Intermediates();
 
     ResultsNh14Ns54_Intermediates();
@@ -94,16 +96,18 @@ void PrintMagicNumbers(){
 
 
 void TestSolver1(){
-
+    /*
     int Nshells = 4; int NfilledShells = 2; double rs = 1.0;
     ElectronBasis basis = ElectronBasis(Nshells,NfilledShells,rs);
     CCDIntermediates solve = CCDIntermediates(basis);
     solve.weight = 0.3; solve.tolerance = 1e-6;
-    cout << solve.CCD(200);
+    cout << solve.CCD(200);*/
 
-    /*
+
+
+
     clock_t start, finish;
-    int Nshells = 5;
+    int Nshells = 13;
     int NfilledShells = 2;
     double rs = 1.0;
 
@@ -122,9 +126,9 @@ void TestSolver1(){
     cout << "Nstates: " << basis.Nstates << " Nholes: " << basis.Nholes << endl;
 
     start = clock();
-    cout << endl << "CCD Energy:" << setprecision(12) << solve.CCD(200) << endl;
+    cout << endl << "CCD Energy:" << setprecision(16) << solve.CCD(200) << endl;
     finish = clock(); ptime = (double(finish-start)/CLOCKS_PER_SEC);
-    cout << "Iterations needed " << ptime << " seconds." << endl;*/
+    cout << "Iterations needed " << ptime << " seconds." << endl;
 
 }
 

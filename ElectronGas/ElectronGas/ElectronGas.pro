@@ -7,10 +7,10 @@ SOURCES += main.cpp \
     solver.cpp \
     electronbasis.cpp \
     block.cpp \
-    ../../NuclearMatter/NuclearMatter/nuclearbasis.cpp \
     ../../Pairing_Model/PairingModel/pairingbasis.cpp \
     ../../Solvers/Solvers/ccdintermediates.cpp \
-    ../../Solvers/Solvers/ccdnaive.cpp
+    ../../Solvers/Solvers/ccdnaive.cpp \
+    ../../NuclearMatter/NuclearMatter/nuclearbasis.cpp
 
 HEADERS += \
     solver.h \

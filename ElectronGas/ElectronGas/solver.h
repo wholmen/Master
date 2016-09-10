@@ -83,6 +83,10 @@ public:
     double AbsoluteDifference(double a, double b); // Returns sqrt( (a-b)^2 )
     double Identifier(int Nx, int Ny, int Nz, int Sz); // Returns the unique identifier for two-state configuration. Returns 2*(Nx + m)*M^3 + 2*(Ny + m)*M^2 + 2*(Nz + m)*M + 2*(Sz + 1);
     int Index(int a, int b, int i, int j); // Returns the index p + q*Np + r*Np*Nq + s*Np*Nq*Nr
+
+
+
+    mat I2; void UpdateI2(); mat I1; void UpdateI1();
 };
 
 #endif // SOLVER_H

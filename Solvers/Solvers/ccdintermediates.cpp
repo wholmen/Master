@@ -174,15 +174,16 @@ void CCDIntermediates::UpdateAmplitudes(){
                         for (int dd=0; dd<Nparticles; dd++){
 
                             int c = cc + Nholes; int d = dd + Nholes;
-                            term += v(a,b,c,d) * t0( Index(cc,dd,i,j)); // i+j*Nholes, cc+dd*Nparticles);
+                            term += v(a,b,c,d) * t0( Index(cc,dd,i,j));
                         }
                     }
+                    tau += 0.5*term;
 
                     term = 0;
                     for (int k=0; k<Nholes; k++){
                         for (int l=0; l<Nholes; l++){
 
-                            term += I1(i+j*Nholes, k+l*Nholes) * t0( Index(aa,bb,k,l)); //k+l*Nholes, aa+bb*Nparticles);
+                            term += I1(i+j*Nholes, k+l*Nholes) * t0( Index(aa,bb,k,l));
                         }
                     }
                     tau += 0.5*term;
@@ -191,25 +192,25 @@ void CCDIntermediates::UpdateAmplitudes(){
                     for (int k=0; k<Nholes; k++){
                         for (int cc=0; cc<Nparticles; cc++){
 
-                            term += I2(j+k*Nholes, bb+cc*Nparticles) * t0( Index(aa,cc,i,k)); //)  i+k*Nholes, aa+cc*Nparticles); // No permutation
-                            term -= I2(i+k*Nholes, bb+cc*Nparticles) * t0( Index(aa,cc,j,k)); //j+k*Nholes, aa+cc*Nparticles); // Permutation i,j
-                            term -= I2(j+k*Nholes, aa+cc*Nparticles) * t0( Index(bb,cc,i,k)); //i+k*Nholes, bb+cc*Nparticles); // Permutation a,b
-                            term += I2(i+k*Nholes, aa+cc*Nparticles) * t0( Index(bb,cc,j,k)); //j+k*Nholes, bb+cc*Nparticles); // Permutation a,b,i,j
+                            term += I2(j+k*Nholes, bb+cc*Nparticles) * t0( Index(aa,cc,i,k)); // No permutation
+                            term -= I2(i+k*Nholes, bb+cc*Nparticles) * t0( Index(aa,cc,j,k)); // Permutation i,j
+                            term -= I2(j+k*Nholes, aa+cc*Nparticles) * t0( Index(bb,cc,i,k)); // Permutation a,b
+                            term += I2(i+k*Nholes, aa+cc*Nparticles) * t0( Index(bb,cc,j,k)); // Permutation a,b,i,j
                         }
                     }
                     tau += term;
 
                     term = 0;
                     for (int k=0; k<Nholes; k++){
-                        term -= I3(j,k) * t0( Index(aa,bb,i,k)); //i+k*Nholes, aa+bb*Nparticles); // No permutation
-                        term += I3(i,k) * t0( Index(aa,bb,j,k)); //j+k*Nholes, aa+bb*Nparticles); // Permutation i,j
+                        term -= I3(j,k) * t0( Index(aa,bb,i,k)); // No permutation
+                        term += I3(i,k) * t0( Index(aa,bb,j,k)); // Permutation i,j
                     }
                     tau += 0.5*term;
 
                     term = 0;
                     for (int cc=0; cc<Nparticles; cc++){
-                        term -= I4(bb,cc) * t0( Index(aa,cc,i,j)); //) i+j*Nholes, aa+cc*Nparticles); // No permutation
-                        term += I4(aa,cc) * t0( Index(bb,cc,i,j)); //i+j*Nholes, bb+cc*Nparticles); // Permutation a,b
+                        term -= I4(bb,cc) * t0( Index(aa,cc,i,j)); // No permutation
+                        term += I4(aa,cc) * t0( Index(bb,cc,i,j)); // Permutation a,b
                     }
                     tau += 0.5*term;
 

@@ -16,7 +16,7 @@
 
 \author{Fredrik Wilhelm Holmen}
 \title{A Study of Coupled-Cluster Methods for infinite matter}
-\date{Autumn 2015}
+\date{Autumn 2016}
 
 \begin{document}
 % set space around equations
@@ -25,6 +25,7 @@
 
 
 \maketitle
+
 
 \begin{abstract}
 	In this thesis, we present the formalism of many-body methods, with an emphasis on the Coupled Cluster method with double excitations. The methods are tested on three physical systems, the pairing model, the infinite electron gas and the infinite nuclear matter to reproduce satisfactory results given in literature.  
@@ -48,7 +49,7 @@
 
 
 \begin{chapter}{Introduction}
-	This thesis is aiming to utilize many-body methods for computing the ground state energy for three different systems. The Pairing model, the homogeneous electron gas and the infinite nuclear matter. Well-performing many-body methods are very computationally costly, and a brute force implementation of configuration interaction, perturbation theory and coupled-cluster doubles theory is only a viable option for small systems. The thesis investigates how one can implement a more efficient solver for the coupled-cluster doubles equations to gain an understanding of large systems. 
+	This thesis is aiming to utilize many-body methods for computing the ground state energy for three different systems. The pairing model, the homogeneous electron gas and the infinite nuclear matter. Well-performing many-body methods are very computationally costly, and a brute force implementation of configuration interaction, perturbation theory and coupled-cluster doubles theory is only a viable option for small systems. The thesis investigates how one can implement a more efficient solver for the coupled-cluster doubles equations to gain an understanding of large systems. 
 
 	\begin{subsection}{Motivation}
 		The Pairing model is an interesting model to solve, not because of it's direct representation of real matter, but because it lives in a small and finite Hilbert space. This allows us compute the exact ground state energy with full configuration interaction. The result is an important tool for comparing the performance of different solvers. Because it is a small and confined system, it is easy to calculate matrix elements by hand, leading to an exact solution for perturbation theory and coupled-cluster doubles results are known. The system is therefore exceptionally good at benchmarking the implementation of many-body methods. 
@@ -102,105 +103,105 @@
  			\item \textbf{The Wave Function} \\
  			All information on a quantum system is given by the wave function $\Psi(x,t) $. The wave function represents the probability of measuring a particle within a small volume $\text{dx}$ and for a given time, $t$. As the probability cannot exceed $1$, the wave function must be normalized, namely
  			\begin{align}
- 				\int_{-\infty}^\infty \Psi^*(x,t) \Psi(x,t) \text{dx} = 1
+ 				\int_{-\infty}^\infty \Psi^*(x,t) \Psi(x,t) \text{dx} = 1.
  			\end{align}
  			Using Dirac notation, we write the wave function as
- 			\begin{align}
- 				\left| \Psi \right>
- 			\end{align}
+ 			\begin{align*}
+ 				\left| \Psi \right>.
+ 			\end{align*}
  			Physical distinguishable states are orthogonal to each other. Using normalized states, they are orthonormal to each other, meaning that for two unambigously distuingishable states, we have
  			\begin{align}
- 				\left< \lambda | \psi \right> = \delta_{\lambda \psi}
+ 				\left< \lambda | \psi \right> = \delta_{\lambda \psi}.
  			\end{align}
  			\item \textbf{Observables}\\
 			All observables are represented by linear operators, written with a "hat", $\hat O$. These linear operators are bound to be hermitian. An observable could also be called measurable quality. The outcome of a quantum mechanical experiment is an observable. 
 			\item \textbf{Measurements}\\
 			The possible outcomes of an experminent are the eigenvalues of an operator that represents the observable, represented as a number $\lambda$. If a state is in the eigenstate $\left| \lambda \right>$, the only possible measurement of an experiment is the eigenvalue, $\lambda$. We write this as
  			\begin{align}
- 				\hat O \left| \lambda \right> = \lambda \left| \lambda \right>
+ 				\hat O \left| \lambda \right> = \lambda \left| \lambda \right>.
  			\end{align}
  			\item \textbf{Probabilities}\\
  			Given a state $\left| \alpha \right>$. The probability of observing $\lambda$ when measuring the observable $\hat O$ is given by 
  			\begin{align}
- 				P(\lambda) = \left< \alpha | \lambda \right> \left< \lambda | \alpha \right> = | \left< \alpha | \lambda \right> |^2 
+ 				P(\lambda) = \left< \alpha | \lambda \right> \left< \lambda | \alpha \right> = | \left< \alpha | \lambda \right> |^2,
  			\end{align}
- 			Which measures the overlap of the two states $\left| \alpha \right>$ and $\left| \lambda \right>$. If they are physically distinguishable, the probability is zero. If the probability is non-zero, we have "mixed states".
+ 			which measures the overlap of the two states $\left| \alpha \right>$ and $\left| \lambda \right>$. If they are physically distinguishable, the probability is zero. If the probability is non-zero, we have "mixed states".
  			\item \textbf{Time development and the Schr\"{o}dinger equation}\\
  			Time developement for states are given by acting on the state with a unitary operator
  			\begin{align}
- 				\left| \Psi(t) \right> = \hat U(t) \left| \Psi(0) \right>
+ 				\left| \Psi(t) \right> = \hat U(t) \left| \Psi(0) \right>.
  			\end{align}
  			This leads us to the time-independent Schr\"{o}dinger equation
  			\begin{align}
- 				\hat H \left| \Psi(x,t) \right> = i \hbar \frac{\partial}{\partial t} \left| \Psi(x,t) \right> 
+ 				\hat H \left| \Psi(x,t) \right> = i \hbar \frac{\partial}{\partial t} \left| \Psi(x,t) \right>, 
  			\end{align}
- 			Where we have defined the Hamiltonian operator $\hat H$. The Hamiltonian will be used throughout the thesis, as its eigenvalues are the measurable energy. We will primarily focus on solving the \textit{time independent} Schr\"{o}dinger equation
+ 			where we have defined the Hamiltonian operator $\hat H$. The Hamiltonian will be used throughout the thesis, as its eigenvalues are the measurable energy. We will primarily focus on solving the \textit{time independent} Schr\"{o}dinger equation
  			\begin{align}
- 				\hat H \left| \Psi(x) \right> = E \left| \Psi(x) \right> 
+ 				\hat H \left| \Psi(x) \right> = E \left| \Psi(x) \right>.
  			\end{align} 
  		\end{enumerate}
  	\end{section}
 
  	\begin{section}{The Many-Body Wave Function}
- 		A single particle, in isolation, occupy the single particle wave function \cite{Audun,Crawford}
+ 		A single particle, in isolation, occupies the single particle wave function \cite{Audun,Crawford}
  		\begin{align}
- 			\phi_i(\mathbf{x}_1)
+ 			\phi_i(\mathbf{x}_1). 
  		\end{align}
- 		Single particle wave functions are described by the small letter $\phi$, holding all relevant quantum numbers. The vector $\mathbf{x}_1$ holds information on translational position as well as spin for particle $1$. When aiming to describe a system consisting of many such particles, it is tempting to think of the many-body wave function as a function of each particle's wave function 
+ 		Single particle wave functions are described by the lower case letter $\phi$, holding all relevant quantum numbers. The vector $\mathbf{x}_1$ holds information on translational position as well as spin for particle $1$. When aiming to describe a system consisting of many such particles, it is tempting to think of the many-body wave function as a function of each particle's wave function 
  		\begin{align}
- 			\Phi = \Phi( \phi_1(\mathbf{x}_1), \phi_2(\mathbf{x}_2), ..., \phi_N(\mathbf{x}_N) )
+ 			\Phi = \Phi( \phi_1(\mathbf{x}_1), \phi_2(\mathbf{x}_2), ..., \phi_N(\mathbf{x}_N) ),
  		\end{align}
- 		Where we will use the large letters $\Psi$ and $\Phi$ as the many-body wave functions. This wave function will be sought in the combined Hilbert space of the single particle functions \cite{MHJSlides}
+ 		where we will use the upper case letters $\Psi$ and $\Phi$ as the many-body wave functions. This wave function will be sought in the combined Hilbert space of the single particle functions \cite{MHJSlides}
  		\begin{align}
- 			\Phi \in \mathcal{H} = \mathcal{H}_1 \oplus \mathcal{H}_2 \oplus ... \oplus \mathcal{H}_N
+ 			\Phi \in \mathcal{H} = \mathcal{H}_1 \oplus \mathcal{H}_2 \oplus ... \oplus \mathcal{H}_N,
  		\end{align}
- 		Where $\mathcal{H}_i$ represent the Hilbert space for particle $i$. This combined space is referred to as the Fock space \cite{MHJSlides}. A first guess for the wave function can be the \textit{Hatree-product} of single particle functions \cite{Audun,ShavittAndBartlett,Szabo} 
+ 		where $\mathcal{H}_i$ represent the Hilbert space for particle $i$. This combined space is referred to as the Fock space \cite{MHJSlides}. A first guess for the wave function can be the \textit{Hatree-product} of single particle functions \cite{Audun,ShavittAndBartlett,Szabo} 
  		\begin{align}
- 			\Phi_h = \phi_1(\mathbf{x}_1), \phi_2(\mathbf{x}_2), ..., \phi_N(\mathbf{x}_N) = \prod_{i=1}^N \phi_i(\mathbf{x}_i)
+ 			\Phi_h = \phi_1(\mathbf{x}_1), \phi_2(\mathbf{x}_2), ..., \phi_N(\mathbf{x}_N) = \prod_{i=1}^N \phi_i(\mathbf{x}_i).
  		\end{align}
 
  	\end{section}
 
  	\begin{section}{Pauli's Exclusion Principle}
- 		Pauli's exclusion principle, also called the antisymmetry principle or the symmetrization requirement \cite{Szabo,Griffiths}, is quite often included as one of the underlying postulates of quantum mechanics. Guessing that the two-body wave function is on the form of a Hatree-product
+ 		Pauli's exclusion principle, also called the antisymmetry principle or the symmetrization requirement \cite{Szabo,Griffiths}, is quite often included as one of the underlying postulates of quantum mechanics. Guessing that the two-body wave function is on the form of a Hartree-product
  		\begin{align}
- 			\Psi(\mathbf{x}_1,\mathbf{x}_2) = \phi_1({\mathbf{x}_1}) \phi_b(\mathbf{x}_2)
+ 			\Psi(\mathbf{x}_1,\mathbf{x}_2) = \phi_1({\mathbf{x}_1}) \phi_b(\mathbf{x}_2),
  		\end{align}
- 		We are claiming that the two particles are distuinguishable, i.e. that electron $1$ occupy state $\phi_1$ and electron $2$ occupy $\phi_2$. All particles, however, are completely identical, with no way of separating them from each other \cite{Griffiths}. Therefore, one must require a different form on the wave function, one that does not commit the particles to specific wave functions. Introducing a general wave function
+ 		which might seem logical from a Newtonian view, where one can label objects. All particles, however, are completely identical, with no way of separating them from each other \cite{Griffiths}. Therefore, one must require a different form on the wave function, one that does not commit the particles to specific wave functions. Introducing a general wave function
  		\begin{align}
- 			\Psi(\mathbf{x}_1,\mathbf{x}_2) = A[\psi_1(\mathbf{x}_1) \psi_2(\mathbf{x}_2) \pm \mathbf{x}_2) \psi_2(\mathbf{x}_1)]
+ 			\Psi(\mathbf{x}_1,\mathbf{x}_2) = A[\psi_1(\mathbf{x}_1) \psi_2(\mathbf{x}_2) \pm \psi_1(\mathbf{x}_2) \psi_2(\mathbf{x}_1)],
  		\end{align}
- 		With $A$ given as a normalization factor. We notice the choice of sign. Particles with spin integers, named bosons, will require the use of the positive sign, and the wave function will therefore remain unchanged through the interchange of particles. Particles with spin half-integers, will require the use of a negative sign. All particles used in calculations in this thesis are fermions, namely electrons, neutrons or protons. We can introduce the specific antisymmetrization requirement for this thesis as
+ 		with $A$ given as a normalization factor. We notice the choice of sign. Particles with spin integers, named bosons, will require the use of the positive sign, and the wave function will therefore remain unchanged through the interchange of particles. Particles with spin half-integers, will require the use of a negative sign. All particles used in calculations in this thesis are fermions, namely electrons, neutrons or protons. We can introduce the specific antisymmetrization requirement for this thesis as
  		\begin{align}
- 			\Psi(\mathbf{x}_1,\mathbf{x}_2) = -\Psi(\mathbf{x}_2,\mathbf{x}_1)
+ 			\Psi(\mathbf{x}_1,\mathbf{x}_2) = -\Psi(\mathbf{x}_2,\mathbf{x}_1).
  		\end{align}
- 		An exchange of particles can be represented through the use of a pertubation operator $\hat P$, which gives 
+ 		An exchange of particles can be represented through the use of a permutation operator $\hat P$, which gives 
  		\begin{align}
- 			\hat P \Psi(\mathbf{x}_1,\mathbf{x}_2) = \Psi(\mathbf{x}_2,\mathbf{x}_1)
+ 			\hat P \Psi(\mathbf{x}_1,\mathbf{x}_2) = \Psi(\mathbf{x}_2,\mathbf{x}_1).
  		\end{align}
  	\end{section}
 
 	\begin{section}{Slater Determinant}
-		The antisymmetrized wave function grows rapidly for every added particle, and we need to introduce a more convenient notation, called the Slater Determinant. Written in terms of the perturbation operator \cite{Audun}
+		The antisymmetrized wave function grows rapidly for every added particle, and we need to introduce a more convenient notation, called the Slater Determinant. Written in terms of the permutation operator \cite{Audun}
 		\begin{align}
-			\Phi_{SD} = \frac{1}{\sqrt{N!}} \sum_\lambda^{N!} \hat P_\lambda (-1)^{n(\lambda)} \Phi_h		 	
+			\Phi_{SD} = \frac{1}{\sqrt{N!}} \sum_\lambda^{N!} \hat P_\lambda (-1)^{n(\lambda)} \Phi_h,		 	
 		\end{align} 
-		Where the perturbation operator $\hat P_{\lambda}$, performes every perturbation possible, and introducing a factor $-1$ every time a perturbation is performed. Introducing the anti-symmetry operator $\mathcal{A}$, we can write the shorthand equation
+		where the permutation operator $\hat P_{\lambda}$, performes every permutation possible, and introducing a factor $-1$ every time a perturbation is performed. Introducing the anti-symmetry operator $\mathcal{A}$, we can write the shorthand equation
 		\begin{align}
-			\Phi_{SD} = \sqrt{N!}\mathcal{A}\Phi_h
+			\Phi_{SD} = \sqrt{N!}\mathcal{A}\Phi_h,
 			\label{equation:SlaterDeterminant}
 		\end{align}
-		Where we have defined $\mathcal{A}$ as \cite{MHJSlides}
+		where we have defined $\mathcal{A}$ as \cite{MHJSlides}
 		\begin{align}
-			\mathcal{A} = \frac{1}{N!} \sum_\lambda (-1)^\lambda \hat P
+			\mathcal{A} = \frac{1}{N!} \sum_\lambda (-1)^\lambda \hat P.
 		\end{align}
 		This operator holds important properties, like commuting with the Hamiltonian operator
 		\begin{align}
-			\left[\hat H, \mathcal{A}\right] = 0
+			\left[\hat H, \mathcal{A}\right] = 0,
 		\end{align}
 		and 
 		\begin{align}
-			\mathcal{A}^2 = \mathcal{A}, \:\:\:\:\:\:\:\: \mathcal{A} = \mathcal{A}^\dagger
+			\mathcal{A}^2 = \mathcal{A}, \:\:\:\:\:\:\:\: \mathcal{A} = \mathcal{A}^\dagger.
 			\label{equation:OperatorA}
 		\end{align}
 		A more intuitive representation of the Slater determinant is on the matrix form 
@@ -210,23 +211,23 @@
 				\phi_1(\mathbf{x}_2) & \phi_2(\mathbf{x}_2) & \cdots & \phi_N(\mathbf{x}_2) \\
 				\vdots & \vdots & \ddots & \vdots \\
 				\phi_1(\mathbf{x}_N) & \phi_2(\mathbf{x}_N) & \cdots & \phi_N(\mathbf{x}_N) 
-			\end{matrix} \right|
+			\end{matrix} \right|.
 		\end{align}
-		This way of writing the many-body wave function will represent linear a combination of products of the one-body wave functions $\phi_i$'s and all the electronic coordinates $\mathbf{x}_i$ distributed among them in all possible ways. Exchanging two lines will change the sign such that the Slater Determinant will respect the antisymmetric requirement. Introducing a convenient shorthand expression using Dirac-notation, consisting only of the diagonal elements, we can write the Slater determinant as \cite{Crawford}
+		This way of writing the many-body wave function will represent a linear combination of products of the one-body wave functions $\phi_i$'s and all the electronic coordinates $\mathbf{x}_i$ distributed among them in all possible ways. Exchanging two lines will change the sign such that the Slater Determinant will respect the antisymmetric requirement. Introducing a convenient shorthand expression using Dirac-notation, consisting only of the diagonal elements, we can write the Slater determinant as \cite{Crawford}
 		\begin{align}
-			\left| \Phi \right > = \left| \phi_1(\mathbf{x}_1) \phi_2(\mathbf{x}_2) ... \phi_N({\mathbf{x}_N}) \right>  
+			\left| \Phi \right > = \left| \phi_1(\mathbf{x}_1) \phi_2(\mathbf{x}_2) ... \phi_N({\mathbf{x}_N}) \right>,  
 		\end{align}
-		Which will be the preferred representation of a Slater determinant until Second quantization is introduced. 
+		which will be the preferred representation of a Slater determinant until Second quantization is introduced. 
 	\end{section}
 
 	\begin{section}{An ansatz for the Wave Function}
 		The true wave function, represented by
+		\begin{align*}
+			\Psi,
+		\end{align*}
+		is seldom known. On the contrary, one of the goals of many-body quantum mechanics is to find an expression for $\Psi $. To find $\Psi$, one can introduce the Slater Determinant as an approximation to the wave function 
 		\begin{align}
-			\Psi
-		\end{align}
-		is rarely known. On the contrary, one of the goals of many-body quantum mechanics is to find an expression for $\Psi $. To find $\Psi$, one can introduce the Slater Determinant as a approximation to the wave function 
-		\begin{align}
-			\Psi \approx \Phi_{SD}
+			\Psi \approx \Phi_{SD},
 		\end{align}
 		made up of a set of known single particle wave functions $\phi_i$. Choosing a set of single particle functions that lies close to the true state, will provide good results. Calculations will be made easier by using single particle states that are eigenstates of the one-body Hamiltonian operator. One could, for example, choose the hydrogen orbitals as single particle functions when calculating on electrons around an atom. We name $\Phi_{SD}$ the ansatz for the true wave function. 
 	\end{section}
@@ -234,35 +235,35 @@
  	\begin{section}{The Hamiltonian}
  		The Hamiltonian operator represents the total energy for the system, namely the kinetic energy and the potential energy
  		\begin{align}
- 			\hat H = \hat T + \hat V
+ 			\hat H = \hat T + \hat V,
  		\end{align}
- 		Where we can write the kinetic energy as \cite{MHJSlides}
+ 		where we can write the kinetic energy as \cite{MHJSlides}
  		\begin{align}
- 			\hat T = \sum_{i=1}^N \frac{ \mathbf{p}_i^2}{2m_i} \sum_{i=1}^N \left( \frac{\hbar^2}{2m_i} \nabla_i^2 \right) = \sum_{i=1} t(x_i)
+ 			\hat T = \sum_{i=1}^N \frac{ \mathbf{p}_i^2}{2m_i} \sum_{i=1}^N \left( \frac{\hbar^2}{2m_i} \nabla_i^2 \right) = \sum_{i=1} t(x_i).
  		\end{align}
- 		And a general potential operator can be written as
+ 		A general potential operator can be written as
  		\begin{align}
- 			\hat V = \sum_{i=1}^N \hat u_{ext}(x_i) + \sum_{ji = 1}^N v(x_i,x_j) + \sum_{ijk=1}^N v(x_i,x_j,x_k) + \cdots 
+ 			\hat V = \sum_{i=1}^N \hat u_{ext}(x_i) + \sum_{ji = 1}^N v(x_i,x_j) + \sum_{ijk=1}^N v(x_i,x_j,x_k) + \cdots ,
  		\end{align}
- 		Where we have included the possibility of more than two-body interactions. When doing quantum chemistry, it is common to \textit{freeze} the core. This is called the Born-Oppenheimer Approximation, and simplifies the potential a lot. We now need to look at electrons interacting with a positive core through the Coulombic interaction. The Coulombic potential is a two-body potential, and including the interaction between every electron, we can rewrite the Hamiltonian as
+ 		where we have included the possibility of more than two-body interactions. When doing quantum chemistry, it is common to \textit{freeze} the core. This is called the Born-Oppenheimer Approximation, and simplifies the potential a lot. We now need to look at electrons interacting with a positive core through the Coulombic interaction. The Coulombic potential is a two-body potential, and including the interaction between every electron, we can rewrite the Hamiltonian as
  		\begin{align}
- 			\hat H = \sum_{i=1}^{N_e} t(x_i) - \sum_{i=1}^{N_e} k \frac{Z}{r_i} + \sum_{i<j}^{N_e} \frac{k}{r_{ij}}
+ 			\hat H = \sum_{i=1}^{N_e} t(x_i) - \sum_{i=1}^{N_e} k \frac{Z}{r_i} + \sum_{i<j}^{N_e} \frac{k}{r_{ij}},
  		\end{align}
- 		Where $N_e$ is the number of electrons and $k = 1.44$eVnm. It is useful to group the one- and two-body parts together
+ 		where $N_e$ is the number of electrons and $k = 1.44$eVnm. It is useful to group the one- and two-body parts together
  		\begin{align}
- 			\hat H = \hat H_0 + \hat H_1
+ 			\hat H = \hat H_0 + \hat H_1,
  		\end{align}
- 		Where we have the one-electron energy
+ 		where we have the one-electron energy
  		\begin{align}
- 			\hat H_0 = \sum_{i=1}^{N_e} t(x_i) - \sum_{i=1}^{N_e} k \frac{Z}{r_i}
+ 			\hat H_0 = \sum_{i=1}^{N_e} t(x_i) - \sum_{i=1}^{N_e} k \frac{Z}{r_i},
  		\end{align}
  		and the interaction term
  		\begin{align}
- 			\hat H_1 = \sum_{i<j}^{N_e} \frac{k}{r_{ij}}
+ 			\hat H_1 = \sum_{i<j}^{N_e} \frac{k}{r_{ij}}.
  		\end{align}
  		It is very useful to have an ansatz for the wave function that satisfies the relation
  		\begin{align}
- 			\hat H_0 \left| \phi_\lambda \right> = \epsilon_\lambda \left| \phi_\lambda \right>
+ 			\hat H_0 \left| \phi_\lambda \right> = \epsilon_\lambda \left| \phi_\lambda \right>.
  		\end{align}
  		In this thesis, I have only included a two-body interaction for my potentials, simplifing the calculations on nuclear matter by using easier potentials. 
  	\end{section}
@@ -270,31 +271,31 @@
 	\begin{section}{Matrix Elements}
 		A Slater determinant will have an energy, given by the Hamiltonian operator
 		\begin{align}
-			\hat H \left| \Phi_{SD} \right> = \epsilon_{SD} \left| \Phi \right>
+			\hat H \left| \Phi_{SD} \right> = \epsilon_{SD} \left| \Phi \right>.
 		\end{align}
-		We aim to calculate the energy, and to do that, we need to introduce the concept of expectation values. By taking the Hermitian conjugate of a wave function, one finds the \textit{bra} version of the state. The original state is known as a $ket$ state. 
+		We want to calculate the energy, and to do that, we need to introduce the concept of expectation values. By taking the Hermitian conjugate of a wave function, one finds the \textit{bra} version of the state 
 		\begin{align}
-			\left( \left| \Phi_{SD} \right> \right)^\dagger = \left( \Phi_{SD}^* \right)^T = \left< \Phi_{SD} \right| 
+			\left( \left| \Phi_{SD} \right> \right)^\dagger = \left( \Phi_{SD}^* \right)^T = \left< \Phi_{SD} \right|.
 		\end{align}
-		The expectation value is defined as taking the inner product of two states, where one is worked on by an operator
+		The original state is known as a $ket$ state. The expectation value is defined as taking the inner product of two states, where one is worked on by an operator
 		\begin{align}
-			\int_{-\infty}^\infty \Phi_{SD}^\dagger \hat H \Phi_{SD} d \tau = \epsilon_{SD}
+			\int_{-\infty}^\infty \Phi_{SD}^\dagger \hat H \Phi_{SD} d \tau = \epsilon_{SD}.
 		\end{align}
 		Because of the orthonormality of the states, this calculation will result in the energy. In terms of Dirac notation, this is usually referred to as \textit{multiplying from the left by a bra state}
 		\begin{align}
-			\left< \Phi_{SD} | \hat H | \Phi_{SD} \right> = \epsilon_{SD}
+			\left< \right. \Phi_{SD} | \hat H | \Phi_{SD} \left. \right> = \epsilon_{SD}.
 		\end{align}
 		By splitting the Hamiltonian into the one-body and two-body part
 		\begin{align}
-			\hat H = \hat H_0 + \hat H_1 = \sum_i \hat h_0(x_i) + \sum_{i<j} \hat v(i,j)
+			\hat H = \hat H_0 + \hat H_1 = \sum_i \hat h_0(x_i) + \sum_{i<j} \hat v(i,j),
 		\end{align}
-		We can rephrase the expectation value as a one-body calculation and a two-body calculation. 
+		we can rephrase the expectation value as a one-body calculation and a two-body calculation 
 		\begin{align}
-			\left< \Phi_{SD} \right| \hat H \left| \Phi_{SD} \right> = \left< \Phi_{SD} \right| \hat H_0 \left| \Phi_{SD} \right> + \left< \Phi_{SD} \right| \hat H_1 \left| \Phi_{SD} \right>
+			\left< \Phi_{SD} \right| \hat H \left| \Phi_{SD} \right> = \left< \Phi_{SD} \right| \hat H_0 \left| \Phi_{SD} \right> + \left< \Phi_{SD} \right| \hat H_1 \left| \Phi_{SD} \right>.
 		\end{align}
 		Written out, this gives 
 		\begin{align}
-			\left< \Phi_{SD} \right| \sum_i \hat h_0(x_i) \left| \Phi_{SD} \right> + \left< \Phi_{SD} \right| \sum_{i<j} \hat v \left| \Phi_{SD} \right>
+			\left< \Phi_{SD} \right| \sum_i \hat h_0(x_i) \left| \Phi_{SD} \right> + \left< \Phi_{SD} \right| \sum_{i<j} \hat v \left| \Phi_{SD} \right>.
 		\end{align}
 		We will commonly refer to these elements as \textit{matrix elements}.
 
@@ -302,87 +303,85 @@
 			Looking at the one-body matrix element, we use equations (\ref{equation:SlaterDeterminant},\ref{equation:OperatorA})
 			\begin{align}
 				\left< \Phi_{SD} \right| \hat h_0(x_i) \left| \Phi_{SD} \right> = N! \left< \Phi_h \right| \hat h_0(x_i) \mathcal{A} \left| \Phi_h \right> 
-			\end{align}
-			Which written out on the integral form gives
+			\end{align},
+			which, when written out on the integral form, gives
 			\begin{align}
-				\sum_i N! \int \Phi_h^* \hat h_0(x_i) \mathcal{A} \Phi_h d\tau 
+				\sum_i N! \int \Phi_h^* \hat h_0(x_i) \mathcal{A} \Phi_h d\tau .
 			\end{align}
-			Substituting out the Hatree-product and $\mathcal{A}$ for the perturbation operator, we are left with
+			Substituting out the Hatree-product and $\mathcal{A}$ for the permutation operator, we are left with
 			\begin{align}
-				\sum_i \sum_\lambda (-1)^\lambda \int d\tau \left( \prod_j \phi_j(x_j)^* \right) \hat h_0(x_i) \hat P_\lambda \left( \prod_k \phi_k(x_k) \right)
+				\sum_i \sum_\lambda (-1)^\lambda \int d\tau \left( \prod_j \phi_j(x_j)^* \right) \hat h_0(x_i) \hat P_\lambda \left( \prod_k \phi_k(x_k) \right).
 			\end{align}
-			Because of the orthogonality of the single particle states, we can deduce that any perturbation of particles on one Hartree-product, will set up an inner product of different particles and give zero as a result. We can therefore reduce the calculation to a single sum of unperturbed inner products. 
+			Because of the orthogonality of the single particle states, we can deduce that any permutation of particles on one Hartree-product, will set up an inner product of different particles and give zero as a result. We can therefore reduce the calculation to a single sum of unpermuted inner products
 			\begin{align}
-				\sum_i \ \int d\tau \left( \prod_j \phi_j(x_j)^* \right) \hat h_0(x_i) \left( \prod_k \phi_k(x_k) \right) 
+				\sum_i \ \int d\tau \left( \prod_j \phi_j(x_j)^* \right) \hat h_0(x_i) \left( \prod_k \phi_k(x_k) \right).
 			\end{align}
-			Since the operator $\hat h_0(x_i)$ only works on $\phi_i(x_i)$, we can split the sum into two parts. Looking at the equation for particle i.
+			Since the operator $\hat h_0(x_i)$ only works on $\phi_i(x_i)$, we can split the sum into two parts. Looking at the equation for particle i
 			\begin{align}
-				\left< \phi_i \right| \hat h_0 \left| \phi_i \right> \cdot  \left( \prod_{j \neq i} \int d\tau \left| \phi_j(x_j) \right|^2 \right)
+				\left< \phi_i \right| \hat h_0 \left| \phi_i \right>  \left( \prod_{j \neq i} \int d\tau \left| \phi_j(x_j) \right|^2 \right),
 			\end{align}
-			Which, using the orthonormality relations, become
+			which, using the orthonormality relations, become
 			\begin{align}
-				\left< \phi_i \right| \hat h_0 \left| \phi_i \right> \cdot 1
+				\left< \phi_i \right| \hat h_0 \left| \phi_i \right>.
 			\end{align}
-			And we can write the one-body matrix elements as
+			We can write the one-body matrix elements as
 			\begin{align}
-				E_0 = \sum_i \left< \phi_i \right| \hat h_0 \left| \phi_i \right>
+				E_0 = \sum_i \left< \phi_i \right| \hat h_0 \left| \phi_i \right>.
 			\end{align}
-			By using single particle wave functions that are eigenstates for the one-body Hamiltonian operator, we get the simple result
+			If we are using single particle wave functions that are eigenstates for the one-body Hamiltonian operator, we get the simple result
 			\begin{align}
-				\left< \right. \hat H_0 \left. \right> = E_0 = \sum_i \epsilon_i 
+				\left< \right. \hat H_0 \left. \right> = E_0 = \sum_i \epsilon_i.
 			\end{align}
 
-			Applying the same logic for the two-body part
+			We can apply the same logic for the two-body part
 			\begin{align}
-				\left< \Phi_{SD} \right| \hat H_1 \left| \Phi_{SD} \right>
+				\left< \Phi_{SD} \right| \hat H_1 \left| \Phi_{SD} \right>.
 			\end{align}
 			We want to calculate 
 			\begin{align}
-				N! \left< \Phi_h \right| \sum_{i<j} \hat v_{ij} \mathcal{A} \left| \Phi_h \right> = N! \sum_{i<j} \int \Phi_h^* \hat v(x_i,x_j) \mathcal{A} \Phi_h d\tau
+				N! \left< \Phi_h \right| \sum_{i<j} \hat v_{ij} \mathcal{A} \left| \Phi_h \right> = N! \sum_{i<j} \int \Phi_h^* \hat v(x_i,x_j) \mathcal{A} \Phi_h d\tau.
 			\end{align}
-			Written in terms of the perturbation operator
+			Rewritten in terms of the permutation operator
 			\begin{align}
-				\sum_{i<j} \sum_\sigma (-1)^\sigma \int \Phi_h^* v(x_1,x_2) \hat P \Phi_h d\tau
+				\sum_{i<j} \sum_\sigma (-1)^\sigma \int \Phi_h^* v(x_1,x_2) \hat P \Phi_h d\tau,
 			\end{align}
-			The two-body interaction will allow for a single perturbation, because it is dependent on the distance between the two particles. Every other particle must be unperturbed. We can rewrite the equation by this single perturbation as
+			the two-body interaction will allow for a single permutation. This is because the interaction is dependent on the distance between the two particles. Every other particle must be unpermuted. We can rewrite the equation by this single permutation as
 			\begin{align} 
-				\sum_{i<j} \int \Phi_h^* v(x_i,x_j) (1 - P_{ij}) \Phi_h d\tau
+				\sum_{i<j} \int \Phi_h^* v(x_i,x_j) (1 - P_{ij}) \Phi_h d\tau,
 			\end{align}
-			Where $P_{ij}$ means the interchange of the two particles $i$ and $j$. By the same argument as for the one-particle operator, most states vanish due to orthonormality, and we are left with the terms that take part in the interaction, giving
+			where $P_{ij}$ means the interchange of the two particles $i$ and $j$. By the same argument as for the one-particle operator, most states vanish due to orthonormality, and we are left with the terms that take part in the interaction, giving
 			\begin{align}
-				\frac{1}{2} \sum_\mu \sum_\nu & \left[ \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\mu(x_i) \phi_\nu(x_j) d x_i d x_j \right.  \\     -& \left. \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\nu(x_i) \phi_\mu(x_j) d x_i d x_j \right]
+				\frac{1}{2} \sum_\mu \sum_\nu & \left[ \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\mu(x_i) \phi_\nu(x_j) d x_i d x_j \right.  \\     -& \left. \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\nu(x_i) \phi_\mu(x_j) d x_i d x_j \right],
 			\end{align}
-			Where we have introduced the factor $\frac{1}{2}$ because the sum now counts all states twice. The first term is known as the direct term, and the second term is known as the \textit{exchange term} or the \textit{Fock} term and it incorporates the Pauli principle. We need to introduce an easier notation to present this matrix element
+			where we have introduced the factor $\frac{1}{2}$ because the sum now counts all states twice. The first term is known as the direct term, and the second term is known as the \textit{exchange term} or the \textit{Fock} term and it incorporates the Pauli principle. We need to introduce an easier notation to present this matrix element
 			\begin{align}
-				\left< \mu \nu | v | \mu \nu \right> = \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\mu(x_i) \phi_\nu(x_j) d x_i d x_j
+				\left< \mu \nu | v | \mu \nu \right> = \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\mu(x_i) \phi_\nu(x_j) d x_i d x_j,
 			\end{align}
 			and 
 			\begin{align}
-				\left< \mu \nu | v | \nu \mu \right> = \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\nu(x_i) \phi_\mu(x_j) d x_i d x_j
+				\left< \mu \nu | v | \nu \mu \right> = \int \phi_\mu^*(x_i) \phi_\nu^*(x_j) \hat v(x_i,x_j) \phi_\nu(x_i) \phi_\mu(x_j) d x_i d x_j.
 			\end{align}
-			And finally, we write it on an anti-symmetric form
+			Finally, we can write it on an anti-symmetric form
 			\begin{align}
-				\left< \mu \nu | v | \mu \nu \right>_{AS} = \left< \mu \nu | v | \mu \nu \right> - \left< \mu \nu | v | \nu \mu \right> 
+				\left< \mu \nu | v | \mu \nu \right>_{AS} = \left< \mu \nu | v | \mu \nu \right> - \left< \mu \nu | v | \nu \mu \right>,
 			\end{align}
-			Meaning that we can write the expectation value of the interaction as a sum of alle the anti-symmetric matrix elements
+			meaning that we can write the expectation value of the interaction as a sum of alle the anti-symmetric matrix elements
 			\begin{align}
-				\left< \Phi_{SD} \right| \hat H_1 \left| \Phi_{SD} \right> = E_{\text{interaction}} = \frac{1}{2} \sum_{\mu \nu} \left< \mu \nu | v | \mu \nu \right>_{AS}
+				\left< \Phi_{SD} \right| \hat H_1 \left| \Phi_{SD} \right> = E_{\text{interaction}} = \frac{1}{2} \sum_{\mu \nu} \left< \mu \nu | v | \mu \nu \right>_{AS}.
  			\end{align}
 		\end{subsection}
 	\end{section}
 
-	\newpage
-
 	\begin{section}{The Variational Principle}
 		The variational principle is a very powerful principle, useful when doing many-body quantum theory. It states that, if you have a system with the true many-body wave function $\left| \Psi \right>$ and the exact energy
 		\begin{align}
-			\left< \Psi \right| \hat H \left| \Psi \right> = \epsilon_0
+			\left< \Psi \right| \hat H \left| \Psi \right> = \epsilon_0,
 		\end{align}
-		Then, any approximate wave function will produce a larger energy \cite{Szabo}
+		then, any approximate wave function will produce a larger energy \cite{Szabo}
 		\begin{align}
-			\left< \Phi \right| \hat H \left| \Phi \right> \leq \epsilon_0
+			\left< \Phi \right| \hat H \left| \Phi \right> \leq \epsilon_0.
 		\end{align}
-		So we can search for the wave function providing the lowest possible energy.
+		Meaning that we can search for the wave function providing the lowest possible energy. This is the basis for many many-body methods, including Hartree-Fock theory and variational Monte-Carlo. 
 	\end{section}
 
 \end{chapter}
@@ -390,194 +389,195 @@
 
 
 \begin{chapter}{Second Quantization}
- 	Second quantization is a new method of representing states and operators. 
+ 	This chapter will introduce us to a common formalism used in many-body quantum mechanics, that is second quantization. This formalism let us represent states and operators in a much more complex and intuitive way, without integrals. This formalism is used in the remainder part of the thesis. The chapter also introduces a powerful toolbox for large calculations, the time-independent Wick's theorem. The last section, sets the groundwork for many-body methods introduced in chapters 5 and 6, by introducing the reference and correlation energies, $E_{\text{ref}}$ and $\Delta E$. This chapter is based upon, and follows the material in \textit{Many-Body Methods in Chemistry and Physics} by \textit{Shavitt} and \textit{Bartlett} \cite{ShavittAndBartlett}. 
 	\begin{section}{Annihilation and Creation operators}
 		We introduce a new way of writing states using the mathematical technique known as second quantization. The main goal is to treat states without paying attention
 		to individual particle coordinates. We represent the empty space with the symbol for vacuum
 		\begin{align}
-			\ket{0}
+			\left| 0 \right>.
 		\end{align}
-		To represent a state, we use a creation operator to add the state to the vacuum
+		To represent a state, we use a creation operator that will add the state to the vacuum
 		\begin{align}
-			\hat a_i^{\dagger} \ket{0} = \ket{\phi_i}
+			\hat a_i^{\dagger} \left| 0 \right> = \left| \phi_i \right>,
 		\end{align}
 		And the annihilation operator will remove the particle again
 		\begin{align}
-			\hat a_i \ket{\phi_i} = \ket{0}
+			\hat a_i \left| \phi_i \right> = \left| 0 \right> .
 		\end{align}
 		Trying to add a new particle to an already filled state and removing an unoccupied state results in zero
 		\begin{align}
-			\hat a_i^{\dagger} \ket{\phi_i} = 0 \;\;\;\;\; \hat a_i \ket{0} = 0
+			\hat a_i^{\dagger} \left| \phi_i \right> = 0, \;\;\;\;\; \hat a_i \left| 0 \right> = 0.
 		\end{align}
 		Bra states are needed, and by looking at the adjoint of a ket state, we get
 		\begin{align}
-			\left(\left| \phi_i \right> \right)^\dagger = \left< \phi_i \right| 
+			\left(\left| \phi_i \right> \right)^\dagger = \left< \phi_i \right| ,
 		\end{align}
-		Which results in
+		which results in
 		\begin{align}
-			\left( \hat a_i^\dagger \left| 0 \right> \right)^\dagger = \left< 0 \right| \hat a_i = \left< \phi_i \right|
+			\left( \hat a_i^\dagger \left| 0 \right> \right)^\dagger = \left< 0 \right| \hat a_i = \left< \phi_i \right|.
 		\end{align}
 		We see that the creation and annihilator operator are each other's adjoint operator. We can define the counting operator, $\hat N$, which will count how many states are occupied in a Slater determinant
 		\begin{align}
-			\hat N = \sum_p \hat a^\dagger_p \hat a_p = \sum_p \hat n_p
+			\hat N = \sum_p \hat a^\dagger_p \hat a_p = \sum_p \hat n_p.
 		\end{align}
 	\end{section}
 
 	\begin{section}{Strings of Operators}
 		We can now construct the Slater determinant by working on vacuum with a string of creation operators
 		\begin{align}
-			\hat a_1^{\dagger} \hat a_2^{\dagger}... \hat a_N^{\dagger} \ket{0} = \left| \phi_1 \phi_2 ... \phi_N \right>
+			\hat a_1^{\dagger} \hat a_2^{\dagger}... \hat a_N^{\dagger} \ket{0} = \left| \phi_1 \phi_2 ... \phi_N \right> .
 		\end{align}
-		Permutations of the operators introduce a sign-change, which is equivalent to interchanging rows in the determinant. We need second quantization to respect the antisymmetrization condition, so a permutation of two states should introduce a change of sign
+		Permutations of the operators introduce a sign-change, which is equivalent to interchanging rows in the determinant. We need second quantization to respect the antisymmetrization condition, so a permutation of two states should introduce a sign change 
 		\begin{align}
-			\hat a_1^{\dagger} \hat a_2^{\dagger} \ket{0} = \ket{\phi_1 \phi_2} = -\ket{\phi_2 \phi_1} = -\hat a_2^{\dagger} \hat a_1^{\dagger} \ket{0}
+			\hat a_1^{\dagger} \hat a_2^{\dagger} \ket{0} = \ket{\phi_1 \phi_2} = -\ket{\phi_2 \phi_1} = -\hat a_2^{\dagger} \hat a_1^{\dagger} \ket{0}.
 		\end{align}
 		We introduce the permutation operator, $\hat P$, which permutes two states in the Slater determinant 
 		\begin{align}
-			\hat P \left| \Phi \right> = (-1)^{\sigma(P)} \left| \Phi \right>
+			\hat P \left| \Phi \right> = (-1)^{\sigma(P)} \left| \Phi \right>,
 		\end{align}
-		Where $\sigma(P)$ counts how many times the states are interchanged. Demonstrated with creation operators
+		where $\sigma(P)$ counts how many times the states are interchanged. Demonstrated with creation operators
 		\begin{align}
-			\hat a_1^\dagger \hat a_2^\dagger ... \hat a_i^\dagger \hat a_j^\dagger ... \hat a_n^\dagger = - \hat a_1^\dagger \hat a_2^\dagger ... \hat a_j^\dagger \hat a_i^\dagger ... \hat a_n^\dagger
+			\hat a_1^\dagger \hat a_2^\dagger ... \hat a_i^\dagger \hat a_j^\dagger ... \hat a_n^\dagger = - \hat a_1^\dagger \hat a_2^\dagger ... \hat a_j^\dagger \hat a_i^\dagger ... \hat a_n^\dagger.
 		\end{align}
 	\end{section}
 
 	\begin{section}{Anticommutator Relations}
 		When working on strings of operators, it is very convenient to introduce anticommutator relations. We define the relation as 
 		\begin{align}
-			\{ \hat A, \hat B \} = \hat A \hat B + \hat B \hat A	
+			\{ \hat A, \hat B \} = \hat A \hat B + \hat B \hat A.
 		\end{align}
 		By inserting the annihilation and creation operator, we can compute the relations and look at how they work on the vacuum state 
 		\begin{align}
-			\{ \hat a_i^\dagger \hat a_j \} \left| 0 \right>  &= \hat a_i^\dagger \hat a_j \left| 0 \right>  + \hat a_j \hat a_i^\dagger \left| 0 \right> = 0 + \delta_{ij} \left|0\right> 
+			\{ \hat a_i^\dagger \hat a_j \} \left| 0 \right>  &= \hat a_i^\dagger \hat a_j \left| 0 \right>  + \hat a_j \hat a_i^\dagger \left| 0 \right> = 0 + \delta_{ij} \left|0\right>,
  		\end{align}
- 		Where we have introduced the kroenecker-delta function
+ 		where we have introduced the kroenecker-delta function
  		\begin{align}
  			\delta_{ij} = \begin{cases}
  						1, & \text{if } i = j \\
  						0, & \text{ij } i \neq j
- 						\end{cases}
+ 						\end{cases}.
  		\end{align}
-		The second case
+		The second case gives
 		\begin{align}
-			\{ \hat a_i \hat a_j^\dagger \} \left| 0 \right> &= \hat a_i \hat a_j^\dagger + \hat a_j^\dagger \hat a_i \left| 0 \right> = \delta_{ij} \left| 0 \right> + 0
+			\{ \hat a_i \hat a_j^\dagger \} \left| 0 \right> &= \hat a_i \hat a_j^\dagger + \hat a_j^\dagger \hat a_i \left| 0 \right> = \delta_{ij} \left| 0 \right> + 0.
 		\end{align}
-		And the two last cases
+		And the two last cases will be zero
  		\begin{align}
-			\{ \hat a_i \hat a_j \} \left| 0 \right> &= \hat a_i \hat a_j \left| 0 \right> + \hat a_j \hat a_i \left| 0 \right> = \hat a_i \hat a_j \left| 0 \right> - \hat a_i \hat a_j \left| 0 \right> = 0\\
-			\{ \hat a_i^\dagger \hat a_j^\dagger \} \left| 0 \right> &= \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> + \hat a_j^\dagger \hat a_i^\dagger \left| 0 \right> = \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> - \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> = 0
+			\{ \hat a_i \hat a_j \} \left| 0 \right> &= \hat a_i \hat a_j \left| 0 \right> + \hat a_j \hat a_i \left| 0 \right> = \hat a_i \hat a_j \left| 0 \right> - \hat a_i \hat a_j \left| 0 \right> = 0,\\
+			\{ \hat a_i^\dagger \hat a_j^\dagger \} \left| 0 \right> &= \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> + \hat a_j^\dagger \hat a_i^\dagger \left| 0 \right> = \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> - \hat a_i^\dagger \hat a_j^\dagger \left| 0 \right> = 0.
  		\end{align}
- 		Ending up with our relations
+ 		Ending up with the final relations
  		\begin{align}
- 			&\{ \hat a_i \hat a_j \} = 0 \\
- 			&\{ \hat a_i^\dagger \hat a_j^\dagger \} = 0 \\
-			&\{ \hat a_i^\dagger \hat a_j \} = \{ \hat a_i \hat a_j^\dagger \} = \delta_{ij}
+ 			&\{ \hat a_i \hat a_j \} = 0, \\
+ 			&\{ \hat a_i^\dagger \hat a_j^\dagger \} = 0, \\
+			&\{ \hat a_i^\dagger \hat a_j \} = \{ \hat a_i \hat a_j^\dagger \} = \delta_{ij}.
 		\end{align}
 		The last result is very useful for rewriting strings of operators, since it allows us to rewrite a set of two operators as
 		\begin{align}
-			\hat a_i^\dagger \hat a_j = \{ \hat a_i^\dagger \hat a_j \} - \hat a_j \hat a_i^\dagger = \delta_{ij} - \hat a_j \hat a_i^\dagger 
+			\hat a_i^\dagger \hat a_j = \{ \hat a_i^\dagger \hat a_j \} - \hat a_j \hat a_i^\dagger = \delta_{ij} - \hat a_j \hat a_i^\dagger ,
 			\label{interchange operators}
 		\end{align}
-		Which will be at the center of Wick's theorem. 
+		which will be at the center of Wick's theorem. 
 	\end{section}
 
 	\begin{section}{Inner products}
 		We assume all states are orthonormal, taking the inner product of two states should give
 		\begin{align}
-			\left< i | j \right> = \delta_{ij}
+			\left< i | j \right> = \delta_{ij},
 		\end{align}
-		And for consistency, the vacuum state must also be normalized
+		and for consistency, the vacuum state must also be normalized
 		\begin{align}
-			\left< 0 | 0 \right> = 1
+			\left< 0 | 0 \right> = 1.
 		\end{align}
-		This can be demonstrated by looking at the definition of the inner product of two equal states and using the anticommutator relations
+		This can be demonstrated by looking at the definition of the inner product for two equal states and using the anticommutator relations
 		\begin{align}
-			1 = \left< i | i \right> &= \left< 0 \right| \hat a_i \hat a_i^\dagger \left| 0 \right> \\
-									 &= \left< 0 \right| (\delta_{ij} - \hat a_i^\dagger \hat a_i) \left| 0 \right> \\
-									 &= \left< 0 | 0 \right> - 0 = \left< 0 | 0 \right>
+			1 = \left< i | i \right> &= \left< 0 \right| \hat a_i \hat a_i^\dagger \left| 0 \right>, \\
+									 &= \left< 0 \right| (\delta_{ij} - \hat a_i^\dagger \hat a_i) \left| 0 \right>, \\
+									 &= \left< 0 | 0 \right> - 0 = \left< 0 | 0 \right>.
 		\end{align}
 		It turns out we can use this exact scheme for longer chains of operators as well. Looking at the inner product of two general Slater Determinants
 		\begin{align}
-			&\left| A \right> = \left| a_1 a_2 ... a_N \right> = \hat a_1^\dagger \hat a_2^\dagger ... \hat a_N^\dagger \left| 0 \right> \\
-			&\left| B \right> = \left| b_1 b_2 ... b_N \right> = \hat b_1^\dagger \hat b_2^\dagger ... \hat b_N^\dagger \left| 0 \right>
+			&\left| A \right> = \left| a_1 a_2 ... a_N \right> = \hat a_1^\dagger \hat a_2^\dagger ... \hat a_N^\dagger \left| 0 \right>, \\
+			&\left| B \right> = \left| b_1 b_2 ... b_N \right> = \hat b_1^\dagger \hat b_2^\dagger ... \hat b_N^\dagger \left| 0 \right>.
 		\end{align}
-		Writing the inner product
+		Writing the inner product of $\left| A \right>$ and $\left| B \right>$
 		\begin{align}
-			\left< A | B \right> = \left< 0 \right| \hat a_N ... \hat a_2 \hat a_1 \hat b_1^\dagger \hat b_2^\dagger ... \hat b_N^\dagger \left| 0 \right>
+			\left< A | B \right> = \left< 0 \right| \hat a_N ... \hat a_2 \hat a_1 \hat b_1^\dagger \hat b_2^\dagger ... \hat b_N^\dagger \left| 0 \right>.
 		\end{align}
 		By moving the annihilation operators all the way to the right, we know that the inner product becomes zero because $\hat a_p \left| 0 \right> = 0$. We utilize the anticommutator relations for interchanging creation and annihilation operators shown in (\ref{interchange operators}). By first moving $a_1$ to the right, we get two possible outcomes:
 		\begin{enumerate} 
 			\item One $b_p$ is equal to $a_1$ and we get
 			\begin{align}
-				\hat a_1 \hat b_p^\dagger = \delta_{a_1,b_p} - \hat b_p^\dagger \hat a_1 = 1 - \hat b_p^\dagger \hat a_1 
+				\hat a_1 \hat b_p^\dagger = \delta_{a_1,b_p} - \hat b_p^\dagger \hat a_1 = 1 - \hat b_p^\dagger \hat a_1 .
 				\label{InnerProduct1}
 			\end{align}
 			This will now give us a new and shorter inner product
 			\begin{align}
-				\left< A | B \right> = \left< 0 \right| \hat a_N ... \hat a_2 \hat b_1^\dagger... \hat b_{p-1}^\dagger \hat b_{p+1}^\dagger ... \hat b_N^\dagger \left| 0 \right>(-1)^{p-1} - \left< 0 \right| \hat a_N ... \hat a_2 \hat b_1^\dagger \hat b_2^\dagger ... \hat b_N^\dagger \hat a_1  \left| 0 \right>
+				\left< A | B \right> = \left< 0 \right| \hat a_N ... \hat a_2 \hat b_1^\dagger... \hat b_{p-1}^\dagger \hat b_{p+1}^\dagger ... \hat b_N^\dagger \left| 0 \right>(-1)^{p-1} - \left< 0 \right| \hat a_N ... \hat a_2 \hat b_1^\dagger \hat b_2^\dagger ... \hat b_N^\dagger \hat a_1  \left| 0 \right>,
 			\end{align}
-			Where the last term will vanish because of $\hat a_1 \left| 0 \right> = 0$. Notice the sign factor coming from $(-1)^{p-1}$. This is due to interchanging creation operators when moving $\hat b_p^\dagger$ from position $p$ and $(p-1)$ steps to the left before using (\ref{InnerProduct1}).  
+			where the last term will vanish because of $\hat a_1 \left| 0 \right> = 0$. Notice the sign factor coming from $(-1)^{p-1}$. This is due to interchanging creation operators when moving $\hat b_p^\dagger$ from position $p$ and $(p-1)$ steps to the left before using (\ref{InnerProduct1}).  
 			\item No $b_p$ is equal to $a_1$ and all $\delta_{a_1, b_p} = 0$. Applying the same logic as for outcome 1, we get
 			\begin{align}
-				\left< A | B \right> = 0
+				\left< A | B \right> = 0.
 			\end{align}
 		\end{enumerate}
 		We do the same for all states and see that this inner product can only be non-zero if all states $a_1 .. a_N$ has a matching state in $b_1 .. b_N$ and vice versa. If the ordering of states is different, a permutation factor $-1^{\sigma(P)}$ is included. 
 	\end{section}
 
 	\begin{section}{Representation of Operators}
-		Consider a symmetric one-body operator represented by
+		Consider a symmetric one-body operator represented by a sum of single-particle operators
 		\begin{align}
 			\hat F = \sum_{\mu = 1}^N \hat f_\mu 
 		\end{align}
-		The number $\mu$ tells us on which particle $\hat F$ works on. In this case, we are looking at a symmetric operator because it works identically on all particles. Looking at a matrix element of $\hat F$ put between two Slater determinants
+		The number $\mu$ tells us on which particle $\hat F$ works on. In this case, we are looking at a symmetric operator because it works identically on all particles. Looking at a matrix element of $\hat F$ put between two Slater determinants, we get the expectation value
 		\begin{align}
-			\left< a_1 a_2 ... a_N \right| \hat F \left| b_1 b_2 ... b_N \right> 
+			\left< a_1 a_2 ... a_N \right| \hat F \left| b_1 b_2 ... b_N \right>.
 		\end{align}
+		Written out as a sum over all single-particle operators, this expectation value becomes 
 		\begin{align}
-			\sum_\mu \left< a_1 a_2 ... a_N \right| \hat f_\mu \left| b_1 b_2 ... b_N \right> 
+			\sum_\mu \left< a_1 a_2 ... a_N \right| \hat f_\mu \left| b_1 b_2 ... b_N \right>.
 		\end{align}
 
 		\begin{subsection}{One-Body Operator}
 			In second quantization, a one-body operator is given as
 			\begin{align}
-				\hat F = \sum_{pq} \left< p \right| \hat f \left| q \right> \hat a_p^\dagger \hat a_q 
+				\hat F = \sum_{pq} \left< p \right| \hat f \left| q \right> \hat a_p^\dagger \hat a_q,
 			\end{align}
-			Where the matrix element $\left< p \right| \hat f \left| q \right>$ is determined on the nature of the operator $\hat F$. It is common to denote this matrix element as
+			where the matrix element $\left< p \right| \hat f \left| q \right>$ is determined on the nature of the operator $\hat F$. It is common to denote this matrix element as
 			\begin{align}
-				\hat F = \sum_{pq} \left< p \right| \hat f \left| q \right> \hat a_p^\dagger \hat a_q = \sum_{pq} f_{pq} \hat a_p^\dagger \hat a_q
+				\hat F = \sum_{pq} \left< p \right| \hat f \left| q \right> \hat a_p^\dagger \hat a_q = \sum_{pq} f_{pq} \hat a_p^\dagger \hat a_q.
 			\end{align}
 			Doing calculations in many-body quantum mechanics, we are primarily interested in expectation values. It is therefore crucial that we develop a solid scheme for calculating these values. This can be done by for example looking at the following inner product 
 			\begin{align}
-				\left< P \right| \hat F \left| R \right> 
+				\left< P \right| \hat F \left| R \right> .
 			\end{align}
-			Inserting the definition of $\hat F$
+			Inserting the definition of $\hat F$, we get the expectation value
 			\begin{align}
-				\left< 0 \right| \hat a_M ... \hat a_s \hat a_r \left( \sum_{kl} f_{kl} \hat a_k^\dagger \hat a_l \right) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right>
+				\left< 0 \right| \hat a_M ... \hat a_s \hat a_r \left( \sum_{kl} f_{kl} \hat a_k^\dagger \hat a_l \right) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right>,
 			\end{align}
-			Which can be rewritten as
+			which can be rewritten as
 			\begin{align}
-				\sum_{pq} f_{pq} \left< 0 \right| \hat a_M ... \hat a_s \hat a_r (\hat a_k^\dagger \hat a_l) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right>
+				\sum_{pq} f_{pq} \left< 0 \right| \hat a_M ... \hat a_s \hat a_r (\hat a_k^\dagger \hat a_l) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right>.
 			\end{align}
-			We apply the same logic as in the previous section, which provides us with three different outcomes for this expectation value
+			We apply the same logic we used in the section \textit{3.4 Inner Products}, which provides us with three different outcomes for this expectation value
 			\begin{enumerate}
 				\item The states $p,q,...,N$ are all identical to the states $r,s,...,M$. This results in
 				\begin{align}
-					\left< P \right| \hat F \left| R \right> = \sum_k^N f_{kk} (-1)^{\sigma(P)}
+					\left< P \right| \hat F \left| R \right> = \sum_k^N f_{kk} (-1)^{\sigma(P)},
 				\end{align}
-				Where we have included a perturbation factor in case the ordering of states is different in the two states. 
+				where we have included a permutation factor in case the ordering of states is different in the two states. 
 				\item If all states except one from each Slater determinant are equal, we get a \textit{noncoincidence} \cite{ShavittAndBartlett}
 				\begin{align}
-					(p = r), \: (s = q), \: ..., \: (n \neq m), \: ..., \: (N = N)
+					(p = r), \: (s = q), \: ..., \: (n \neq m), \: ..., \: (N = N).
 				\end{align}
-				We can rewrite the expectation value as
+				Meaning that we can rewrite the expectation value as
 				\begin{align}
-					\sum_{pq} f_{pq} \left< 0 \right| \hat a_M ... \hat a_s \hat a_r (\hat a_k^\dagger \hat a_l) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right> = (-1)^{\sigma(P)} f_{mn}
+					\sum_{pq} f_{pq} \left< 0 \right| \hat a_M ... \hat a_s \hat a_r (\hat a_k^\dagger \hat a_l) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right> = (-1)^{\sigma(P)} f_{mn},
 				\end{align}
-				Because the operators $\hat a_k^\dagger$ and $\hat a_l$ must be paired with the non-identical states $m$ and $n$ for us to be left with a orthogonal inner product.
+				because the operators $\hat a_k^\dagger$ and $\hat a_l$ must be paired with the non-identical states $m$ and $n$ for us to be left with a orthogonal inner product.
 				\item If there are more than one noncoincidence, no contributions can survive, and the expectation value is 
 				\begin{align}
-					\left< P \right| \hat F \left| R \right> = 0
+					\left< P \right| \hat F \left| R \right> = 0.
 				\end{align}
 			\end{enumerate}
 		\end{subsection}
@@ -585,30 +585,30 @@
 		\begin{subsection}{Two-body Operator}
 			I have in this thesis only looked at Hamiltonians consisting of a maximum of two-body interactions. Because of this, I will need a formalism for a two-body operator as well. It is defined almost identically as the one-body operator. We write the general two-body operator as
 			\begin{align}
-				\hat G = \frac{1}{2} \sum_{ijkl} \left< i(1) j(2) \right| g_{12} \left| k(1) l(2) \right> \hat a_i^\dagger \hat a_j^\dagger \hat a_l \hat a_k
+				\hat G = \frac{1}{2} \sum_{ijkl} \left< i(1) j(2) \right| g_{12} \left| k(1) l(2) \right> \hat a_i^\dagger \hat a_j^\dagger \hat a_l \hat a_k,
 			\end{align}
-			Where the numbers $(1)$ and $(2)$ show which particle occupy the state. We are, as for the one-body operator, interested in how we can calculate expectation values for this operator. We take the inner product with the two Slater determinants $\left| P \right>$ and $\left| R\right>$
+			where the numbers $(1)$ and $(2)$ show which particle occupy the state. We are, as for the one-body operator, interested in how we can calculate expectation values for this operator. We take the inner product with the two Slater determinants $\left| P \right>$ and $\left| R\right>$
 			\begin{align}
-				\frac{1}{2} \sum_{ijkl} \left< i(1) j(2) \right| g_{12} \left| k(1) l(2) \right>   \left< 0 \right| \hat a_M ... \hat a_s \hat a_r (\hat a_i^\dagger \hat a_j^\dagger \hat a_l \hat a_k) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right>
+				\frac{1}{2} \sum_{ijkl} \left< i(1) j(2) \right| g_{12} \left| k(1) l(2) \right>   \left< 0 \right| \hat a_M ... \hat a_s \hat a_r (\hat a_i^\dagger \hat a_j^\dagger \hat a_l \hat a_k) \hat a_p^\dagger \hat a_q^\dagger ... \hat a_N^\dagger \left| 0 \right>.
 			\end{align}
 			There are three possible outcomes here as well 
 			\begin{enumerate}
 				\item If there are none noncoincidences, and all states in SD $\left| P \right>$ are equal to all states in SD $\left| R \right>$, we get 
 				\begin{align}
-				 	\left< P \right| \hat G \left| R \right> = \frac{1}{2}\sum_{p \in P}\sum_{q \in P} (\left< pq\right| \hat g \left| pq \right> - \left< pq\right| \hat g \left| qp \right> ) = \frac{1}{2}\sum_{p \in P}\sum_{q \in P} \left< pq || pq \right>
+				 	\left< P \right| \hat G \left| R \right> = \frac{1}{2}\sum_{p \in P}\sum_{q \in P} (\left< pq\right| \hat g \left| pq \right> - \left< pq\right| \hat g \left| qp \right> ) = \frac{1}{2}\sum_{p \in P}\sum_{q \in P} \left< pq || pq \right>,
 				\end{align}
-				Where it is useful to use the antisymmetric matrix element
+				where it is useful to use the antisymmetric matrix element
 				\begin{align}
-					\left< pq || pq \right> = \left< pq\right| \hat g \left| pq \right> - \left< pq\right| \hat g \left| qp \right>  
+					\left< pq || pq \right> = \left< pq\right| \hat g \left| pq \right> - \left< pq\right| \hat g \left| qp \right>.
 				\end{align}
 				\item If we have a single noncoincidence, where all states except one from each SD are perfectly identical, we get \cite{ShavittAndBartlett}
 				\begin{align}
-					\left< P \right| \hat G \left| R \right> = \sum_{q \in P} \left< p' q || p q \right>
+					\left< P \right| \hat G \left| R \right> = \sum_{q \in P} \left< p' q || p q \right>,
 				\end{align}
 				where the states $p'$ and $p$ are the unequal states. 
 				\item If we have two noncoincidences, we get 
 				\begin{align}
-					\left< P \right| \hat G \left| R \right> = \left< p' q' || p q \right> 
+					\left< P \right| \hat G \left| R \right> = \left< p' q' || p q \right> .
 				\end{align}
 				\item If more than two states from each SD are unequal, the expectation value will be $0$.
 			\end{enumerate}
@@ -617,24 +617,24 @@
 		\begin{subsection}{The Hamiltonian}
 			We can now write our Hamiltonian using second quantization. The Hamiltonian consists of a one-body and a two-body term
 			\begin{align}
-				\hat H = \hat H_1 + \hat H_2
+				\hat H = \hat H_1 + \hat H_2,
 			\end{align}
-			Which can be written out as
+			which can be written out as
 			\begin{align}
-				\hat H_1 = \sum_\mu \hat h_\mu, \:\;\;\;\;\; \hat H_2 = \sum_{\mu < \nu} \hat v_{\mu \nu}
+				\hat H_1 = \sum_\mu \hat h_\mu, \:\;\;\;\;\; \hat H_2 = \sum_{\mu < \nu} \hat v_{\mu \nu}.
 			\end{align}
 			Using atomic units, we can write this as
 			\begin{align}
-				\hat h_\mu = -\frac{1}{2}\nabla_\mu^2 - \sum_A \frac{Z_A}{r_{\mu A}}, \:\;\;\;\;\; \hat v_{\mu \nu} = \frac{1}{r_{\mu \nu}}
+				\hat h_\mu = -\frac{1}{2}\nabla_\mu^2 - \sum_A \frac{Z_A}{r_{\mu A}}, \:\;\;\;\;\; \hat v_{\mu \nu} = \frac{1}{r_{\mu \nu}}.
 			\end{align}
-			Using the formalism introduced, we can write this as
+			Using the formalism of second quantization, we can write the Hamiltonian as
 			\begin{align}
 				\hat H = \hat H_1 + \hat H_2 = \sum_{ij} \left<i \right| \hat h \left| j \right> \hat a_i^\dagger \hat a_j 
-						+ \frac{1}{4} \sum_{ijkl} \left<ij|| kl \right> \hat a_i^\dagger \hat a_j^\dagger \hat a_l \hat a_k
+						+ \frac{1}{4} \sum_{ijkl} \left<ij|| kl \right> \hat a_i^\dagger \hat a_j^\dagger \hat a_l \hat a_k,
 			\end{align}
-			Where we have used the anti-symmetric form of the two-body operator
+			where we have used the anti-symmetric form of the two-body operator
 			\begin{align}
-				\left<ij|| kl \right> = \left< i(1) j(2) \right| \hat v_{12} \left| k(1) l(2) \right> - \left< i(1) j(2) \right| \hat v_{12} \left| l(1) k(2) \right>
+				\left<ij|| kl \right> = \left< i(1) j(2) \right| \hat v_{12} \left| k(1) l(2) \right> - \left< i(1) j(2) \right| \hat v_{12} \left| l(1) k(2) \right>.
 			\end{align}
 		\end{subsection}
 
@@ -647,11 +647,11 @@
 
 			A string of operators with all annihilation operators to the right will be referred to as a \textit{normal ordered} string of operators. Normal ordering of operators is commonly denoted by a curvy bracket or square bracket
 			\begin{align}
-				n[ \hat A \hat B ... \hat N ] = \{ \hat A \hat B ... \hat N \}
+				n[ \hat A \hat B ... \hat N ] = \{ \hat A \hat B ... \hat N \}.
 			\end{align}
 			Any expectation value, with respect to the true vacuum, of a set of normal ordered operators will always be zero:
 			\begin{align}
-				\left< 0 \right| \{ \hat A \hat B ... \hat N \} \left| 0 \right> = 0 
+				\left< 0 \right| \{ \hat A \hat B ... \hat N \} \left| 0 \right> = 0 .
 				\label{NormalOrdering1}
 			\end{align}
 			One can note that the Hamiltonian operator is already written in a \textit{normal ordered} form. 
@@ -662,9 +662,9 @@
 			\begin{align}
 				\bcontraction{}{\hat A}{}{\hat B} 
 				\hat A \hat B
-				\equiv \hat A \hat B - \{ \hat A \hat B \}
+				\equiv \hat A \hat B - \{ \hat A \hat B \}.
 			\end{align}
-			And taking the expectation value of the two operators with respect to the true vacuum, providing the contractions
+			Taking the expectation value of the two operators with respect to the true vacuum, provides the contractions
 			\begin{align}
 				\bcontraction{}{\hat a_a^\dagger}{}{\hat a_b^\dagger}
 				\hat a_a^\dagger \hat a_b^\dagger 
@@ -674,13 +674,13 @@
 				= 
 				\bcontraction{}{\hat a_a^\dagger}{}{\hat a_b}
 				\hat a_a^\dagger \hat a_b
-				= 0 
+				= 0 .
 			\end{align}
 			The only non-zero results will be for 
 			\begin{align}
 				\bcontraction{}{\hat a_a}{}{\hat a_b}
 				\hat a_a \hat a_b
-				^\dagger = \delta_{ab}
+				^\dagger = \delta_{ab}.
 			\end{align}
 		\end{subsection}
 	
@@ -689,7 +689,7 @@
 			\begin{align}
 				\hat A \hat B \hat C \hat D ... = \{\hat A \hat B \hat C \hat D ... \} + \sum \{  \bcontraction[2ex]{}{\hat A}{\hat B \hat C \hat D ...}
 				\hat A \bcontraction{}{\hat B}{\hat C \hat D ..}
-				\hat B \hat C \hat D .... \}
+				\hat B \hat C \hat D .... \}.
 			\end{align}
 			The usefulness of this relation is when calculating expectation values. Because of (\ref{NormalOrdering1}), the only result that will give a non-zero result, is when all operators are fully contracted. As an example to display the usefulness of Wick's theorem 
 			\begin{align}
@@ -698,54 +698,53 @@
 				\hat a_a \hat a_b^\dagger \bcontraction{}{\hat a_c}{}{\hat a_d^\dagger}
 				\hat a_c \hat a_d^\dagger \bcontraction{}{\hat a_e}{}{\hat a_f^\dagger}
 				\hat a_e \hat a_f^\dagger 
-				\} \left| 0 \right> = \delta_{ab} \delta_{cd} \delta_{ef}
+				\} \left| 0 \right> = \delta_{ab} \delta_{cd} \delta_{ef},
 			\end{align}
-			Where the contractions displayed are the only set of non-zero contractions possible. 
+			where the contractions displayed are the only set of non-zero contractions possible. 
 		\end{subsection}
 	\end{section}
 
 	\begin{section}{Particle-Hole Formulation}
 		For larger Slater determinants, it is tedious to write all states in terms of the vacuum state $\left| 0 \right>$. We define a reference state that will be used instead of the pure vacuum. Looking at a general Slater determinant
 		\begin{align}
-			\left| \Phi_0 \right> = \hat a_i^\dagger \hat a_j^\dagger ... \hat a_n^\dagger \left| 0 \right>
+			\left| \Phi_0 \right> = \hat a_i^\dagger \hat a_j^\dagger ... \hat a_n^\dagger \left| 0 \right>.
 		\end{align}
 		If this Slater Determinant is the ground state of our system, we can use it as a reference state. We define the highest lying occupied state as the Fermi level, and name all states above the Fermi level \textit{particle states} or \textit{virtual states}. If a state below the Fermi level is vacant, we name it a \textit{hole state}. From here on out, we will use a distinct naming pattern for indices. Indices using the latin alphabet using letters $i, j, k, l, ...$ are reserved for \textit{hole states}. Latin letters $a, b, c, d, ...$ are reserved for \textit{particle states}. Sometimes, we want to name more general states that can take the form of either a \textit{hole state} or a \textit{particle state}. We use the latin letters $p, q, r, s, ...$. For a more convenient way of writing, operators will be written on a shorter and more convenient form
 		\begin{align}
-			\hat a_a = \hat a \:\:\:\:\: \hat a_b^\dagger = \hat b^\dagger \:\:\:\:\: \hat a_i^\dagger = \hat i^\dagger \:\:\:\: ...
+			\hat a_a = \hat a \:\:\:\:\: \hat a_b^\dagger = \hat b^\dagger \:\:\:\:\: \hat a_i^\dagger = \hat i^\dagger \:\:\:\: ... ,
 		\end{align}
-		And so forth. The reference state will be written as 
+		and so forth. The reference state will be written as 
 		\begin{align}
-			\left| \Phi_0 \right> = \hat i^\dagger \hat j^\dagger \hat k^\dagger ... \hat n^\dagger \left| \right> = \left| ijk ... n \right> = \left| \right>
+			\left| \Phi_0 \right> = \hat i^\dagger \hat j^\dagger \hat k^\dagger ... \hat n^\dagger \left| \right> = \left| ijk ... n \right> = \left| \right>,
 		\end{align}
-		And excitations will be written as
+		and excitations will be written as
 		\begin{align}
-			\text{Single Excitation: }\:\:\:\:& \left| \Phi_i^a \right> = \left| ajk ... n \right> = \hat i \hat a^\dagger \left| \right> \\
-			\text{Double Excitation: }\:\:\:\:& \left| \Phi_{ij}^{ab} \right> = \left| abk ... n \right> = \hat i \hat j \hat a^\dagger \hat b^\dagger \left| \right> 
+			\text{Single Excitation: }\:\:\:\:& \left| \Phi_i^a \right> = \left| ajk ... n \right> = \hat i \hat a^\dagger \left| \right>, \\
+			\text{Double Excitation: }\:\:\:\:& \left| \Phi_{ij}^{ab} \right> = \left| abk ... n \right> = \hat i \hat j \hat a^\dagger \hat b^\dagger \left| \right> ,
 		\end{align}
-		Where the use of annihilation operators for \textit{hole states} no longer produce zero when used on the reference state, but simply remove one particle from the reference state and create a \textit{hole state}:
+		where the use of annihilation operators for \textit{hole states} no longer produce zero when used on the reference state, but simply remove one particle from the reference state and create a \textit{hole state}:
 		\begin{align}
-			\hat a_i \left| \right> = \left| \Phi_i \right> = \left| jk ... n \right>
+			\hat a_i \left| \right> = \left| \Phi_i \right> = \left| jk ... n \right>.
 		\end{align}
 		This will introduce a small change in Wick's theorem, as the only non-zero contractions are now 
 		\begin{align}
 			\contraction{}{\hat i^\dagger}{}{\hat j}
-			\hat i^\dagger \hat j = \delta_{ij}
+			\hat i^\dagger \hat j = \delta_{ij},
 		\end{align}
-		And 
+		and 
 		\begin{align}
 			\contraction{}{\hat a}{}{\hat b^\dagger}
-			\hat a \hat b^\dagger = \delta_{ab}
+			\hat a \hat b^\dagger = \delta_{ab}.
 		\end{align}
 		Contractions relative to the Fermi vacuum will now be denoted by brackets \textit{above} the operators instead of below. Apart from this, Wick's theorem is unchanged relative to the Fermi vacuum. \par 
 
-
 		A very important property of the reference state, is the expectation value for the Hamiltonian: 
 		\begin{align}
-			\left< \right| \hat H \left| \right> = \left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = \left< ijk...n \right| \hat H \left| ijk...n\right> 
+			\left< \right| \hat H \left| \right> = \left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = \left< ijk...n \right| \hat H \left| ijk...n\right> .
 		\end{align}
 		We name this the reference Energy. The result is given by \cite{ShavittAndBartlett}
 		\begin{align}
-			E_{\text{ref}} = \left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = \sum_i h_{ii} + \frac{1}{2} \sum_{ij} \left< ij || ij \right>
+			E_{\text{ref}} = \left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = \sum_i h_{ii} + \frac{1}{2} \sum_{ij} \left< ij || ij \right>.
 		\end{align}
 
 	\end{section}
@@ -755,119 +754,125 @@
 		\begin{subsection}{One-Body Operator}
 			 Consider a general one-body operator
 			\begin{align}
-				\hat F = \sum_{pq} \left< p \right| \hat f \left| q \right> \hat p^\dagger \hat q
+				\hat F = \sum_{pq} \left< p \right| \hat f \left| q \right> \hat p^\dagger \hat q.
 			\end{align}
 			Using Wick's theorem to rewrite the string of operators
 			\begin{align}
 				\hat p^\dagger \hat q = \{\hat p^\dagger \hat q \} + \contraction{}{\hat p}{^\dagger}{\hat q}
-				\hat p^\dagger \hat q
+				\hat p^\dagger \hat q,
 			\end{align}
-			We get 	
+			we get 	
 			\begin{align}
-				\hat F &= \sum_{pq} \left< p \right| \hat f \left| q \right> \{ \hat p^\dagger \hat q \} + \sum_i \left< i \right| \hat f \left| i \right>\\
-					&= \hat F_N + \sum_i \left< i \right| \hat f \left| j \right>
+				\hat F &= \sum_{pq} \left< p \right| \hat f \left| q \right> \{ \hat p^\dagger \hat q \} + \sum_i \left< i \right| \hat f \left| i \right>,\\
+					&= \hat F_N + \sum_i \left< i \right| \hat f \left| j \right>.
 			\end{align}
 			We notice that since 
 			\begin{align}
-				\left< \right. | \hat F_N |\left. \right> = 0 \:\:\:\: \rightarrow \:\:\:\: \sum_i \left< i \right| \hat f \left| i \right> = \left< \right. | \hat F | \left. \right>
+				\left< \right. | \hat F_N |\left. \right> = 0 \:\:\:\: \rightarrow \:\:\:\: \sum_i \left< i \right| \hat f \left| i \right> = \left< \right. | \hat F | \left. \right>,
 			\end{align}
-			We can rewrite the equation as
+			we can rewrite the equation as
 			\begin{align}
-				\hat F = F_N + \left< \right. | \hat F | \left. \right>
+				\hat F = F_N + \left< \right. | \hat F | \left. \right>.
 			\end{align}
 			Meaning that $F_N$ represent the difference between $\hat F$ and the Fermi expectation value. 
 		\end{subsection}
 		
 		\begin{subsection}{Two-Body operators}
-			The general two-body operator is given by
+			Consider a general two-body operator, given by
 			\begin{align}
 				\hat G = \frac{1}{4} \sum_{pqrs} \left< pq | \hat g | rs \right>_A \hat p^\dagger \hat q^\dagger \hat s \hat r
 			\end{align}
-			Although the method will be identical for a two-body operator as for a one-body operator, we will require a much larger sum over all possible contractions when using Wick's theorem. Calculation of the result can be viewed in \cite{ShavittAndBartlett}. 
+			As we did for the one-body operator, we want to use Wick's theorem to find an expression for the normal-ordered two-body operator. Although the method will be identical for the two-body operator as for the one-body operator, we will require a much larger sum over all possible contractions when using Wick's theorem. The calculations, using Wick's theorem can be viewed in \cite{ShavittAndBartlett}. The results are presented as
 			\begin{align}
-				\hat G = \frac{1}{4} \sum_{pqrs} \left<pq | \hat g | rs\right>_A \{ \hat p^\dagger \hat q^\dagger \hat s \hat r \}+ \sum_{ipq} \left<pi |\hat g | qi\right>_A \{ \hat p^\dagger \hat q\} + \frac{1}{2} \sum_{ij} \left< ij | \hat g | ij \right>_A 
+				\hat G = \frac{1}{4} \sum_{pqrs} \left<pq | \hat g | rs\right>_A \{ \hat p^\dagger \hat q^\dagger \hat s \hat r \}+ \sum_{ipq} \left<pi |\hat g | qi\right>_A \{ \hat p^\dagger \hat q\} + \frac{1}{2} \sum_{ij} \left< ij | \hat g | ij \right>_A .
 				\label{Two-Body Normal Ordering}
 			\end{align}
-			As for the one-body operator
+			As we did for the one-body operator, we will rename the terms for the two-body operator. Starting with the reference-part, we get
 			\begin{align}
-				\left< \right. | \hat G | \left.  \right> = \frac{1}{2} \sum_{ij} \left< ij | \hat g | ij \right>_A 
+				\left< \right. | \hat G | \left.  \right> = \frac{1}{2} \sum_{ij} \left< ij | \hat g | ij \right>_A .
 			\end{align}
-			We can now name the terms 
+			The normal ordered one-body term are labelled
 			\begin{align}
-				\hat G = \hat G_N + \hat G_N' + \left< \right. | \hat G | \left.  \right>
+				\hat G_N' = \sum_{ipq} \left<pi |\hat g | qi\right>_A \{ \hat p^\dagger \hat q\}, 
 			\end{align}
-			Where $\hat G_N'$ is a normal-ordered two-body operator. 
-
+			and the normal ordered two-body term is labelled 
+			\begin{align}
+				\hat G_N = \frac{1}{4} \sum_{pqrs} \left<pq | \hat g | rs\right>_A \{ \hat p^\dagger \hat q^\dagger \hat s \hat r \}.
+			\end{align}
+			We can now rewrite the two-body operator, $\hat G$ in terms of the respective normal ordered terms
+			\begin{align}
+				\hat G = \hat G_N + \hat G_N' + \left< \right. | \hat G | \left.  \right>.
+			\end{align}
 		\end{subsection}
 	\end{section}
 
 	\begin{section}{Partitioning the Hamiltonian Operator}
 		The Hamiltonian has been shown to consist of a one-body and a two-body term
 		\begin{align}
-			\hat H = \hat H_1 + \hat H_2
+			\hat H = \hat H_1 + \hat H_2.
 		\end{align}
 		One can, however, write it in terms of a zero-order term and a perturbation
 		\begin{align}
-			\hat H = \hat H_0 + \hat V
+			\hat H = \hat H_0 + \hat V.
 		\end{align}
 		It is convenient to choose a zero-order Hamiltonian that is diagonal
 		\begin{align}
-			\hat H_0 = \sum_p \epsilon_p \hat p^\dagger \hat p
+			\hat H_0 = \sum_p \epsilon_p \hat p^\dagger \hat p.
 		\end{align}
 		This means we can write the perturbation as
 		\begin{align}
 			\hat V &= (\hat H_1 - \hat H_0) + \hat H_2 \\
-			&= \sum_{pq}(h_{pq} - \epsilon_p \delta_{pq} ) \hat p^\dagger \hat q + \frac{1}{4}\left<pq||rs\right>\hat p^\dagger \hat q^\dagger \hat s \hat r 
+			&= \sum_{pq}(h_{pq} - \epsilon_p \delta_{pq} ) \hat p^\dagger \hat q + \frac{1}{4}\left<pq||rs\right>\hat p^\dagger \hat q^\dagger \hat s \hat r .
 		\end{align}
 		First, we define a Fock operator, $\hat F$, and a common practice is to choose the orbital energies as the diagonal elements of this Fock operator. 
 		\begin{align}
-			\hat F = \sum_{pq} f_{pq} \hat p^\dagger \hat q
+			\hat F = \sum_{pq} f_{pq} \hat p^\dagger \hat q,
 		\end{align}
-		With the matrix element defined as
+		with the matrix element defined as
 		\begin{align}
-			f_{pq} = h_{pq} + u_{pq}
+			f_{pq} = h_{pq} + u_{pq}.
 		\end{align}
 		Here $u_{pq}$ is the matrix element of a one-body operator $\hat U$. It is commonly implemented to simplify the zeroth-order term $\hat H_0$ and the normal ordering of the Hamiltonian. See (\ref{Total Perturbation}). We define the operator $\hat U$ as
 		\begin{align}
-			\hat U &= \sum_{pq} u_{pq} \hat p^\dagger \hat q \\
-			u_{pq} &= \sum_i \left<pi||qi\right>
+			\hat U &= \sum_{pq} u_{pq} \hat p^\dagger \hat q, \\
+			u_{pq} &= \sum_i \left<pi||qi\right>.
 		\end{align}
 		This means we can write $\hat F = \hat H_1 + \hat U$. Inserting the Fock operator into the perturbation
 		\begin{align}
 			\hat V &= \hat F - \hat H_0 - \hat U + \hat H_2 \\
-				   &= \sum_{pq}(f_{pq} - \epsilon_p \delta_{pq} - u_{pq}) \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r
+				   &= \sum_{pq}(f_{pq} - \epsilon_p \delta_{pq} - u_{pq}) \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r.
 			\label{3.93}	
 		\end{align}
 		For a non-canonical Hartree-Fock case, the Fock matrix is diagonal, namely
 		\begin{align}
-			f_{pq} = \epsilon_p \delta_{pq}
+			f_{pq} = \epsilon_p \delta_{pq}.
 		\end{align}
 		This means the perturbation can be rewritten as
 		\begin{align}
-			\hat V = -\sum_{pq} u_{pq} \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r	
+			\hat V = -\sum_{pq} u_{pq} \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r,	
 			\label{3.95}
 		\end{align}
-		With the zeroth-order energies given by 
+		with the zeroth-order energies given by 
 		\begin{align}
-			\hat H_0 = \sum_p \epsilon_p \hat p^\dagger \hat p \;\;\;\;\;\; \epsilon_p = h_{pp} + \sum_i \left<pi||pi\right>
+			\hat H_0 = \sum_p \epsilon_p \hat p^\dagger \hat p \;\;\;\;\;\; \epsilon_p = h_{pp} + \sum_i \left<pi||pi\right>.
 		\end{align}
 		The noncanonical case, the Fock operator, $\hat F$, is block diagonal, with $f_{ia} = 0$. To, again, cancel out the single orbital energies from the perturbation, we split the Fock operator into a diagonal and off-diagonal term
 		\begin{align}
-			\hat F = \hat F^d + \hat F^o
+			\hat F = \hat F^d + \hat F^o.
 		\end{align}
 		The diagonal term will now be canceled out, and we are left with the perturbation
 		\begin{align}
-			\hat V = -\sum_{pq} (f_{pq}^o - u_{pq}) \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r
+			\hat V = -\sum_{pq} (f_{pq}^o - u_{pq}) \hat p^\dagger \hat q + \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r.
 		\end{align}
 		For convience, we can organize the perturbation into a one-body part and a two-body part, $\hat V_1$ and $\hat V_2$
 		\begin{align}
-			\hat V_1 &= \hat F^o - \hat U = \sum_{pq} (f_{pq}^o - u_{pq}) \hat p^\dagger \hat q \\
-			\hat V_2 &= \hat H_2 = \frac{1}{4} \sum_{pqrs} \left< pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r
+			\hat V_1 &= \hat F^o - \hat U = \sum_{pq} (f_{pq}^o - u_{pq}) \hat p^\dagger \hat q, \\
+			\hat V_2 &= \hat H_2 = \frac{1}{4} \sum_{pqrs} \left< pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r.
 			\label{Partitioned Hamiltonian}
 		\end{align}
 		Resulting in the Hamiltonian
 		\begin{align}
-			\hat H = \hat H_0 + \hat V_1 + \hat V_2
+			\hat H = \hat H_0 + \hat V_1 + \hat V_2.
 		\end{align}
 
 	\end{section}
@@ -875,46 +880,46 @@
 	\begin{section}{Normal Ordering of Hamiltonian}
 		To sum it all up, I will now present a normal ordering of the partitioned Hamiltonian operator. Starting by applying Wick's theorem to the zeroth order term
 		\begin{align}
-			(\hat H_0)_N = \hat H_0 - E^{(0)} = \sum_p \epsilon_p \hat p^\dagger \hat p - \sum_i e_i = \sum_p \epsilon_p \{\hat p^\dagger \hat p\}
+			(\hat H_0)_N = \hat H_0 - E^{(0)} = \sum_p \epsilon_p \hat p^\dagger \hat p - \sum_i e_i = \sum_p \epsilon_p \{\hat p^\dagger \hat p\}.
 		\end{align}
 		Then applying Wick's theorem to the one- and two-body perturbations given in equation \ref{Partitioned Hamiltonian}, we get 
 		\begin{align}
-			\hat V_1 = (\hat V_1)_N + \left< \right. | \hat V_1 | \left. \right>
+			\hat V_1 = (\hat V_1)_N + \left< \right. | \hat V_1 | \left. \right>,
 		\end{align}
-		Where we have 
+		where we have 
 		\begin{align}
-			(\hat V_1)_N = \hat F_N^o - \hat U_N = \sum_{pq}(f_{pq}^o - u_{pq})\{ \hat p^\dagger \hat q \}
+			(\hat V_1)_N = \hat F_N^o - \hat U_N = \sum_{pq}(f_{pq}^o - u_{pq})\{ \hat p^\dagger \hat q \},
 		\end{align}
 		and
 		\begin{align}
-			\left< \right. | \hat V_1 | \left. \right> = -\sum_{ij} \left< ij || ij \right> = - \left< \right. | \hat U | \left. \right> 
+			\left< \right. | \hat V_1 | \left. \right> = -\sum_{ij} \left< ij || ij \right> = - \left< \right. | \hat U | \left. \right> .
 		\end{align}
 		Turning to the two-body perturbation and using the equation \ref{Two-Body Normal Ordering}, we can write the two-body part as
 		\begin{align}
-			\hat V_2 = (\hat V_2)_N + \hat V_N' + \left< \right. | \hat V_2 | \left. \right>
+			\hat V_2 = (\hat V_2)_N + \hat V_N' + \left< \right. | \hat V_2 | \left. \right>,
 		\end{align}
-		Where we have the following 
+		where we have the following 
 		\begin{align}
-			(\hat V_2)_N &= \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \{ \hat p^\dagger \hat q^\dagger \hat s \hat r \} \\
-			V_N' &= \sum_{pq} \left<pi||pi\right> \{ \hat p^\dagger \hat q \} \\
-			\left< \right. | \hat V_2 | \left. \right> &= \frac{1}{2} \sum_{ij} \left<ij||ij\right>
+			(\hat V_2)_N &= \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \{ \hat p^\dagger \hat q^\dagger \hat s \hat r \}, \\
+			V_N' &= \sum_{pq} \left<pi||pi\right> \{ \hat p^\dagger \hat q \}, \\
+			\left< \right. | \hat V_2 | \left. \right> &= \frac{1}{2} \sum_{ij} \left<ij||ij\right>.
 		\end{align}
 		We notice now, that after normal ordering the operators, we are left with many terms that can be reorganized into zero-, one- and two-body parts. We can rewrite the total perturbation as
 		\begin{align}
-			\hat V = \hat F_N^o - \hat U_N + \left< \right. | \hat V_1 | \left. \right> + (\hat V_2)_N + \hat V_N' + \left< \right. | \hat V_2 | \left. \right>
+			\hat V = \hat F_N^o - \hat U_N + \left< \right. | \hat V_1 | \left. \right> + (\hat V_2)_N + \hat V_N' + \left< \right. | \hat V_2 | \left. \right>.
 			\label{Total Perturbation}
 		\end{align}
 		Now, by construction of $\hat U$, we see that $\hat U$ and $\hat V_N'$ cancel each other out. Renaming $(\hat V_2)_N = \hat W_N$, we see that the terms left can be written as 
 		\begin{align}
-			\hat V = \hat F_N^o + \hat W_N + \left< \right. | \hat V | \left. \right>
+			\hat V = \hat F_N^o + \hat W_N + \left< \right. | \hat V | \left. \right>.
 		\end{align}
 		By applying the same logic as earlier, we write
 		\begin{align}
-			\hat V_N = \hat V - \left< \right. | \hat V | \left. \right>
+			\hat V_N = \hat V - \left< \right. | \hat V | \left. \right>,
 		\end{align}
-		So that we finally can write the normal ordered perturbation as
+		so that we finally can write the normal ordered perturbation as
 		\begin{align}
-			\hat V_N = \hat F_N^o + \hat W_N
+			\hat V_N = \hat F_N^o + \hat W_N.
 		\end{align}
 		We notice here the use of the diagonal Fock matrix. This matrix is just zero in the canonical Hartree Fock case. 
 	\end{section}
@@ -922,35 +927,35 @@
 	\begin{section}{Correlation Energy}
 		All the many-body quantum mechanics methods described in this thesis will aim to compute the correlation energy. We derive it by substracting 
 		\begin{align}
-			\left< \right. | \hat H | \left. \right> = \left< \right. | \hat H_0 | \left. \right> + \left< \right. | \hat V | \left. \right>
+			\left< \right. | \hat H | \left. \right> = \left< \right. | \hat H_0 | \left. \right> + \left< \right. | \hat V | \left. \right>,
 		\end{align}
 		from the partitioned hamiltonian $\hat H = \hat H_0 + \hat V$. Resulting in
 		\begin{align}
-			\hat H - \left< \right. | \hat H | \left. \right> &= \hat H_0 - \left< \right. | \hat H_0 | \left. \right> + \hat V - \left< \right. |\hat V| \left. \right>
+			\hat H - \left< \right. | \hat H | \left. \right> &= \hat H_0 - \left< \right. | \hat H_0 | \left. \right> + \hat V - \left< \right. |\hat V| \left. \right>.
 		\end{align}
 		This can be rewritten in terms of normal ordered operators as 
 		\begin{align}
-			\hat H_N = (\hat H_0)_N + \hat V_N
+			\hat H_N = (\hat H_0)_N + \hat V_N.
 		\end{align}
 		The Schr\"{o}dinger equation for this operator is given as
 		\begin{align}
-			\hat H_N \Psi = \Delta E \Psi 
+			\hat H_N \Psi = \Delta E \Psi ,
 		\end{align}
-		Where we have defined the computed energy as
+		where we have defined the computed energy as
 		\begin{align}
-			\Delta E = E - E_{\text{ref}}
+			\Delta E = E - E_{\text{ref}},
 		\end{align}
 		or 
 		\begin{align}
-			E = E_{\text{ref}} + \Delta E
+			E = E_{\text{ref}} + \Delta E.
 		\end{align}
 		This energy is named the correlation energy, and the goal of my thesis is to implement and compare different methods to compute this energy for different systems. The reference energy, given as
 		\begin{align}
-			E_{\text{ref}} = \left< \right. | \hat H_0 | \left. \right> + \left< \right. | \hat V | \left. \right>
+			E_{\text{ref}} = \left< \right. | \hat H_0 | \left. \right> + \left< \right. | \hat V | \left. \right>,
 		\end{align}
-		Is easily computed when the basis is set up. Finally, we can set up the fully partitioned normal ordered Hamiltonian as
+		is easily computed when the basis is set up. Finally, we can set up the fully partitioned normal ordered Hamiltonian as
 		\begin{align}
-			\hat H_N = \hat F_N^d + \hat F_N^o + \hat W_N
+			\hat H_N = \hat F_N^d + \hat F_N^o + \hat W_N.
 		\end{align}
 
 	\end{section}
@@ -2684,9 +2689,9 @@
 					\begin{tabular}[center]{l | c  c  c  r}
 						$N_{\text{particles}}$ & $N_{\text{states}}$ & $ \Delta E_{CCD}$ naive  & $\Delta E_{CCD}$ interm. & $\Delta E_{CCD}$ block \\
 						\hline
-						2 & 14 & -0.0148295981858 & -0.0148295981858 & -0.0148295981858 \\
-						14 & 38 & x & -0.276499387418 & -0.276499387418 \\
-						14 & 52 & x & x & x 
+						2 & 14 & -0.0148277 & -0.0148277 & -0.0148277 \\
+						14 & 38 & -0.276498 & -0.276498 & -0.276498 \\
+						14 & 52 & \text{N/A} & -0.317821 & -0.317821 
 					\end{tabular}
 				\end{center}
 				\caption{Calculations on the Homogeneous electron gas, using three different implementations of CCD equations. Showing results to benchmark the block solver, which was not benchmarked on the Pairing model. The System has been calculated with $2$ or $14$ particles and the total states either $38$ or $54$. The calculations has been made with a relaxing factor of $0.3$ and $r_s = 1.0$. Results can be found in file \textit{CompareTimeNaiveBlock.txt} \cite{WholmenGithub}}
@@ -2715,35 +2720,35 @@
 				\begin{tabular}[center]{l  c  c  c r}
 					$r_s$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ block & $\Delta E_{CCD}$ interm. & $\Delta E_{CCD}$ \cite{Audun} \\
 					\hline
-					1.0 &  54 & -0.3178228436888622 & -0.3178228436888617 & -0.317822843688933 \\
-						&  66 & -0.3931116842237731 & -0.392696589806104 & -0.3926965898061966 \\
-						& 114 & -0.4483703396794002 & & -0.4479105961757175 \\
-						& 162 & -0.4805985770458347 & & -0.4805572589306416 \\
-						& 186 & -0.4857493112620241 & & -0.4855229317521318 \\
-						& 246 & -0.4931044808539733 & & -0.4929245740023975 \\
-						& 294 & -0.4988882478066777 & & -0.4984909094066818 \\
-						& 342 & -0.5023838015693459 & & -0.5019526761547779 \\
-						& 358 & -0.5029455986670885 & & -0.502519673607641\\
+					1.0 &  54 & -0.3178228436888623 & -0.3178228436888617 & -0.317822843688933 \\
+						&  66 & -0.3926965898061108 & -0.392696589806104 & -0.3926965898061966 \\
+						& 114 & -0.4479105961756186 & & -0.4479105961757175 \\
+						& 162 & -0.4805572589305356 & & -0.4805572589306416 \\
+						& 186 & -0.485522931752024 & & -0.4855229317521318 \\
+						& 246 & -0.4929245740022883 & & -0.4929245740023975 \\
+						& 294 & -0.4984909094065708 & & -0.4984909094066818 \\
+						& 342 & -0.5019526761546675 & & -0.5019526761547779 \\
+						& 358 & -0.5025196736075309 & & -0.502519673607641\\
 					\hline
 					0.5 &  54 & -0.3589655739945123 & -0.3589655739945096 &   \\
-						&  66 & -0.4500927397323694 & -0.4498148680442103 & \\
-						& 114 & -0.5123238220612253 &  & -0.5120153541478306 \\
-						& 162 & -0.5476173361611851 &  & \\
-						& 186 & -0.5534833405611211 &  & \\
-						& 246 & -0.5623283277338971 &  & \\
-						& 294 & -0.5690151565315092 &  & \\
-						& 342 & -0.5732601634435416 &  & -0.572964549890367 \\
-						& 358 & -0.5739729304859902 &  & \\
+						&  66 & -0.4498148680442147 & -0.4498148680442103 & \\
+						& 114 & -0.5120153541477088 &  & -0.5120153541478306 \\
+						& 162 & -0.5476011323717939 &  & \\
+						& 186 & -0.5533296597612266 &  & \\
+						& 246 & -0.5622035867753152 &  & \\
+						& 294 & -0.5687413543469695 &  & \\
+						& 342 & -0.5729645498902303 &  & -0.572964549890367 \\
+						& 358 & -0.5736805652891426 &  & \\
 					\hline
-					2.0 &  54 & -0.2589156130046961 & -0.2589156130046975 &   \\
-						&  66 & -0.3139262042590158 & -0.3134082887534144 & \\
-						& 114 & -0.3583621351017488 &  &  -0.3577968843144996 \\
-						& 162 & -0.3856712818606722 &  & \\
-						& 186 & -0.3897132502824209 &  & \\
-						& 246 & -0.3949909174034745 &  & \\
-						& 294 & -0.3994500843659767 &  & \\
-						& 342 & -0.4019210052569197 &  &  -0.4014136184665555 \\
-						& 358 & -0.4022835667040489 &  & \\
+					2.0 &  54 & -0.2589156130046963 & -0.2589156130046975 &   \\
+						&  66 & -0.313408288753419 & -0.3134082887534144 & \\
+						& 114 & -0.3577968843144314 &  &  -0.3577968843144996 \\
+						& 162 & -0.3855831022718059 &  & \\
+						& 186 & -0.3894387566078363 &  & \\
+						& 246 & -0.3947792888408948 &  & \\
+						& 294 & -0.3989857639655124 &  & \\
+						& 342 & -0.401413618466477 &  &  -0.4014136184665555 \\
+						& 358 & -0.4017831726474148 &  & \\
 				\end{tabular}
 			\end{center}
 			\caption{ }
@@ -2758,7 +2763,178 @@
 				\caption{Thermodynamic limit}
 				\label{figure:thermodynamic_limit}
 			\end{figure}
+		
+			Writing out the results for 
+
+			\begin{table}[H]
+				\begin{center}
+					\begin{tabular}[center]{l  c  c r}
+						$N_{\text{h}}$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ & $\Delta E_{CCD}/N_{\text{h}}$ \\
+						\hline
+						14 &  38 & -0.2764993874198891 \\
+						14 &  54 & -0.3178228436888623 \\
+						14 &  66 & -0.3926965898061108 \\
+						14 & 114 & -0.4479105961756186 \\
+						14 & 162 & -0.4805572589305356 \\
+						14 & 186 & -0.485522931752024  \\
+						14 & 246 & -0.4929245740022883 \\
+						14 & 294 & -0.4984909094065708 \\
+						14 & 342 & -0.5019526761546675 \\
+						14 & 358 & -0.5025196736075309 \\
+						14 & 406 & -0.5041428350345967 \\
+						14 & 502 & -0.5065799526613661 \\
+						14 & 514 & -0.506781381408595  \\
+						14 & 610 & -0.5080057508848216 \\
+						14 & 682 & -0.508790105475187  \\
+						14 & 730 & -0.5091947506339534 \\
+						14 & 778 & -0.5095611843519957 \\
+						14 & 874 & -0.5101903217890488 \\
+						14 & 922 & -0.5104161052302821 \\
+						14 & 970 & -0.5106074895685655 \\
+						14 & 1030& -0.5107995654154656 \\
+						14 & 1174& -0.5112320650408912 \\
+						14 & 1238& -0.5113982335227241 \\
+						14 & 1382& -0.5116958244764185 \\
+						14 & 1478& -0.5118827825222959 \\
+						14 & 1502& -0.5119149735422388 \\
+						14 & 1598& -0.5120443934671698 \\
+						14 & 1694& -0.5121557267165306 \\
+						14 & 1790& -0.512269185709 \\
+						14 & 1850& -0.512326660012 \\
+						14 & 1898& -0.512367897375 \\
+					\end{tabular}
+				\end{center}
+				\caption{ }
+				\label{table:ThermodynamicLimit1}
+			\end{table}
+
+			\begin{table}[H]
+				\begin{center}
+					\begin{tabular}[center]{l  c  c r}
+						$N_{\text{h}}$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ & $\Delta E_{CCD}/N_{\text{h}}$ \\
+						\hline
+						38 &  38 & 0 \\
+						38 &  54 & -0.252944115 \\
+						38 &  66 & -0.370737565 \\
+						38 & 114 & -0.871764141 \\
+						38 & 162 & -1.13154477 \\
+						38 & 186 & -1.19804172 \\
+						38 & 246 & -1.29346208 \\
+						38 & 294 & -1.34391772 \\
+						38 & 342 & -1.38535934 \\
+						38 & 358 & -1.39471117 \\
+						38 & 406 & -1.41770717 \\
+						38 & 502 & -1.45075296 \\
+						38 & 514 & -1.45292878 \\
+						38 & 610 & -1.46803297 \\
+						38 & 682 & -1.47722483 \\
+						38 & 730 & -1.4823711 \\
+						38 & 778 & -1.48652184 \\
+						38 & 874 &  \\
+						38 & 922 &  \\
+						38 & 970 &  \\
+					\end{tabular}
+				\end{center}
+				\caption{ }
+				\label{table:ThermodynamicLimit2}
+			\end{table}
+
+			\begin{table}[H]
+				\begin{center}
+					\begin{tabular}[center]{l  c  c r}
+						$N_{\text{h}}$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ & $\Delta E_{CCD}/N_{\text{h}}$ \\
+						\hline
+						54 &  38 & 0 \\
+						54 &  54 &  \\
+						54 &  66 &  \\
+						54 & 114 &  \\
+						54 & 162 &  \\
+						54 & 186 &  \\
+						54 & 246 &  \\
+						54 & 294 &  \\
+						54 & 342 &  \\
+						54 & 358 &  \\
+						54 & 406 &  \\
+						54 & 502 &  \\
+						54 & 514 &  \\
+						54 & 610 &  \\
+						54 & 682 &  \\
+						54 & 730 &  \\
+						54 & 778 &  \\
+						54 & 874 &  \\
+						54 & 922 &  \\
+						54 & 970 &  \\
+					\end{tabular}
+				\end{center}
+				\caption{ }
+				\label{table:ThermodynamicLimit3}
+			\end{table}
+
+			\begin{table}[H]
+				\begin{center}
+					\begin{tabular}[center]{l  c  c r}
+						$N_{\text{h}}$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ & $\Delta E_{CCD}/N_{\text{h}}$ \\
+						\hline
+						66 &  38 & 0 \\
+						66 &  54 &  \\
+						66 &  66 &  \\
+						66 & 114 &  \\
+						66 & 162 &  \\
+						66 & 186 &  \\
+						66 & 246 &  \\
+						66 & 294 &  \\
+						66 & 342 &  \\
+						66 & 358 &  \\
+						66 & 406 &  \\
+						66 & 502 &  \\
+						66 & 514 &  \\
+						66 & 610 &  \\
+						66 & 682 &  \\
+						66 & 730 &  \\
+						66 & 778 &  \\
+						66 & 874 &  \\
+						66 & 922 &  \\
+						66 & 970 &  \\
+					\end{tabular}
+				\end{center}
+				\caption{ }
+				\label{table:ThermodynamicLimit3}
+			\end{table}
+
+			\begin{table}[H]
+				\begin{center}
+					\begin{tabular}[center]{l  c  c r}
+						$N_{\text{h}}$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ & $\Delta E_{CCD}/N_{\text{h}}$ \\
+						\hline
+						114 &  38 & 0 \\
+						114 &  54 &  \\
+						114 &  66 &  \\
+						114 & 114 &  \\
+						114 & 162 &  \\
+						114 & 186 &  \\
+						114 & 246 &  \\
+						114 & 294 &  \\
+						114 & 342 &  \\
+						114 & 358 &  \\
+						114 & 406 &  \\
+						114 & 502 &  \\
+						114 & 514 &  \\
+						114 & 610 &  \\
+						114 & 682 &  \\
+						114 & 730 &  \\
+						114 & 778 &  \\
+						114 & 874 &  \\
+						114 & 922 &  \\
+						114 & 970 &  \\
+					\end{tabular}
+				\end{center}
+				\caption{ }
+				\label{table:ThermodynamicLimit3}
+			\end{table}
+
 		\end{subsection}
+
+
 
 	\end{section}
 

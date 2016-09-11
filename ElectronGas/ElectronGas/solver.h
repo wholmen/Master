@@ -85,8 +85,10 @@ public:
     int Index(int a, int b, int i, int j); // Returns the index p + q*Np + r*Np*Nq + s*Np*Nq*Nr
 
 
-
-    mat I2; void UpdateI2(); mat I1; void UpdateI1();
+    mat T0; mat T;
+    void StoreT(int index, double value);
+    double ReturnT(int index);
+    double ReturnT0(int index);
 };
 
 #endif // SOLVER_H

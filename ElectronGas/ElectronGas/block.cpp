@@ -71,16 +71,8 @@ void Block::FinishBlock(){
     Nh = Holes.n_rows;
     Np = Particles.n_rows;
     Nph = Xph.n_rows;
-    int Nhp = Xhp.n_rows;
     Nk1 = K1.n_rows;
     Nk3 = K3.n_rows;
-
-
-    for (int i=0; i<Nph; i++){
-
-        cout << Xph(i,0) << " " << Xph(i,1) << "   " << Xhp(i,0) << " " << Xhp(i,1) << "     " << Nhp << " " << Nph << endl;
-
-    }
 }
 
 void Block::Epsilonpphh(){
@@ -141,6 +133,7 @@ void Block::Epsilonkphh(){
 
 
 void Block::SetUpMatrices_Energy(mat &t){
+
     // It is important that I do not copy the vector t0 into this function, as that might be disastrous for the memory.
     // I will only send in the memory adress.
 
@@ -154,7 +147,7 @@ void Block::SetUpMatrices_Energy(mat &t){
             int a = Particles(A,0); int b = Particles(A,1);
 
             V(I,A) = basis.TwoBodyOperator( i,j,a,b );
-            T(A,I) = t( Index(a,b,i,j) );
+            T(A,I) = ReturnT( t, Index(a,b,i,j));//t( Index(a,b,i,j) );
         }
     }
 }
@@ -182,7 +175,8 @@ void Block::SetUpMatrices_La(mat &t0){
         }
 
         for (int I=0; I<Nh; I++){
-            T(A,I) = t0( Index(Particles(A,0),Particles(A,1),Holes(I,0),Holes(I,1)) );
+
+            T(A,I) = ReturnT0(t0, Index(Particles(A,0),Particles(A,1),Holes(I,0),Holes(I,1))); //t0( Index(Particles(A,0),Particles(A,1),Holes(I,0),Holes(I,1)) );
         }
     }
 }
@@ -200,9 +194,9 @@ void Block::SetUpMatrices_Qc(mat &t0){
             int j=K1(k1,0); int i=K3(k2,0);
             int a=K3(k2,1); int b=K3(k2,2);
 
-            T(k2,k1) = t0( Index(a,b,i,j));
+            T(k2,k1) = ReturnT0(t0, Index(a,b,i,j)); //t0( Index(a,b,i,j));
             V(k1,k2) = basis.TwoBodyOperator(j,i,a,b);
-            T2(k2,k1)= t0( Index(a,b,j,i));
+            T2(k2,k1)= ReturnT0(t0, Index(a,b,j,i));//  t0( Index(a,b,j,i));
         }
     }
 
@@ -221,9 +215,9 @@ void Block::SetUpMatrices_Qd(mat &t0){
             int a=K1(k1,0); int b=K3(k2,0);
             int i=K3(k2,1); int j=K3(k2,2);
 
-            T(k2,k1) = t0( Index(a,b,i,j) );
+            T(k2,k1) = ReturnT0(t0,Index(a,b,i,j) );  //t0( Index(a,b,i,j) );
             V(k1,k2) = basis.TwoBodyOperator(i,j,a,b);
-            T2(k2,k1)= t0( Index(b,a,j,i) );
+            T2(k2,k1)= ReturnT0(t0,Index(b,a,j,i) );//  t0( Index(b,a,j,i) );
         }
     }
 }
@@ -242,7 +236,7 @@ void Block::SetUpMatrices_I1(mat &t0){
             int a=Particles(A,0); int b=Particles(A,1);
 
             V(I,A) = basis.TwoBodyOperator(i,j,a,b);
-            T(A,I) = t0( Index(a,b,i,j) );
+            T(A,I) = ReturnT0(t0, Index(a,b,i,j));// t0( Index(a,b,i,j) );
         }
         for (int K=0; K<Nh; K++){
 
@@ -269,7 +263,7 @@ void Block::SetUpMatrices_I2(mat &t0){
             int i=Xph(x1,1); int j=Xhp(x2,0);
             int a=Xph(x1,0); int b=Xhp(x2,1);
 
-            T(x1,x2) = t0( Index(a,b,i,j));
+            T(x1,x2) = ReturnT0(t0, Index(a,b,i,j)); // t0( Index(a,b,i,j));
             V(x2,x1) = basis.TwoBodyOperator(j,i,b,a);
         }
 
@@ -290,6 +284,30 @@ int Block::Index(int a, int b, int i, int j){
     // Np, Nq, Nr are the number of indices for each state
 
     return (a-Nholes) + (b-Nholes)*Nparticles + i*Nparticles*Nparticles + j*Nparticles*Nparticles*Nholes;
+}
+
+
+double Block::ReturnT(mat &T, int index){
+
+    int n = T.n_rows;
+    for (int i=0; i<n; i++){
+        if (T(i,0) == index){
+            return T(i,1);
+        }
+    }
+    return 0;
+}
+
+double Block::ReturnT0(mat &T0, int index){
+
+    int n = T0.n_rows;
+
+    for (int i=0; i<n; i++){
+        if (T0(i,0) == index){
+            return T0(i,1);
+        }
+    }
+    return 0;
 }
 
 

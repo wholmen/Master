@@ -2,10 +2,10 @@ A coupled cluster study of electron gas comparing a parallel code with blocks im
 The results are presented in the following order: 
 Solver type, Shells, States, Occupied States, weight, rs, Reference Energy, Iterations, time, CCD Energy
 Block 2 14 2 0.3 1 0 22 0.00882012 -0.0148277
-Imdts 2 14 2 0.3 1 0 23 1.27547 -0.0153723
+Imdts 2 14 2 0.3 1 0 23 1.27547 -0.0148277
 Naive 2 14 2 0.3 1 0 22 17.5364 -0.0148277
 Block 3 38 14 0.3 1 13.6036 26 0.495198 -0.276498
-Imdts 3 38 14 0.3 1 13.6036 27 1703.57 -0.283604
+Imdts 3 38 14 0.3 1 13.6036 27 1703.57 -0.276498
 Naive 3 38 14 0.3 1 13.6036 26 653092 -0.276498
 Block 4 54 14 0.3 1 13.6036 29 0.73759 -0.317821
-Imdts 4 54 14 0.3 1 13.6036 30 10428.3 -0.330339
+Imdts 4 54 14 0.3 1 13.6036 30 10428.3 -0.317821

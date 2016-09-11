@@ -35,11 +35,14 @@ public:
     mat T; // Amplitude matrix
     mat T2; // Amplitude matrix nr two for second order diagrams
 
+
     void AddStates(rowvec I, rowvec A);
     void AddCrossStates(rowvec x1, rowvec x2);
     void AddTripleStates(rowvec k1, rowvec k2);
 
     int Index(int a, int b, int i, int j);
+    double ReturnT0(mat &T0, int index);
+    double ReturnT(mat &T0, int index);
 
     void FinishBlock();
     void Epsilonpphh();

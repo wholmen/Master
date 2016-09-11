@@ -32,7 +32,47 @@ Solver::Solver(ElectronBasis BASIS)
     // Setting up matrices
     t0 = zeros<vec>(Nparticles2*Nholes2);
     t  = zeros<vec>(Nparticles2*Nholes2);
+    //T = zeros<mat>(0,2);
+    //T0= zeros<mat>(0,2);
+
+
 }
+
+
+
+void Solver::StoreT(int index, double value){
+    /*
+    int n = T.n_rows;
+
+    bool exist = any( T.col(0) == index );
+
+    if ( ! exist){
+        T.insert_rows(0,1);
+        T0.insert_rows(0,1);
+        T(0,0) = index;
+        T(0,1) = value;
+        return;
+    }
+    uvec indices = find( index == T.col(0) );
+    int indice = indices(0);
+    T(indice,1) = value; */
+
+    int n = T.n_rows; bool exist;
+    for (int i=0; i<n; i++){
+
+        if (T(i,0) == index){
+            T(i,1) += value;
+            exist = true;
+        }
+    }
+    if (!exist){
+        T.insert_rows(n, 1);
+        T0.insert_rows(n,1);
+        T(n,0) = index;
+        T(n,1) = value;
+    }
+}
+
 
 
 double Solver::CCD(int MaxIterations){
@@ -40,12 +80,12 @@ double Solver::CCD(int MaxIterations){
     double E0 = CorrolationEnergy(); // Can be hardcoded to 0 to save computation cost
 
     // Generate first set of new amplitudes and do second calculation
+
     UpdateAmplitudes();
     double E1 = CorrolationEnergy();
 
     // Start the iteration process
     NIterations = 0;
-
     while ( AbsoluteDifference(E1,E0) > tolerance && NIterations < MaxIterations){
 
         double time0 = omp_get_wtime();
@@ -101,7 +141,7 @@ double Solver::CorrolationEnergy(){
         int id = omp_get_thread_num();
         int threads = omp_get_num_threads();
 
-        for (int i=id; i<Npphh; i+=threads) blockspphh[i] ->SetUpMatrices_Energy(t);
+        for (int i=id; i<Npphh; i+=threads) blockspphh[i] ->SetUpMatrices_Energy(t); //SetUpMatrices_Energy(T);
     }
 
     // Do the matrix-matrix multiplications for all blocks
@@ -120,6 +160,11 @@ double Solver::CorrolationEnergy(){
 void Solver::UpdateAmplitudes(){
     t0 = t; // We need to save the previous amplitudes in t0. They will be used to compute the new amplitudes stored in t
     t = zeros(Nparticles2*Nholes2);
+
+    //T0 = T;
+    //for (int i=0; i<T.n_rows; i++){
+    //    T(i,1) = 0;
+    //}
 
 
     // Diagram L0 and La
@@ -162,6 +207,9 @@ void Solver::UpdateAmplitudes(){
     // Adding weight factor
     if (weight != 0) t = weight*t + (1-weight)*t0;
 
+    //if (weight != 0){
+    //    T.col(1) = T.col(1)*weight + (1-weight)*T0.col(1);
+    //}
 
 }
 
@@ -374,6 +422,7 @@ void Solver::DiagramL0(){
 
     time0 = omp_get_wtime();
     //Align elements to t.
+
     for (int n=0; n<Npphh; n++){
 
         mat L0 = blockspphh[n]->V / blockspphh[n]->epsilon;
@@ -384,13 +433,15 @@ void Solver::DiagramL0(){
                 int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
 
-                t( Index(a,b,i,j) ) += L0(A,I);
+                //t( Index(a,b,i,j) ) += L0(A,I);
+
+                StoreT( Index(a,b,i,j), L0(A,I));
+
             }
         }
     }
+
     time1 = omp_get_wtime(); //cout << "Inside L0. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
-
-
 }
 
 void Solver::DiagramLa(){
@@ -405,12 +456,13 @@ void Solver::DiagramLa(){
         int threads = omp_get_num_threads();
 
         for (int i=id; i<Npphh; i+=threads){
-            blockspphh[i]->SetUpMatrices_La(t0);
+            blockspphh[i]->SetUpMatrices_La(t0); //SetUpMatrices_La(T0)
         }
     }
     time1 = omp_get_wtime(); //cout << "Inside La. SetUpMatrices needs: " << time1-time0 << " seconds" << endl;
 
     time0 = omp_get_wtime();
+
     for (int n=0; n<Npphh; n++){
         mat La = 0.5*blockspphh[n]->V * blockspphh[n]->T / blockspphh[n]->epsilon;
 
@@ -421,9 +473,13 @@ void Solver::DiagramLa(){
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
 
                 t( Index(a,b,i,j) ) += La(A,I);
+
+                //StoreT( Index(a,b,i,j), La(A,I) );
+
             }
         }
     }
+
     time1 = omp_get_wtime(); //cout << "Inside La. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
 }
 
@@ -453,6 +509,9 @@ void Solver::DiagramQc(){
 
                 t( Index(a,b,i,j)) -= Qc( k2,k1 );
                 t( Index(a,b,j,i)) += Qc( k2,k1 );
+                //StoreT(Index(a,b,i,j), -Qc( k2,k1 ));
+                //StoreT(Index(a,b,j,i), Qc( k2,k1 ));
+
             }
         }
     }
@@ -485,6 +544,8 @@ void Solver::DiagramQd(){
 
                 t( Index(a,b,i,j)) -= Qd( k2,k1 );
                 t( Index(b,a,i,j)) += Qd( k2,k1 );
+                //StoreT(Index(a,b,i,j), -Qd(k2,k1));
+                //StoreT(Index(b,a,i,j), Qd(k2,k1));
             }
         }
     }
@@ -517,6 +578,7 @@ void Solver::DiagramI1(){
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
 
                 t( Index(a,b,i,j) ) += I1(A,I);
+                //StoreT(Index(a,b,i,j), I1(A,I));
             }
         }
     }
@@ -524,37 +586,6 @@ void Solver::DiagramI1(){
 }
 
 void Solver::DiagramI2(){
-    /*
-    UpdateI2();
-
-    for (int i=0; i<Nholes; i++){
-        for (int j=0; j<Nholes; j++){
-            for (int aa=0; aa<Nparticles; aa++){
-                for (int bb=0; bb<Nparticles; bb++){
-
-                    int a = aa+Nholes; int b = bb+Nholes;
-                    double tau = 0;
-
-                    for (int k=0; k<Nholes; k++){
-                        for (int cc=0; cc<Nparticles; cc++){
-
-                            int c = cc+Nholes;
-
-                            tau += I2(j+k*Nholes, bb+cc*Nparticles) * t0( Index(a,c,i,k)); //i+k*Nholes, aa+cc*Nparticles); // No permutation
-                            tau -= I2(i+k*Nholes, bb+cc*Nparticles) * t0( Index(a,c,j,k)); //j+k*Nholes, aa+cc*Nparticles); // Permutation i,j
-                            tau -= I2(j+k*Nholes, aa+cc*Nparticles) * t0( Index(b,c,i,k)); //i+k*Nholes, bb+cc*Nparticles); // Permutation a,b
-                            tau += I2(i+k*Nholes, aa+cc*Nparticles) * t0( Index(b,c,j,k)); //j+k*Nholes, bb+cc*Nparticles); // Permutation a,b,i,j
-                        }
-                    }
-
-                    tau = tau/basis.epsilon(i,j,a,b);
-                    t( Index(a,b,i,j)) += tau;
-                }
-            }
-        }
-    }*/
-
-
 
     double time0,time1;
     time0 = omp_get_wtime();
@@ -584,9 +615,15 @@ void Solver::DiagramI2(){
                 t( Index(a,b,j,i) ) -= I2(x1,x2);
                 t( Index(b,a,i,j) ) -= I2(x1,x2);
                 t( Index(b,a,j,i) ) += I2(x1,x2);
+
+                //StoreT( Index(a,b,i,j), I2(x1,x2));
+                //StoreT( Index(a,b,j,i), -I2(x1,x2));
+                //StoreT( Index(b,a,i,j), -I2(x1,x2));
+                //StoreT( Index(b,a,j,i), I2(x1,x2));
             }
         }
     }
+
     time1 = omp_get_wtime(); //cout << "Inside I1. Calculate matrices needs: " << time1-time0 << " seconds" << endl;
 }
 
@@ -714,7 +751,6 @@ void Solver::CrossStates_Parallel(){
     NX = Xhp.n_rows;
 }
 
-
 void Solver::TripleStates_Parallel(){
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // %%%%%%%%%%%%%%% SETTING UP K_h AND K_pph %%%%%%%%%%%%%%%%%%%%%%%
@@ -835,31 +871,3 @@ double Solver::Identifier(int Nx, int Ny, int Nz, int Sz){
 }
 
 
-void Solver::UpdateI2(){
-    // I2 is the Intermediate matrix 2. It contains pre-calculated values for all variations of
-    // j, k, b, c. The values are located at I2(j + k*Nholes, b + c*Nparticles)
-    // I2 has the size (Nholes^2, Nparticles^2)
-
-    I2 = zeros<mat>(Nholes*Nholes, Nparticles*Nparticles);
-
-    for (int j=0; j<Nholes; j++){
-        for (int k=0; k<Nholes; k++){
-            for (int bb=0; bb<Nparticles; bb++){
-                for (int cc=0; cc<Nparticles; cc++){
-                    int b = bb + Nholes; int c = cc + Nholes; // Converting iteration element into basis state number
-
-                    I2(j+k*Nholes, bb+cc*Nparticles) = 0;
-                    /*
-                    for (int l=0; l<Nholes; l++){
-                        for (int dd=0; dd<Nparticles; dd++){
-
-                            int d = dd + Nholes;
-                            I2(j+k*Nholes, bb+cc*Nparticles) += basis.TwoBodyOperator(k,l,c,d) * t0( Index(d,b,l,j)); //l+j*Nholes, dd+bb*Nparticles);
-                        }
-                    }*/
-                    I2(j+k*Nholes, bb+cc*Nparticles) = basis.TwoBodyOperator(k,b,c,j) + 0.5*I2(j+k*Nholes, bb+cc*Nparticles);
-                }
-            }
-        }
-    }
-}

@@ -936,6 +936,7 @@
 		This can be rewritten in terms of normal ordered operators as 
 		\begin{align}
 			\hat H_N = (\hat H_0)_N + \hat V_N.
+			\label{equation:normalorderHamiltonian}
 		\end{align}
 		The Schr\"{o}dinger equation for this operator is given as
 		\begin{align}
@@ -965,7 +966,7 @@
 
 
 \begin{chapter}{Diagramatic Representation}
-	It can be quite cumbersome and error-prone to treat the manipulation of states and operators with second quantization \cite{ShavittAndBartlett}. The soon to be introduced many-body methods will include various sums over states. One can introduce a new formalism originated in quantum field theory in the form of Feynman diagrams to depict and list these sums. It is quite common to refer to these sums simply as \textit{diagrams}. The main benefits of the diagramatic notation include an easy way of listing non-vanishing terms and elucidating various cancelations in the sums. 
+	It can be quite cumbersome and error-prone to treat the manipulation of states and operators with second quantization \cite{ShavittAndBartlett}. The soon to be introduced many-body methods will include various sums over states. One can introduce a new formalism originated in quantum field theory in the form of Feynman diagrams to depict and list these sums. It is quite common to refer to these sums simply as \textit{diagrams}. 
 
 	\begin{section}{The Slater Determinant}
 		We begin, as in second quantization, by setting up the Slater determinant. There is a time dependent direction on the diagrams going up. The actual times are irrelevant, but the sequence is important. The reference state, $| \left. \right> = \left| \Phi \right>$, is depicted simply as a horizontal line
@@ -997,7 +998,7 @@
 	\begin{section}{Operators}
 		We need a convention for one-body operators as well. A general one-body operator is given by 
 		\begin{align}
-			\hat F_N = \sum_{pq} \left< p \right| \hat f \left| q \right> \left\{ \hat p^\dagger \hat q \right\}
+			\hat F_N = \sum_{pq} \left< p \right| \hat f \left| q \right> \left\{ \hat p^\dagger \hat q \right\}.
 		\end{align}
 		We will represent the matrix element $\left< p \right| \hat f \left| q \right>$ by a dashed line, while there will be one line entering and one line leaving the operator due to the annihilation and creation operator. Because the operator behaves different depending on whether the general operators $p$ and $q$ are virtual or occupied states, it can be drawn as four different forms. Presenting the various forms in the figure below \cite{ShavittAndBartlett}
 		\begin{figure}[H]
@@ -1007,7 +1008,7 @@
 		\end{figure}
 		The same logic can be applied to the general two-body operator, given by 
 		\begin{align}
-			\hat V_N = \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \left\{ \hat p^\dagger \hat q^\dagger \hat s \hat r \right\}
+			\hat V_N = \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \left\{ \hat p^\dagger \hat q^\dagger \hat s \hat r \right\}.
 		\end{align}
 		When we draw this diagram, one will need two outgoing lines representing the creation operators and two incoming lines, representing the annihilation operators. The matrix element will, as for the one-body operator, be drawn as a horizontal \textit{interaction line}
 		\begin{figure}[H]
@@ -1017,12 +1018,12 @@
 		\end{figure}
 		The left half side of the interaction will represent particle 1, while the right half will represent particle two. We can therefore set up the general relations for the term $\left\{ \hat p^\dagger \hat q^\dagger \hat s \hat r \right\}$
 		\begin{align}
-			\nonumber \hat p^\dagger &\rightarrow \text{left outgoing line}, \:\:\:\: \hat q^\dagger \rightarrow \text{right outgoing line} \\
-			\nonumber \hat r &\rightarrow \text{left incoming line}, \:\:\:\: \hat s \rightarrow \text{right incoming line} 
+			\nonumber \hat p^\dagger &\rightarrow \text{left outgoing line}, \:\:\:\: \hat q^\dagger \rightarrow \text{right outgoing line}, \\
+			\nonumber \hat r &\rightarrow \text{left incoming line}, \:\:\:\: \hat s \rightarrow \text{right incoming line}.
 		\end{align}
-		And for the matrix element, we use the rules 
+		For the matrix element, we use the rules 
 		\begin{align}
-			\left< \text{left-out } \text{ right-out } | | \text{ left-in } \text{ right-in } \right>
+			\left< \text{left-out } \text{ right-out } | | \text{ left-in } \text{ right-in } \right>.
 		\end{align}
 		There should be 16 combinations of particle- and hole-states distributed out between the operators $\hat p^\dagger$, $\hat q^\dagger$, $\hat s$ and $\hat r$, but since some diagrams will be equivalent, we are left with 9 distuingishable diagrams. The equivalent diagrams will be included by a weight factor $2$. 
 
@@ -1045,27 +1046,27 @@
 	\begin{section}{Contractions and Inner products}
 		As seen, contractions are an important part of many-body methods. Representing contractions is easy with using a diagrammatic approach. It is done by connecting the lines between operators and Slater determinants. Take, for instance, the Slater determinant \cite{Audun,ShavittAndBartlett}
 		\begin{align}
-			\left| \Phi_i^a \right> = \hat a^\dagger \hat i | \left. \right> 
+			\left| \Phi_i^a \right> = \hat a^\dagger \hat i | \left. \right>,
 		\end{align}
 		and the general one-body operator 
 		\begin{align}
-			\hat U = \sum_{bc} \left< b | \hat u | c \right> \{ \hat b^\dagger \hat c \}
+			\hat U = \sum_{bc} \left< b | \hat u | c \right> \{ \hat b^\dagger \hat c \}.
 		\end{align}
 		When the operator $\hat U$ acts on the Slater determinant, the resulting Slater determinant will change 
 		\begin{align}
-			\hat U \left| \Phi_i^a \right> = \sum_{bc} \left< b | \hat u | c \right> \{ \hat b^\dagger \hat c \} \{ \hat a^\dagger \hat i \} | \left. \right>
+			\hat U \left| \Phi_i^a \right> = \sum_{bc} \left< b | \hat u | c \right> \{ \hat b^\dagger \hat c \} \{ \hat a^\dagger \hat i \} | \left. \right>.
 		\end{align}
 		We can write this out using the generalized Wick's theorem, noticing that there is only one possible contraction that is non-zero. 
 		\begin{align}
 			= \left< b | \hat u | c \right> \{ \hat b^\dagger \hat c \hat a^\dagger \hat i \} + \left< b | \hat u | c \right> \{ \hat b^\dagger \contraction{}{\hat c}{}{\hat a^\dagger}
-			\hat c \hat a^\dagger \hat i \} = 0 + \left< b | \hat u | c \right> \delta_{ac} \left| \Phi_i^b \right>
+			\hat c \hat a^\dagger \hat i \} = 0 + \left< b | \hat u | c \right> \delta_{ac} \left| \Phi_i^b \right>,
 		\end{align}
-		Which gives
+		which gives
 		\begin{align}
 			\left< b | \hat u | a \right> \{ \hat b^\dagger \hat i \} | \left. \right> = \left< b | \hat u | a \right> \left| \Phi_i^b \right>
 		\end{align}
-		The diagrammatic representation will be shown as 
-		\newpage
+		The diagrammatic representation of contractions are given in the following figure.
+		\newpage 
 		\begin{figure}[H]
 			\includegraphics[width=\textwidth]{Figures/Contraction.pdf}
 			\caption{The diagrammatic representation of a contraction between the a one-body operator and a singly excited Slater determinant.}
@@ -1073,25 +1074,25 @@
 		\end{figure}
 		Representing an inner product of two Slater Determinants is done by putting together the diagram for a ket state and the diagram for a bra state. Looking at the previous example, taking the expectation value of the general operator $\hat U$, we get 
 		\begin{align}
-			\left< \Phi_k^d \right| \hat U \left| \Phi_i^a \right>
+			\left< \Phi_k^d \right| \hat U \left| \Phi_i^a \right>,
 		\end{align}
-		Which can be written out as
+		which can be written out as
 		\begin{align}
-			\sum_{bj} \left< b | \hat u | c \right> \left< \right. | \{ \hat k^\dagger \hat d \} \{ \hat b^\dagger \hat c \} \{ \hat a^\dagger \hat i \} | \left. \right>
+			\sum_{bj} \left< b | \hat u | c \right> \left< \right. | \{ \hat k^\dagger \hat d \} \{ \hat b^\dagger \hat c \} \{ \hat a^\dagger \hat i \} | \left. \right>.
 		\end{align}
-		Calculating with generalized Wick's theorem
+		A calculating with the generalized Wick's theorem gives us the result
 		\begin{align}
-			= \left< d | \hat u | a \right> \delta_{db} \delta_{ac} \delta_{ki}
+			= \left< d | \hat u | a \right> \delta_{db} \delta_{ac} \delta_{ki}.
 		\end{align}
+		The expectation are represented in the following figure. 
 		\begin{figure}[H]
 			\includegraphics[width=\textwidth]{Figures/InnerProduct.pdf}
 			\label{InnerProduct}
 			\caption{Diagrammatic representation of the inner product for a one-body operator between two singly excited Slater determinants.}
 		\end{figure}
 	\end{section}
-	\newpage
 	\begin{section}{Interpreting Diagrams}	
-		The many-body methods presented in the thesis rely heavily upon operator expressions and contractions. A common use of diagrams, is to perform  contractions using the rules presented in this chapter, to set up diagrams representing the energy and wave functions. This is by many considered to be more efficient than to perform calculations using Wick's theorem by hand. 
+		The many-body methods presented in this thesis relies heavily upon operator expressions and contractions. A common way to utilize the toolset presented in this chapter, is to give a visual representation of equations that are less prone to human errors. Using diagrams to perform contractions is by many considered to be more efficient than to perform calculations using Wick's theorem by hand. 
 
 		An important part of using diagrams, is to have a consistant toolset to translate diagrams into mathematical expressions. These tools exist, see for example \cite{ShavittAndBartlett}, and the implementation of perturbation theory for Pairing model presented in this thesis.  
 	\end{section}
@@ -1107,12 +1108,12 @@
 			\phi_1(\mathbf{x}_1) & \phi_2(\mathbf{x}_1) & ... & \phi_N(\mathbf{x}_1) \\
 			\phi_1(\mathbf{x}_2) & \phi_2(\mathbf{x}_2) & ... & \phi_N(\mathbf{x}_2) \\
 			... & & & \\
-			\phi_1(\mathbf{x}_N) & \phi_2(\mathbf{x}_N) & ... & \phi_N(\mathbf{x}_N) 
+			\phi_1(\mathbf{x}_N) & \phi_2(\mathbf{x}_N) & ... & \phi_N(\mathbf{x}_N),
 		\end{matrix} \right|
 	\end{align}
-	Written in terms of second quantization
+	which can be rewritten using second quantization
 	\begin{align}
-		\left| \Phi_0 \right> = \left( \prod_{i \leq F} \hat i^\dagger \right) \left| 0 \right> = |\left.  \right> 
+		\left| \Phi_0 \right> = \left( \prod_{i \leq F} \hat i^\dagger \right) \left| 0 \right> = |\left.  \right>.
 	\end{align}
 	Typically one chooses well-known and mathematically simple single-particle states that are easy to implement. In this thesis, I have used a free particle wave function as single-particle states for infinite matter. Using this basis, I obviously fail to incorporate the interaction between electrons since $\phi_1$ remains unchanged if I also add $\phi_2$. This can be solved by using a smarter basis, which is the goal of Hartree-Fock. Hartree-Fock will, through an iterative method, change the single-particle states to get a better result. This can be viewed as incorporating the interaction as a \textit{mean field} approximation. 
 
@@ -1121,45 +1122,46 @@
 	\begin{section}{Full Configuration Interaction Theory}
 		The first \textit{Post Hartree-Fock} method to be presented is the \textit{Full Configuration Interaction theory}. We expand the true wave function as a linear combination of the ground state ansatz and all possible excitations
 		\begin{align}
-			\left| \Psi \right> = C_0 \left| \Phi_0 \right> + \sum_{ai} C_i^a \left| \Phi_i^a \right> + \sum_{abij} C_{ij}^{ab} \left| \Phi_{ij}^{ab} \right> + ... 
+			\left| \Psi \right> = C_0 \left| \Phi_0 \right> + \sum_{ai} C_i^a \left| \Phi_i^a \right> + \sum_{abij} C_{ij}^{ab} \left| \Phi_{ij}^{ab} \right> + ... ,
 		\end{align}
-		Which can be rewritten in terms of a \textit{correlation operator}
+		which can be rewritten in terms of a \textit{correlation operator}
 		\begin{align}
-			\left| \Psi \right> = ( C_0 + \hat C) \left| \Phi_0 \right> 
+			\left| \Psi \right> = ( C_0 + \hat C) \left| \Phi_0 \right>,
 		\end{align}
-		With
+		with
 		\begin{align}
-			\hat C = \sum_{ai} C_i^a \hat a^\dagger \hat i + \sum_{abij} C_{ij}^{ab} \hat a^\dagger \hat b^\dagger \hat j \hat i + ...
+			\hat C = \sum_{ai} C_i^a \hat a^\dagger \hat i + \sum_{abij} C_{ij}^{ab} \hat a^\dagger \hat b^\dagger \hat j \hat i + ... \; .
 		\end{align}
 		We can name the terms such that
 		\begin{align}
-			\hat C = \hat C_1 + \hat C_2 + ...
+			\hat C = \hat C_1 + \hat C_2 + ... \; .
 		\end{align}
-		We use intermediate normalization, which set $C_0 = 1$, such that we get the relation
+		We use intermediate normalization, which gives us $C_0 = 1$, such that we get the relation
 		\begin{align}
-			\left< \Psi | \Phi_0 \right> = C_0 \left< \Phi_0 | \Phi_0 \right> = 1 
+			\left< \Psi | \Phi_0 \right> = C_0 \left< \Phi_0 | \Phi_0 \right> = 1.
 		\end{align}
 		We can now rewrite $\left| \Psi \right>$
 		\begin{align}
-			\left| \Psi \right> = (1 + \hat C) \left| \Phi_0 \right> 
+			\left| \Psi \right> = (1 + \hat C) \left| \Phi_0 \right> .
+			\label{equation:FCI}
 		\end{align}
 		To simplify the notation, we can write the equation in terms of $P$ and $H$, which symbolizes all possible chains of creation and annihilation operators
 		\begin{align}
-			\left| \Psi \right> = \sum_{PH} C_H^P \left| \Phi_H^P \right> = \left( \sum_{PH} C_H^P \hat A_H^P \right) \left| \Phi_0 \right>  
+			\left| \Psi \right> = \sum_{PH} C_H^P \left| \Phi_H^P \right> = \left( \sum_{PH} C_H^P \hat A_H^P \right) \left| \Phi_0 \right>  .
 		\end{align}
 		We are working with orthonormal states, meaning that 
 		\begin{align}
-			\left< \Psi | \Psi \right> = \sum_{PH} \left| C_H^P \right|^2 = 1
+			\left< \Psi | \Psi \right> = \sum_{PH} \left| C_H^P \right|^2 = 1.
 		\end{align}
 		The only thing left now, is defining how to compute the correlation energy. We write the expression for the energy as
 		\begin{align}
-			E = \left< \right. \Psi | \hat H | \Psi \left. \right> = \sum_{PHP'H'} (C^P_H)^* \left< \right. \Phi_H^P | \hat H | \Phi_{H'}^{P'} \left. \right> C_{H'}^{P'} 	
+			E = \left< \right. \Psi | \hat H | \Psi \left. \right> = \sum_{PHP'H'} (C^P_H)^* \left< \right. \Phi_H^P | \hat H | \Phi_{H'}^{P'} \left. \right> C_{H'}^{P'} .
 		\end{align} 
 		
 		\begin{subsection}{The Hamiltonian Matrix}
-			We can build a Hamiltonian matrix consisting of all possible combinations of Slater determinants, i.e. all possible combinations of $P,H$ and $P',H'$. The matrix elements will be the expectation value for the Hamiltonian with respect to the given Slater determinants. 
+			We can build a Hamiltonian matrix consisting of all possible combinations of Slater determinants, i.e. all possible combinations of $P,H$ and $P',H'$. The matrix elements will be the expectation value for the Hamiltonian, $\hat{\mathcal{H}}$, with respect to the given Slater determinants. The matrix is set up with the inner products of the following excited states
 			\begin{align}
-				\hat{ \mathcal{H} } = \left(  \begin{matrix}
+				\begin{pmatrix}
 							& 0p - 0h & 1p - 1h & 2p - 2h & 3p - 3h & 4p-4h & ... & Np - Nh \\ 
 					0p - 0h & x 	  & x 		& x 	  & 0 		& 0 	& 0	   & 0 		\\		
 					1p - 1h & x 	  & x 		& x 	  & x  		& 0 	& 0    & 0 		\\
@@ -1168,15 +1170,15 @@
 					4p - 4h & 0		  & 0 		& x 	  & x 		& x 	&\cdots& 0		\\
 					\vdots 	& 0  	  & 0 	    & \vdots  & \vdots  & \vdots&\ddots& \vdots \\
 					Np - Nh & 0 	  & 0		& 0 	  & 0 		& 0		&\hdots& x
-				\end{matrix} \right)
+				\end{pmatrix}. 
 			\end{align}
-			Above is an example of a general Hamiltonian matrix, $\mathcal{H}$, set up for a N-particles, N-holes, basis. One can notice that many matrix elements are zero. This is because the Hamiltonian only have a two-particle interaction term. If we have performed Hartree-Fock calculations, or start out with a Hartree-Fock basis, we have shifted the basis so that all matrix elements of the type
+			Above is an example of a general Hamiltonian matrix, $\mathcal{H}$, set up for a $N$-particles, $N$-holes, basis. One can notice that many matrix elements are zero. This is because the Hamiltonian only have a two-particle interaction term. If we have performed Hartree-Fock calculations, or start out with a Hartree-Fock basis, we have shifted the basis so that all matrix elements of the type
 			\begin{align}
-				\left< 0p-0h \right| \hat H \left| 1p-1h \right> = \left< 1p-1h \right| \hat H \left| 0p-0h \right> = 0
+				\left< 0p-0h \right| \hat H \left| 1p-1h \right> = \left< 1p-1h \right| \hat H \left| 0p-0h \right> = 0, 
 			\end{align}
-			Giving us a shifted Hamiltonian matrix 
+			will be equal to zero. This gives a shifted Hamiltonian matrix, $\hat{\mathcal{H}}$, where the inner products are changed. The shifted matrix is given as 
 			\begin{align}
-				\hat{ \mathcal{H} } = \left(  \begin{matrix}
+				\left(  \begin{matrix}
 							& 0p - 0h & 1p - 1h & 2p - 2h & 3p - 3h & 4p - 4h & ... & Np - Nh \\ 
 					0p - 0h & \tilde x& 0       & \tilde x& 0 		& 0 	  & 0	 & 0 		\\		
 					1p - 1h & 0 	  & \tilde x& \tilde x& \tilde x& 0 	  & 0    & 0 		\\
@@ -1193,18 +1195,18 @@
 		\end{subsection}
 
 		\begin{subsection}{Computational cost}
-			As a brief example on how costly the full configuration interaction theory can be, we look at the nucleus of an oxygen atom. For a system consisting of $N$ states and $n$ particles, the total number of unique Slater determinants is given by \cite{MHJFCI}
+			As a brief example on how costly the full configuration interaction theory can be \cite{MHJFCI}, we look at the nucleus of an oxygen atom. For a system consisting of $N$ states and $n$ particles, the total number of unique Slater determinants is given by 
 			\begin{align}
-				\binom{N}{n} = \frac{n!}{(n-N)!N!}
+				\binom{N}{n} = \frac{n!}{(n-N)!N!}.
 				\label{FCI1}
 			\end{align}
-			Looking at the Oxygen nucleus, we have $8$ protons and $8$ neutrons. If we only include the first major shells, 0s, 0p, 1s0d and 1p0f, we have a total of $40$ states that the neutrons and protons can occupy. Using (\ref{FCI1})
+			Looking at the Oxygen nucleus, we have $8$ protons and $8$ neutrons. If we only include the first major shells, we have a total of $40$ states that the neutrons and protons can occupy \cite{MHJFCI}. Using equation (\ref{FCI1})
 			\begin{align}
-				\binom{40}{8} = \frac{40!}{32!8!} \approx 10^9
+				\binom{40}{8} = \frac{40!}{32!8!} \approx 10^9,
 			\end{align}
 			for both the protons and the neutrons. Multiplying them together, we get 
 			\begin{align}
-				10^9 10^9 = 10^{18}
+				10^9 10^9 = 10^{18},
 			\end{align}
 			Slater determinants for the whole system. This shows how fast the dimensionality explodes! 
 
@@ -1215,119 +1217,119 @@
 	\begin{section}{Many-body Perturbation Theory}
 		The Perturbation theory presents a non-iterative approach to approximating the ground state energy. The approach is similar to previous methods. We start by splitting the Hamiltonian into a solvable part and a perturbation 
 	 	\begin{align}
-	 		\hat H = \hat H_0 + \hat V
+	 		\hat H = \hat H_0 + \hat V,
 	 	\end{align}
-	 	Where we have chosen our basis such that
+	 	where we have chosen our basis such that
 	 	\begin{align}
-	 		\hat H_0 \left| \Psi_0 \right>  = W_0 \left| \Psi_0 \right>
+	 		\hat H_0 \left| \Psi_0 \right>  = W_0 \left| \Psi_0 \right>.
 	 	\end{align}
 	 	We also split the basis
 	 	\begin{align}
-	 		\left| \Psi_0 \right> = \left| \Phi_0 \right> + \sum_i^{\infty} c_i \left| \phi_i \right>
+	 		\left| \Psi_0 \right> = \left| \Phi_0 \right> + \sum_i^{\infty} c_i \left| \phi_i \right>.
 	 	\end{align}
 	 	Assuming intermediate normalization
 	 	\begin{align}
-	 		\left< \Phi_0 | \Psi_0 \right> = 1
+	 		\left< \Phi_0 | \Psi_0 \right> = 1,
 	 	\end{align}
-		We can calculate the total exact energy
+		we can calculate the total exact energy
 	 	\begin{align}
-	 		E = \left< \Phi_0 \right| \hat H_0 \left| \Psi_0 \right> + \left< \Phi_0 \right| \hat V \left| \Psi_0 \right>
+	 		E = \left< \Phi_0 \right| \hat H_0 \left| \Psi_0 \right> + \left< \Phi_0 \right| \hat V \left| \Psi_0 \right>,
 	 	\end{align}
-	 	Where we know that
+	 	where we know that
 	 	\begin{align}
-	 		 \left< \Phi_0 \right| \hat H_0 \left| \Psi_0 \right>  = W_0
+	 		 \left< \Phi_0 \right| \hat H_0 \left| \Psi_0 \right>  = W_0.
 	 	\end{align}
-	 	And we get the correlation energy
+	 	We get the correlation energy
 	 	\begin{align}
-	 		E - W_0 = \Delta E = \left< \Phi_0 \right| \hat V \left| \Psi_0 \right>
+	 		E - W_0 = \Delta E = \left< \Phi_0 \right| \hat V \left| \Psi_0 \right>.
 	 	\end{align}
-	 	We will usually aim to compute this energy when doing MBPT. 
+	 	We will usually aim to compute the correlation energy, $\Delta E$, when doing MBPT. 
 
 	 	\begin{subsection}{General derivation of Many-Body Particle Theory equations}
 	 		Looking at the equation
 	 		\begin{align}
-	 			\hat V \left| \Psi_0 \right> = \hat H \left| \Psi_0 \right> + \hat H_0 \left| \Psi_0 \right> 
+	 			\hat V \left| \Psi_0 \right> = \hat H \left| \Psi_0 \right> - \hat H_0 \left| \Psi_0 \right> ,
 	 		\end{align}
-	 		We reorganize and add the term $\omega \left| \Psi_0 \right>$ on both sides
+	 		we reorganize and add the term $\omega \left| \Psi_0 \right>$ on both sides
 	 		\begin{align}
-	 			\hat V \left| \Psi_0 \right> + \omega \left| \Psi_0 \right> - \hat H \left| \Psi_0 \right> = \omega \left| \Psi_0 \right> - \hat H_0 \left| \Psi_0 \right> 
+	 			\hat V \left| \Psi_0 \right> + \omega \left| \Psi_0 \right> - \hat H \left| \Psi_0 \right> = \omega \left| \Psi_0 \right> - \hat H_0 \left| \Psi_0 \right> .
 	 		\end{align}
 	 		Remembering that $\hat H \left| \Psi_0 \right> = E\left| \Psi_0 \right> $, we get 
 	 		\begin{align}
-	 			\left| \Psi_0 \right> = \frac{ \hat V + \omega - E }{\omega - \hat H_0} \left| \Psi_0 \right>
+	 			\left| \Psi_0 \right> = \frac{ \hat V + \omega - E }{\omega - \hat H_0} \left| \Psi_0 \right>.
 	 			\label{pert_1}
 	 		\end{align}
 	 		Before continuing, we introduce the operators $\hat P$ and $\hat Q$, such that
 	 		\begin{align}
 	 			\left| \Psi_0 \right> = \hat P \left| \Psi_0 \right> + \hat Q \left| \Psi_0 \right> 
-	 			&= \left| \Phi_0 \right> \left< \Phi_0 \middle| \Psi_0 \right> + \sum_i \left| \Phi_i \right> \left< \Phi_i \middle| \Psi_0 \right> 
+	 			&= \left| \Phi_0 \right> \left< \Phi_0 \middle| \Psi_0 \right> + \sum_i \left| \Phi_i \right> \left< \Phi_i \middle| \Psi_0 \right> ,
 	 			\label{pert_2} \\
-	 			&= \left| \Phi_0 \right> + \chi
+	 			&= \left| \Phi_0 \right> + \chi ,
 	 		\end{align}
-	 		Giving
+	 		which gives
 	 		\begin{align}
-	 			\left| \Phi_0 \right> = \hat P \left| \Psi_0 \right> \;\;\;\; \chi = \hat Q \left| \Psi_0 \right> 
+	 			\left| \Phi_0 \right> = \hat P \left| \Psi_0 \right> \;\;\;\; \chi = \hat Q \left| \Psi_0 \right> .
 	 			\label{pert_3}
 	 		\end{align}
 	 		Using $\hat R(\omega) = \frac{\hat{Q}}{\left( \omega - \hat H_0 \right)}$ and multiplying both sides with $\hat Q$ from the left in equation (\ref{pert_1}) we attain
 	 		\begin{align}
-	 			\hat Q \left| \Psi_0 \right> = \hat R(\omega) \left( \hat V + \omega - E \right) \left| \Psi_0 \right>
+	 			\hat Q \left| \Psi_0 \right> = \hat R(\omega) \left( \hat V + \omega - E \right) \left| \Psi_0 \right>.
 	 		\end{align}
 	 		Using equations (\ref{pert_2}) and (\ref{pert_3}), we get
 	 		\begin{align}
-	 			\left| \Psi_0 \right> = \left| \Phi_0 \right> + \hat R(\omega) \left( \hat V + \omega - E \right) \left| \Psi_0 \right>
+	 			\left| \Psi_0 \right> = \left| \Phi_0 \right> + \hat R(\omega) \left( \hat V + \omega - E \right) \left| \Psi_0 \right>.
 	 		\end{align}
-	 		This is an iterative scheme. We can substitute $\left| \Psi_0 \right>$ on the right hand side with the entire right hand side. This results in an infinite sum provided the series converges
+	 		This sets up an iterative scheme, where we need to know $\left| \Psi_0 \right>$ before we can calculate $\left| \Psi_0 \right>$. We can substitute the state $\left| \Psi_0 \right>$ on the right hand side with the entire right hand side. This results in an infinite sum provided the series converges
 	 		\begin{align}
-	 			\left| \Psi_0 \right> = \sum_0^\infty \left\{ \hat R(\omega) (\hat V + \omega - E) \right\}^m \left| \Phi_0 \right>
+	 			\left| \Psi_0 \right> = \sum_0^\infty \left\{ \hat R(\omega) (\hat V + \omega - E) \right\}^m \left| \Phi_0 \right>.
 	 		\end{align}
 	 		The right hand side does include the energy, $E$, which must be computed using $ E = W_0 + \Delta E$, and
 	 		\begin{align}
 	 			\Delta E = \left< \Phi_0 \right| \hat V \left| \Psi_0 \right> 
-	 			= \sum_0^\infty \left< \Phi_0 \right| \hat V \left[ \hat R(\omega) (\hat V - E + \omega) \right]^m \left| \Phi_0 \right>  
+	 			= \sum_0^\infty \left< \Phi_0 \right| \hat V \left[ \hat R(\omega) (\hat V - E + \omega) \right]^m \left| \Phi_0 \right>.
 	 		\end{align}
 	 	\end{subsection}
 
 	 	\begin{subsection}{Equations for Reileigh-Schr\"{o}dinger Perturbation Theory}
 	 		We can interpret $\omega$ in different ways. I here present the Reileigh-Schr\"{o}dinger Perturbation Theory which postulates that
 	 		\begin{align}
-	 			\omega = E_0^{(0)}
+	 			\omega = E_0^{(0)},
 	 		\end{align}
-	 		Such that we get the expression for the resolvent
+	 		such that we get the expression for the resolvent
 	 		\begin{align}
-	 			\hat R_0 = \frac{\hat Q}{E_0^{0} - \hat H_0}
+	 			\hat R_0 = \frac{\hat Q}{E_0^{0} - \hat H_0}.
 	 		\end{align}
-	 		Giving
+	 		This gives the expression for $\left| \Psi_0 \right>$
 	 		\begin{align}
-	 			\left| \Psi_0 \right> = \frac{ \hat V - \Delta E }{\omega - \hat H_0} \left| \Psi_0 \right>
+	 			\left| \Psi_0 \right> = \frac{ \hat V - \Delta E }{\omega - \hat H_0} \left| \Psi_0 \right>,
 	 		\end{align}
 	 		and we get the final equation for the wave function 
 	 		\begin{align}
-	 			\left| \Psi_0 \right> = \sum_0^\infty \left\{ \hat R(\omega) (\hat V + - \Delta E) \right\}^m \left| \Phi_0 \right>
+	 			\left| \Psi_0 \right> = \sum_0^\infty \left\{ \hat R(\omega) (\hat V + - \Delta E) \right\}^m \left| \Phi_0 \right>.
 	 		\end{align}
-	 		and for the correlation energy
+	 		The correlation energy can be calculated by 
 	 		\begin{align}
-	 			\Delta E = \sum_0^\infty \left< \Phi_0 \right| \hat V \left[ \hat R(\omega) (\hat V - \Delta E) \right]^m \left| \Phi_0 \right>  
+	 			\Delta E = \sum_0^\infty \left< \Phi_0 \right| \hat V \left[ \hat R(\omega) (\hat V - \Delta E) \right]^m \left| \Phi_0 \right> .
 	 		\end{align}
 	 		Taking a closer look at the energy-equations, we find that we can write the first orders as
 	 		\begin{align*}
-	 			E^{(1)} &= \left< \Phi_0 \right| \hat V \left| \Phi_0 \right>  = V_{00}\\
-	 			E^{(2)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat V \left| \Phi_0 \right> \\
-	 			E^{(3)} &= \left< \Phi_0 \right| \hat V \hat R_0 (\hat V - E^{(1)})  \hat R_0 \hat V \left| \Phi_0 \right> \\
+	 			E^{(1)} &= \left< \Phi_0 \right| \hat V \left| \Phi_0 \right>  = V_{00},\\
+	 			E^{(2)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat V \left| \Phi_0 \right>, \\
+	 			E^{(3)} &= \left< \Phi_0 \right| \hat V \hat R_0 (\hat V - E^{(1)})  \hat R_0 \hat V \left| \Phi_0 \right>, \\
 	 			E^{(4)} &= \left< \Phi_0 \right| \hat V \hat R_0 (\hat V - E^{(1)})  \hat R_0 (\hat V - E^{(1)}) \hat R_0 \hat V \left| \Phi_0 \right> 
-	 					- E^{(2)} \left< \Phi_0 \right| \hat V \hat R_0^2 \hat V \left| \Phi_0 \right>
+	 					- E^{(2)} \left< \Phi_0 \right| \hat V \hat R_0^2 \hat V \left| \Phi_0 \right>.
 	  		\end{align*}
 	  		Because of the frequent appearance, we can rewrite $\hat V - E^{(1)}$ as
 	  		\begin{align}
-	  			\hat \Omega = \hat V - E^{(1)} = \hat V - \left< \Phi_0 \right| \hat V \left| \Phi_0 \right>
+	  			\hat \Omega = \hat V - E^{(1)} = \hat V - \left< \Phi_0 \right| \hat V \left| \Phi_0 \right>.
 	  		\end{align}
-	  		We name this new variable the wave operator, and rewrite the equations in a simpler form. 
+	  		We name this new variable the wave operator, and rewrite the equations in a simpler form 
 	  		\begin{align*}
-	 			E^{(1)} &= \left< \Phi_0 \right| \hat V \left| \Phi_0 \right>  = V_{00}\\
-	 			E^{(2)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat V \left| \Phi_0 \right> \\
-	 			E^{(3)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat \Omega \hat R_0 \hat V \left| \Phi_0 \right> \\
+	 			E^{(1)} &= \left< \Phi_0 \right| \hat V \left| \Phi_0 \right>  = V_{00},\\
+	 			E^{(2)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat V \left| \Phi_0 \right>, \\
+	 			E^{(3)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat \Omega \hat R_0 \hat V \left| \Phi_0 \right>, \\
 	 			E^{(4)} &= \left< \Phi_0 \right| \hat V \hat R_0 \hat \Omega  \hat R_0 \hat \Omega \hat R_0 \hat V \left| \Phi_0 \right> 
-	 					- E^{(2)} \left< \Phi_0 \right| \hat V \hat R_0^2 \hat V \left| \Phi_0 \right>
+	 					- E^{(2)} \left< \Phi_0 \right| \hat V \hat R_0^2 \hat V \left| \Phi_0 \right>.
 	 			\label{MBPT equations}
 	  		\end{align*}
 	  		I am, in this thesis, concerned with calculating the correlation energy, and these four equations will be implemented for the Pairing model. 
@@ -1339,8 +1341,8 @@
 
 		The theorem states that the wave function and the energy can be expressed as a sum of linked diagrams \textit{only}. Reducing the equations to 
 		\begin{align}
-			E^{(n)} = \left< \right. | \hat W (\hat R_0 \hat W)^{n-1} \left. | \right>_L \\
-			\left| \Psi^{(n)} \right> = \left[ (\hat R_0 \hat W)^n |\left.\right>  \right]_L
+			E^{(n)} = \left< \right. | \hat W (\hat R_0 \hat W)^{n-1} \left. | \right>_L, \\
+			\left| \Psi^{(n)} \right> = \left[ (\hat R_0 \hat W)^n |\left.\right>  \right]_L.
 		\end{align}
 		More specifically, we see that the second order term for $E^{(4)}$ in \ref{MBPT equations}, will vanish. 
 
@@ -1349,36 +1351,41 @@
 	\begin{section}{Hartree-Fock calculations}
  		When doing Hartree-Fock calculation, we conduct a change of the basis, and instead of expanding our Hamiltonian, we vary the wave function to minimize the energy. We name the original basis by greek letters and the new basis by latin letters. The original basis should be chosen such that we can calculate it's expectation value. 
  		\begin{align}
- 			\left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = E^{\text{HF}}
+ 			\left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = E^{\text{HF}}.
  		\end{align}
  		Variational principle ensures that 
  		\begin{align}
- 			E^{\text{HF}} > 0 
+ 			E^{\text{HF}} > 0 .
  		\end{align}
- 		We now introduce a change of basis 
+ 		We now introduce a change of basis
  		\begin{align}
- 			\left| \psi_a \right> = \sum_{\lambda} C_{a\lambda} \left| \psi_{\lambda} \right>
+ 			\left| \psi_a \right> = \sum_{\lambda} C_{a\lambda} \left| \psi_{\lambda} \right>.
  		\end{align}
  		Varying $C_{p\lambda}$, we can look for the basis providing the lowest energy. We start by rewriting $E^{HF}$ as a functional
  		\begin{align}
- 			E\left[ \psi \right] = \sum_{a=1}^N \left< a \right| h \left| a \right> + \frac{1}{2} \sum_{ab}^N \left< ab \right| v \left| ab \right>
+ 			E\left[ \psi \right] = \sum_{a=1}^N \left< a \right| h \left| a \right> + \frac{1}{2} \sum_{ab}^N \left< ab \right| v \left| ab \right>.
   		\end{align}
-  		In terms of the original greek basis
+  		Rewriting it in terms of the original greek basis, we get the energy functional given as
   		\begin{align}
-  			E\left[ \psi \right] = \sum_{a=1}^N \sum_{\alpha \beta} C_{a \alpha}^* C_{a \beta} \left< \alpha \right| h \left| \beta \right> + \frac{1}{2} \sum_{ab}^N \sum_{\alpha \beta \gamma \delta} C_{a \alpha}^* C_{b \beta}^* C_{a \gamma} C_{b \delta} \left< \alpha \beta \right| v \left| \gamma \delta \right>
+  			E\left[ \psi \right] = \sum_{a=1}^N \sum_{\alpha \beta} C_{a \alpha}^* C_{a \beta} \left< \alpha \right| h \left| \beta \right> + \frac{1}{2} \sum_{ab}^N \sum_{\alpha \beta \gamma \delta} C_{a \alpha}^* C_{b \beta}^* C_{a \gamma} C_{b \delta} \left< \alpha \beta \right| v \left| \gamma \delta \right>.
   		\end{align}
   		To find the minima, we introduce a Lagrange multiplier before differentiating with respect to $C_{a  \alpha}^*$. This will give N equations, one for each state, $a$. The equations are given by
   		\begin{align}
-  			\sum_{\beta} C_{a \beta} \left< \alpha \right| h \left| \beta \right> + \sum_b^N \sum_{\beta \gamma \delta} C_{b \beta}^* C_{b \delta} C_{a \gamma} \left< \alpha \beta \right| v \left| \gamma \delta \right> = \epsilon_a C_{a \alpha}
+  			\sum_{\beta} C_{a \beta} \left< \alpha \right| h \left| \beta \right> + \sum_b^N \sum_{\beta \gamma \delta} C_{b \beta}^* C_{b \delta} C_{a \gamma} \left< \alpha \beta \right| v \left| \gamma \delta \right> = \epsilon_a C_{a \alpha}.
   		\end{align}
   		Defining
   		\begin{align}
-  			h_{\alpha \gamma}^{\text{HF}} = \left< \alpha \right| h \left| \gamma \right> + \sum_{b=1}^N \sum_{\beta \delta} C_{b \beta}^* C_{b \delta} \left< \alpha \beta \right| v \left| \gamma \delta \right> 
+  			h_{\alpha \gamma}^{\text{HF}} = \left< \alpha \right| h \left| \gamma \right> + \sum_{b=1}^N \sum_{\beta \delta} C_{b \beta}^* C_{b \delta} \left< \alpha \beta \right| v \left| \gamma \delta \right> ,
   		\end{align}
-  		We get the short hand iterative equations to be solved 
+  		we get the short hand iterative equations to be solved 
   		\begin{align}
-  			\sum_{\gamma} h_{\alpha \gamma}^{\text{HF}} C_{a \gamma} = \epsilon_{a} C_{a \alpha}
+  			\sum_{\gamma} h_{\alpha \gamma}^{\text{HF}} C_{a \gamma} = \epsilon_{a} C_{a \alpha}.
   		\end{align}
+  		A natural starting point for the constants, $C$, is to set
+  		\begin{align}
+  			C_{a\lambda} = \delta_{a \lambda},
+  		\end{align}
+  		which means that the first guess is to use the original greek basis. 
  	\end{section}
 
 \end{chapter}
@@ -1391,49 +1398,48 @@
  	\begin{section}{The Exponential Ansatz}
  		The basic idea of Coupled-cluster theory is to express the true wave function as an exponential operator working on the Slater determinant \cite{ShavittAndBartlett,MHJonline,Crawford}
  		\begin{align}
-	 		\ket{\Psi} \approx e^{\hat T} \ket{\Phi_0}
+	 		\ket{\Psi} \approx e^{\hat T} \ket{\Phi_0}.
 	  	\end{align}
 	  	The operator $\hat T$, is a sum of the excitation operators, also known as cluster operators
 	  	\begin{align}
-	  		\hat T = \hat T_1 + \hat T_2 + \hat T_3 + ... + \hat T_N
+	  		\hat T = \hat T_1 + \hat T_2 + \hat T_3 + ... + \hat T_N,
 	  	\end{align}
-	  	Where the operators are defined as
+	  	where the operators are defined as
 	  	\begin{align}
-	  		T_1 &= \sum_{ia} t_i^a \hat a_a^{\dagger} \hat a_i \\
-	  		T_2 &= \frac{1}{2} \sum_{ijab} t_{ij}^{ab} \hat a_a^{\dagger}\hat a_b^{\dagger} \hat a_j \hat a_i \\
-	  		T_N &= \left(\frac{1}{n!}\right)^2 \sum_{ij..ab..}^n t_{ij..n}^{ab..n} \hat a_a^{\dagger}\hat a_b^{\dagger} ...\hat a_n^{\dagger} \hat a_n ... \hat a_j \hat a_i \\
+	  		T_1 &= \sum_{ia} t_i^a \hat a_a^{\dagger} \hat a_i, \\
+	  		T_2 &= \frac{1}{2} \sum_{ijab} t_{ij}^{ab} \hat a_a^{\dagger}\hat a_b^{\dagger} \hat a_j \hat a_i, \\
+	  		T_N &= \left(\frac{1}{n!}\right)^2 \sum_{ij..ab..}^n t_{ij..n}^{ab..n} \hat a_a^{\dagger}\hat a_b^{\dagger} ...\hat a_n^{\dagger} \hat a_n ... \hat a_j \hat a_i, \\
 	  	\end{align}
-	  	Which is very similar to configuration interaction theory.
+	  	which we will see is similar to configuration interaction theory.
 	\end{section}
 
 	\begin{section}{Comparison with Configuration Interaction}
 	  	By doing an expansion of the exponential operator, we can rewrite it as
 	  	\begin{align}
-	  		e^{\hat T} = 1 + \hat T + \frac{\hat T^2}{2!} + \frac{\hat T^3}{3!} + \cdots
+	  		e^{\hat T} = 1 + \hat T + \frac{\hat T^2}{2!} + \frac{\hat T^3}{3!} + \cdots.
 	  	\end{align}
 	  	Calculating the terms and organizing them in terms of total excitations, we can write the exponential operator as 
 	  	\begin{align}
-	  		e^{\hat T} = \left( 1 \right)  + \left( \hat T_1 \right) + \left( \hat T_2 + \frac{\hat T_1^2}{2} \right) + \left( \hat T_3 + \hat T_1 \hat T_2 + \frac{\hat T_1^3}{6} \right) + \cdots 
+	  		e^{\hat T} = \left( 1 \right)  + \left( \hat T_1 \right) + \left( \hat T_2 + \frac{\hat T_1^2}{2} \right) + \left( \hat T_3 + \hat T_1 \hat T_2 + \frac{\hat T_1^3}{6} \right) + \cdots .
 	  	\end{align}	
-	  	
-	  	Remembering the equations for configuration interaction
-	  	\begin{align}
-	  		\ket{\Psi_{CI}} = (1 + \hat C) \ket{\Phi_0} 
-	   	\end{align}
-	   	Where
-	  	\begin{align}
+	  	Remembering the equation for configuration interaction, given by equation (\ref{equation:FCI})
+	  	\begin{align*}
+	  		\ket{\Psi_{CI}} = (1 + \hat C) \ket{\Phi_0}, 
+	   	\end{align*}
+	   	where
+	  	\begin{align*}
 	  		\hat C = \hat C_1 + \hat C_2 + ... =  \sum_{ia} c_i^a a_a^{\dagger} a_i + \frac{1}{4} \sum_{ijab} c_{ij}^{ab} a_a^{\dagger} a_b^{\dagger} a_j a_i + ...
-	   	\end{align}
+	   	\end{align*}
 	   	By comparing configuration interaction with coupled-cluster theory, we see that we can write
 	   	\begin{align}
-	   		\hat C_0 = 1 \:\:\:\:\:\:\: \hat C_1 = \hat T_1 
+	   		\hat C_0 = 1 \:\:\:\:\:\:\:, \hat C_1 = \hat T_1 ,
 	   	\end{align}
 	   	\begin{align}
-	   		\hat C_2 = \hat T_2 + \frac{1}{2} T_1^2
+	   		\hat C_2 = \hat T_2 + \frac{1}{2} T_1^2,
 	   	\end{align}
 	   	and 
 	   	\begin{align}
-	   		\hat C_3 = \hat T_3 + \hat T_1 \hat T_2 + \frac{\hat T_1^3}{6}
+	   		\hat C_3 = \hat T_3 + \hat T_1 \hat T_2 + \frac{\hat T_1^3}{6}.
 	   	\end{align}
 	   	The difference we notice, is that coupled-cluster introduces a mixing of excitation operators for every level of total excitations. 
  	\end{section}
@@ -1441,41 +1447,41 @@
 	\begin{section}{Truncating the Exponential Ansatz}
 	  	By including infinite terms, this expansion will represent the true wave function, but the equations cannot be computed unless they are truncated at some point. 
 	  	\begin{enumerate}
-	  		\item By including only $\hat T = \hat T_1$, we are doing coupled-cluster singles, or CCS
-	  		\item By truncating the equations at double excitations, $\hat T = \hat T_1 + \hat T_2$, we are doing coupled-cluster singles and doubles, or CCSD
-	  		\item By truncating the equations at triple excitations, $\hat T = \hat T_1 + \hat T_2 + \hat T_3$, we are doing coupled-cluster singles, doubles and 		triples, or CCSDT 
+	  		\item By including only $\hat T = \hat T_1$, we are doing coupled-cluster singles, short-handed by \textit{CCS}
+	  		\item By truncating the equations at double excitations, $\hat T = \hat T_1 + \hat T_2$, we are doing coupled-cluster singles and doubles, with the short-hand given by \textit{CCSD}
+	  		\item By truncating the equations at triple excitations, $\hat T = \hat T_1 + \hat T_2 + \hat T_3$, we are doing coupled-cluster singles, doubles and 		triples, \textit{CCSDT}
 	  		\item four excitations are called quadruples, and so on
 	  	\end{enumerate}
 
-	  	We introduce a new operator, given as 
+	  	We introduce a new operator, $\overline H$, given by 
 	  	\begin{align}
-	  		\overline H = e^{-\hat T} \hat H e^{\hat T} 
+	  		\overline H = e^{-\hat T} \hat H e^{\hat T} .
 	  	\end{align}
 	  	When calculating the energy, we look at the expectation value for the Hamiltonian 
 	  	\begin{align}
-	  		\left< \Phi_0 \right| e^{-\hat T} \hat H e^{\hat T} \left| \Phi_0 \right> = \left< \Phi_0 \right| \overline H \left| \Phi_0 \right> = E
+	  		\left< \Phi_0 \right| e^{-\hat T} \hat H e^{\hat T} \left| \Phi_0 \right> = \left< \Phi_0 \right| \overline H \left| \Phi_0 \right> = E.
 	  	\end{align}
 	  	By subsequent left-projection of various excited states, we get amplitude equations
 	  	\begin{align}
-	  		\left< \Phi_{ij\cdots}^{ab\cdots} \right| \overline H \left| \Phi_0 \right> = E
+	  		\left< \Phi_{ij\cdots}^{ab\cdots} \right| \overline H \left| \Phi_0 \right> = 0.
 	  	\end{align}
 	  	We have now decoupled the amplitude equations from the energy equations, reducing the complexity of a coupled-cluster solver. The energy-equation is a function of the amplitudes $t_i, t_j, \cdots$ and $t_a, t_b, \cdots$, which can now be found through a different set of iterative equations. We have introduced the similarity transformed Hamiltonian, which can be significantly simplified using the Baker-Campbell-Hausdorff formula \cite{Crawford}
 	  	\begin{align}
-	  		\overline H = e^{-\hat T} \hat H e^{\hat T} =& \hat H + [ \hat H, \hat T] + \frac{1}{2!} [[\hat H, \hat T], \hat T] \\ + &\frac{1}{3!} [[[ \hat H, \hat T ], \hat T ], \hat T ] + \frac{1}{4!} [[[[\hat H, \hat T], \hat T], \hat T], \hat T] + \cdots \nonumber
+	  		\overline H = e^{-\hat T} \hat H e^{\hat T} =& \hat H + [ \hat H, \hat T] + \frac{1}{2!} [[\hat H, \hat T], \hat T] \\ + &\frac{1}{3!} [[[ \hat H, \hat T ], \hat T ], \hat T ] + \frac{1}{4!} [[[[\hat H, \hat T], \hat T], \hat T], \hat T] + \cdots \nonumber .
 	  	\end{align}
 	  	At first glance, this equation does not look like a simplification, but based on properties on the system, we can truncate this expansion. The cluster operators, $\hat T_1, \hat T_2, \hat T_3, \cdots$ commute with each other, but they do not generally commute with the Hamiltonian operator. Consider the general commutation of the one-body Hamiltonian and the $T_1$ cluster operator
 	  	\begin{align}
-	  		[\hat H_0, \hat T_1] = [\hat p^\dagger \hat q, \hat a^\dagger \hat i] = \hat p^\dagger \hat q \hat a^\dagger \hat i - \hat a^\dagger \hat i \hat p^\dagger \hat q
+	  		[\hat H_0, \hat T_1] = [\hat p^\dagger \hat q, \hat a^\dagger \hat i] = \hat p^\dagger \hat q \hat a^\dagger \hat i - \hat a^\dagger \hat i \hat p^\dagger \hat q.
 	  	\end{align}
 	  	We can use the anti-commutator relations to rewrite two terms on the right-hand side
 	  	\begin{align}
-	  		\hat p^\dagger \delta_{qa} \hat i - \hat a^\dagger \delta_{ip} \hat q
+	  		\hat p^\dagger \delta_{qa} \hat i - \hat a^\dagger \delta_{ip} \hat q.
 	  	\end{align}
 	  	Because $p$ and $q$ is the sum of all possible states, not limited to virtual or occupied states, we cannot explicitly state that the Kronecker delta functions $\delta_{qa}$ or $\delta_{ip}$ are either $0$ or $1$. 
 
 	  	Because the cluster operators commute, to get a non-zero result, the Hamiltonian must create one Kronecker-delta function for each of the participating cluster operators. For every system in this thesis, we are only working with a two-body Hamiltonian, so a commutation with more than four cluster operators must provide zero. We will get a natural truncation, that holds for both the energy and amplitude equations. This is true for all systems that have a two-body Hamiltonian. We now write the similarity transformed Hamiltonian as
 	  	\begin{align}
-	  		\overline H = e^{-\hat T} \hat H e^{\hat T} = \hat H &+ [ \hat H, \hat T] + \frac{1}{2!} [[\hat H, \hat T], \hat T] + \frac{1}{3!} [[[ \hat H, \hat T ], \hat T ], \hat T ] \\  &+ \frac{1}{4!} [[[[\hat H, \hat T], \hat T], \hat T], \hat T] \nonumber
+	  		\overline H = e^{-\hat T} \hat H e^{\hat T} = \hat H &+ [ \hat H, \hat T] + \frac{1}{2!} [[\hat H, \hat T], \hat T] + \frac{1}{3!} [[[ \hat H, \hat T ], \hat T ], \hat T ] \\  &+ \frac{1}{4!} [[[[\hat H, \hat T], \hat T], \hat T], \hat T] \nonumber.
 	  	\end{align}
 
 	\end{section}  	
@@ -1483,128 +1489,127 @@
 	\begin{section}{The Variational Principle}
 		Using a variational method comes with great advantages. One can be sure to have calculated an upper boundary to the energy, but the coupled-cluster energy equation do not conform to any variational conditions \cite{Crawford}. However, the exponential ansatz does allow for another way of setting up the energy equation
 		\begin{align}
-			E_{\text{exact}} \leq E = \frac{\left< \Phi_0 \right| (e^{\hat T})^\dagger \hat H e^{\hat T} \left| \Phi_0 \right>}{\left< \Phi_0 \right| (e^{\hat T})^\dagger \hat H e^{\hat T} \left| \Phi_0 \right>} = \frac{\left< \Psi \right| \hat H \left| \Psi \right>}{\left< \Psi \right| \hat H \left| \Psi \right>}
+			E_{\text{exact}} \leq E = \frac{\left< \Phi_0 \right| (e^{\hat T})^\dagger \hat H e^{\hat T} \left| \Phi_0 \right>}{\left< \Phi_0 \right| (e^{\hat T})^\dagger \hat H e^{\hat T} \left| \Phi_0 \right>} = \frac{\left< \Psi \right| \hat H \left| \Psi \right>}{\left< \Psi \right| \hat H \left| \Psi \right>},
 		\end{align}
-		Which is variational. Unfortunatly, this equation do not have a natural truncation, and will be much more difficult to solve. 
+		which is variational. Unfortunately, one can not apply the same logic of natural truncation to the variational coupled-cluster energy. This leads to much more difficult equations after the application of the Campbell-Hausdorff expansion. 
 	\end{section}
 
   	\begin{section}{Size-Extensivity}
   		It can be important to have a wave function that scales with size. Imagine two particles, $X$ and $Y$, with infinite separation, meaning that they do not interact. This means we should be able to write the total energy as
   		\begin{align}
-  			E = E_X + E_Y
+  			E = E_X + E_Y.
   		\end{align}
   		Rewriting the cluster operators in terms of the two particles
   		\begin{align}
-  			\hat T = \hat T_X + \hat T_Y 
+  			\hat T = \hat T_X + \hat T_Y,
   		\end{align}
-  		The wave function can be rewritten as 
+  		the wave function can be rewritten as 
   		\begin{align}
-  			\ket{\Psi}_{CC} = e^{\hat T_X + \hat T_Y} \ket{\Phi_0} = e^{\hat T_X} e^{\hat T_Y} \ket{\Psi_0}
+  			\ket{\Psi}_{CC} = e^{\hat T_X + \hat T_Y} \ket{\Phi_0} = e^{\hat T_X} e^{\hat T_Y} \ket{\Psi_0}.
   		\end{align}
   		Since we can write the reference state as a product of the two seperated parts, we are able to write
   		\begin{align}
-  			E_{CC} = E_{CC}^X + E_{CC}^Y
+  			E_{CC} = E_{CC}^X + E_{CC}^Y.
   		\end{align}
   		For Configuration Interaction, multiplicative separability is not possible
   		\begin{align}
-  			\Psi_{CI} = \left(1 + \hat C\right) \Phi_0 = \left( 1 + \hat C_x + \hat C_y \right) \Phi_0
+  			\Psi_{CI} = \left(1 + \hat C\right) \Phi_0 = \left( 1 + \hat C_x + \hat C_y \right) \Phi_0,
   		\end{align}
-  		Which cannot be rewritten as two separable parts. This means the coupled-cluster theory produces a \textit{size-extensive} energy, contrary to full configuration interaction. A size-extensive system will scale perfectly with the size of the system, regardless of the interaction between the particles.
+  		which cannot be rewritten as two separable parts. This means the coupled-cluster theory produces a \textit{size-extensive} energy, contrary to full configuration interaction. A size-extensive system will scale perfectly with the size of the system, regardless of the interaction between the particles.
 
   	\end{section}
 
   	\begin{section}{The Coupled-Cluster Doubles Equations}
   		We need to truncate the cluster operator, $\hat T$, and the approximation used in this thesis, is to only allow 2p-2h excitations. This is normally referred to as the coupled-cluster doubles equations, or CCD. We can rewrite the operator as \cite{MHJonline}
   		\begin{align}
-  			\hat T \approx \hat T_2
+  			\hat T \approx \hat T_2.
   		\end{align}
   		The wave function will be approximated by 
   		\begin{align}
-  			\left| \Psi_0 \right> \approx \left| \Psi_{\text{CCD}} \right> = e^{\hat T_2} \left| \Phi_0 \right>
+  			\left| \Psi_0 \right> \approx \left| \Psi_{\text{CCD}} \right> = e^{\hat T_2} \left| \Phi_0 \right>.
   		\end{align}
   		Inserting this ansatz into the Hamiltonian expectation value, we get
   		\begin{align}
-  			\left< \Phi_0 \right| e^{-\hat T_2} \hat H e^{\hat T_2} \left| \Phi_0 \right> 
+  			\left< \Phi_0 \right| e^{-\hat T_2} \hat H e^{\hat T_2} \left| \Phi_0 \right> ,
   		\end{align}
-  		Which will have the natural truncation at 
+  		which will have the natural truncation at 
   		\begin{align}
-  			\left< \Phi_0 \right|  \hat H (1 + \hat T_2) \left| \Phi_0 \right> = E_{\text{CCD}}
+  			\left< \Phi_0 \right|  \hat H (1 + \hat T_2) \left| \Phi_0 \right> = E_{\text{CCD}}.
   		\end{align}
-  		Leading up to the energy equation
+  		This leads up to the energy equation
   		\begin{align}
-  			E_{\text{CCD}} = E_{\text{ref}} + \frac{1}{4} \sum_{abij} \left<ij|\hat v|ab\right> t_{ij}^{ab}
+  			E_{\text{CCD}} = E_{\text{ref}} + \frac{1}{4} \sum_{abij} \left<ij|\hat v|ab\right> t_{ij}^{ab},
   		\end{align}
-  		With the reference energy defined as 
+  		with the reference energy defined as 
   		\begin{align}
-  			E_{ref} = \sum_i \left< i \right| \hat h_0 \left| j\right> + \sum_{ij} \left<ij\middle|\hat v\middle|ij\right> + \frac{1}{2}Av_0
+  			E_{ref} = \sum_i \left< i \right| \hat h_0 \left| j\right> + \sum_{ij} \left<ij\middle|\hat v\middle|ij\right> + \frac{1}{2}Av_0.
   		\end{align}
-  		$v_0$ is a constant, nonzero for the finite electron gas. The second part of the energy, is known as the correlation energy. It is given by
+  		We have used $v_0$, which is a constant, nonzero for the finite electron gas. The second part of the energy, is known as the correlation energy. It is given by
   		\begin{align}
-  			\Delta E_{CCD} = \frac{1}{4} \sum_{ijab}\left<ij\middle|\hat v\middle|ab\right> t_{ij}^{ab}
+  			\Delta E_{CCD} = \frac{1}{4} \sum_{ijab}\left<ij\middle|\hat v\middle|ab\right> t_{ij}^{ab}.
   		\end{align}
   		The computation of this correlation energy is the goal of the coupled-cluster theory. This is dependent on the amplitudes $t_{ij}^{ab}$, so we need the amplitude equations, found by
   		\begin{align}
-  			\left< \Phi_{ij}^{ab} \right| x^{-\hat T_2} \hat H_N e^{\hat T_2} \left| \Phi_0 \right> = 0
+  			\left< \Phi_{ij}^{ab} \right| e^{-\hat T_2} \hat H_N e^{\hat T_2} \left| \Phi_0 \right> = 0.
   		\end{align}
   		After several applications of Wick's theorem, the amplitude equations can be reduced to 
   		\begin{align}
   			(\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b) t_{ij}^{ab} = \left<ab\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} \\
-  			+ \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab} + \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac} \\
-  			+ \frac{1}{4} \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ij}^{cd} t_{kl}^{ab} + \frac{1}{2} \hat P\left(ij\middle|ab\right) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ac} t_{lj}^{db}\\
-  			- \frac{1}{2}\hat P(ij) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ab} t_{jl}^{cd} - \frac{1}{2}\hat P(ab) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{kl}^{bd} t_{ij}^{ac}
+  			+ \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab} + \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac} \nonumber \\
+  			+ \frac{1}{4} \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ij}^{cd} t_{kl}^{ab} + \frac{1}{2} \hat P\left(ij\middle|ab\right) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ac} t_{lj}^{db} \nonumber\\
+  			- \frac{1}{2}\hat P(ij) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ab} t_{jl}^{cd} - \frac{1}{2}\hat P(ab) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{kl}^{bd} t_{ij}^{ac}\nonumber,
   			\label{CCD_equations1}
   		\end{align}
-  		Where we have defined
+  		where we have defined
   		\begin{align}
-  			\hat P(ij) = 1 - \hat P_{ij}
+  			\hat P(ij) = 1 - \hat P_{ij}. 
   		\end{align}
-  		Where $\hat P_{ij}$ interchanges the two particles occupying the quantum states $i$ and $j$. Furthermore, we define the operator 
+  		The permutation operator, $\hat P_{ij}$, interchanges the two particles occupying the quantum states $i$ and $j$. Furthermore, we define the operator 
   		\begin{align}
-  			\hat P\left( ij \middle| ab \right) = (1 - \hat P_{ij}) (1 - \hat P_{ab})
+  			\hat P\left( ij \middle| ab \right) = (1 - \hat P_{ij}) (1 - \hat P_{ab}).
   		\end{align}
   		We notice that some parts are linear in the amplitude, while some are quadratic. Sorting them into the linear and quadratic parts, $L$ and $Q$ respectably, I get
   		\begin{align}
-  			L(t_{ij}^{ab}) = \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} + \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab} + \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac}
+  			L(t_{ij}^{ab}) = \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} + \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab} + \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac}, 
   		\end{align}
   		and 
   		\begin{align}
   			Q(t_{ij}^{ab}t_{ij}^{ab}) = \frac{1}{4} \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ij}^{cd} t_{kl}^{ab} + \frac{1}{2} \hat P\left(ij\middle|ab\right) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ac} t_{lj}^{db} \\
-  			- \frac{1}{2}\hat P(ij) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ab} t_{jl}^{cd} - \frac{1}{2}\hat P(ab) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{kl}^{bd} t_{ij}^{ac}
+  			- \frac{1}{2}\hat P(ij) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ab} t_{jl}^{cd} - \frac{1}{2}\hat P(ab) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{kl}^{bd} t_{ij}^{ac}. \nonumber
   		\end{align}
-  		Labeling each term for practical reasons	
+  		For practical reasons, I label each term
   		\begin{align}
-  			L_a &= \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} \\
-  			L_b &= \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab} \\
-  			L_c &= \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac} \\
-  			Q_a &= \frac{1}{4} \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ij}^{cd} t_{kl}^{ab} \\
-  			Q_b &= \frac{1}{2} \hat P\left(ij\middle|ab\right) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ac} t_{lj}^{db} \\
-  			Q_c &= - \frac{1}{2}\hat P(ij) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ab} t_{jl}^{cd} \\
-  			Q_d &= - \frac{1}{2}\hat P(ab) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{kl}^{bd} t_{ij}^{ac}
+  			L_a &= \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd}, \\
+  			L_b &= \frac{1}{2} \sum_{kl} \left<kl\middle|\hat v\middle|ij\right>t_{kl}^{ab}, \\
+  			L_c &= \hat P\left(ij\middle|ab\right) \sum_{kc}\left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac}, \\
+  			Q_a &= \frac{1}{4} \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ij}^{cd} t_{kl}^{ab}, \\
+  			Q_b &= \frac{1}{2} \hat P\left(ij\middle|ab\right) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ac} t_{lj}^{db}, \\
+  			Q_c &= - \frac{1}{2}\hat P(ij) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{ik}^{ab} t_{jl}^{cd}, \\
+  			Q_d &= - \frac{1}{2}\hat P(ab) \sum_{klcd}\left<kl\middle|\hat v\middle|cd\right>t_{kl}^{bd} t_{ij}^{ac}.
   		\end{align}
    	\end{section}
-   	\newpage
   	\begin{section}{Intermediates}
   		As coupled-cluster computations consume large amounts of computational power, researchers are spending much effort trying to reduce computational cost. One way of reducing the cost is by refactoring the amplitude equations such that we can perform an intermediate computation first and use the result to compute various diagrams later. 
 
   		Rewriting the equation, (\ref{CCD_equations1}) for CCD amplitudes \cite{Baardsen,Audun}:
   		\begin{align}
   			(\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b) t_{ij}^{ab} = \left<ab\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} \\
-  			+ \frac{1}{2} \sum_{kl} t_{kl}^{ab} \left[ \left<kl\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd} \left<kl\middle|\hat v\middle|cd\right> t_{ij}^{cd} \right] \\
-  			+ \hat P\left(ij\middle|ab\right) \sum_{kc} t_{ik}^{ac} \left[ \left<kb\middle|\hat v\middle|cj\right> + \frac{1}{2}\sum_{ld}\left<kl\middle|\hat v\middle|cd\right>t_{lj}^{db} \right] \\
-  			- \frac{1}{2} \hat P(ij) \sum_{k} t_{ik}^{ab} \left[ \sum_{lcd} \left<kl\middle|\hat v\middle|cd\right> t_{jl}^{cd} \right] \\
-  			- \frac{1}{2} \hat P(ab) \sum_{c} t_{ij}^{ac} \left[ \sum_{kld} \left<kl\middle|\hat v\middle|cd\right> t_{kl}^{bd} \right]
+  			+ \frac{1}{2} \sum_{kl} t_{kl}^{ab} \left[ \left<kl\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd} \left<kl\middle|\hat v\middle|cd\right> t_{ij}^{cd} \right] \nonumber\\
+  			+ \hat P\left(ij\middle|ab\right) \sum_{kc} t_{ik}^{ac} \left[ \left<kb\middle|\hat v\middle|cj\right> + \frac{1}{2}\sum_{ld}\left<kl\middle|\hat v\middle|cd\right>t_{lj}^{db} \right] \nonumber\\
+  			- \frac{1}{2} \hat P(ij) \sum_{k} t_{ik}^{ab} \left[ \sum_{lcd} \left<kl\middle|\hat v\middle|cd\right> t_{jl}^{cd} \right] \nonumber\\
+  			- \frac{1}{2} \hat P(ab) \sum_{c} t_{ij}^{ac} \left[ \sum_{kld} \left<kl\middle|\hat v\middle|cd\right> t_{kl}^{bd} \right]. \nonumber
   		\end{align}
   		We can now define, and precompute the following values
   		\begin{align}
-  			I_1 = \left<kl\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd} \left<kl\middle|\hat v\middle|cd\right> t_{ij}^{cd} \\
-  			I_2 = \left<kb\middle|\hat v\middle|cj\right> + \frac{1}{2}\sum_{ld}\left<kl\middle|\hat v\middle|cd\right>t_{lj}^{db} \\
-  			I_3 = \sum_{lcd} \left<kl\middle|\hat v\middle|cd\right> t_{jl}^{cd} \\
-  			I_4 = \sum_{kld} \left<kl\middle|\hat v\middle|cd\right> t_{kl}^{bd}
+  			I_1 = \left<kl\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd} \left<kl\middle|\hat v\middle|cd\right> t_{ij}^{cd}, \\
+  			I_2 = \left<kb\middle|\hat v\middle|cj\right> + \frac{1}{2}\sum_{ld}\left<kl\middle|\hat v\middle|cd\right>t_{lj}^{db} ,\\
+  			I_3 = \sum_{lcd} \left<kl\middle|\hat v\middle|cd\right> t_{jl}^{cd} ,\\
+  			I_4 = \sum_{kld} \left<kl\middle|\hat v\middle|cd\right> t_{kl}^{bd}. 
   		\end{align}
-  		We can now redefine the CCD equation 
+  		We can now redefine the CCD equation in terms of the intermediate factorizations, 
   		\begin{align}
   			(\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b) t_{ij}^{ab} = \left<ab\middle|\hat v\middle|ij\right> + \frac{1}{2} \sum_{cd}\left<ab\middle|\hat v\middle|cd\right>t_{ij}^{cd} + \frac{1}{2} \sum_{kl} t_{kl}^{ab} I_1 \\
-  			+ \hat P\left(ij\middle|ab\right) \sum_{kc} t_{ik}^{ac} I_2 - \frac{1}{2} \hat P(ij) \sum_{k} t_{ik}^{ab} I_3  - \frac{1}{2} \hat P(ab) \sum_{c} t_{ij}^{ac} I_4
+  			+ \hat P\left(ij\middle|ab\right) \sum_{kc} t_{ik}^{ac} I_2 - \frac{1}{2} \hat P(ij) \sum_{k} t_{ik}^{ab} I_3  - \frac{1}{2} \hat P(ab) \sum_{c} t_{ij}^{ac} I_4 \nonumber
   			\label{Intermediates}
   		\end{align}
   		By doing the intermediate calculations, we can achieve a reduction of computational cost from $\mathcal{O}(h^4 p^4)$ to $\mathcal{O}(h^4 p^2)$, which is significant for large systems approaching the thermodynamic limit. However, storing the intermediate values will require a greater use of memory. 
@@ -1627,60 +1632,68 @@
 		We limit ourselves to a two-body interaction, writing the Hamiltonian as
 		\begin{align}
 			\hat H = \sum_{\alpha \beta} \left< \alpha \right| \hat h_0 \left| \beta \right> \hat a_{\alpha}^{\dagger} \hat a_{\beta} 
-			        + \frac{1}{4} \sum_{\alpha \beta \gamma \delta} \left< \alpha \beta \middle| \hat v_0 \middle| \gamma \delta \right> \hat a_{\alpha}^{\dagger} \hat a_{\beta}^{\dagger} \hat a_{\delta} \hat a_{\gamma}
+			        + \frac{1}{4} \sum_{\alpha \beta \gamma \delta} \left< \alpha \beta \middle| \hat v_0 \middle| \gamma \delta \right> \hat a_{\alpha}^{\dagger} \hat a_{\beta}^{\dagger} \hat a_{\delta} \hat a_{\gamma}.
 		\end{align}
 		We use the complete basis $\left| \alpha \right>$ and define the set as eigenvalues of the one-body operator, $\hat h_0$. 
 		
 		The system does require that the total spin is equal to $0$. In addition we will not allow spin pairs to be broken, i.e.\  singly excitated states are not allowed. 
 		\begin{align}
-			\left| \Psi_i^a \right> = 0 
+			\left| \Psi_i^a \right> = 0.
 		\end{align}	
-		We introduce the double creation and annihilation operator. 
+		We introduce the double creation operator, $\hat P_{pq}^{\dagger}$
 		\begin{align}
-			\hat P_{pq}^{\dagger} = \hat a_{p \sigma}^{\dagger} \hat a_{p -\sigma}^{\dagger}
+			\hat P_{pq}^{\dagger} = \hat a_{p \sigma}^{\dagger} \hat a_{p -\sigma}^{\dagger},
 		\end{align}
+		and the double annihilation operator, $\hat P_{pq}$
 		\begin{align}
-			\hat P_{pq} =  a_{q \sigma} a_{q -\sigma}
+			\hat P_{pq} =  a_{q \sigma} a_{q -\sigma}.
 		\end{align}
-
 		We can rewrite the Hamiltonian as an unperterturbed part and a perturbation
 		\begin{align}
-			\hat H = \hat H_0 + \hat V
+			\hat H = \hat H_0 + \hat V,
 		\end{align}
+		Where the unperturbed part is given by 
 		\begin{align}
-			\hat H_0 = \xi \sum_{p \sigma} (p-1) \hat a_{p \sigma}^{\dagger} \hat a_{p \sigma}
+			\hat H_0 = \xi \sum_{p \sigma} (p-1) \hat a_{p \sigma}^{\dagger} \hat a_{p \sigma},
 		\end{align}
+		and the perturbation operator is given by
 		\begin{align}
-			\hat V = - \frac{1}{2}g \sum_{pq} \hat a_{p +}^{\dagger} \hat a_{p-}^{\dagger} \hat a_{q-} \hat a_{q+}
+			\hat V = - \frac{1}{2}g \sum_{pq} \hat a_{p +}^{\dagger} \hat a_{p-}^{\dagger} \hat a_{q-} \hat a_{q+}.
 		\end{align}
-		The value of $\xi$ determines the spacing between the energy levels, which I have set to $1$. This will not impact the insight attained solving this system. $p$ and $q$ determines the energy level. $\sigma$ is the spin, with value either $+\frac{1}{2}$ or $-\frac{1}{2}$. Both the unperturbed and perturbed Hamiltonian keeps total spin at $0$.
+		The value of $\xi$ determines the spacing between the energy levels, which is set to $1$ for the calculations in this thesis. This will not impact the insight attained solving this system. $p$ and $q$ determines the energy level. $\sigma$ is the spin, with value either $+\frac{1}{2}$ or $-\frac{1}{2}$. Both the unperturbed and perturbed Hamiltonian keeps total spin at $0$.
 
-		We can normal order the Hamiltonian by Wick's general theorem. 
+		We can normal order the Hamiltonian by Wick's general theorem, which introduces the relations
 		\begin{align}
-			a_p^{\dagger} a_q = \left\{ a_p^{\dagger}a_q \right\} + \delta_{pq \in i}
+			a_p^{\dagger} a_q = \left\{ a_p^{\dagger}a_q \right\} + \delta_{pq \in i},
 		\end{align}
+		and
 		\begin{align}
 			a_p^{\dagger} a_q^{\dagger} a_s a_r = \left\{ a_p^{\dagger}a_q^{\dagger} a_s a_r \right\} +\left\{a_p^{\dagger}a_r\right\} \delta_{qs\in i} - \left\{a_p^{\dagger}a_s\right\} \delta_{qr\in i} \\
 			+\left\{a_q^{\dagger}a_s\right\} \delta_{pr\in i} \
-			- \left\{a_q^{\dagger}a_r\right\} \delta_{ps\in i} + \delta_{pr \in i} \delta_{qs \in i} - \delta_{ps \in i}\delta_{qr \in i}
+			- \left\{a_q^{\dagger}a_r\right\} \delta_{ps\in i} + \delta_{pr \in i} \delta_{qs \in i} - \delta_{ps \in i}\delta_{qr \in i}. \nonumber
 		\end{align}
-		Which gives the Normal-ordered Hamiltonian
+		The Hamiltonian can be written as a sum of the normal ordered Hamiltonian and the reference energy, as shown in equation (\ref{equation:normalorderHamiltonian}). We have 
+		\begin{align*}
+			\hat H = \hat H_N + E_{ref},
+		\end{align*}
+		with the reference energy
 		\begin{align}
-			\hat H = \hat H_N + E_{ref}
+ 			E_{ref} = \sum_{i} h_{ii} + \frac{1}{2} \sum_{ij} \left< ij \middle| \middle| ij \right>.
 		\end{align}
+		We have defined the normal ordered Hamiltonian as
 		\begin{align}
-			\hat H_N = \hat F_N + \hat W 
+			\hat H_N = \hat F_N + \hat W .
 		\end{align}
+		The one-body operator can be calculated as
 		\begin{align}
 			\hat F_N =  \sum_{pq} h_{pq} \left\{ \hat a_{p \sigma}^{\dagger} \hat a_{p \sigma} \right\}
-			- \sum_{pqi} \left< pi || qi \right> \left\{ \hat a_{p +}^{\dagger} \hat a_{q -} \right\}
+			- \sum_{pqi} \left< pi || qi \right> \left\{ \hat a_{p +}^{\dagger} \hat a_{q -} \right\},
 		\end{align}
+		and the two-body operator 
 		\begin{align}
-			\hat W = - \frac{1}{2} \sum_{pqrs} \left< pq || rs \right> \left\{ \hat a_{p +}^{\dagger} \hat a_{p-}^{\dagger} \hat a_{q-} \hat a_{q+} \right\}
+			\hat W = - \frac{1}{2} \sum_{pqrs} \left< pq || rs \right> \left\{ \hat a_{p +}^{\dagger} \hat a_{p-}^{\dagger} \hat a_{q-} \hat a_{q+} \right\}.
 		\end{align}
-		\begin{align}
- 			E_{ref} = \sum_{i} h_{ii} + \frac{1}{2} \sum_{ij} \left< ij \middle| \middle| ij \right>
-		\end{align}
+		
 
 	\end{section}
 
@@ -1695,9 +1708,9 @@
 			\caption{Configuration space for given pairing model showing all possible distributions of electrons}
 		\end{figure}
 
-	 	We need to diagonalize the Hamiltonian matrix looking at the linear combination of all different combinations of 
+	 	We need to diagonalize the Hamiltonian matrix, which is set up by calculating all the expectation values of all combination of states. The matrix elements will be set up as
 		\begin{align}
-			\hat{ \mathcal{H} } = \left(  \begin{matrix}
+			\begin{pmatrix}
 				& \left| \Phi_0 \right> & \left| \Phi_{12}^{56} \right> & \left| \Phi_{12}^{78} \right> & \left| \Phi_{34}^{56} \right> & \left| \Phi_{34}^{78} \right> & \left| \Phi_{1234}^{5678} \right> \\ 
 				\left< \Phi_0 \right| &   &   &   &   &   & \\
 				\left< \Phi_{12}^{56} \right| &   &   &   &   &   & \\
@@ -1705,34 +1718,33 @@
 				\left< \Phi_{34}^{56} \right| &   &   &   &   &   & \\
 				\left< \Phi_{34}^{78} \right| &   &   &   &   &   & \\
 				\left< \Phi_{1234}^{5678} \right| &   &   &   &   &   & 
-			\end{matrix} \right)
+			\end{pmatrix}.
 		\end{align}
-
 		Excluding the 4p-4h excitations one does not diagonalize the exact matrix, but rather the approximated matrix known from Configuration Interaction. 
-
 		The diagonal elements are calculated using Wick's theorem. Looking first at the ground state calculation with the unperturbed Hamiltonian part
 		\begin{align}
-			\left< \Phi_0 \middle| \hat{\mathbf{H_0}} \middle| \Phi_0 \right> 
+			\left< \Phi_0 \right| \hat{\mathbf{H_0}} \left| \Phi_0 \right>,
 		\end{align}
+		we rewrite the states with respect to the vacuum state, we get the first equation for $\hat H_0$
 		\begin{align}
-			\left< \right|  a_{2 \downarrow}  a_{2 \uparrow} a_{1 \downarrow} a_{1 \uparrow} \sum_{p \sigma} \delta (p-1) a_{p \sigma}^{\dagger} a_{p \sigma} 
-			a_{1 \uparrow}^{\dagger} a_{1 \downarrow}^{\dagger} a_{2 \uparrow}^{\dagger} a_{2 \downarrow}^{\dagger} \left| \right> 
+			= \left< \right|  a_{2 \downarrow}  a_{2 \uparrow} a_{1 \downarrow} a_{1 \uparrow} \sum_{p \sigma} \delta (p-1) a_{p \sigma}^{\dagger} a_{p \sigma} 
+			a_{1 \uparrow}^{\dagger} a_{1 \downarrow}^{\dagger} a_{2 \uparrow}^{\dagger} a_{2 \downarrow}^{\dagger} \left| \right>.
 		\end{align}
-		Which we see can contract in four different ways, resulting in 
+		This expectation value can be contracted in four different ways, giving the final result 
 		\begin{align}
-			2 \delta (1-1) + 2 \delta (2-1) = 2 \delta
+			= 2 \delta (1-1) + 2 \delta (2-1) = 2 \delta.
 		\end{align}
-
-		And the perturbation part
+		The perturbation part, given by the expectation value 
 		\begin{align}
-			\left< \Phi_0 \middle| \hat{\mathbf{V}} \middle| \Phi_0 \right>
+			\left< \Phi_0 \right| \hat{\mathbf{V}} \left| \Phi_0 \right>,
 		\end{align}
+		written in terms of the vacuum state, this becomes 
 		\begin{align}
 			\left< \right| a_{2 \downarrow}  a_{2 \uparrow} a_{1 \downarrow} a_{1 \uparrow} \left( -g / 2 \sum_{pq} a_{p \uparrow}^{\dagger} a_{q \downarrow}^{\dagger} a_{q \downarrow} a_{p \uparrow} \right) 
-			a_{1 \uparrow}^{\dagger} a_{1 \downarrow}^{\dagger} a_{2 \uparrow}^{\dagger} a_{2 \downarrow}^{\dagger} \left| \right> 
+			a_{1 \uparrow}^{\dagger} a_{1 \downarrow}^{\dagger} a_{2 \uparrow}^{\dagger} a_{2 \downarrow}^{\dagger} \left| \right>.
 		\end{align}
-		As we can see, there are two ways this can contract, each contributing with the constant factor, $-g / 2$
-		Resulting in the final Hamiltonian matrix 
+		There are two ways this can contract, each contributing with the constant factor, $-g / 2$. 
+		Performing similar calculations for all possible expectation values, will result in the final Hamiltonian matrix 
 		\begin{align}
 			\hat{\mathcal{H}} = \left( \begin{matrix}
 				2 \delta - g & -g / 2 & -g / 2 & -g / 2 & -g / 2 & 0  \\
@@ -1741,67 +1753,72 @@
 				-g / 2 & -g / 2 & 0 & 6 \delta - g & -g / 2 & -g / 2 \\
 				-g / 2 & 0 & -g / 2 & -g / 2 & 8 \delta - g & -g / 2 \\
 				0 & -g / 2 & -g / 2 & -g / 2 & -g / 2 & 10 \delta - g 
-			\end{matrix} \right)
+			\end{matrix} \right).
 		\end{align}
+		Diagonalizing this, and finding the smallest eigenvalue, will produce the exact energy for the Pairing model. 
 
 	\end{section}
 
 	\begin{section}{Hartree-Fock calculations}
 		When doing Hartree-Fock calculations on the pairing model, the goal is to minimize the Hamiltonian expectation value through a change in basis. The ground state energy is given by 
 		\begin{align}
-			\left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = E^{\text{HF}}
+			\left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = E^{\text{HF}}.
 		\end{align}
 		This leads to the iterative equation 
 		\begin{align}
-  			\sum_{\gamma} h_{\alpha \gamma}^{\text{HF}} C_{a \gamma} = \epsilon_{a} C_{a \alpha}
+  			\sum_{\gamma} h_{\alpha \gamma}^{\text{HF}} C_{a \gamma} = \epsilon_{a} C_{a \alpha},
   		\end{align}
   		where 
   		\begin{align}
-  			h_{\alpha \gamma}^{\text{HF}} = \left< \alpha \right| h \left| \gamma \right> + \sum_{b=1}^N \sum_{\beta \delta} C_{b \beta}^* C_{b \delta} \left< \alpha \beta \right| v \left| \gamma \delta \right> 
+  			h_{\alpha \gamma}^{\text{HF}} = \left< \alpha \right| h \left| \gamma \right> + \sum_{b=1}^N \sum_{\beta \delta} C_{b \beta}^* C_{b \delta} \left< \alpha \beta \right| v \left| \gamma \delta \right> .
   		\end{align}
   		For the first iteration, we must make a guess on the factors, $C_{b \beta}^*$ and $C_{b \delta}$. A natural starting point is to set
   		\begin{align}
-  			C_{b \beta} = \delta_{b \beta} \:\:\:\:\:\: C_{b \delta} = \delta_{b \delta}
+  			C_{b \beta} = \delta_{b \beta} \:\:\:\:\:\: C_{b \delta} = \delta_{b \delta}.
   		\end{align}
   		This is the same as using the original basis in the first iteration, as there is no overlap between the states
   		\begin{align}
-  			\left| \psi_a \right> = \sum_ \lambda \delta_{a \lambda} \left| \psi_ \lambda \right> 
+  			\left| \psi_a \right> = \sum_ \lambda \delta_{a \lambda} \left| \psi_ \lambda \right> .
   		\end{align}
   		To evaluate the Hartree-Fock matrix elements, we look at the states below Fermi level 
   		\begin{align}
-  			\{p, \sigma\} \in \{ 1 \uparrow, 1 \downarrow, 2 \uparrow, 2 \downarrow \}
+  			\{p, \sigma\} \in \{ 1 \uparrow, 1 \downarrow, 2 \uparrow, 2 \downarrow \}.
   		\end{align}
   		The greek basis will therefore loop over these four states. The one-electron operator $\hat H_0$ is diagonal, so the matrix element
   		\begin{align}
-  			\left< \alpha | h | \gamma \right> 
+  			\left< \alpha | h | \gamma \right> ,
   		\end{align}
- 		Will also be diagonal. Because of the starting point for the basis coefficients, we see that the two-electron operator can be written as
+ 		will also be diagonal. Because of the starting point for the basis coefficients, we see that the two-electron operator can be written as
  		\begin{align}
- 			V = \sum_{ b = 1 }^4 \left< \alpha b | v | \gamma b \right>  
+ 			V = \sum_{ b = 1 }^4 \left< \alpha b | v | \gamma b \right> .
  		\end{align}
  		Because the pairing model does not allow broken pairs, this matrix element will only be non-zero when $\alpha = \gamma$ and when $p_{\alpha} = p_{b}$, $\sigma_ \alpha = \sigma_b$. The Hartree-Fock matrix will therefore be diagonal, meaning the original basis is a canonical Hartree-Fock basis. Hartree-Fock calculations on this basis will not provide any new results. The Hartree-Fock energy can be calculated
  		\begin{align}
- 			E^{\text{HF}} = \left< \Phi_0 \right| \hat H \left| \Phi_0 \right> &= \left< \Phi_0 \right| \hat H_0 \left| \Phi_0 \right> + \left< \Phi_0 \right| \hat V \left| \Phi_0 \right> \\
- 			&= 2 - g 
+ 			E^{\text{HF}} = \left< \Phi_0 \right| \hat H \left| \Phi_0 \right> = \left< \Phi_0 \right| \hat H_0 \left| \Phi_0 \right> + \left< \Phi_0 \right| \hat V \left| \Phi_0 \right>, 
+ 		\end{align}
+ 		which gives the result
+ 		\begin{align}
+ 			E^{\text{HF}} = 2 - g 
  		\end{align}
  		This energy will be referred to as the reference energy. 
  	\end{section}
 
 	\begin{section}{Many-Body Perturbation Theory}
- 		When setting up the perturbation theory equations, it is useful to present them as diagrams. All the diagrams for the first, second and third order perturbation theory are presented and translated to equations in this section. 
+ 		When setting up the perturbation theory equations, it is useful to present them as diagrams. All the diagrams for the second to fourth order perturbation theory are presented and translated to equations in this section. 
  		
 		Because of special properties of the Pairing model, many of these diagrams can be removed by a visual examination. First, we have no broken pairs, meaning that a general two-body matrix element 
 		\begin{align}
-			\left< pq | v | rs \right> 
+			\left< pq | v | rs \right>,
 		\end{align}
 		is only non-zero if \textit{both} $p$ and $q$ are hole states or \textit{both} are particle states. The same restriction applies to $r$ and $s$. The second thing to notice, is that we have a canonical Hartree-Fock. That means only diagonal one-body matrix elements are non-zero. We will compute the correlation energy $\Delta E$, using the Hamiltonian
 		\begin{align}
-			\hat H_N = \hat F_N^d + \hat F_N^o + \hat W = \hat F_N^d + \hat W
+			\hat H_N = \hat F_N^d + \hat F_N^o + \hat W = \hat F_N^d + \hat W,
 		\end{align}
 		where
 		\begin{align}
-			f_{pq} = \epsilon_p \delta_{pq}
+			f_{pq} = \epsilon_p \delta_{pq}.
 		\end{align}
+		The diagrams to second and third order, are presented in the following diagram
  		\begin{figure}[H]
 			\includegraphics[width=\textwidth]{Figures/FirstSecondThirdOrder.pdf}
 			\caption{Diagrams for Many-Body Perturbation theory to second and third order. }
@@ -1811,21 +1828,21 @@
 		\begin{subsection}{Interpreting diagrams}
 			When reading the diagrams, and connecting them to the equations presented in the equations (\ref{MBPT equations}), there are a simple set of rules. We have the expression for the resolvent, $\hat R_0$ given as 
 			\begin{align}
-				\hat R_0 = \frac{\hat Q}{E_0^{(0)} - \hat H_0} = \sum_I \frac{\left| \Phi_I \right> \left< \Phi_I \right| }{E_0^{(0)} - E_I^{(0)}}
+				\hat R_0 = \frac{\hat Q}{E_0^{(0)} - \hat H_0} = \sum_I \frac{\left| \Phi_I \right> \left< \Phi_I \right| }{E_0^{(0)} - E_I^{(0)}},
 			\end{align}
-			Where we sum over all states apart from $\left| \Phi_0 \right>$. When this operator operates on any state $\left| J \right>$ other than $\left| \Phi_0 \right> $, it will only produce \cite{ShavittAndBartlett}
+			where we sum over all states apart from $\left| \Phi_0 \right>$. When this operator operates on any state $\left| J \right>$ other than $\left| \Phi_0 \right> $, it will only produce, as shown in \cite{ShavittAndBartlett}, 
 			\begin{align}
-				\hat R_0 \left| J \right> = \left| J \right> \frac{1}{E_0^{(0)} - E_J^{(0)}}
+				\hat R_0 \left| J \right> = \left| J \right> \frac{1}{E_0^{(0)} - E_J^{(0)}}, 
 			\end{align}
-			Meaning that the resolvent will only introduce a denominator expressed in terms of zeroth-order energies. We will introduce a more practical notation for this denominator
+			meaning that the resolvent will only introduce a denominator expressed in terms of zeroth-order energies. We will introduce a more practical notation for this denominator
 			\begin{align}
-				\epsilon_{ij..}^{ab..} = E_0^{(0)} - E_{\left| \Phi_{ij..}^{ab..} \right> } = \epsilon_i + \epsilon_j + ... - \epsilon_a - \epsilon_b - ...
+				\epsilon_{ij..}^{ab..} = E_0^{(0)} - E_{\left| \Phi_{ij..}^{ab..} \right> } = \epsilon_i + \epsilon_j + ... - \epsilon_a - \epsilon_b - ... .
 			\end{align}
-			The operator $\hat V$, as shown in equations (\ref{MBPT equations}), will give rise to matrix elements. If we have a canonical Hartree-Fock basis, we can rewrite 
+			The operator $\hat V$, as shown in equations (\ref{MBPT equations}), will give rise to matrix elements. If we have a canonical Hartree-Fock basis, we can rewrite the operator by 
 			\begin{align}
-				\hat V = \hat W + \hat F^o = \hat W 
+				\hat V = \hat W + \hat F^o = \hat W ,
 			\end{align}
-			And there will only be two-body matrix elements present, which implies that all diagrams with one-body interactions can be removed. In the noncanonical Hartree-Fock case, $\hat F^o$ will give non-zero results and must be present. The procedure for interpreting the diagram and write out the corresponding equations can be summed up in the following sequence of operations
+			and there will only be two-body matrix elements present. Thich implies that all diagrams with one-body interactions can be removed. In the noncanonical Hartree-Fock case, $\hat F^o$ will give non-zero results and must be present. The procedure for interpreting the diagram and write out the corresponding equations can be summed up in the following sequence of operations
 		\end{subsection}
 
 		\begin{subsection}{Label all lines}
@@ -1835,11 +1852,11 @@
 		\begin{subsection}{Identify the operators}
 			A one-body vertex should be identified as the one-body operator used for the system, where one sets up the matrix element $f_p^q$ by the labels as
 			\begin{align}
-				f_p^q = \left< \text{line out} \right| \hat f \left| \text{line in} \right>
+				f_p^q = \left< \text{line out} \right| \hat f \left| \text{line in} \right>.
 			\end{align}
 			The two-body vertices are identified as the two-body operators, and when identified, one should set up the corresponding matrix elements following the interpretation rule
 			\begin{align}
-				\left< pq || rs \right> = \left< \text{left in, right in} || \text{left out, right out} \right> 
+				\left< pq || rs \right> = \left< \text{left in, right in} || \text{left out, right out} \right> .
 			\end{align}
 		\end{subsection}
 
@@ -1850,41 +1867,41 @@
 		\begin{subsection}{Including phase factor}
 			The resulting diagram will get a phase factor depending on how many hole states and how many closed loops there are. The factor is given by 
 			\begin{align}
-				(-1)^{\text{Closed loops} + \text{Number of holes}}
+				(-1)^{\text{Closed loops} + \text{Number of holes}}.
 			\end{align}
 		\end{subsection}
 
 		\begin{subsection}{Identify equivalent lines}
 			Equivalent lines are pairs of lines that connect at the same vertices. They must also be of the same kind, either both particle states or both hole states. They will introduce a factor given as 
 			\begin{align}
-				\left( \frac{1}{2} \right)^{\text{number of equivalent lines}}
+				\left( \frac{1}{2} \right)^{\text{number of equivalent lines}}.
 			\end{align}
 		\end{subsection}
 
 		\begin{subsection}{Second Order Perturbation Theory}
 			Starting with diagram 1, we see that this diagram is non-zero, because there is no one-body operator and no pairs are broken. We can set up the equation as
 			\begin{align}
-				E_\text{Diagram 1} = (-1)^{2+2} \frac{1}{2^2} \sum_{\substack{ab \\ ij}} \frac{\left< ij || ab \right> \left< ab || ij \right>}{\epsilon_{ij}^{ab}}
+				E_\text{Diagram 1} = (-1)^{2+2} \frac{1}{2^2} \sum_{\substack{ab \\ ij}} \frac{\left< ij || ab \right> \left< ab || ij \right>}{\epsilon_{ij}^{ab}}.
 			\end{align}
 			Diagram 2 can be written out as
 			\begin{align}
-				E_\text{Diagram 2} = \sum_{ia} \frac{\left<i\right|f\left|a\right> \left<a\right| \hat f \left| i \right>}{\epsilon_i^a} = 0
+				E_\text{Diagram 2} = \sum_{ia} \frac{\left<i\right|f\left|a\right> \left<a\right| \hat f \left| i \right>}{\epsilon_i^a} = 0.
 			\end{align}
-			This, however, will be zero. This is because we are operating with a canonical Hartree-Fock basis. By the definition of a non canonical Hartree Fock basis, $f_i^a = 0$, that basis would provide the same result. That means, only diagram 1 will provide a non-zero result for second order perturbation theory. 
+			This diagram, however, will be zero. This is because we are operating with a canonical Hartree-Fock basis. By the definition of a non canonical Hartree Fock basis, $f_i^a = 0$, that basis would provide the same result. That means, only diagram 1 will provide a non-zero result for second order perturbation theory. 
 
 		\end{subsection}
 
 		\begin{subsection}{Third Order Perturbation Theory}
 			The third order diagrams, shown in figure \ref{figure:mbpt23}, are numbered from 3 to 15. Third order diagrams have three interaction parts: One at the top and one at the bottom of the diagram along with an intermediate interaction part in the middle. Applying the same logic that we applied for diagram 2, we can exclude all diagrams with a one-body interaction term, leaving only diagrams 3, 4 and 5. 
 			\begin{align}
-				E_{\text{diagram 3}} = \sum_{\substack{abc \\ ijk}} \frac{\left<ij||ab\right>\left<bk||jc\right>\left<ac||ij\right>}{\epsilon_{ij}^{ac} \epsilon_{ij}^{ab}} = 0
+				E_{\text{diagram 3}} = \sum_{\substack{abc \\ ijk}} \frac{\left<ij||ab\right>\left<bk||jc\right>\left<ac||ij\right>}{\epsilon_{ij}^{ac} \epsilon_{ij}^{ab}} = 0. 
 			\end{align}
 			However, here we see a problem. We have an interaction term $\left<bk||jc\right>$, which is a broken pair. The Pairing model does not allow such states, and this must be zero. This is not a problem for the diagrams 4 and 5. 
 			\begin{align}
-				E_{\text{diagram 4}} = \frac{1}{2^3} \sum_{\substack{abcd \\ ij}} \frac{\left<cd||ij\right>\left<ab||cd\right>\left<ij||ab\right>}{\epsilon_{ij}^{cd} \epsilon_{ij}^{ab}}
+				E_{\text{diagram 4}} = \frac{1}{2^3} \sum_{\substack{abcd \\ ij}} \frac{\left<cd||ij\right>\left<ab||cd\right>\left<ij||ab\right>}{\epsilon_{ij}^{cd} \epsilon_{ij}^{ab}},
 			\end{align}
 			\begin{align}
-				E_{\text{diagram 4}} = \frac{1}{2^3} \sum_{\substack{ab \\ ijkl}} \frac{\left<ab||kl\right>\left<kl||ij\right>\left<ij||ab\right>}{\epsilon_{kl}^{ab} \epsilon_{ij}^{ab}}
+				E_{\text{diagram 4}} = \frac{1}{2^3} \sum_{\substack{ab \\ ijkl}} \frac{\left<ab||kl\right>\left<kl||ij\right>\left<ij||ab\right>}{\epsilon_{kl}^{ab} \epsilon_{ij}^{ab}}.
 			\end{align}
 			So when doing perturbation theory to third degree with a canonical Hartree-Fock basis as for the Pairing model, one only needs to calculate the diagrams 1, 4 and 5. 
 
@@ -1905,21 +1922,21 @@
 			\end{figure}
 			The set of diagrams shown in figure (\ref{figure:mbpt2p2h}), give rise to a 2 particle and 2 hole excitation. For all these diagrams, there are only 2p-2h interaction parts for all intermediate steps. However, many of these diagrams give rise to a broken pair interaction of the form 
 			\begin{align}
-			 	\left< ai || pq \right> 
+			 	\left< ai || pq \right> .
 			\end{align}
 			Only the diagrams 5,6,14 and 15 have no broken pair interactions. They are calculated as
 			\begin{align}
-				E_{\text{diagram 5}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<cd||kl\right>\left<kl||ij\right>\left<ab||cd\right>\left<ij||ab\right> }{ \epsilon_{kl}^{cd} \epsilon_{ij}^{cd} \epsilon_{ij}^{ab} }
+				E_{\text{diagram 5}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<cd||kl\right>\left<kl||ij\right>\left<ab||cd\right>\left<ij||ab\right> }{ \epsilon_{kl}^{cd} \epsilon_{ij}^{cd} \epsilon_{ij}^{ab} },
 			\end{align} 
-			And diagram 6
+			and diagram 6
 			\begin{align}
-				E_{\text{diagram 6}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<cd||kl\right>\left<kl||ij\right>\left<ab||cd\right>\left<ij||ab\right> }{ \epsilon_{kl}^{ab} \epsilon_{kl}^{cd} \epsilon_{ij}^{ab} }
+				E_{\text{diagram 6}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<cd||kl\right>\left<kl||ij\right>\left<ab||cd\right>\left<ij||ab\right> }{ \epsilon_{kl}^{ab} \epsilon_{kl}^{cd} \epsilon_{ij}^{ab} }.
 			\end{align} 
 			For diagram 14, we get 
 			\begin{align}
-				E_{\text{diagram 14}} = \frac{1}{2^4} \sum_{\substack{abcdef\\ij}} \frac{ \left<ij||ab\right>\left<ab||cd\right>\left<cd||ef\right>\left<ef||ij\right> }{ \epsilon_{ij}^{ab} \epsilon_{ij}^{cd} \epsilon_{ij}^{ef} }
+				E_{\text{diagram 14}} = \frac{1}{2^4} \sum_{\substack{abcdef\\ij}} \frac{ \left<ij||ab\right>\left<ab||cd\right>\left<cd||ef\right>\left<ef||ij\right> }{ \epsilon_{ij}^{ab} \epsilon_{ij}^{cd} \epsilon_{ij}^{ef} },
 			\end{align} 
-			And for diagram 15
+			and for diagram 15
 			\begin{align}
 				E_{\text{diagram 15}} = \frac{1}{2^4} \sum_{\substack{ab\\ijklmn}} \frac{ \left<ij||ab\right>\left<kl||ij\right>\left<mn||kl\right>\left<ab||mn\right> }{ \epsilon_{ij}^{ab} \epsilon_{kl}^{ab} \epsilon_{mn}^{ab} }
 			\end{align} 
@@ -1938,33 +1955,32 @@
 			\end{figure}
 			The last set of diagrams, depicted in figure (\ref{figure:mbpt4p4h}), show the fourth order diagrams that include a 4 particle and 4 hole part. Invoking the Linked diagram theorem, we can immediatly exclude diagram 33 and diagram 41. Diagram 34 to 40 do will be non-zero, and must be calculated. For diagram 34, we get
 			\begin{align}
-				E_{\text{diagram 34}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ab||ik\right>\left<cd||jl\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{jl}^{cd} }
+				E_{\text{diagram 34}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ab||ik\right>\left<cd||jl\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{jl}^{cd} }.
 			\end{align}
 			We notice that there are 3 closed loops and 4 hole states, giving rise to the negative phase factor. We also notice that we have two pairs of equivalent lines, arising from the particle states, introducing a factor $\frac{1}{4}$. One can also notice the fourth order denominator term $\epsilon_{ijkl}^{abcd}$, arising from the 4p-4h intermediate excitation part. The last diagrams are calculated following the same principles, giving 
 			\begin{align}
-				E_{\text{diagram 35}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ac||ij\right>\left<bd||kl\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{kl}^{bd} }
+				E_{\text{diagram 35}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ac||ij\right>\left<bd||kl\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{kl}^{bd} },
 			\end{align}
-			And diagram 36. Please notice that there is a mistake in the drawing of the diagram 36. The right-most particle state is supposed to be a hole state, giving the correct equation 
+			Before calculating diagram 36, please notice that there is a mistake in the drawing of the diagram 36. The right-most particle state is supposed to be a hole state, giving the correct equation 
 			\begin{align}
-				E_{\text{diagram 36}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ab||kl\right>\left<cd||ij\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ij}^{cd} }
+				E_{\text{diagram 36}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<ab||kl\right>\left<cd||ij\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ij}^{cd} }.
 			\end{align}
 			Diagram 37 is also depicted with the right-most state wrong. It is supposed to be a particle state, giving
 			\begin{align}
-				E_{\text{diagram 37}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<cd||ij\right>\left<ab||kl\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{kl}^{ab} }
+				E_{\text{diagram 37}} = \frac{1}{2^4} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<cd||ij\right>\left<ab||kl\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{kl}^{ab} }.
 			\end{align}
 			and for diagram 38, we notice that there are no equal state pairs
 			\begin{align}
-				E_{\text{diagram 38}} = \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<db||lj\right>\left<ac||ik\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ik}^{ac} }
+				E_{\text{diagram 38}} = \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<db||lj\right>\left<ac||ik\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ik}^{ac} }.
 			\end{align}
 			Diagram 39 gives
 			\begin{align}
-				E_{\text{diagram 39}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<bd||kl\right>\left<ac||ij\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ij}^{ac} }
+				E_{\text{diagram 39}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<bd||kl\right>\left<ac||ij\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ij}^{ac} }.
 			\end{align}
 			And finally, diagram 40 gives the equation
 			\begin{align}
-				E_{\text{diagram 40}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<cd||jl\right>\left<ab||ik\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ik}^{ab} }
+				E_{\text{diagram 40}} = \left(-1\right)^{(3+4)} \frac{1}{2^2} \sum_{\substack{abcd\\ijkl}} \frac{ \left<ij||ab\right>\left<kl||cd\right>\left<cd||jl\right>\left<ab||ik\right> }{ \epsilon_{ij}^{ab} \epsilon_{ijkl}^{abcd} \epsilon_{ik}^{ab} }.
 			\end{align}
-			
 		\end{subsection}
  		
  	\end{section}
@@ -1972,18 +1988,18 @@
  	\begin{section}{Spin Summations}
  		Up to this point, we have not taken into account the effect of spin in the matrix elements. Because of spin orthogonality, terms may vanish from certain two-electron matrix elements. Listed here, are all the different ways spins can be organized, along with the resulting integration. Representing the spin up orbital with a bar, we get \cite{ShavittAndBartlett}
  		\begin{align}
- 			\left< pq || rs \right> &= \left< pq | \hat v | rs \right> - \left< pq | \hat v | sr \right> \\
- 			\left< p\bar q || r\bar s \right> &= \left<pq | \hat v | rs \right> \\
- 			\left< p \bar q|| \bar r s \right> &= - \left<pq | \hat v | sr \right> \\
- 			\left< \bar p q|| \bar r s\right> &= \left< pq | \hat v | rs \right> \\
- 			\left< \bar p q|| r \bar s \right> &= - \left< pq | \hat v | sr \right> \\
- 			\left< \bar p \bar q || \bar r \bar s \right> &= \left< pq | \hat v | rs \right> - \left< pq | \hat v | sr \right> 
+ 			\left< pq || rs \right> &= \left< pq | \hat v | rs \right> - \left< pq | \hat v | sr \right>, \\
+ 			\left< p\bar q || r\bar s \right> &= \left<pq | \hat v | rs \right> ,\\
+ 			\left< p \bar q|| \bar r s \right> &= - \left<pq | \hat v | sr \right> ,\\
+ 			\left< \bar p q|| \bar r s\right> &= \left< pq | \hat v | rs \right>, \\
+ 			\left< \bar p q|| r \bar s \right> &= - \left< pq | \hat v | sr \right>, \\
+ 			\left< \bar p \bar q || \bar r \bar s \right> &= \left< pq | \hat v | rs \right> - \left< pq | \hat v | sr \right> .
  		\end{align}
  		Because of the restrictions on the pairing model, the first and last equation will also be zero, because the states are not allowed to exist. Matrix elements, where there is an unequal amount of equal spin orbitals will all give zero as result as well
  		\begin{align}
- 			\left< \bar p q || rs \right> &= \left< p \bar q || rs \right> = \left< pq || \bar r s \right> = \left< pq || r \bar s \right> = 0 \\
- 			\left< \bar p \bar q || rs \right> &= \left< pq || \bar r \bar s \right>  = 0 \\
- 			\left< \bar p \bar q || \bar r s \right> &= \left< \bar p \bar q || r \bar s \right> = \left< \bar p q || \bar r \bar s \right> = \left< p \bar q || \bar r \bar s \right> = 0
+ 			\left< \bar p q || rs \right> &= \left< p \bar q || rs \right> = \left< pq || \bar r s \right> = \left< pq || r \bar s \right> = 0, \\
+ 			\left< \bar p \bar q || rs \right> &= \left< pq || \bar r \bar s \right>  = 0 ,\\
+ 			\left< \bar p \bar q || \bar r s \right> &= \left< \bar p \bar q || r \bar s \right> = \left< \bar p q || \bar r \bar s \right> = \left< p \bar q || \bar r \bar s \right> = 0.
  		\end{align} 
 
 
@@ -2001,54 +2017,55 @@
 		\begin{subsection}{The Hamiltonian}
 			The electrons interact with the central symmetric Colomb potential, $\hat V(\vec r_1, \vec r_2)$ depending only on the distance $\left| \vec r_1 - \vec r_2 \right|$. The Hamiltonian for infinite electron gas is \cite{Baardsen}
 			\begin{align}
-				\hat H = \hat H_1 + \hat H_2 = \hat H_{\text{kin}} + \hat H_{\text{interaction}}
+				\hat H = \hat H_1 + \hat H_2 = \hat H_{\text{kin}} + \hat H_{\text{interaction}}.
 			\end{align}
 			The interaction term will be dependent on both the electron-electron interaction, the electron-background interaction and the background-background interaction
 			\begin{align}
-				\hat H = \hat H_{\text{kin}} + \hat H_{\text{ee}} + \hat H_{\text{eb}} + \hat H_{\text{bb}}
+				\hat H = \hat H_{\text{kin}} + \hat H_{\text{ee}} + \hat H_{\text{eb}} + \hat H_{\text{bb}}.
 			\end{align}
-			And the kinetic energy, $\hat H_{\text{kin}}$ is given as
+			The kinetic energy, $\hat H_{\text{kin}}$ is given as
 			\begin{align}
-				\hat H_{\text{kin}} = \sum_p \frac{\hbar ^2 k^2}{2m} a_{k \sigma}^{\dagger} a_{k \sigma}
+				\hat H_{\text{kin}} = \sum_p \frac{\hbar ^2 k^2}{2m} a_{k \sigma}^{\dagger} a_{k \sigma}.
 			\end{align}
 			The background-interaction terms will vanish as explained by Fraser et al \cite{Fraser et al} both for three- and two-dimensional electron gas. When we sum over all particles, we can write the electron-electron interaction term as an Ewald summation term, because it is not possible to use a $1/r$ term for infinite systems \cite{Drummond2008} \cite{MHJonline}. We can write this term as
 			\begin{align}
-				\hat H_{ee} = \sum_{i<j}^N v_E(\mathbf{r}_i - \mathbf{r}_j) + \frac{1}{2}Ne^2v_0
+				\hat H_{ee} = \sum_{i<j}^N v_E(\mathbf{r}_i - \mathbf{r}_j) + \frac{1}{2}Ne^2v_0,
 			\end{align}
-			Where $v_E(\mathbf{r})$ is an effective two-body interaction. $v_0$ is the self-interaction term, defined as 
+			where $v_E(\mathbf{r})$ is an effective two-body interaction. $v_0$ is the self-interaction term, defined as 
 			\begin{align}
-				v_0 = \lim_{\mathbf{r}\rightarrow \infty} \left\{ v_E(\mathbf{r}) - \frac{1}{r} \right\}
+				v_0 = \lim_{\mathbf{r}\rightarrow \infty} \left\{ v_E(\mathbf{r}) - \frac{1}{r} \right\}.
 			\end{align}
 			The Ewald summation will account for interactions between all electrons in the finite size system as well as all the image electrons that will arize from self-interaction because of periodic boundaries. We define it as 
 			\begin{align}
 				v_E(\mathbf{r}) &= \sum_{k \neq 0} \frac{4\pi}{L^3k^2} e^{i \mathbf{k}\cdot \mathbf{r} } e^{-\eta^2 k^2 / 4} \\
-								&+ \sum_{\mathbf{R}} \frac{1}{|	\mathbf{r} - \mathbf{R}|} \text{erfc} \left( \frac{| \mathbf{r} - \mathbf{R}|}{\eta} \right) - \frac{\pi \eta^2}{L^3}
+								&+ \sum_{\mathbf{R}} \frac{1}{|	\mathbf{r} - \mathbf{R}|} \text{erfc} \left( \frac{| \mathbf{r} - \mathbf{R}|}{\eta} \right) - \frac{\pi \eta^2}{L^3}, \nonumber
 			\end{align}
-			$L$ is the size of the box, $\mathbf{k}$ is the momentum vector, while $\mathbf{r}$ represent the position vectors for all electrons. The translational vector $\mathbf{R}$, is used to obtain all image cells in the entire real space \cite{MHJonline}
+			where $L$ is the size of the box, $\mathbf{k}$ is the momentum vector, while $\mathbf{r}$ represent the position vectors for all electrons. The translational vector $\mathbf{R}$, is used to obtain all image cells in the entire real space \cite{MHJonline}
 			\begin{align}
-				\mathbf{R} = L(n_x \mathbf{u}_x + n_y \mathbf{u}_y + n_z \mathbf{u}_z)
+				\mathbf{R} = L(n_x \mathbf{u}_x + n_y \mathbf{u}_y + n_z \mathbf{u}_z).
 			\end{align}
 			We have used the error functions
 			\begin{align}
-				\text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2} \text{dt}
+				\text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2} \text{dt},
 			\end{align}
+			and
 			\begin{align}
-				\text{erfc}(x) = 1 - \text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_x^\infty e^{-t^2} \text{dt}
+				\text{erfc}(x) = 1 - \text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_x^\infty e^{-t^2} \text{dt}.
 			\end{align}
 			We use this relation because an interaction on the form $1/|r|$ is not convergent for an infinite number of particles \cite{Audun}. Ewald found that one can rewrite the interaction in terms of these error functions \cite{Ewald}
 			\begin{align}
-				\frac{1}{r} = \frac{\text{erf}(\frac{1}{2}\sqrt{\eta}r)}{r} + \frac{\text{erfc}(\frac{1}{2}\sqrt{\eta}r)}{r}
+				\frac{1}{r} = \frac{\text{erf}(\frac{1}{2}\sqrt{\eta}r)}{r} + \frac{\text{erfc}(\frac{1}{2}\sqrt{\eta}r)}{r}.
 			\end{align}
 			One can calculate the two-dimensional Ewald term as well \cite{Baardsen}, resulting in 
 			\begin{align}
-				v_E^{\eta=0, z=0} = \sum_{\mathbf{k} \neq 0} \frac{2 \pi}{L^2 k} e^{i \mathbf{k} \cdot \mathbf{r}_{xy}}
+				v_E^{\eta=0, z=0} = \sum_{\mathbf{k} \neq 0} \frac{2 \pi}{L^2 k} e^{i \mathbf{k} \cdot \mathbf{r}_{xy}}.
 			\end{align}
 		\end{subsection}
 		
 		\begin{subsection}{The Reference Energy}
 			The reference energy for electron gas can be written as \cite{Baardsen}
 			\begin{align}
-				E_{\text{ref}} = \sum_i \left<i | h_0 | i\right> + \frac{1}{2} \sum_{ij} \left<ij||ij\right> + \frac{1}{2} Av_0
+				E_{\text{ref}} = \sum_i \left<i | h_0 | i\right> + \frac{1}{2} \sum_{ij} \left<ij||ij\right> + \frac{1}{2} Av_0.
 			\end{align}
 			$A$ is the number of electrons, and the term $A v_0$ is the so-called Madelung constant. It is how we incorporate the self-interaction term into the system. This factor will be larger for smaller system and vanish as we approach the thermodynamic limit. 
 		\end{subsection}
@@ -2056,11 +2073,11 @@
 		\begin{subsection}{The Fock Matrix Elements}
 			The Fock Matrix Elements will be given as
 			\begin{align}
-				\left< p | f | q \right> = \frac{k_p^2}{2m} \delta_{\mathbf{k}_p \mathbf{k}_q} \delta_{m_{s_p} m_{s_q}} + \sum_i \left<pi||qi\right>
+				\left< p | f | q \right> = \frac{k_p^2}{2m} \delta_{\mathbf{k}_p \mathbf{k}_q} \delta_{m_{s_p} m_{s_q}} + \sum_i \left<pi||qi\right>.
 			\end{align}
 			We notice that the Fock Matrix elements can be written as a diagonal part plus the $\hat U$ operator. As we can see from (\ref{3.93}) and (\ref{3.95}), this means the perturbation can be written solely by the two-body interaction
 			\begin{align}
-				\hat V = \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r
+				\hat V = \frac{1}{4} \sum_{pqrs} \left<pq||rs\right> \hat p^\dagger \hat q^\dagger \hat s \hat r.
 			\end{align}
 		\end{subsection}
 
@@ -2068,37 +2085,37 @@
 			We now need to define the matrix elements for the two- and three-dimensional electron gas to calculate the perturbation 
 			\begin{align}
 				&\left< \mathbf{k}_p m_{s_p} \mathbf{k}_q m_{s_q} || \mathbf{k}_r m_{s_r} \mathbf{k}_s m_{s_s} \right> \\
-				&= \frac{4 \pi e^2}{L^3} \delta_{\mathbf{k}_p + \mathbf{k}_q, \mathbf{k}_r + \mathbf{k}_s} \left\{ \delta_{ m_{s_p},m_{s_r} } \delta_{ m_{s_q},m_{s_s} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_r}) \frac{1}{| \mathbf{k}_r - \mathbf{k}_p|^2} \right. \\
-				& - \delta_{ m_{s_p},m_{s_s} } \delta_{ m_{s_q},m_{s_r} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_s}) \left. \frac{1}{| \mathbf{k}_s - \mathbf{k}_p|^2}  \right\}
+				&= \frac{4 \pi e^2}{L^3} \delta_{\mathbf{k}_p + \mathbf{k}_q, \mathbf{k}_r + \mathbf{k}_s} \left\{ \delta_{ m_{s_p},m_{s_r} } \delta_{ m_{s_q},m_{s_s} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_r}) \frac{1}{| \mathbf{k}_r - \mathbf{k}_p|^2} \right. \nonumber \\
+				& - \delta_{ m_{s_p},m_{s_s} } \delta_{ m_{s_q},m_{s_r} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_s}) \left. \frac{1}{| \mathbf{k}_s - \mathbf{k}_p|^2}  \right\}. \nonumber
 			\end{align}
 			The two-dimensial case is almost identical
 			\begin{align}
 				&\left< \mathbf{k}_p m_{s_p} \mathbf{k}_q m_{s_q} || \mathbf{k}_r m_{s_r} \mathbf{k}_s m_{s_s} \right> \\
-				&= \frac{2 \pi e^2}{L^2} \delta_{\mathbf{k}_p + \mathbf{k}_q, \mathbf{k}_r + \mathbf{k}_s} \left\{ \delta_{ m_{s_p},m_{s_r} } \delta_{ m_{s_q},m_{s_s} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_r}) \frac{1}{| \mathbf{k}_r - \mathbf{k}_p|} \right. \\
-				& - \delta_{ m_{s_p},m_{s_s} } \delta_{ m_{s_q},m_{s_r} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_s}) \left. \frac{1}{| \mathbf{k}_s - \mathbf{k}_p|}  \right\}
+				&= \frac{2 \pi e^2}{L^2} \delta_{\mathbf{k}_p + \mathbf{k}_q, \mathbf{k}_r + \mathbf{k}_s} \left\{ \delta_{ m_{s_p},m_{s_r} } \delta_{ m_{s_q},m_{s_s} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_r}) \frac{1}{| \mathbf{k}_r - \mathbf{k}_p|} \right. \nonumber \\
+				& - \delta_{ m_{s_p},m_{s_s} } \delta_{ m_{s_q},m_{s_r} } (1 - \delta_{\mathbf{k}_p, \mathbf{k}_s}) \left. \frac{1}{| \mathbf{k}_s - \mathbf{k}_p|}  \right\}. \nonumber
 			\end{align}		
 		\end{subsection}
 
 		\begin{subsection}{The Plane Wave Basis}
 			When set up with periodic boundary conditions, the Homogenous electron gas can be set up with free particle normalized wave functions
 			\begin{align}
-				\psi_{\vec k \sigma} (\vec r) = \frac{1}{\sqrt{\Omega}} e^{i \vec k \vec r} \xi_{\sigma}
+				\psi_{\vec k \sigma} (\vec r) = \frac{1}{\sqrt{\Omega}} e^{i \vec k \vec r} \xi_{\sigma},
 			\end{align}
-			Where $\vec k$ is the wave number and $\xi_{\sigma}$ is a spin function. 
+			where $\vec k$ is the wave number and $\xi_{\sigma}$ is a spin function. 
 			\begin{align}
-				\xi_{+\frac{1}{2}} = \left( \begin{matrix} 1 \\ 0 \end{matrix} \right) \:\;\:\; \xi_{-\frac{1}{2}} = \left( \begin{matrix} 0 \\ 1 \end{matrix} \right)
+				\xi_{+\frac{1}{2}} = \left( \begin{matrix} 1 \\ 0 \end{matrix} \right), \:\;\:\; \xi_{-\frac{1}{2}} = \left( \begin{matrix} 0 \\ 1 \end{matrix} \right).
 			\end{align}
 			Because of periodic boundary conditions, we acquire the following wave numbers
 			\begin{align}
-				k_i = \frac{2\pi n_i}{L} \:\:\:\;\; i = x,y,z \;\;\:\:\: n_i = 0, \pm 1, \pm 2, ...
+				k_i = \frac{2\pi n_i}{L}, \:\:\:\;\; i = x,y,z \;\;\:\:\: n_i = 0, \pm 1, \pm 2, ... .
 			\end{align}
 			and the associated single-particle energies for two dimensions
 			\begin{align}
-				\epsilon_{n_x,n_y} = \frac{\hbar^2}{2m} \left( \frac{2\pi}{L} \right)^2 (n_x^2 + n_y^2)
+				\epsilon_{n_x,n_y} = \frac{\hbar^2}{2m} \left( \frac{2\pi}{L} \right)^2 (n_x^2 + n_y^2).
 			\end{align}
-			And for three dimensions
+			For three dimensions, we get the energy 
 			\begin{align}
-				\epsilon_{n_x,n_y,n_z} = \frac{\hbar^2}{2m} \left( \frac{2\pi}{L} \right)^2 (n_x^2 + n_y^2 + n_z^2 )
+				\epsilon_{n_x,n_y,n_z} = \frac{\hbar^2}{2m} \left( \frac{2\pi}{L} \right)^2 (n_x^2 + n_y^2 + n_z^2 ).
 			\end{align}
 			By the nature of the single particle energies, the energy levels will be determined by the value of $n_x^2 + n_y^2 + n_z^2$. There are different combinations of $n_x, n_y$ and $n_z$ that set up each energy level. The cumulative number of particles needed to completely fill these energy states will be named \textit{magic numbers} and are listed in table (\ref{Magic Numbers 3d}). 
 			\begin{table}[H]
@@ -2164,9 +2181,9 @@
 	\begin{section}{Infinite Nuclear Matter}
 		Central to my thesis, is the study of infinite nuclear matter. I look at baryonic matter similar to the dense baryonic matter found in neutron stars. I limit the study to temperatures far below Fermi level. The matter is mostly made up of an equilibrium of baryons and leptons. In neutron star matter, we assume the equilibrium consists of protons, neutrons, electrons and muons with densities larger than $0.1 \text{fm}^-3$. The equilibrium conditions are specified by weak interactions
 		\begin{align}
-		 	b_1 \rightarrow b_2 + l + \bar \nu_l \:\:\:\:\:\: b_2 + l \rightarrow b_1 + \nu_l
+		 	b_1 \rightarrow b_2 + l + \bar \nu_l \:\:\:\:\:\: b_2 + l \rightarrow b_1 + \nu_l,
 		\end{align} 
-		Where $b$ represent either neutron or proton and $l$ is either an electron or muon. $\nu_l$ is the corresponding neutrino. 
+		where $b$ represent either a neutron or a proton and $l$ is either an electron or muon. $\nu_l$ is the corresponding neutrino. 
 
 		Nuclear matter is a hypothetical system filling all of space at a uniform density. Symmetric nuclear matter (SNM) consist of equal numbers of protons of neutrons, while pure nuclear matter (PNM) consist only of neutrons. For finite-nucleus systems, the most difficult part is calculating the single particle wave function. For nuclear matter we can use the same plane wave basis that we used for the electron gas. The difficult part is calculating the energy and the effective interaction between particles \cite{Day1967}. In my calculations, I have looked at pure nuclear matter. 
 	\end{section}
@@ -2178,41 +2195,42 @@
 			The Minnesota Potential is given as
 			\begin{align}
 				v(r) = &\left(v_R + (1 + P_{12}^\sigma) v_T/2 + (1 - P_{12}^\sigma) v_S/2 \right) \\
-					   \cdot &\left( \alpha + (2- \alpha)P_{12}^r \right)/2 + (1+m_{t,1})(1+m_{t,2})\frac{e^2}{4r}
+					   \cdot &\left( \alpha + (2- \alpha)P_{12}^r \right)/2 + (1+m_{t,1})(1+m_{t,2})\frac{e^2}{4r}, \nonumber
 			\end{align}
 			where $r$ is given as $\left| \mathbf{r_1} - \mathbf{r_2} \right|$ and $m_t$ is the isospin projection of particle 1 or 2. $m_t = \pm 1$. 
 			$P_{12}^\sigma $ and $P_{12}^r$ are exchange operators for spin and position, respectively \cite{Baardsen}. Furthermore, we have used
 			\begin{align} 
-				v_R = v_{0R}e^{-k_R r^2}, \:\:\: v_T = -v_{0T} e^{-k_Tr^2}, \:\:\: v_S = -v_{0S}e^{-k_sr^2}
+				v_R = v_{0R}e^{-k_R r^2}, \:\:\: v_T = -v_{0T} e^{-k_Tr^2}, \:\:\: v_S = -v_{0S}e^{-k_sr^2},
 			\end{align}
-			Where the constants $v_{0R}$, $v_{0T}$, $v_{0S}$, $k_R$, $k_T$ and $k_S$ are given by \cite{Thompson1977}
+			where the constants $v_{0R}$, $v_{0T}$, $v_{0S}$, $k_R$, $k_T$ and $k_S$ are given by \cite{Thompson1977}
 			\begin{enumerate}
-				\item $v_{0R} = 200$MeV,  $k_R = 0.1487 \text{fm}^{-2}$
-				\item $v_{0T} = 178$MeV,  $k_T = 0.649 \text{fm}^{-2}$
-				\item $v_{0S} = 91.85$MeV, $k_S = 0.465 \text{fm}^{-2}$
+				\item $v_{0R} = 200$MeV,  $k_R = 0.1487 \text{fm}^{-2}$,
+				\item $v_{0T} = 178$MeV,  $k_T = 0.649 \text{fm}^{-2}$,
+				\item $v_{0S} = 91.85$MeV, $k_S = 0.465 \text{fm}^{-2}$.
 			\end{enumerate}
 			Written by second quantisation, we want to calculate the two-body interaction
 			\begin{align}
-			 	\left<k_p k_q \middle| v \middle| k_r k_s \right> = \frac{V_0}{L^3} \left(\frac{\pi}{\alpha}\right)^{3/2} e^{-q^2 / 4 \alpha} \delta_{\vec k_p + \vec k_q, \vec k_r + \vec k_s}
+			 	\left<k_p k_q \middle| v \middle| k_r k_s \right> = \frac{V_0}{L^3} \left(\frac{\pi}{\alpha}\right)^{3/2} e^{-q^2 / 4 \alpha} \delta_{\vec k_p + \vec k_q, \vec k_r + \vec k_s},
 			\end{align}
-			Where $q$ is the relative momentum transfer
+			where $q$ is the relative momentum transfer given by 
 			\begin{align}
-				\mathbf{q} = \mathbf{p} - \mathbf{p'} 
+				\mathbf{q} = \mathbf{p} - \mathbf{p'},
 			\end{align}
+			and the momentum vectors are defined as
 			\begin{align}
-				\mathbf{p} = \frac{1}{2} (\mathbf{k}_p - \mathbf{k}_q) \:\:\:\:\: \mathbf{p'} = \frac{1}{2}(\mathbf{k}_r- \mathbf{k}_s) 
+				\mathbf{p} = \frac{1}{2} (\mathbf{k}_p - \mathbf{k}_q), \:\:\:\:\: \mathbf{p'} = \frac{1}{2}(\mathbf{k}_r- \mathbf{k}_s).
 			\end{align}
 			We can now set up the two-body Matrix-elements for the Minnesota Potential
 			\begin{align}
 				\left<\mathbf{k}_p \mathbf{k}_q \middle| v \middle| \mathbf{k}_r \mathbf{k}_s \right> = 
-				&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{2} \left( V_R + \frac{1}{2} V_T + \frac{1}{2} V_S \right) \left| \mathbf{k}_r \mathbf{k}_s \right>  \\
-				+&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{4} (V_T - V_S) P_{12}^\sigma \left| \mathbf{k}_r \mathbf{k}_s \right> \\
-				-&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{2} \left( V_R + \frac{1}{2} V_T + \frac{1}{2} V_S \right) P_{12}^\sigma P_{12}^\tau \left| \mathbf{k}_r \mathbf{k}_s \right> \\
-				-&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{4}(V_T - V_S) P_{12}^\tau  \left| \mathbf{k}_r \mathbf{k}_s \right>&
+				&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{2} \left( V_R + \frac{1}{2} V_T + \frac{1}{2} V_S \right) \left| \mathbf{k}_r \mathbf{k}_s \right>   \\
+				+&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{4} (V_T - V_S) P_{12}^\sigma \left| \mathbf{k}_r \mathbf{k}_s \right> \nonumber \\
+				-&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{2} \left( V_R + \frac{1}{2} V_T + \frac{1}{2} V_S \right) P_{12}^\sigma P_{12}^\tau \left| \mathbf{k}_r \mathbf{k}_s \right> \nonumber \\
+				-&\left<\mathbf{k}_p \mathbf{k}_q \right| \frac{1}{4}(V_T - V_S) P_{12}^\tau  \left| \mathbf{k}_r \mathbf{k}_s \right>&. \nonumber
 			\end{align}
 			Matrix elements for the spin and isospin exchange operators are 
 			\begin{align}
-				\left< \sigma_p \sigma_q \right| P_{12}^\sigma \left| \sigma_r \sigma_s \right> = \delta_{\sigma_p,\sigma_s} \delta_{\sigma_q,\sigma_r}
+				\left< \sigma_p \sigma_q \right| P_{12}^\sigma \left| \sigma_r \sigma_s \right> = \delta_{\sigma_p,\sigma_s} \delta_{\sigma_q,\sigma_r}.
 			\end{align}
 			One can see that these matrix elements come at a far greater computational cost than for electron-electron interaction in the electron gas. Therefore it is necessary to compute and store all elements instead of computing them "on the fly". Source: Lecture 1-2 infinite matter. 
 		\end{subsection}
@@ -2235,10 +2253,10 @@
 	\begin{section}{Implementing the CCD equations}
 		The basic steps of all implemented CCD algorithms can be explained through the following four steps:
 		\begin{enumerate}
-			\item Initialize amplitudes $t^{(0)} = 0$ and $\Delta E_{CCD}^{(0)} = 0$
-			\item Update the amplitudes and calculate $\Delta E_{CCD}^{(1)}$
-			\item If $ |\Delta E_{CCD}^{(1)} - \Delta E_{CCD}^{(0)}| \geq \epsilon $, update amplitudes and compute $\Delta E_{CCD}^{2}$
-			\item Repeat until $ |\Delta E_{CCD}^{(n+1)} - \Delta E_{CCD}^{(n)}| \leq \epsilon $
+			\item Initialize amplitudes $t^{(0)} = 0$ and $\Delta E_{CCD}^{(0)} = 0$.
+			\item Update the amplitudes and calculate $\Delta E_{CCD}^{(1)}$.
+			\item If $ |\Delta E_{CCD}^{(1)} - \Delta E_{CCD}^{(0)}| \geq \epsilon $, update amplitudes and compute $\Delta E_{CCD}^{2}$.
+			\item Repeat until $ |\Delta E_{CCD}^{(n+1)} - \Delta E_{CCD}^{(n)}| \leq \epsilon $.
 		\end{enumerate}
 		The difference between the three solvers I have implemented is the way I update amplitudes. The naive brute force solver loops over all indices when computing. An example of diagram $L_a$ is shown below
 
@@ -2249,7 +2267,7 @@
 					for b in Nholes, ..., Nparticles:
 						for c in Nholes, ..., Nparticles:
 							for d in Nholes, ..., Nparticles:
-								tnew(a,b,i,j) = 0.5  v(a,b,c,d)  told(c,d,i,j)
+								tnew(a,b,i,j) = 0.5 * v(a,b,c,d) * told(c,d,i,j) / epsilon(i,j,a,b);
 		\end{lstlisting}
 
 		A significant cost reduction can be obtained by factorizing the diagrams as shown in equation (\ref{Intermediates}). By calculating the four intermediate diagrams, $I_1$, $I_2$, $I_3$ and $I_4$ beforehand and storing the results reduce the cost of calculation from $\mathcal{O}(h^4 p^4)$ to $\mathcal{O}(h^4 p^2)$. The second solver applies this method. 
@@ -2259,111 +2277,111 @@
 	\begin{section}{Matrix Representation of Contractions}
 		Diagrams can be viewed as contractions of tensors of varying degree. An example is the matrix-matrix multiplication product
 		\begin{align}
-		 	\left( M N \right)_{\gamma}^{\alpha} = \sum_{\beta} M_{\beta}^\alpha N_\gamma^\beta 
+		 	\left( M N \right)_{\gamma}^{\alpha} = \sum_{\beta} M_{\beta}^\alpha N_\gamma^\beta .
 		 	\label{matrix matrix multiplication}
 		\end{align} 
 
 		As our goal is to rewrite the Coupled Cluster equations as matrix-matrix products, we will need to map tensors of rank $\geq 2$ onto matrices. One mapping that provides systematic and unique matrix elements can be 
 		\begin{align}
-			\left<pq\middle| \hat v\middle|rs\right> = V_{\alpha(p,q),\beta(r,s)}
+			\left<pq\middle| \hat v\middle|rs\right> = V_{\alpha(p,q),\beta(r,s)},
 		\end{align}
-		Where 
+		where 
 		\begin{align}
-			\alpha(p,q) = p + q N_p \;\,\:\; \beta(r,s) = r + s N_r
+			\alpha(p,q) = p + q N_p, \;\,\:\; \beta(r,s) = r + s N_r.
 			\label{mapping of matrix elements}
 		\end{align}
 		We need to be careful when mapping tensors this way. Consider first the calculation of the perfectly aligned $L_a$ term
 		\begin{align}
-			L_a = \sum_{cd} \left< ab \middle| \hat v\middle|cd\right> t_{ij}^{cd}
+			L_a = \sum_{cd} \left< ab \middle| \hat v\middle|cd\right> t_{ij}^{cd}.
 		\end{align}
 		Mapping this equation using equation (\ref{mapping of matrix elements})
 		\begin{align}
-			\left< ab \middle| \hat v\middle|cd\right> = v_{ab}^{cd} \rightarrow V_{\beta(c,d)}^{\alpha(a,b)}
+			\left< ab \middle| \hat v\middle|cd\right> = v_{ab}^{cd} \rightarrow V_{\beta(c,d)}^{\alpha(a,b)},
 		\end{align}
 		and
 		\begin{align}
-			t_{ij}^{cd} \rightarrow T_{\delta(i,j)}^{\beta(c,d)}
+			t_{ij}^{cd} \rightarrow T_{\delta(i,j)}^{\beta(c,d)}.
 		\end{align}
 		As we are mapping to unique elements 
 		\begin{align}
-			\beta(c,d) = \beta(c,d)
+			\beta(c,d) = \beta(c,d),
 		\end{align}
-		We can now rewrite the equation 
+		we can now rewrite the equation 
 		\begin{align}
-			(L_a)_ \delta^\alpha = \sum_ \beta V_ \beta^\alpha T_ \delta^\beta
+			(L_a)_ \delta^\alpha = \sum_ \beta V_ \beta^\alpha T_ \delta^\beta,
 		\end{align}
-		Implying by regarding equation (\ref{matrix matrix multiplication}) that we can rewrite the product as matrix-matrix multiplication 
+		implying by regarding equation (\ref{matrix matrix multiplication}) that we can rewrite the product as matrix-matrix multiplication 
 		\begin{align}
-			L_a = VT
+			L_a = VT.
 		\end{align}
 
 		\begin{subsection}{Aligning elements}	
 			Unfortunately, not all products are perfectly aligned like $L_a$. Consider, for example, the term, $L_c$
 			\begin{align}
-				L_c = -P\left(ij\middle|ab\right) \sum_{kc} \left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac}
+				L_c = -P\left(ij\middle|ab\right) \sum_{kc} \left<kb\middle|\hat v\middle|cj\right>t_{ik}^{ac}.
 			\end{align}
 			Using the same mapping scheme
 			\begin{align}
-				\left<kb\middle|\hat v\middle|cj\right> = v_{cj}^{kb} \rightarrow V_{\beta(cj)}^{\alpha(kb)}
+				\left<kb\middle|\hat v\middle|cj\right> = v_{cj}^{kb} \rightarrow V_{\beta(cj)}^{\alpha(kb)},
 			\end{align}
 			and
 			\begin{align}
-				t_{ik}^{ac} \rightarrow T_{\delta(ik)}^{\gamma(ac)}
+				t_{ik}^{ac} \rightarrow T_{\delta(ik)}^{\gamma(ac)},
 			\end{align}
-			This matrix multiplication is misaligned, and if the number of particles is unequal to the number of holes, the matrices' size will be incompatible. 
+			we notice that this matrix multiplication is misaligned, and if the number of particles is unequal to the number of holes, the matrices' size will be incompatible
 			\begin{align}
-				(L_c)_ \delta^\alpha \neq -P\left(ij\middle|ab\right) \sum_ \beta V_{\beta(cj)}^{\alpha(kb)} T_{\delta(ik)}^{\gamma(ac)}
+				(L_c)_ \delta^\alpha \neq -P\left(ij\middle|ab\right) \sum_ \beta V_{\beta(cj)}^{\alpha(kb)} T_{\delta(ik)}^{\gamma(ac)}.
 			\end{align}
 			We need to find another mapping, such as
 			\begin{align}
-				v_{cj}^{kb} \rightarrow \tilde V_{\beta(ck)}^{\alpha(bj)}
+				v_{cj}^{kb} \rightarrow \tilde V_{\beta(ck)}^{\alpha(bj)},
 			\end{align}
 			and 
 			\begin{align}
-				t_{ik}^{ac} \rightarrow \tilde T_{\delta(ia)}^{\gamma(ck)}
+				t_{ik}^{ac} \rightarrow \tilde T_{\delta(ia)}^{\gamma(ck)}.
 			\end{align}
 			Now, the matrix multiplication is aligned
 			\begin{align}
-				(\tilde L_c)_ \delta^\alpha = -P\left(ij\middle|ab\right) \sum_ \beta \tilde V_{\beta(ck)}^{\alpha(bj)} \tilde T_{\delta(ia)}^{\gamma(ck)}
+				(\tilde L_c)_ \delta^\alpha = -P\left(ij\middle|ab\right) \sum_ \beta \tilde V_{\beta(ck)}^{\alpha(bj)} \tilde T_{\delta(ia)}^{\gamma(ck)}.
 			\end{align}
 			Note, however, that 
 			\begin{align}
-				L_c \neq \tilde L_c
+				L_c \neq \tilde L_c,
 			\end{align}
-			We must "realign" $\tilde L_c$ to match the correct diagram
+			so we need "realign" $\tilde L_c$ to match the correct diagram
 			\begin{align}
-				(\tilde L_c)_{\delta(i,a)}^{\alpha(b,j)} \rightarrow (L_c)_{\delta(i,k)}^{\alpha(k,b)}
+				(\tilde L_c)_{\delta(i,a)}^{\alpha(b,j)} \rightarrow (L_c)_{\delta(i,k)}^{\alpha(k,b)}.
 			\end{align}
 
 			Another example is the $Qc$ term
 			\begin{align}
-				Q_c = -\frac{1}{2} \hat P(ij) \sum_{klcd} \left< kl \middle| v \middle| cd \right> t_{ik}^{ab} t_{jl}^{cd} 
+				Q_c = -\frac{1}{2} \hat P(ij) \sum_{klcd} \left< kl \middle| v \middle| cd \right> t_{ik}^{ab} t_{jl}^{cd}.
 			\end{align}
 			We can rewrite this as a matrix-matrix multiplication with the matrix elements given by
 			\begin{align}
-				\left< kl \middle| v \middle| cd \right> = v_{cd}^{kl} & \rightarrow V^{\alpha(cd)}_{\beta(kl)} \\
-				t_{ik}^{ab} & \rightarrow (T_1)_{\gamma(ik)}^{\delta(ab)} \\
-				t_{jl}^{cd} & \rightarrow (T_2)_{\omega(jl)}^{\eta(cd)}
+				\left< kl \middle| v \middle| cd \right> = v_{cd}^{kl} & \rightarrow V^{\alpha(cd)}_{\beta(kl)}, \\
+				t_{ik}^{ab} & \rightarrow (T_1)_{\gamma(ik)}^{\delta(ab)}, \\
+				t_{jl}^{cd} & \rightarrow (T_2)_{\omega(jl)}^{\eta(cd)}.
 			\end{align}
 			Because we sum over the coefficients $klcd$, we must make sure that they belong to the "inner" indexes. This can only be done by creating a hole, particle-particle-hole configuration. We must also change the order of multiplication
 			\begin{align}
-				V^{\alpha(cd)}_{\beta(kl)} &  \rightarrow \tilde V^{\delta(k)}_{\gamma(cdl)} \\
-				(T_1)_{\gamma(ik)}^{\delta(ab)} & \rightarrow \tilde (T_1)^{\alpha(abi)}_{\delta(k)} \\
-				(T_2)_{\omega(jl)}^{\eta(cd)} & \rightarrow \tilde (T_2)^{\gamma(cdl)}_{\beta(j)}
+				V^{\alpha(cd)}_{\beta(kl)} &  \rightarrow \tilde V^{\delta(k)}_{\gamma(cdl)}, \\
+				(T_1)_{\gamma(ik)}^{\delta(ab)} & \rightarrow \tilde (T_1)^{\alpha(abi)}_{\delta(k)}, \\
+				(T_2)_{\omega(jl)}^{\eta(cd)} & \rightarrow \tilde (T_2)^{\gamma(cdl)}_{\beta(j)}.
 			\end{align}
 			This gives us
 			\begin{align}
-				( \tilde Q_c )_{\beta(j)}^{\alpha(abi)} = -\frac{1}{2} \hat P(ij) \sum_{klcd} (\tilde T_1)^{\alpha(abi)}_{\delta(k)} \tilde V^{\delta(k)}_{\gamma(cdl)} (\tilde T_2)^{\gamma(cdl)}_{\beta(j)}
+				( \tilde Q_c )_{\beta(j)}^{\alpha(abi)} = -\frac{1}{2} \hat P(ij) \sum_{klcd} (\tilde T_1)^{\alpha(abi)}_{\delta(k)} \tilde V^{\delta(k)}_{\gamma(cdl)} (\tilde T_2)^{\gamma(cdl)}_{\beta(j)}.
 			\end{align}
-			Which must be realigned back to the properly aligned $Q_c$ before it can be added to the amplitude equations.
+			Which must be realigned back to the properly aligned $Q_c$ before it can be added to the amplitude equations
 			\begin{align}
-				( \tilde Q_c )_{\beta(j)}^{\alpha(abi)} \rightarrow (Q_c)_{\beta(ij)}^{\alpha(ab)}
+				( \tilde Q_c )_{\beta(j)}^{\alpha(abi)} \rightarrow (Q_c)_{\beta(ij)}^{\alpha(ab)}.
 			\end{align}
 			We will need a general mapping function that can be used regardless of the amount of states used. It turns out that we can use the same mapping as before, just generalized to $N$ states.
 			\begin{align}
-				\alpha(p_1,p_2,p_3,...,p_N) = p_1 + p_2N_1 + p_3N_1N_2 + ... + p_N N_1 N_2 ... N_{N-1} 
+				\alpha(p_1,p_2,p_3,...,p_N) = p_1 + p_2N_1 + p_3N_1N_2 + ... + p_N N_1 N_2 ... N_{N-1},
 			\end{align}
-			Where $N_n$ determines the maximum number of states for $p_n$. If for example $p_n \in i$, i.e. $p_n$ is a hole-state, $N_n = N_{holes}$.
+			where $N_n$ determines the maximum number of states for $p_n$. If for example $p_n \in i$, i.e. $p_n$ is a hole-state, $N_n = N_{holes}$.
 
 			Writing the diagrams as matrix-matrix multiplications serves as a significant reduction of computational time, due to the efficient algortithms in the BLAS-packages for matrix-matrix multiplications. However, since one has to save all the matrices, memory usage will be a problem for large basises. 
 		\end{subsection}
@@ -2373,42 +2391,42 @@
 	\begin{section}{Block Implementation}
 		One can both greatly reduce memory usage and improve computational speed by exploiting symmetries for infinite matter. Due to kroenecker delta's in the interaction, one such symmetry is the conservation of momentum
 		\begin{align}
-			\delta_{\vec k_p + \vec k_q, \vec k_r + \vec k_s} \rightarrow \vec k_p + \vec k_q = \vec k_r + \vec k_s
+			\delta_{\vec k_p + \vec k_q, \vec k_r + \vec k_s} \rightarrow \vec k_p + \vec k_q = \vec k_r + \vec k_s.
 		\end{align}
 		We also conserve spin 
 		\begin{align}
-			m_{s_p} + m_{s_q} = m_{s_r} + m_{s_s}
+			m_{s_p} + m_{s_q} = m_{s_r} + m_{s_s},
 		\end{align}
 		and for nuclear matter, we will conserve isospin as well
 		\begin{align}
-			m_{t_p} + m_{t_q} = m_{t_r} + m_{t_s}
+			m_{t_p} + m_{t_q} = m_{t_r} + m_{t_s}.
 		\end{align}
 		The amplitudes will be subject to the same restrictions, vizualised by the first order amplitude generated by perturbation theory
 		\begin{align}
-			(t_{ij}^{ab})^{t=0} = \frac{\left<ab\middle|\hat v\middle|ij\right>}{\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b}
+			(t_{ij}^{ab})^{t=0} = \frac{\left<ab\middle|\hat v\middle|ij\right>}{\epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b}.
 		\end{align}
 		Looking at the $L_a$ term
 		\begin{align}
-			L_a = \sum_{cd} \left<ab\middle|\hat v\middle|cd\right> t_{ij}^{ab}
+			L_a = \sum_{cd} \left<ab\middle|\hat v\middle|cd\right> t_{ij}^{ab},
 		\end{align}
-		We see that 
+		we see that we have conservation of momentum
 		\begin{align}
-			\vec k_a + \vec k_b = \vec k_c + \vec k_d = \vec k_i + \vec k_j
+			\vec k_a + \vec k_b = \vec k_c + \vec k_d = \vec k_i + \vec k_j,
 		\end{align}
-		And the same for spin
+		and conservation of spin
 		\begin{align}
-			m_{s_a} + m_{s_b} = m_{s_c} + m_{s_d} = m_{s_i} + m_{s_j} 
+			m_{s_a} + m_{s_b} = m_{s_c} + m_{s_d} = m_{s_i} + m_{s_j} .
 		\end{align}
 		When summing over all variations of contractions, only the quantum numbers preserving the symmetry requirements are non-zero. When storing the interactions in a matrix, most of it will have zero-elements. The blocking method will store the non-zero parts in blocks inside the matrix. By keeping track of the blocks, we can reduce the full matrix-matrix multiplication to a series of multiplications of the blocks. We will hereby refer to the series of blocks as \textit{channels}.
 
 		\begin{subsection}{Two-state configurations}
 			As we can see from the $L_a$ diagram, the conservation laws apply for a combination of two states. The next step is then to set up all two-state configurations that will be needed. We start by setting up the direct two-state channels, $T$, which consist of all two-hole and two-particle configurations. A unique identifier must be set up for the combination of quantum numbers. The identifier is used to aligning the non-zero combinations of two-body states to the same channel. Without this identifier, we will have to loop over all channels for each two-body state. I have used the following function 
 			\begin{align}
-				\text{Index}(N_x,N_y,N_z,S_z,T_z) = &2(N_x + m)M^3 + 2(N_y+m)M^2 + \\ & 2(N_z+m)M + 2(S_z+1) + (T_z+1)
+				\text{Index}(N_x,N_y,N_z,S_z,T_z) = &2(N_x + m)M^3 + 2(N_y+m)M^2 \\+&  2(N_z+m)M + 2(S_z+1) + (T_z+1). \nonumber
 			\end{align}
 			Using the same logic as in equation (\ref{mapping of matrix elements}) to get a unique identifier for every combination of $N_x,N_y,N_z,S_z$ and $T_z$. This implies that the two-body states have the same momentum, spin and isospin projection, which satisfies our conservation laws. We need $m$ and $M$ to be sufficiently large. I have used
 			\begin{align}
-				m = 2|\sqrt{N_{\text{max}}}| \:\:\:\:\:\: M = 2m +1
+				m = 2|\sqrt{N_{\text{max}}}|, \:\:\:\:\:\: M = 2m +1.
 			\end{align}
 			Because of the Pauli-exclusion, two particles cannot occupy the same state, so we can further reduce the amount of two-body states by excluding equal one-body states from the channels. An algorithm for setting up the direct channels can be portraied as
 			\begin{align*}
@@ -2427,31 +2445,31 @@
 		\end{subsection}
 		
 		\begin{subsection}{Unaligned channels}
-			Diagram $L_a$, $L_b$ and $Q_a$ have conservation requirements as shown previously for $L_a$
+			Diagram $L_a$, $L_b$ and $Q_a$ have the same conservation requirements as shown previously for $L_a$
 			\begin{align}
-			 	\mathbf{k}_a + \mathbf{k}_b = \mathbf{k}_c + \mathbf{k}_d = \mathbf{k}_i + \mathbf{k}_j 
+			 	\mathbf{k}_a + \mathbf{k}_b = \mathbf{k}_c + \mathbf{k}_d = \mathbf{k}_i + \mathbf{k}_j ,
 			\end{align}
-			Which are implemented using the direct channels. We will however run into some trouble when computing the unaligned diagrams $L_c$, $Q_b$, $Q_c$ and $Q_d$. Looking at the diagram $L_c$, given by 
+			The direct channels satisfy this conservation requirement. We will however run into some trouble when computing the unaligned diagrams $L_c$, $Q_b$, $Q_c$ and $Q_d$. Looking first at the diagram $L_c$, given by 
 			\begin{align}
-				L_c = - \hat P(ij|ab) \sum_{kc} \left<kb\middle|\hat v\middle| cj \right> t_{ik}^{ac}
+				L_c = - \hat P(ij|ab) \sum_{kc} \left<kb\middle|\hat v\middle| cj \right> t_{ik}^{ac},
 			\end{align}
-			With the corresponding conservation requirements given by
+			with the corresponding conservation requirement for momentum, given by
 			\begin{align}
-				\mathbf{k}_k + \mathbf{k}_b = \mathbf{k}_c + \mathbf{k}_j = \mathbf{k}_a + \mathbf{k}_c = \mathbf{k}_i + \mathbf{k}_k
+				\mathbf{k}_k + \mathbf{k}_b = \mathbf{k}_c + \mathbf{k}_j = \mathbf{k}_a + \mathbf{k}_c = \mathbf{k}_i + \mathbf{k}_k,
 			\end{align}
-			and 
+			and for spin and isospin, we have
 			\begin{align}
-				m_{s,k} + m_{s,b} = m_{s,c} + m_{s,j}  \:\:\:\:\:\:\: m_{t,k} + m_{t,b} = m_{t,c} + m_{t,j} 
+				m_{s,k} + m_{s,b} = m_{s,c} + m_{s,j},  \:\:\:\:\:\:\: m_{t,k} + m_{t,b} = m_{t,c} + m_{t,j}. 
 			\end{align}
 			When realigning the equation, we want it to be on the form
 			\begin{align}
-				\tilde Lc = -\hat P(ij|ab) \sum_{kc} \left<bj | \tilde v | ck \right> \left< ck \right| \tilde t \left| ai \right>
+				\tilde Lc = -\hat P(ij|ab) \sum_{kc} \left<bj | \tilde v | ck \right> \left< ck \right| \tilde t \left| ai \right>.
 			\end{align}
-			We reorganize the conservation requirements as well to make sure we only calculate the non-zero terms
+			We reorganize the conservation requirements in terms of the realigned matrix multiplication. This is to make sure we only calculate the non-zero terms. The momentum requirement becomes 
 			\begin{align}
-				\mathbf{k}_b - \mathbf{k}_j = \mathbf{k}_c - \mathbf{k}_k = \mathbf{k}_c - \mathbf{k}_k = \mathbf{k}_i - \mathbf{k}_a
+				\mathbf{k}_b - \mathbf{k}_j = \mathbf{k}_c - \mathbf{k}_k = \mathbf{k}_c - \mathbf{k}_k = \mathbf{k}_i - \mathbf{k}_a,
 			\end{align}
-			Spin and isospin will be subject to the same reorganizing. We see that the direct channels do not represent the right conservation requirement and we must set up the cross channels, $X$, that consist of particle-hole or hole-particle two-body configurations. An algorithm can be set up as
+			and spin and isospin will be subject to the same reorganizing. We see that the direct channels do not represent the right conservation requirement, so we must set up the cross channels, $X$, that consist of particle-hole or hole-particle two-body configurations. An algorithm can be set up as
 			\begin{align*}
 				&\mathbf{for } \text{ one-body state 1} \in \text{STATES}:\\
 				&\:\: \mathbf{for } \text{ one-body state 2} \in \text{STATES}:\\
@@ -2466,23 +2484,23 @@
 				&\:\:\:\:\:\: \text{Id}' = \text{Index}(-N_x,-N_y,-N_z,-S_z,-T_z) \\
 				&\:\:\:\:\:\: X' \leftarrow (\text{ one-body state 2}, \text{ one-body state 1}, \text{ Id'})
 			\end{align*}
-			Where $X'$ is the cross channel compliment, $X(pq) = X'(qp)$. The cross-channels are used for calculating $Q_b$ and $L_c$. 
+			where $X'$ is the cross channel compliment, $X(pq) = X'(qp)$. The cross-channels are used for calculating the diagrams $Q_b$ and $L_c$. 
 
 			Looking at the diagram $Q_c$
 			\begin{align}
-				Q_c = -\frac{1}{2} \hat P(ij) \sum_{klcd} \left<kl|\hat v|cd\right> t_{ik}^{ab} t_{jl}^{cd}
+				Q_c = -\frac{1}{2} \hat P(ij) \sum_{klcd} \left<kl|\hat v|cd\right> t_{ik}^{ab} t_{jl}^{cd},
 			\end{align}
-			With the momentum conservation requirement
+			with the momentum conservation requirement
 			\begin{align}
-				\mathbf{k}_k + \mathbf{k}_l = \mathbf{k}_c \mathbf{k}_d = \mathbf{k}_i + \mathbf{k}_k = \mathbf{k}_a + \mathbf{k}_b = \mathbf{k}_j + \mathbf{k}_l = \mathbf{k}_c + \mathbf{k}_d
+				\mathbf{k}_k + \mathbf{k}_l = \mathbf{k}_c \mathbf{k}_d = \mathbf{k}_i + \mathbf{k}_k = \mathbf{k}_a + \mathbf{k}_b = \mathbf{k}_j + \mathbf{k}_l = \mathbf{k}_c + \mathbf{k}_d.
 			\end{align}
 			We see that we must realign the diagram as
 			\begin{align}
-				\tilde Q_c = -\frac{1}{2} \hat P(ij) \sum_{klcd} \left<abi\right|\tilde t\left|k\right> \left<k\right|\tilde v\left|cdl\right> \left<cdl\right|\tilde t\left|j\right>
+				\tilde Q_c = -\frac{1}{2} \hat P(ij) \sum_{klcd} \left<abi\right|\tilde t\left|k\right> \left<k\right|\tilde v\left|cdl\right> \left<cdl\right|\tilde t\left|j\right>,
 			\end{align}
-			Which sets the conservation requirement as 
+			which sets the conservation requirement as 
 			\begin{align}
-				\mathbf{k}_a + \mathbf{k}_b	- \mathbf{k}_i = \mathbf{k}_k = \mathbf{k}_k = \mathbf{k}_c + \mathbf{k}_d - \mathbf{k}_l = \mathbf{k}_c + \mathbf{k}_d - \mathbf{k}_l = \mathbf{k}_j
+				\mathbf{k}_a + \mathbf{k}_b	- \mathbf{k}_i = \mathbf{k}_k = \mathbf{k}_k = \mathbf{k}_c + \mathbf{k}_d - \mathbf{k}_l = \mathbf{k}_c + \mathbf{k}_d - \mathbf{k}_l = \mathbf{k}_j.
 			\end{align}
 			We set up three-body and corresponding one-body channels to calculate $Q_c$ and $Q_d$. An example algorithm for the $K_h$ and $K_{p,p,h}$ channels can be outlined as
 			\begin{align*}
@@ -2493,7 +2511,7 @@
  				&\:\: S_z = m_{s,1}\\
 				&\:\: T_z = m_{t,1}\\
 				&\:\: \text{Id} = \text{Index}(N_x,N_y,N_z,S_z,T_z) \\
-				&\:\: K_h \leftarrow (\text{ one-body state 1}, \text{ Id}) \\ \\ \\ 
+				&\:\: K_h \leftarrow (\text{ one-body state 1}, \text{ Id}) \\ \\ 
 				&\mathbf{for } \text{ one-body state 1} \in \text{PARTICLES}: \\
 				&\:\: \mathbf{for } \text{ one-body state 2} \in \text{PARTICLES}: \\
 				&\:\:\:\: \mathbf{for } \text{ one-body state 3} \in \text{HOLES}: \\
@@ -2515,7 +2533,7 @@
 				&\:\:\mathbf{for } \text{ j} \in \text{Holes}: \\
 				&\:\:\:\:\mathbf{for } \text{ a} \in \text{Particles}: \\
 				&\:\:\:\:\:\:\mathbf{for } \text{ b} \in \text{Particles}: \\
-				&\:\:\:\:\:\:\:\: t^{(n+1)}(a,b,i,j) = t^{(n+1)} - \frac{1}{2}\left(Q_c(a,b,i,j) - Q_c(a,b,j,i)\right)
+				&\:\:\:\:\:\:\:\: t^{(n+1)}(a,b,i,j) = t^{(n+1)} - \frac{1}{2}\left(Q_c(a,b,i,j) - Q_c(a,b,j,i)\right) \:\:\:\:\:\:\:\:\:\:\:\:\:\:\:
 			\end{align*}
 		\end{subsection}
 
@@ -2530,7 +2548,7 @@
 			&\:\:\:\:\:\:\mathbf{if }\: n = \text{shell}: \\
 			&\:\:\:\:\:\:\:\:\:\mathbf{for } \: m_s \in \{-1,1\} \\
 			&\:\:\:\:\:\:\:\:\:\:\:\: \mathbf{for } \: m_t \in \{-1,1\} \\
-			&\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\text{States} \leftarrow (e, n_x, n_y, n_z, m_s, m_t) \\
+			&\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\text{States} \leftarrow (e, n_x, n_y, n_z, m_s, m_t)\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\: \:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\: \\
 			&\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:N_s = N_s + 1 \\
 			&\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\mathbf{if } \text{ shell} < \text{ Fermi level}: \\
 			&\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\: N_h = N_h + 1
@@ -2540,7 +2558,48 @@
 	\begin{section}{Parallellization}
 		To fully utilize the computational power in modern processors, one must use a parallellized code. Modern processors usually come with more than one core to save power output at the same effiency \cite{IntelOpenMP}. A standard written C++ program will be processed using only 1 \textit{thread}, meaning that a single core only will be used. The super computer, \textit{Smaug}, located at the Institute of Physics at the University of Oslo is built of processors with many but low performing cores given todays standards. If one can split the program into multiple threads, each executed at the same time in different cores, one can hope to reduce computational time substansially. 
 		
-		OpenMP is a library. 
+		Measuring time on various parts of the solver, shows that the main bulk of computational cost is spent when looping over states to fill matrices before multiplications. Particularly, a huge amount of time is spent on the $L_a$ term because of the double sum over particle-states. The other very costly operation is computing the $e_{ij}^{ab}$ values. Because of this, I have focused on parallellizing these loops to reduce cost. The general idea behind this implementation can be described by the following algorithm
+		\begin{lstlisting}
+			mat Matrix = zeros<mat>(max_iteration,max_iteration)
+			#pragma omp parallel
+			{
+
+				int N = omp_get_num_threads();
+				int n = omp_get_thread_num();
+
+				for (int i=n; i<max_iteration; i += N){
+					for (int j=0; j<max_iteration; j ++){
+
+						Matrix(i,j) = value(i,j);
+					}
+				}
+			}
+		\end{lstlisting}
+		Where three new functions has been utilized to paralelize using OpenMP. The first function is 
+		\begin{lstlisting}
+			#pragma omp parallel
+			{}
+		\end{lstlisting}
+		Which will define an enviroment which will be run in paralel. Each thread will execute the complete code written in this enviroment. By default, the command will utilize all available thread. The next function used is
+		\begin{lstlisting}
+			int N = omp_get_num_threads();
+		\end{lstlisting}
+		This code will find out the total number of threads. 
+		\begin{lstlisting}
+			int n = omp_get_thread_num();
+		\end{lstlisting}
+		This section checks which particular thread is used. This number will be different for each thread, and numbered from $0$ to $N_{\text{maxthread}}$. This is the only part that will be different for each thread, and is the key to utilizing paralelization. The loop for $i$ is set up as to calculate different values for $i$ depending on which thread is executing the code. As an example, looking at thread $2$ for an enviroment set up with four threads, the computed values of $i$ will be in the set
+		\begin{align}
+			i \in \{2, 6, 10, 14, \cdots \}.
+		\end{align}
+		In addition, OpenMP has functions for computing the time spent on each calculation, shown by the algorithm
+		\begin{lstlisting}
+			double time0 = omp_get_wtime();
+			[Insert code]
+			double time1 = omp_get_wtime();
+			double time_spent = time1 - time0;
+		\end{lstlisting}
+		Which has been used for comparing computational cost of various solvers and loops.
 	\end{section}
 
 \end{chapter}
@@ -2553,25 +2612,26 @@
 		The Pairing Model serves as a valuable benchmark for implemented solvers. As I have looked at a 4p4h configuration, a full configuration interaction solver can be implemented giving the exact solution. One can also calculate the exact solution for second order perturbation theory by hand \cite{Hjorth-Jensen2016}. 
 		\begin{align}
 			\Delta E_{MBPT2} = \frac{1}{4} \sum_{abij} \frac{\left<ij\middle|\middle|ab\right>\left<ab\middle|\middle|ij\right>}{\epsilon_{ij}^{ab}} = 
-			\sum_{a<b,i<j} \frac{\left<ij\middle|\middle|ab\right>\left<ab\middle|\middle|ij\right>}{\epsilon_{ij}^{ab}}
+			\sum_{a<b,i<j} \frac{\left<ij\middle|\middle|ab\right>\left<ab\middle|\middle|ij\right>}{\epsilon_{ij}^{ab}},
 		\end{align}
-		Where 
+		where we have used
 		\begin{align}
-			\epsilon_{ij}^{ab} = \epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b
+			\epsilon_{ij}^{ab} = \epsilon_i + \epsilon_j - \epsilon_a - \epsilon_b,
 		\end{align}
 		and
 		\begin{align}
-			\epsilon_p = h_{pp} + \sum_i \left<pi\middle|\middle|pi\right>
+			\epsilon_p = h_{pp} + \sum_i \left<pi\middle|\middle|pi\right>.
 		\end{align}
 		This results in
 		\begin{align}
 			\Delta E_{MBPT2} = \frac{\left<01\middle|\middle|45\right>^2}{\epsilon_{01}^{45} } + \frac{\left<01\middle|\middle|67\right>^2}{\epsilon_{01}^{67} }
-							  +\frac{\left<23\middle|\middle|45\right>^2}{\epsilon_{23}^{45} } \ \frac{\left<23\middle|\middle|67\right>^2}{\epsilon_{23}^{67} }
+							  +\frac{\left<23\middle|\middle|45\right>^2}{\epsilon_{23}^{45} } \ \frac{\left<23\middle|\middle|67\right>^2}{\epsilon_{23}^{67} },
 		\end{align}
+		which can be calculated by hand to give
 		\begin{align}
-			\Delta E_{MBPT2} = -\frac{g^2}{4} \left( \frac{1}{4+g} + \frac{1}{6+g} + \frac{1}{2+g} + \frac{1}{4+g} \right)
+			\Delta E_{MBPT2} = -\frac{g^2}{4} \left( \frac{1}{4+g} + \frac{1}{6+g} + \frac{1}{2+g} + \frac{1}{4+g} \right),
 		\end{align}
-		Where g represents the interaction strength. The table below shows my results for various g's both using the exact mbpt2 calculations and my numerically computed results. All results can be accessed on github \cite{WholmenGithub}
+		where g represents the interaction strength. The table below shows my results for various g's both using the exact mbpt2 calculations and my numerically computed results. All results can be accessed on github \cite{WholmenGithub}
 
 		\begin{table}[H]
 			\begin{center}
@@ -2585,19 +2645,20 @@
 					1 & 1 & -0.219048 & -0.219048
 				\end{tabular}
 			\end{center}
-			\caption{A table showing correlation energies for Pairing model with 4 particle-states and 4 hole-states.  }
+			\caption{A table showing correlation energies for Pairing model with 4 particle-states and 4 hole-states. The table presents a comparison of the exact result for second order Reileigh-Scr\"{o}dinger perturbation theory, to a numerically implemented solver. }
 			\label{Results1}
 		\end{table}
 		As one can see, the correlation energies computed perfectly matches which both tells us that the basis set is set up correctly and that the MBPT2 solver is set up correctly. The results presented also match the results found in \cite{Hjorth-Jensen2016}
 
-		The second order perturbation theory is valuble for benchmarking my implementation of Coupled Cluster Doubles. By initializing the first set of amplitudes, $t$, as zero, I get
+		The second order perturbation theory is valuble for benchmarking my implementation of the Coupled Cluster doubles equations. By initializing the first set of amplitudes, $t$, as zero, I get
 		\begin{align}
-			t_{ij}^{ab(0)} = 0  
+			t_{ij}^{ab(0)} = 0 , 
 		\end{align}
+		and the first iteration becomes 
 		\begin{align}
-			t_{ij}^{ab(1)} = \frac{1}{4} \sum_{ijab} \frac{\left<ab\middle|\middle|ij\right>}{\epsilon_{ij}^{ab}} 
+			t_{ij}^{ab(1)} = \frac{1}{4} \sum_{ijab} \frac{\left<ab\middle|\middle|ij\right>}{\epsilon_{ij}^{ab}} .
  		\end{align}
- 		Which is equal to second order pertubation theory. 
+ 		This is equal to second order pertubation theory, so the solvers should produce the same results.
  		\begin{table}[H]
 			\begin{center}
 				\begin{tabular}[center]{l | c | r}
@@ -2613,6 +2674,7 @@
 			\caption{A table comparing correlation energies for Pairing model with 4 particle-states and 4 hole-states. This table show that CCD solver used with only a single iteration produces results exactly equal to mbpt2. This was done with the naive implementation of CCD equations}
 			\label{Results2}
 		\end{table}
+		
 
 		\begin{subsection}{Comparison of CCD solvers}
 			In this thesis I have created three different solvers for Coupled Cluster Doubles equations. 
@@ -2628,7 +2690,7 @@
 					\begin{tabular}[center]{l | c | r}
 						g & $ \Delta E_{CCD}$ Naive  & $\Delta E_{CCD}$ Intermediates \\
 						\hline
-						0 & x & x \\
+						0 & -0.940891 & -0.940891 \\
 						-0.5 & -0.0630564 & -0.0630562 \\
 						0 & 0 & 0 \\
 						0.5 & -0.0833621 & -0.0833623 \\
@@ -2639,8 +2701,8 @@
 				\label{Results3}
 			\end{table}
 			As one can see, my solvers reproduce results presented in \cite{Hjorth-Jensen2016}. For values of $g$ close to $-1$, one will see a divergence for CCD equations. By introducing a relaxing factor of $w = 0.3$, this problem was solved. 
-  
 		\end{subsection}
+		\newpage
 		\begin{subsection}{Comparison of various solvers}
 			The full configuration interaction provides us with the exact solution for the 4p4h Pairing model. It can therefore be useful to compare the performance of Perturbation theory to second, third and fourth order with coupled-cluster doubles and configuration interaction without the four-particle excitation. 
 			\begin{figure}[H]
@@ -2662,10 +2724,10 @@
 	\newpage
 
 	\begin{section}{The Homogeneous Electron Gas}
-		Results for the Homogeneous Electron gas has various 
+		The homogeneous electron gas is a good system for benchmarking solvers, both in terms of produced results and computational cost. The coupled-cluster solver based on a matrix-matrix multiplications block implementation, has been implemented for this system along with the naive bruto force and intermediate solver. 
 
 		\begin{subsection}{The Reference Energy}
-			A benchmark on the reference energy is useful to test the implementation of the states and the interaction. It does not require any coupled-cluster solver, because it is not dependent on the amplitudes. It serves as a good first hand benchmark for the system, and Audun Skau Hansen and Gustav Baardsen \cite{Baardsen,Audun} present results that have been reproduced 
+			A benchmark on the reference energy is useful to test the implementation of the basis states and the interaction. It does not require any coupled-cluster solver, because it is not dependent on the amplitudes. It serves as a good first hand benchmark for the system, and Audun Skau Hansen and Gustav Baardsen \cite{Baardsen,Audun} present results that have been reproduced in this thesis
 			\begin{table}[H]
 				\begin{center}
 					\begin{tabular}[center]{l | c  c  c  r}
@@ -2694,7 +2756,7 @@
 						14 & 52 & \text{N/A} & -0.317821 & -0.317821 
 					\end{tabular}
 				\end{center}
-				\caption{Calculations on the Homogeneous electron gas, using three different implementations of CCD equations. Showing results to benchmark the block solver, which was not benchmarked on the Pairing model. The System has been calculated with $2$ or $14$ particles and the total states either $38$ or $54$. The calculations has been made with a relaxing factor of $0.3$ and $r_s = 1.0$. Results can be found in file \textit{CompareTimeNaiveBlock.txt} \cite{WholmenGithub}}
+				\caption{Calculations on the Homogeneous electron gas, using three different implementations of CCD equations. Showing results to benchmark the block solver, which was not benchmarked on the Pairing model. The System has been calculated with $2$ or $14$ particles and the total states either $14$, $38$ or $54$. The calculations has been made with a relaxing factor of $0.3$ and $r_s = 1.0$. Results can be found in file \textit{CompareTimeNaiveBlock.txt} \cite{WholmenGithub}}
 				\label{table:CompareSolversHEG}
 			\end{table}
 			As we can see, the three solvers produce the exact same results, serving as a succesful benchmark for the block solver. These are relatively small calculations, at least compared to the thermodynamic limit. To fully grasp the point of using the block solver for larger computations, I have compared the time spent on performing the calculations for all three solvers
@@ -2751,91 +2813,86 @@
 						& 358 & -0.4017831726474148 &  & \\
 				\end{tabular}
 			\end{center}
-			\caption{ }
+			\caption{A comparison of the block solver and the intermediate solver for different systems. The results have been compared to the results found in Audun Skau Hansen's thesis \cite{Audun}. The results are computed with a weight factor $\alpha=0.3$.}
 			\label{table:CompareAudun}
 		\end{table}
 
 		\begin{subsection}{The Thermodynamic limit}
-			Because of the truncation of possible single-particle states made to the wave function ansatz, coupled-cluster theory do not produce the exact wave function. We can however, see how the ground state changes when we add more states. One will notice that the energy will converge towards a limit, named the thermodynamical limit. This will be the best possible approximation possible result for coupled-cluster doubles. 
+			When setting up the homogeneous electron gas, one is trying to simulate an infinite gas of electrons. One is, however, forced to truncate the number of wave functions. This leads to a system that is not infinite, and we do not get the right results when using many-body methods to compute the ground state energy for the electrons. As one increases the number of electrons, we will move closer to the real system. As one can see from figure (\ref{figure:thermodynamic_limit}), by adding more states, the energy converges towards the \textit{thermodynamic limit}, which is the true energy for the system. 
 
 			\begin{figure}[H]
 				\includegraphics[width=\textwidth]{../ElectronGas/Results/Figures/Thermodynamic_limit.png}
-				\caption{Thermodynamic limit}
+				\caption{Correlation energy for a system consisting of $14$ particles, with $r_s=1.0$. The results are produced with a relaxing factor $\alpha=0.3$. }
 				\label{figure:thermodynamic_limit}
 			\end{figure}
-		
-			Writing out the results for 
-
+			The results for different amount of particles follow in the tables \newline (\ref{table:ThermodynamicLimit1},\ref{table:ThermodynamicLimit2},\ref{table:ThermodynamicLimit3},\ref{table:ThermodynamicLimit4},\ref{table:ThermodynamicLimit5}). I have computed energies for smaller and smaller system sizes. The memory usage expands rapidly for many particles and states, so these are the largest systems computed. 
 			\begin{table}[H]
 				\begin{center}
 					\begin{tabular}[center]{l  c  c r}
 						$N_{\text{h}}$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ & $\Delta E_{CCD}/N_{\text{h}}$ \\
 						\hline
-						14 &  38 & -0.2764993874198891 \\
-						14 &  54 & -0.3178228436888623 \\
-						14 &  66 & -0.3926965898061108 \\
-						14 & 114 & -0.4479105961756186 \\
-						14 & 162 & -0.4805572589305356 \\
-						14 & 186 & -0.485522931752024  \\
-						14 & 246 & -0.4929245740022883 \\
-						14 & 294 & -0.4984909094065708 \\
-						14 & 342 & -0.5019526761546675 \\
-						14 & 358 & -0.5025196736075309 \\
-						14 & 406 & -0.5041428350345967 \\
-						14 & 502 & -0.5065799526613661 \\
-						14 & 514 & -0.506781381408595  \\
-						14 & 610 & -0.5080057508848216 \\
-						14 & 682 & -0.508790105475187  \\
-						14 & 730 & -0.5091947506339534 \\
-						14 & 778 & -0.5095611843519957 \\
-						14 & 874 & -0.5101903217890488 \\
-						14 & 922 & -0.5104161052302821 \\
-						14 & 970 & -0.5106074895685655 \\
-						14 & 1030& -0.5107995654154656 \\
-						14 & 1174& -0.5112320650408912 \\
-						14 & 1238& -0.5113982335227241 \\
-						14 & 1382& -0.5116958244764185 \\
-						14 & 1478& -0.5118827825222959 \\
-						14 & 1502& -0.5119149735422388 \\
-						14 & 1598& -0.5120443934671698 \\
-						14 & 1694& -0.5121557267165306 \\
-						14 & 1790& -0.512269185709 \\
-						14 & 1850& -0.512326660012 \\
-						14 & 1898& -0.512367897375 \\
+						14 &  38 & -0.2764993874198891 & -0.01974996 \\
+						14 &  54 & -0.3178228436888623 & -0.02270163\\ 
+						14 &  66 & -0.3926965898061108 & -0.02804976\\
+						14 & 114 & -0.4479105961756186 & -0.03199361 \\
+						14 & 162 & -0.4805572589305356 & -0.03432552\\
+						14 & 186 & -0.485522931752024  & -0.03468021\\
+						14 & 246 & -0.4929245740022883 & -0.0352089\\
+						14 & 294 & -0.4984909094065708 & -0.03560649\\
+						14 & 342 & -0.5019526761546675 & -0.03585376\\
+						14 & 358 & -0.5025196736075309 & -0.03589426\\
+						14 & 406 & -0.5041428350345967 & -0.0360102\\
+						14 & 502 & -0.5065799526613661 & -0.03618428\\
+						14 & 514 & -0.506781381408595  & -0.03619867\\
+						14 & 610 & -0.5080057508848216 & -0.03628613\\
+						14 & 682 & -0.508790105475187  & -0.03634215\\
+						14 & 730 & -0.5091947506339534 & -0.03637105\\
+						14 & 778 & -0.5095611843519957 & -0.03639723\\
+						14 & 874 & -0.5101903217890488 & -0.03644217\\
+						14 & 922 & -0.5104161052302821 & -0.03645829\\
+						14 & 970 & -0.5106074895685655 & -0.03647196\\
+						14 & 1030& -0.5107995654154656 & -0.03648568\\
+						14 & 1174& -0.5112320650408912 & -0.03651658\\
+						14 & 1238& -0.5113982335227241 & -0.03652845\\
+						14 & 1382& -0.5116958244764185 & -0.0365497\\
+						14 & 1478& -0.5118827825222959 & -0.03656306\\
+						14 & 1502& -0.5119149735422388 & -0.03656536\\
+						14 & 1598& -0.5120443934671698 & -0.0365746\\
+						14 & 1694& -0.5121557267165306 & -0.03658255\\
+						14 & 1790& -0.512269185709 & -0.03659066\\
+						14 & 1850& -0.512326660012 & -0.03659476\\
+						14 & 1898& -0.512367897375 & -0.03659771\\
 					\end{tabular}
 				\end{center}
-				\caption{ }
+				\caption{Correlation energies computed with coupled-cluster doubles equations for a system of $14$ particles. The value of $r_s$ is set to $r_s=1$. All results have been computed with a relaxing factor $\alpha=0.3$. The columns show the number of particles, number of states, correlation energy for all particles and the correlation energy for each particle.}
 				\label{table:ThermodynamicLimit1}
 			\end{table}
 
 			\begin{table}[H]
 				\begin{center}
-					\begin{tabular}[center]{l  c  c r}
+					\begin{tabular}[center]{l c  c r}
 						$N_{\text{h}}$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ & $\Delta E_{CCD}/N_{\text{h}}$ \\
 						\hline
-						38 &  38 & 0 \\
-						38 &  54 & -0.252944115 \\
-						38 &  66 & -0.370737565 \\
-						38 & 114 & -0.871764141 \\
-						38 & 162 & -1.13154477 \\
-						38 & 186 & -1.19804172 \\
-						38 & 246 & -1.29346208 \\
-						38 & 294 & -1.34391772 \\
-						38 & 342 & -1.38535934 \\
-						38 & 358 & -1.39471117 \\
-						38 & 406 & -1.41770717 \\
-						38 & 502 & -1.45075296 \\
-						38 & 514 & -1.45292878 \\
-						38 & 610 & -1.46803297 \\
-						38 & 682 & -1.47722483 \\
-						38 & 730 & -1.4823711 \\
-						38 & 778 & -1.48652184 \\
-						38 & 874 &  \\
-						38 & 922 &  \\
-						38 & 970 &  \\
+						38 &  38 & 0 &0 \\
+						38 &  54 & -0.252944115 & -0.00665642\\
+						38 &  66 & -0.370737565 & -0.00975625\\
+						38 & 114 & -0.871764141 & -0.02294116\\
+						38 & 162 & -1.13154477  & -0.02977749\\
+						38 & 186 & -1.19804172  & -0.03152741\\
+						38 & 246 & -1.29346208  & -0.03403848\\
+						38 & 294 & -1.34391772  & -0.03536626\\
+						38 & 342 & -1.38535934  & -0.03645682\\
+						38 & 358 & -1.39471117  & -0.03670293\\
+						38 & 406 & -1.41770717  & -0.03730808\\
+						38 & 502 & -1.45075296  & -0.03817771\\
+						38 & 514 & -1.45292878  & -0.03823497\\
+						38 & 610 & -1.46803297  & -0.03863245\\
+						38 & 682 & -1.47722483  & -0.03887434 \\
+						38 & 730 & -1.4823711   & -0.03900977\\
+						38 & 778 & -1.48652184  & -0.039119
 					\end{tabular}
 				\end{center}
-				\caption{ }
+				\caption{Correlation energies computed with coupled-cluster doubles equations for a system of $38$ particles. The value of $r_s$ is set to $r_s=1$. All results have been computed with a relaxing factor $\alpha=0.3$. The columns show the number of particles, number of states, correlation energy for all particles and the correlation energy for each particle.}
 				\label{table:ThermodynamicLimit2}
 			\end{table}
 
@@ -2844,29 +2901,25 @@
 					\begin{tabular}[center]{l  c  c r}
 						$N_{\text{h}}$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ & $\Delta E_{CCD}/N_{\text{h}}$ \\
 						\hline
-						54 &  38 & 0 \\
-						54 &  54 &  \\
-						54 &  66 &  \\
-						54 & 114 &  \\
-						54 & 162 &  \\
-						54 & 186 &  \\
-						54 & 246 &  \\
-						54 & 294 &  \\
-						54 & 342 &  \\
-						54 & 358 &  \\
-						54 & 406 &  \\
-						54 & 502 &  \\
-						54 & 514 &  \\
-						54 & 610 &  \\
-						54 & 682 &  \\
-						54 & 730 &  \\
-						54 & 778 &  \\
-						54 & 874 &  \\
-						54 & 922 &  \\
-						54 & 970 &  \\
+						54 & 36 & 0 & 0 \\
+						54 & 54 & 0 & 0 \\
+						54 &  66 & -0.0421954494 &-0.0007813972\\
+						54 &  114 & -0.524183851 &-0.0097071084  \\
+						54 &  162 & -1.16644846  &-0.0216008974 \\
+						54 & 186 & -1.29585369   &-0.0239972906 \\
+						54 & 246 & -1.53905245   &-0.0285009713 \\
+						54 & 294 & -1.63508823   &-0.0302794117 \\
+						54 & 342 & -1.71780253   &-0.0318111580 \\
+						54 & 358 & -1.74678467   &-0.0323478646 \\
+						54 & 406 & -1.79566209   &-0.0332530017 \\
+						54 & 502 & -1.87835721   &-0.0347843928 \\
+						54 & 514 & -1.88337624   &-0.0348773379 \\
+						54 & 610 & -1.92179323   &-0.0355887635 \\
+						54 & 682 & -1.9446975    &-0.0360129167 \\
+						54 & 730 & -1.95772367   &-0.0362541423 
 					\end{tabular}
 				\end{center}
-				\caption{ }
+				\caption{Correlation energies computed with coupled-cluster doubles equations for a system of $54$ particles. The value of $r_s$ is set to $r_s=1$. All results have been computed with a relaxing factor $\alpha=0.3$. The columns show the number of particles, number of states, correlation energy for all particles and the correlation energy for each particle.}
 				\label{table:ThermodynamicLimit3}
 			\end{table}
 
@@ -2875,30 +2928,23 @@
 					\begin{tabular}[center]{l  c  c r}
 						$N_{\text{h}}$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ & $\Delta E_{CCD}/N_{\text{h}}$ \\
 						\hline
-						66 &  38 & 0 \\
-						66 &  54 &  \\
-						66 &  66 &  \\
-						66 & 114 &  \\
-						66 & 162 &  \\
-						66 & 186 &  \\
-						66 & 246 &  \\
-						66 & 294 &  \\
-						66 & 342 &  \\
-						66 & 358 &  \\
-						66 & 406 &  \\
-						66 & 502 &  \\
-						66 & 514 &  \\
-						66 & 610 &  \\
-						66 & 682 &  \\
-						66 & 730 &  \\
-						66 & 778 &  \\
-						66 & 874 &  \\
-						66 & 922 &  \\
-						66 & 970 &  \\
+						66 &  38 & 0 &0\\
+						66 &  54 & 0 &0\\
+						66 &  66 & 0 &0\\
+						66 & 114 & -0.69213050 & -0.01048683 \\
+						66 & 162 & -1.51007005 & -0.02287985 \\
+						66 & 186 & -1.65129650 & -0.02501964 \\
+						66 & 246 & -2.01158657 & -0.03047858 \\
+						66 & 294 & -2.23052988 & -0.03379591 \\
+						66 & 342 & -2.37274100 & -0.03595062 \\
+						66 & 358 & -2.40766203 & -0.03647973 \\
+						66 & 406 & -2.48442087 & -0.03764274 \\
+						66 & 502 & -2.61023699 & -0.03954905 \\
+						66 & 514 & -2.62135316 & -0.03971747 \\
 					\end{tabular}
 				\end{center}
-				\caption{ }
-				\label{table:ThermodynamicLimit3}
+				\caption{Correlation energies computed with coupled-cluster doubles equations for a system of $66$ particles. The value of $r_s$ is set to $r_s=1$. All results have been computed with a relaxing factor $\alpha=0.3$. The columns show the number of particles, number of states, correlation energy for all particles and the correlation energy for each particle.}
+				\label{table:ThermodynamicLimit4}
 			\end{table}
 
 			\begin{table}[H]
@@ -2906,36 +2952,26 @@
 					\begin{tabular}[center]{l  c  c r}
 						$N_{\text{h}}$ & $N_{\text{s}}$ & $\Delta E_{CCD}$ & $\Delta E_{CCD}/N_{\text{h}}$ \\
 						\hline
-						114 &  38 & 0 \\
-						114 &  54 &  \\
-						114 &  66 &  \\
-						114 & 114 &  \\
-						114 & 162 &  \\
-						114 & 186 &  \\
-						114 & 246 &  \\
-						114 & 294 &  \\
-						114 & 342 &  \\
-						114 & 358 &  \\
-						114 & 406 &  \\
-						114 & 502 &  \\
-						114 & 514 &  \\
-						114 & 610 &  \\
-						114 & 682 &  \\
-						114 & 730 &  \\
-						114 & 778 &  \\
-						114 & 874 &  \\
-						114 & 922 &  \\
-						114 & 970 &  \\
+						114 &  38 & 0 &0\\
+						114 &  54 & 0 &0\\
+						114 &  66 & 0 &0\\
+						114 & 114 & 0 &0\\
+						114 & 162 & -1.21746415 & -0.01067951 \\
+						114 & 186 & -1.76124711 & -0.01544954 \\
+						114 & 246 & -2.47264211 & -0.02168984 \\
+						114 & 294 & -3.24858002 & -0.02849632 \\
+						114 & 342 & -3.70744788 & -0.03252147 \\
+						114 & 358 & -3.79981471 & -0.03333171
 					\end{tabular}
 				\end{center}
-				\caption{ }
-				\label{table:ThermodynamicLimit3}
+				\caption{Correlation energies computed with coupled-cluster doubles equations for a system of $114$ particles. The value of $r_s$ is set to $r_s=1$. All results have been computed with a relaxing factor $\alpha=0.3$. The columns show the number of particles, number of states, correlation energy for all particles and the correlation energy for each particle.}
+				\label{table:ThermodynamicLimit5}
 			\end{table}
-
 		\end{subsection}
+	\end{section}
 
-
-
+	\begin{section}{Neutron Matter}
+		
 	\end{section}
 
 \end{chapter}

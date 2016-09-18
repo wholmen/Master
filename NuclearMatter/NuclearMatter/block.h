@@ -17,8 +17,9 @@ public:
     // 3. Returns the matrices to compute energy or new amplitudes
 
     Block();
-    Block(int NHOLES, int NPARTICLES);
+    Block(NuclearBasis BASIS, int NHOLES, int NPARTICLES);
 
+    NuclearBasis basis; // Using the basis set to compute the interaction when setting up V
     mat Holes; // Storing the Hole states
     mat Particles; // Storing the particle states
     mat Xph; // Cross-states
@@ -26,7 +27,6 @@ public:
     mat K1, K3; // single- and corresponding triple-state.
 
     int Nholes, Nparticles; // Number of holes/particles in basis
-    int Nstates, Nstates2, Nstates3; // Number of states to 1., 2. and 3. order
     int Nh; int Np; // Number of two-particle configurations belonging to this particular block
     int Nph; // Number of cross states
     int Nk1; int Nk3; // Number of single- and triple-states.
@@ -39,23 +39,27 @@ public:
     void AddCrossStates(rowvec x1, rowvec x2);
     void AddTripleStates(rowvec k1, rowvec k2);
 
-    int Index_t(int p, int q, int r, int s);
-    int Index_v(int p, int q, int r, int s);
+    int Index(int a, int b, int i, int j);
 
     void FinishBlock();
+    void Epsilonpphh();
+    void Epsilonphhp();
+    void Epsilonkhpp();
+    void Epsilonkphh();
+    mat epsilon;
 
     // Set up matrices for diagram calculations
-    void SetUpMatrices_Energy(mat &t, vec &v);
-    void SetUpMatrices_L0(vec &v);
-    void SetUpMatrices_La(mat &t0, vec &v);
+    void SetUpMatrices_Energy(mat &t);
+    void SetUpMatrices_L0();
+    void SetUpMatrices_La(mat &t0);
 
     // For calculations without intermediates
-    void SetUpMatrices_Qc(mat &t0, vec &v);
-    void SetUpMatrices_Qd(mat &t0, vec &v);
+    void SetUpMatrices_Qc(mat &t0);
+    void SetUpMatrices_Qd(mat &t0);
 
     // For calculations with intermediates
-    void SetUpMatrices_I1(mat &t0, vec &v); mat I1;
-    void SetUpMatrices_I2(mat &t0, vec &v); mat I2;
+    void SetUpMatrices_I1(mat &t0); mat I1;
+    void SetUpMatrices_I2(mat &t0); mat I2;
 };
 
 #endif // BLOCK_H

@@ -2,11 +2,11 @@
 
 NuclearBasis::NuclearBasis() {}
 
-NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double rs_input, bool OnlyNeutrons){
+NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double n_input, bool OnlyNeutrons){
 
-    Nshells = Nshells_input; NfilledShells = NFilledShells_input; rs = rs_input;
+    Nshells = Nshells_input; NfilledShells = NFilledShells_input; n = n_input;
 
-    v0R = 200; v0T = 178; v0S = 91.85; kappaR = 1.487; kappaT = 0.649; kappaS = 0.465;
+    v0R = 200; v0T = 178; v0S = 91.85; kappaR = 1.487e1; kappaT = 0.649e1; kappaS = 0.465e1;
 
     States = zeros<mat>(0,6);
     Nstates = 0; Nholes = 0;
@@ -51,7 +51,7 @@ NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double rs
         }
     }
     // Various calculations of variables needed
-    L3 = (4*pi*rs*rs*rs*Nholes) / 3.0;
+    L3 = Nholes/n;
     L2 = pow(L3, 2.0/3 );
     L1 = pow(L3, 1.0/3 );
 
@@ -145,17 +145,17 @@ double NuclearBasis::TwoBodyOperator(int p, int q, int r, int s){
     return Minnesota(p,q,r,s);
 }
 
-double NuclearBasis::ei(int q, vec &v){
+double NuclearBasis::ei(int q){
     double interaction = 0;
     for (int i=0; i<Nholes; i++){
-        interaction += v(q + i*Nstates + q*Nstates2 + i*Nstates3);
+        interaction += Minnesota(i,q,i,q);
     }
     return OneBodyOperator(q,q) + interaction;
 }
 
-double NuclearBasis::epsilon(int i, int j, int a, int b, vec &v){
+double NuclearBasis::epsilon(int i, int j, int a, int b){
     // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
-    return ei(i,v) + ei(j,v) - ei(a,v) - ei(b,v);
+    return ei(i) + ei(j) - ei(a) - ei(b);
 }
 
 

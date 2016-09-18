@@ -49,7 +49,7 @@ int main()
     //CompareTimeAllSolvers();
 
 
-    TestSolver1();
+    //TestSolver1();
 
 
     //ResultsNshells3to35Nfilled2_Blocks();
@@ -115,8 +115,8 @@ void TestSolver1(){
 
 
     clock_t start, finish;
-    int Nshells = 22;
-    int NfilledShells = 6;
+    int Nshells = 8;
+    int NfilledShells = 2;
     double rs = 1.0;
 
     start = clock();
@@ -886,7 +886,7 @@ void ResultsNshells3to25Nfilled4_Blocks(){
 
 
     int Nfilled = 4; double rs = 1.0;
-    for (int Nshells=20; Nshells<26; Nshells++){
+    for (int Nshells=4; Nshells<22; Nshells++){
 
         if (Nshells != 16 && Nshells != 24){
 

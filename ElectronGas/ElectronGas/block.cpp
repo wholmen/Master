@@ -147,7 +147,8 @@ void Block::SetUpMatrices_Energy(mat &t){
             int a = Particles(A,0); int b = Particles(A,1);
 
             V(I,A) = basis.TwoBodyOperator( i,j,a,b );
-            T(A,I) = ReturnT( t, Index(a,b,i,j));//t( Index(a,b,i,j) );
+            //T(A,I) = ReturnT( t, Index(a,b,i,j));
+            T(A,I) = t( Index(a,b,i,j) );
         }
     }
 }
@@ -176,7 +177,8 @@ void Block::SetUpMatrices_La(mat &t0){
 
         for (int I=0; I<Nh; I++){
 
-            T(A,I) = ReturnT0(t0, Index(Particles(A,0),Particles(A,1),Holes(I,0),Holes(I,1))); //t0( Index(Particles(A,0),Particles(A,1),Holes(I,0),Holes(I,1)) );
+            //T(A,I) = ReturnT0(t0, Index(Particles(A,0),Particles(A,1),Holes(I,0),Holes(I,1)));
+            T(A,I) = t0( Index(Particles(A,0),Particles(A,1),Holes(I,0),Holes(I,1)) );
         }
     }
 }
@@ -194,9 +196,11 @@ void Block::SetUpMatrices_Qc(mat &t0){
             int j=K1(k1,0); int i=K3(k2,0);
             int a=K3(k2,1); int b=K3(k2,2);
 
-            T(k2,k1) = ReturnT0(t0, Index(a,b,i,j)); //t0( Index(a,b,i,j));
+            //T(k2,k1) = ReturnT0(t0, Index(a,b,i,j));
+            T(k2,k1) = t0( Index(a,b,i,j));
             V(k1,k2) = basis.TwoBodyOperator(j,i,a,b);
-            T2(k2,k1)= ReturnT0(t0, Index(a,b,j,i));//  t0( Index(a,b,j,i));
+            //T2(k2,k1)= ReturnT0(t0, Index(a,b,j,i));
+            T2(k2,k1)= t0( Index(a,b,j,i));
         }
     }
 
@@ -215,9 +219,11 @@ void Block::SetUpMatrices_Qd(mat &t0){
             int a=K1(k1,0); int b=K3(k2,0);
             int i=K3(k2,1); int j=K3(k2,2);
 
-            T(k2,k1) = ReturnT0(t0,Index(a,b,i,j) );  //t0( Index(a,b,i,j) );
+            //T(k2,k1) = ReturnT0(t0,Index(a,b,i,j) );
+            T(k2,k1) = t0( Index(a,b,i,j) );
             V(k1,k2) = basis.TwoBodyOperator(i,j,a,b);
-            T2(k2,k1)= ReturnT0(t0,Index(b,a,j,i) );//  t0( Index(b,a,j,i) );
+            //T2(k2,k1)= ReturnT0(t0,Index(b,a,j,i) );
+            T2(k2,k1)= t0( Index(b,a,j,i) );
         }
     }
 }
@@ -236,7 +242,8 @@ void Block::SetUpMatrices_I1(mat &t0){
             int a=Particles(A,0); int b=Particles(A,1);
 
             V(I,A) = basis.TwoBodyOperator(i,j,a,b);
-            T(A,I) = ReturnT0(t0, Index(a,b,i,j));// t0( Index(a,b,i,j) );
+            //T(A,I) = ReturnT0(t0, Index(a,b,i,j));
+            T(A,I) = t0( Index(a,b,i,j) );
         }
         for (int K=0; K<Nh; K++){
 
@@ -263,7 +270,8 @@ void Block::SetUpMatrices_I2(mat &t0){
             int i=Xph(x1,1); int j=Xhp(x2,0);
             int a=Xph(x1,0); int b=Xhp(x2,1);
 
-            T(x1,x2) = ReturnT0(t0, Index(a,b,i,j)); // t0( Index(a,b,i,j));
+            //T(x1,x2) = ReturnT0(t0, Index(a,b,i,j));
+            T(x1,x2) = t0( Index(a,b,i,j));
             V(x2,x1) = basis.TwoBodyOperator(j,i,b,a);
         }
 

@@ -433,9 +433,9 @@ void Solver::DiagramL0(){
                 int i = blockspphh[n]->Holes(I,0); int j = blockspphh[n]->Holes(I,1);
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
 
-                //t( Index(a,b,i,j) ) += L0(A,I);
+                t( Index(a,b,i,j) ) += L0(A,I);
 
-                StoreT( Index(a,b,i,j), L0(A,I));
+                //StoreT( Index(a,b,i,j), L0(A,I));
 
             }
         }

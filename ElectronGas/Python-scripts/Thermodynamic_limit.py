@@ -20,12 +20,12 @@ for line in infile:
 	E.append(float(splitline[-1]))
 
 
-plot(Ns,E,label="dE")
+plot(Ns,E,color="orange",label=r'$\Delta E$',linewidth=1.5)
 
 legend(loc="best")
 title("Approaching the thermodynamic limit")
-xlabel("Ns")
-ylabel("E")
+xlabel(r'$N_s$')
+ylabel(r'$\Delta E$',rotation=0)
 savefig("../Results/Figures/Thermodynamic_limit.png")
 
 show()

@@ -6,7 +6,7 @@ NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double n_
 
     Nshells = Nshells_input; NfilledShells = NFilledShells_input; n = n_input;
 
-    v0R = 200; v0T = 178; v0S = 91.85; kappaR = 1.487e1; kappaT = 0.649e1; kappaS = 0.465e1;
+    v0R = 200; v0T = 178; v0S = 91.85; kappaR = 1.487; kappaT = 0.649; kappaS = 0.465;
 
     States = zeros<mat>(0,6);
     Nstates = 0; Nholes = 0;
@@ -157,9 +157,6 @@ double NuclearBasis::epsilon(int i, int j, int a, int b){
     // Function to compute the sum of h(i) + h(j) - h(a) - h(b)
     return ei(i) + ei(j) - ei(a) - ei(b);
 }
-
-
-
 
 
 // Various kroenecker deltas

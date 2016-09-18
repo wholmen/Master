@@ -26,6 +26,6 @@ void TestBlocks(){
     NuclearBasis basis = NuclearBasis(Nshells,NfilledShells,n,true);
     cout << "Reference Energy: " << basis.ReferenceEnergy() << endl;
     Solver solver = Solver(basis);
-    solver.weight = 1.0;
+    solver.weight = 0.3;
     cout << "Nparticles: " << solver.Nholes << " Nstates: " << solver.Nstates << " Energy:" << solver.CCD(200) << endl;
 }

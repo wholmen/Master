@@ -10,7 +10,7 @@ Solver::Solver(NuclearBasis BASIS)
     Nparticles = Nstates - Nholes; Nparticles2 = Nparticles*Nparticles; Nparticles3 = Nparticles2*Nparticles;
 
     int Nmax = basis.Nshells;
-    m = 2 * floor(sqrt(Nmax));
+    m = 2*floor(sqrt(Nmax));
     M = 2*m + 1;
 
     // Weight when adding diagrams to new amplitudes
@@ -382,9 +382,6 @@ void Solver::DiagramL0(){
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
 
                 t( Index(a,b,i,j) ) += L0(A,I);
-
-                //StoreT( Index(a,b,i,j), L0(A,I));
-
             }
         }
     }
@@ -421,9 +418,6 @@ void Solver::DiagramLa(){
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
 
                 t( Index(a,b,i,j) ) += La(A,I);
-
-                //StoreT( Index(a,b,i,j), La(A,I) );
-
             }
         }
     }
@@ -457,8 +451,6 @@ void Solver::DiagramQc(){
 
                 t( Index(a,b,i,j)) -= Qc( k2,k1 );
                 t( Index(a,b,j,i)) += Qc( k2,k1 );
-                //StoreT(Index(a,b,i,j), -Qc( k2,k1 ));
-                //StoreT(Index(a,b,j,i), Qc( k2,k1 ));
 
             }
         }
@@ -492,8 +484,6 @@ void Solver::DiagramQd(){
 
                 t( Index(a,b,i,j)) -= Qd( k2,k1 );
                 t( Index(b,a,i,j)) += Qd( k2,k1 );
-                //StoreT(Index(a,b,i,j), -Qd(k2,k1));
-                //StoreT(Index(b,a,i,j), Qd(k2,k1));
             }
         }
     }
@@ -526,7 +516,6 @@ void Solver::DiagramI1(){
                 int a = blockspphh[n]->Particles(A,0); int b = blockspphh[n]->Particles(A,1);
 
                 t( Index(a,b,i,j) ) += I1(A,I);
-                //StoreT(Index(a,b,i,j), I1(A,I));
             }
         }
     }
@@ -563,11 +552,6 @@ void Solver::DiagramI2(){
                 t( Index(a,b,j,i) ) -= I2(x1,x2);
                 t( Index(b,a,i,j) ) -= I2(x1,x2);
                 t( Index(b,a,j,i) ) += I2(x1,x2);
-
-                //StoreT( Index(a,b,i,j), I2(x1,x2));
-                //StoreT( Index(a,b,j,i), -I2(x1,x2));
-                //StoreT( Index(b,a,i,j), -I2(x1,x2));
-                //StoreT( Index(b,a,j,i), I2(x1,x2));
             }
         }
     }

@@ -1,7 +1,0 @@
-A coupled cluster study of nuclear matter using intermediates. 
-The system consist of 28 states and 4 holes.
-The results are presented in the following order: 
-rs, Reference Energy, Niterations, all iterations CCDIntermediate results
-1 790.822 9   -101.396 18709.5 3.67841e+07 1.57607e+14 2.93882e+27 1.03295e+54 1.27903e+107 1.9394e+213 -nan 
-0.5   6326.58   11   -0.00130514 0.451572 -156.689 55021 6.11428e+07 9.90827e+13 2.60311e+26 1.79706e+51 8.56373e+100 1.94266e+200 -nan 
-2 98.8528 9   -151.013 24197 2.89038e+08 4.19295e+16 8.87583e+32 3.98703e+65 8.03776e+130 3.25318e+261 -nan 

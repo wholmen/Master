@@ -6,7 +6,7 @@ NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double n_
 
     Nshells = Nshells_input; NfilledShells = NFilledShells_input; n = n_input;
 
-    v0R = 200; v0T = 178; v0S = 91.85; kappaR = 1.487; kappaT = 0.649; kappaS = 0.465;
+    v0R = 200.0; v0T = 178.0; v0S = 91.85; kappaR = 1.487; kappaT = 0.639; kappaS = 0.465;
 
     States = zeros<mat>(0,6);
     Nstates = 0; Nholes = 0;
@@ -51,21 +51,28 @@ NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double n_
         }
     }
     // Various calculations of variables needed
-    L3 = Nholes/n;
-    L2 = pow(L3, 2.0/3 );
-    L1 = pow(L3, 1.0/3 );
+    double hbarc = 197.3269788; // MeV fm
+    double m_neutronc2 = 939.565; // MeV
+    double prefactor = hbarc*hbarc/(2.0*m_neutronc2);
 
-    kstep = 2*pi / L1;
+    L3 = float(Nholes)/n;
+    L2 = pow(L3, 2.0/3. );
+    L1 = pow(L3, 1.0/3. );
+
+    kstep = 2 * pi / L1;
 
     // Calculating the actual one-body energy for given e=nx^2+ny^2+nz^2
     for (int i=0; i<Nstates; i++){
-        States(i,0) = States(i,0) * 2*pi*pi / L2;
+        States(i,0) = States(i,0) * prefactor*4*pi*pi / L2;
     }
 
     Nstates2 = Nstates*Nstates; Nstates3 = Nstates2*Nstates;
     Nparticles = Nstates - Nholes;
     Nparticles2 = Nparticles*Nparticles; Nholes2 = Nholes*Nholes;
 }
+
+
+
 
 double NuclearBasis::ReferenceEnergy(){
 
@@ -112,19 +119,19 @@ double NuclearBasis::Minnesota(int p, int q, int r, int s){
             kr(i) = States(r,i+1);
             ks(i) = States(s,i+1);
         }
-        kp = kp*2*pi/L1;
-        kq = kq*2*pi/L1;
-        kr = kr*2*pi/L1;
-        ks = ks*2*pi/L1;
+        kp = kp*kstep;
+        kq = kq*kstep;
+        kr = kr*kstep;
+        ks = ks*kstep;
 
         vec p1 = 0.5*(kp - kq);
         vec p2 = 0.5*(kr - ks);
 
         double qsquared = dot(p1-p2,p1-p2);
 
-        double VR =  v0R * pow(pi/kappaR, 1.5) / L3 * exp( -qsquared/(4*kappaR) );
-        double VT = -v0T * pow(pi/kappaT, 1.5) / L3 * exp( -qsquared/(4*kappaT) );
-        double VS = -v0S * pow(pi/kappaS, 1.5) / L3 * exp( -qsquared/(4*kappaS) );
+        double VR =  v0R * pow(pi/kappaR, 1.5) / L3 * exp( -qsquared/(4.0*kappaR) );
+        double VT = -v0T * pow(pi/kappaT, 1.5) / L3 * exp( -qsquared/(4.0*kappaT) );
+        double VS = -v0S * pow(pi/kappaS, 1.5) / L3 * exp( -qsquared/(4.0*kappaS) );
 
         double ExchangeSpin = KD_spin(p,s)*KD_spin(q,r); // Spin exchanged
         double ConserveSpin = KD_spin(p,r)*KD_spin(q,s); // Spin conserved
@@ -148,7 +155,7 @@ double NuclearBasis::TwoBodyOperator(int p, int q, int r, int s){
 double NuclearBasis::ei(int q){
     double interaction = 0;
     for (int i=0; i<Nholes; i++){
-        interaction += Minnesota(i,q,i,q);
+        interaction += Minnesota(q,i,q,i);
     }
     return OneBodyOperator(q,q) + interaction;
 }

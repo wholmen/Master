@@ -20,7 +20,7 @@ for line in infile:
 	E.append(float(splitline[-1]))
 
 
-plot(Ns,E,color="orange",label=r'$\Delta E$',linewidth=1.5)
+plot(Ns,E,color="orange",label=r'$\Delta E$',linewidth=2.5)
 
 legend(loc="best")
 title("Approaching the thermodynamic limit")

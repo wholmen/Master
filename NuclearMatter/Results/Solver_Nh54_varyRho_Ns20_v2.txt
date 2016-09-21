@@ -1,0 +1,3 @@
+A coupled cluster study of neutrom matter using a parallel code with blocks implementation for different amount of states
+The results are presented in the following order: 
+density [n], States, Occupied States, weight, Reference Energy, Iterations, time spent initiate, time spent iterating, CCD correlation Energy, total energy per particle

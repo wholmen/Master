@@ -72,8 +72,6 @@ NuclearBasis::NuclearBasis(int Nshells_input, int NFilledShells_input, double n_
 }
 
 
-
-
 double NuclearBasis::ReferenceEnergy(){
 
     double Energy = 0.0;

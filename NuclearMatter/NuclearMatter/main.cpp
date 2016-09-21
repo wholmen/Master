@@ -23,7 +23,7 @@ int main()
     //IResults_Nh14_Ns20_vary_n();
     //Results_Nh36_Ns20_vary_n();
     Results_Nh54_Ns20_vary_n();
-    Results_Nh14_ThermodynamicLimit();
+    //Results_Nh14_ThermodynamicLimit();
 }
 
 
@@ -147,7 +147,7 @@ void Results_Nh36_Ns20_vary_n(){
 
 void Results_Nh54_Ns20_vary_n(){
 
-    int Nshells = 15; int NfilledShells = 4;
+    int Nshells = 18; int NfilledShells = 4;
 
     vec n = zeros<vec>(14);
 
@@ -156,7 +156,7 @@ void Results_Nh54_Ns20_vary_n(){
     }
 
     ofstream myfile;
-    myfile.open("../Results/Solver_Nh54_varyRho_Ns20.txt");
+    myfile.open("../Results/Solver_Nh54_varyRho_Ns20_v2.txt");
     myfile << "A coupled cluster study of neutrom matter using a parallel code with blocks implementation for different amount of states" << endl;
     myfile << "The results are presented in the following order: " << endl;
     myfile << "density [n], States, Occupied States, weight, Reference Energy, Iterations, time spent initiate, time spent iterating, CCD correlation Energy, total energy per particle" << endl;

@@ -27,10 +27,10 @@ for line in infile:
 
 plot(n,E,'-^',color="red",label=r'$N_p = 36$',linewidth=1.5)
 
-
+"""
 infile = open("../Results/Solver_Nh54_varyRho_Ns20.txt",'r')
 infile.readline(); infile.readline(); infile.readline(); # Skipping three first lines filled with text
-"""
+
 n = []; Nh = []; E = []; Ns = []; 
 for line in infile:
 	splitline = line.split();
@@ -39,7 +39,7 @@ for line in infile:
 	Ns.append(float(splitline[1]))
 	Nh.append(float(splitline[2]))
 
-plot(n,E,'-o',color="blue",label=r'$N_p = 54$',linewidth=1.5)
+plot(n,E,'-o',color="blue",label=r'$N_p = 54, $',linewidth=1.5)
 """
 
 legend(loc="best")

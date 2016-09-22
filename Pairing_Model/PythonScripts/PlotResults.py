@@ -47,7 +47,7 @@ plot(g,MBPT4, color="yellow",label="MBPT4")
 plot(g,CCD,   color="purple",label="CCD")
 
 legend(loc="best")
-title("A comparison of corrolation energy for 4p4h Pairing model \n calculated by various methods. ")
+title("A comparison of correlation energy for 4p4h Pairing model \n calculated by various methods. ")
 xlabel("Interaction strength, g")
 ylabel(r'Correlation Energy, $\Delta E$')
 savefig("../Results/Figures/Pairing4p4h_CompareDE_AllMethods.png")
